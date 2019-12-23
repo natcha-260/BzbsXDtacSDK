@@ -1,0 +1,11 @@
+framework module BzbsXDtacSDK {
+  umbrella header "BzbsXDtacSDK-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module BzbsXDtacSDK.Swift {
+    header "BzbsXDtacSDK-Swift.h"
+    requires objc
+}
