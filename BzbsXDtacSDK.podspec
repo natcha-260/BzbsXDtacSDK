@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BzbsXDtacSDK'
-  s.version          = '1.0.1'
+  s.version          = '0.0.83'
   s.summary          = 'Buzzebees SDK For Dtac Rewards'
 
 # This description is used to generate tags and improve search results.
@@ -24,17 +24,17 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://buzzebees.com/Views/BzbsForBusiness/OurService.aspx'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'natcha-260' => 'natcha@buzzebees.com' }
-  s.source           = { :git => 'https://github.com/natcha-260/BzbsXDtacSDK.git', :tag => s.version.to_s }
+  s.author           = { 'natchaporing' => 'natcha@buzzebees.com' }
+  s.source           = { :git => 'https://buzzebees@dev.azure.com/buzzebees/Buzzebees/_git/iOS_Project_Dtac_Rewards', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
   s.swift_version = '5.0'
 
-  s.source_files = 'BzbsXDtacSDK/*.framework'
+  s.source_files = 'BzbsXDtacSDK/Classes/**/*.{swift,h,m}'
   
   s.resource_bundles = {
-    'BzbsXDtacSDK' => ['BzbsXDtacSDK/*.bundle']
+    'BzbsXDtacSDK' => ['BzbsXDtacSDK/Assets/*.storyboard', 'BzbsXDtacSDK/Assets/Asset.xcassets', 'BzbsXDtacSDK/Assets/Font/*','BzbsXDtacSDK/Classes/**/*.xib', 'BzbsXDtacSDK/Assets/dtac_loading.json','BzbsXDtacSDK/Assets/*.lproj/*.strings','BzbsXDtacSDK/Assets/*.json']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'

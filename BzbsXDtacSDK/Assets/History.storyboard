@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--History View Controller-->
+        <scene sceneID="iCh-Hb-9ZJ">
+            <objects>
+                <viewController storyboardIdentifier="scene_history_list" id="lj4-Fq-eDp" customClass="HistoryViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hCF-hf-t3O">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XpF-aF-zeQ">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jpg-Y5-Cow" customClass="SectionLineView" customModule="BzbsXDtacSDK" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="5"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="5" id="2ea-Vw-7PA"/>
+                                        </constraints>
+                                    </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="22x-1m-knL">
+                                        <rect key="frame" x="0.0" y="5" width="414" height="813"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="lj4-Fq-eDp" id="BOH-ml-xz0"/>
+                                            <outlet property="delegate" destination="lj4-Fq-eDp" id="b4b-Pd-27h"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="jpg-Y5-Cow" firstAttribute="leading" secondItem="XpF-aF-zeQ" secondAttribute="leading" id="8PH-MH-X4S"/>
+                                    <constraint firstItem="22x-1m-knL" firstAttribute="leading" secondItem="XpF-aF-zeQ" secondAttribute="leading" id="QRc-FN-FHY"/>
+                                    <constraint firstAttribute="trailing" secondItem="22x-1m-knL" secondAttribute="trailing" id="TP9-rE-yHq"/>
+                                    <constraint firstAttribute="trailing" secondItem="jpg-Y5-Cow" secondAttribute="trailing" id="kEJ-V0-iXu"/>
+                                    <constraint firstItem="jpg-Y5-Cow" firstAttribute="top" secondItem="XpF-aF-zeQ" secondAttribute="top" id="oTc-wm-Odm"/>
+                                    <constraint firstAttribute="bottom" secondItem="22x-1m-knL" secondAttribute="bottom" id="vij-Nj-UVU"/>
+                                    <constraint firstItem="22x-1m-knL" firstAttribute="top" secondItem="jpg-Y5-Cow" secondAttribute="bottom" id="wDj-3j-hpL"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="pBi-ST-IwM" firstAttribute="trailing" secondItem="XpF-aF-zeQ" secondAttribute="trailing" id="7YB-bs-zG3"/>
+                            <constraint firstItem="XpF-aF-zeQ" firstAttribute="leading" secondItem="pBi-ST-IwM" secondAttribute="leading" id="Bmk-KV-Mhh"/>
+                            <constraint firstItem="pBi-ST-IwM" firstAttribute="bottom" secondItem="XpF-aF-zeQ" secondAttribute="bottom" id="JtD-0u-LCa"/>
+                            <constraint firstItem="XpF-aF-zeQ" firstAttribute="top" secondItem="pBi-ST-IwM" secondAttribute="top" id="SkG-6M-vt5"/>
+                            <constraint firstItem="XpF-aF-zeQ" firstAttribute="top" secondItem="pBi-ST-IwM" secondAttribute="top" id="uz2-8j-w3b"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pBi-ST-IwM"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="22x-1m-knL" id="68h-if-Bxe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rbu-lZ-E2V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="401.44927536231887" y="-431.25"/>
+        </scene>
+    </scenes>
+</document>

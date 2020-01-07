@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="319" id="KGk-i7-Jjw" customClass="EmptyTVCell" customModule="BzbsXDtacSDK" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="534" height="319"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="534" height="319"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rli-gt-wit">
+                        <rect key="frame" x="89" y="103.5" width="356" height="112.5"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FWy-V2-Nva">
+                                <rect key="frame" x="153" y="8" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="FWy-V2-Nva" secondAttribute="height" multiplier="1:1" id="L0V-sg-8f6"/>
+                                    <constraint firstAttribute="height" constant="50" id="sDh-vn-YLl"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TpO-69-tqh">
+                                <rect key="frame" x="147" y="76" width="62.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TpO-69-tqh" firstAttribute="centerX" secondItem="rli-gt-wit" secondAttribute="centerX" id="6R0-3h-iY6"/>
+                            <constraint firstItem="FWy-V2-Nva" firstAttribute="centerX" secondItem="rli-gt-wit" secondAttribute="centerX" id="Hm2-ll-A2L"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TpO-69-tqh" secondAttribute="trailing" id="ahG-Bz-utD"/>
+                            <constraint firstItem="FWy-V2-Nva" firstAttribute="top" secondItem="rli-gt-wit" secondAttribute="top" constant="8" id="eJs-eO-d9i"/>
+                            <constraint firstItem="TpO-69-tqh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rli-gt-wit" secondAttribute="leading" id="edH-Lb-IfJ"/>
+                            <constraint firstItem="TpO-69-tqh" firstAttribute="top" secondItem="FWy-V2-Nva" secondAttribute="bottom" constant="18" id="t5o-35-3GM"/>
+                            <constraint firstAttribute="bottom" secondItem="TpO-69-tqh" secondAttribute="bottom" constant="16" id="yKe-on-x9S"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="rli-gt-wit" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="MDz-Md-9X6"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="rli-gt-wit" secondAttribute="bottom" id="lsA-AB-1ra"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="rli-gt-wit" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="8S6-dB-t0a"/>
+                <constraint firstItem="rli-gt-wit" firstAttribute="centerX" secondItem="njF-e1-oar" secondAttribute="centerX" id="RDk-8m-lzP"/>
+                <constraint firstItem="rli-gt-wit" firstAttribute="width" secondItem="KGk-i7-Jjw" secondAttribute="width" multiplier="2:3" id="cmo-vs-R9w"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="imv" destination="FWy-V2-Nva" id="b5O-WF-zBv"/>
+                <outlet property="lbl" destination="TpO-69-tqh" id="YNk-JR-lle"/>
+            </connections>
+            <point key="canvasLocation" x="-23.188405797101453" y="114.84375"/>
+        </tableViewCell>
+    </objects>
+</document>
