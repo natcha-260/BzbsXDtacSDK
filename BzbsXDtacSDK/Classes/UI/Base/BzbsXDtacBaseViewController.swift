@@ -591,44 +591,67 @@ extension BzbsXDtacBaseViewController {
                     }
                 }
             }
+        } else {
+            if let first = arrCat.first {
+                cat = first
+            }
         }
-        
-        if let _ = cat {
-            if self is CampaignByCatViewController
+
+        if cat == nil { return }
+        if self is CampaignByCatViewController
+        {
+            let vc = self as! CampaignByCatViewController
+            vc.currentCat = cat
+            if let _ = subCat
             {
-                let vc = self as! CampaignByCatViewController
-                vc.currentCat = cat
-                if let _ = subCat
-                {
-                    vc.currentSubCat = subCat
-                }
-            } else {
-                if let nav = self.navigationController {
-                    GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
-                } else {
-                    delay(0.33) {
-                        self.gotoCategory(catName: catName, subCatName: subCatName)
-                    }
-                }
+                vc.currentSubCat = subCat
             }
         } else {
-            if let first = arrCat.first
-            {
-                if self is CampaignByCatViewController
-                {
-                    let vc = self as! CampaignByCatViewController
-                    vc.currentCat = first
-                } else {
-                    if let nav = self.navigationController {
-                        GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
-                    } else {
-                        delay(0.33) {
-                            self.gotoCategory(catName: catName, subCatName: subCatName)
-                        }
-                    }
+            if let nav = self.navigationController {
+                GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
+            } else {
+                delay(0.33) {
+                    self.gotoCategory(catName: catName, subCatName: subCatName)
                 }
             }
         }
+//
+//        if let _ = cat {
+//            if self is CampaignByCatViewController
+//            {
+//                let vc = self as! CampaignByCatViewController
+//                vc.currentCat = cat
+//                if let _ = subCat
+//                {
+//                    vc.currentSubCat = subCat
+//                }
+//            } else {
+//                if let nav = self.navigationController {
+//                    GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
+//                } else {
+//                    delay(0.33) {
+//                        self.gotoCategory(catName: catName, subCatName: subCatName)
+//                    }
+//                }
+//            }
+//        } else {
+//            if let first = arrCat.first
+//            {
+//                if self is CampaignByCatViewController
+//                {
+//                    let vc = self as! CampaignByCatViewController
+//                    vc.currentCat = first
+//                } else {
+//                    if let nav = self.navigationController {
+//                        GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
+//                    } else {
+//                        delay(0.33) {
+//                            self.gotoCategory(catName: catName, subCatName: subCatName)
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
     func gotoFavorite()

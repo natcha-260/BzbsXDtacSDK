@@ -21,7 +21,9 @@ class GotoPage: NSObject
         let vc = storboard.instantiateViewController(withIdentifier: "campaign_by_category_view") as! CampaignByCatViewController
         vc.hidesBottomBarWhenPushed = true
         vc.currentCat = cat
-        vc.currentSubCat = subCat ?? cat.subCat.first!
+        if let newSubcat = subCat ?? cat.subCat.first {
+            vc.currentSubCat = newSubcat
+        }
         vc.arrCategory = arrCategory
         nav.pushViewController(vc, animated: true)
     }

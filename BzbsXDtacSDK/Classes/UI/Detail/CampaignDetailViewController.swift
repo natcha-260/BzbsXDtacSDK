@@ -491,9 +491,21 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Image Slide Show
     // MARK:-
     func assignImageSlideShow() {
-        if let strUrl = campaign.fullImageUrl, let source = AlamofireSource(urlString: strUrl)
+        if let strUrl = campaign.fullImageUrl
         {
-            listImageCampaign = [source]
+            var newStrUrl = strUrl
+            let time = Date().toString(format: "ddMMyyyyHHmm")
+            if strUrl.contains("?")
+            {
+                newStrUrl = strUrl + "&Bzbstime=\(time)"
+            } else {
+                newStrUrl = strUrl + "?Bzbstime=\(time)"
+            }
+            
+            if let source = AlamofireSource(urlString: newStrUrl)
+            {
+                listImageCampaign = [source]
+            }
         }
         
         if(campaign.pictures.count > 1)
@@ -502,7 +514,9 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             
             for item in campaign.pictures
             {
-                if let url = item.fullImageUrl {
+                if let strUrl = item.fullImageUrl {
+                    let time = Date().toString(format: "ddMMyyyyHHmm")
+                    let url = strUrl + "?time=\(time)"
                     listImageCampaign.append(AlamofireSource(urlString: url)!)
                 }
             }
@@ -688,7 +702,8 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
             
             let imgAgency = cell.viewWithTag(11) as! UIImageView
             if let blobUrl = Bzbs.shared.blobUrl {
-                let imageStrUrl = blobUrl + "/agencies/\(campaign.locationAgencyId ?? campaign.agencyID ?? 0)"
+                let time = Date().toString(format: "ddMMyyyyHHmm")
+                let imageStrUrl = blobUrl + "/agencies/\(campaign.locationAgencyId ?? campaign.agencyID ?? 0)?time=\(time)"
                 imgAgency.bzbsSetImage(withURL: imageStrUrl)
             }
             
