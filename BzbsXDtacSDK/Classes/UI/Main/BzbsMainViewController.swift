@@ -468,6 +468,8 @@ import FirebaseAnalytics
     }
     
     override func refreshApi() {
+        _intSkip = 0
+        _isEnd = false
         getApiGreeting()
         getApiCategory()
         getApiRecommend()
