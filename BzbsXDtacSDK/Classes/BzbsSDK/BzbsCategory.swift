@@ -38,6 +38,14 @@ public class BzbsCategory {
         count = BuzzebeesConvert.IntFromObject(dict["count"])
         id = BuzzebeesConvert.IntFromObject(dict["id"])
         imageUrl = BuzzebeesConvert.StringFromObject(dict["image_url"])
+        if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
+        {
+            let newStrUrl = imageUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+            if let _ = URL(string: newStrUrl)
+            {
+                imageUrl = newStrUrl
+            }
+        }
         listConfig = BuzzebeesConvert.StringFromObject(dict["list_config"])
         mode = BuzzebeesConvert.StringFromObject(dict["mode"])
 //        name = BuzzebeesConvert.StringFromObject(dict["name"])

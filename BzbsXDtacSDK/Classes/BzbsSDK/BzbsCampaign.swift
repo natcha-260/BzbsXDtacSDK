@@ -446,7 +446,15 @@ public class BzbsCampaign {
         fullImageUrl = BuzzebeesConvert.StringFromObject(dict["FullImageUrl"])
         if fullImageUrl != "" {
             if fullImageUrl.range(of: "-large") == nil {
-                let newString = fullImageUrl.replacingOccurrences(of: "?", with: "-large?", options: NSString.CompareOptions.literal, range: nil)
+                var newString = fullImageUrl.replacingOccurrences(of: "?", with: "-large?", options: NSString.CompareOptions.literal, range: nil)
+                if let url = URL(string:newString), let host = url.host, host == "buzzebees.blob.core.windows.net"
+                {
+                    let newStrUrl = newString.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+                    if let _ = URL(string: newStrUrl)
+                    {
+                        newString = newStrUrl
+                    }
+                }
                 fullImageUrl = newString
             }
         }

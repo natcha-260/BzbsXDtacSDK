@@ -55,7 +55,16 @@ class CampaignRotateCVCell: UICollectionViewCell {
             {
                 var imageList = [InputSource]()
                 for item in showDashboardItems {
-                    if let url = item.imageUrl, let source = AlamofireSource(urlString:url){
+                    var imageUrl = item.imageUrl ?? ""
+                    if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
+                    {
+                        let newStrUrl = imageUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+                        if let _ = URL(string: newStrUrl)
+                        {
+                            imageUrl = newStrUrl
+                        }
+                    }
+                    if let source = AlamofireSource(urlString:imageUrl){
                         imageList.append(source)
                     }
                 }

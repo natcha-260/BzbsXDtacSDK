@@ -331,7 +331,15 @@ class CampaignByCatViewController: BaseListController {
     func getDashboard()
     {
         if self.currentCat.id == Bzbs.shared.blueCategory?.id {
-            let imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat.id!)"
+            var imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat.id!)"
+            if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
+            {
+                let newStrUrl = imageUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+                if let _ = URL(string: newStrUrl)
+                {
+                    imageUrl = newStrUrl
+                }
+            }
             let dashboard = BzbsDashboard()
             dashboard.imageUrl = imageUrl
             dashboard.type = "none"
@@ -733,6 +741,14 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     {
                         imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat.id!)_en"
                     }
+                    if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
+                    {
+                        let newStrUrl = imageUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+                        if let _ = URL(string: newStrUrl)
+                        {
+                            imageUrl = newStrUrl
+                        }
+                    }
                     let dashboard = BzbsDashboard()
                     dashboard.imageUrl = imageUrl
                     dashboard.type = "none"
@@ -846,8 +862,16 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
         
         let cellIdentifier = "campaignBigRotateCVCell"
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath as IndexPath) as! CampaignBigRotateCVCell
-        
-        Alamofire.request(item.imageUrl).responseImage { (response) in
+        var imageUrl = item.imageUrl ?? ""
+        if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
+        {
+            let newStrUrl = imageUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+            if let _ = URL(string: newStrUrl)
+            {
+                imageUrl = newStrUrl
+            }
+        }
+        Alamofire.request(imageUrl).responseImage { (response) in
             if let image = response.result.value {
                 cell.imvCampaign.image = image
             }
