@@ -24,36 +24,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BV1-LB-PIe">
                                 <rect key="frame" x="0.0" y="88" width="414" height="60"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KY0-em-wEw">
-                                        <rect key="frame" x="8" y="8" width="311.5" height="44"/>
-                                        <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Swensen's, CTW, Coffee" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MYc-uw-Ao8">
-                                                <rect key="frame" x="36" y="0.0" width="267.5" height="44"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="Z3C-Ia-eCV" id="F86-QD-QDx"/>
-                                                </connections>
-                                            </textField>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_search_icon_search" translatesAutoresizingMaskIntoConstraints="NO" id="P2E-MB-ije">
-                                                <rect key="frame" x="8" y="12" width="20" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="5ql-PO-fNm"/>
-                                                    <constraint firstAttribute="width" secondItem="P2E-MB-ije" secondAttribute="height" multiplier="1:1" id="cUL-PB-Cn0"/>
-                                                </constraints>
-                                            </imageView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstItem="P2E-MB-ije" firstAttribute="leading" secondItem="KY0-em-wEw" secondAttribute="leading" constant="8" id="3dF-pG-lUY"/>
-                                            <constraint firstItem="P2E-MB-ije" firstAttribute="centerY" secondItem="KY0-em-wEw" secondAttribute="centerY" id="7bc-io-nPO"/>
-                                            <constraint firstAttribute="bottom" secondItem="MYc-uw-Ao8" secondAttribute="bottom" id="bll-JA-iCu"/>
-                                            <constraint firstItem="MYc-uw-Ao8" firstAttribute="leading" secondItem="P2E-MB-ije" secondAttribute="trailing" constant="8" id="jbd-Z2-z4d"/>
-                                            <constraint firstAttribute="trailing" secondItem="MYc-uw-Ao8" secondAttribute="trailing" constant="8" id="m0h-0k-8FQ"/>
-                                            <constraint firstItem="MYc-uw-Ao8" firstAttribute="top" secondItem="KY0-em-wEw" secondAttribute="top" id="sJO-kv-tYT"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j5O-fh-XM7">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j5O-fh-XM7">
                                         <rect key="frame" x="327.5" y="8" width="78.5" height="44"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUg-fl-Tf0">
@@ -90,6 +61,35 @@
                                             <constraint firstAttribute="bottom" secondItem="sUg-fl-Tf0" secondAttribute="bottom" id="yPj-o9-Zs1"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KY0-em-wEw">
+                                        <rect key="frame" x="8" y="8" width="398" height="44"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Swensen's, CTW, Coffee" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MYc-uw-Ao8">
+                                                <rect key="frame" x="36" y="0.0" width="354" height="44"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="Z3C-Ia-eCV" id="F86-QD-QDx"/>
+                                                </connections>
+                                            </textField>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_search_icon_search" translatesAutoresizingMaskIntoConstraints="NO" id="P2E-MB-ije">
+                                                <rect key="frame" x="8" y="12" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="5ql-PO-fNm"/>
+                                                    <constraint firstAttribute="width" secondItem="P2E-MB-ije" secondAttribute="height" multiplier="1:1" id="cUL-PB-Cn0"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="P2E-MB-ije" firstAttribute="leading" secondItem="KY0-em-wEw" secondAttribute="leading" constant="8" id="3dF-pG-lUY"/>
+                                            <constraint firstItem="P2E-MB-ije" firstAttribute="centerY" secondItem="KY0-em-wEw" secondAttribute="centerY" id="7bc-io-nPO"/>
+                                            <constraint firstAttribute="bottom" secondItem="MYc-uw-Ao8" secondAttribute="bottom" id="bll-JA-iCu"/>
+                                            <constraint firstItem="MYc-uw-Ao8" firstAttribute="leading" secondItem="P2E-MB-ije" secondAttribute="trailing" constant="8" id="jbd-Z2-z4d"/>
+                                            <constraint firstAttribute="trailing" secondItem="MYc-uw-Ao8" secondAttribute="trailing" constant="8" id="m0h-0k-8FQ"/>
+                                            <constraint firstItem="MYc-uw-Ao8" firstAttribute="top" secondItem="KY0-em-wEw" secondAttribute="top" id="sJO-kv-tYT"/>
+                                        </constraints>
+                                    </view>
                                     <view hidden="YES" alpha="0.40000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-J2-Mr8">
                                         <rect key="frame" x="0.0" y="59" width="414" height="1"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -100,7 +100,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="j5O-fh-XM7" firstAttribute="leading" secondItem="KY0-em-wEw" secondAttribute="trailing" constant="8" id="20F-fM-m1S"/>
                                     <constraint firstItem="j5O-fh-XM7" firstAttribute="top" secondItem="BV1-LB-PIe" secondAttribute="top" constant="8" id="6fl-QX-60j"/>
                                     <constraint firstItem="KY0-em-wEw" firstAttribute="leading" secondItem="BV1-LB-PIe" secondAttribute="leading" constant="8" id="BYo-Qh-Li4"/>
                                     <constraint firstAttribute="bottom" secondItem="KY0-em-wEw" secondAttribute="bottom" constant="8" id="KiM-mr-Ay7"/>
@@ -108,6 +107,7 @@
                                     <constraint firstAttribute="bottom" secondItem="dpk-J2-Mr8" secondAttribute="bottom" id="Puv-A4-kIW"/>
                                     <constraint firstItem="KY0-em-wEw" firstAttribute="top" secondItem="BV1-LB-PIe" secondAttribute="top" constant="8" id="VWP-s0-R3C"/>
                                     <constraint firstAttribute="trailing" secondItem="j5O-fh-XM7" secondAttribute="trailing" constant="8" id="Ytp-NY-YTb"/>
+                                    <constraint firstAttribute="trailing" secondItem="KY0-em-wEw" secondAttribute="trailing" constant="8" id="cvQ-Q4-FBy"/>
                                     <constraint firstAttribute="trailing" secondItem="dpk-J2-Mr8" secondAttribute="trailing" id="dT8-ZF-fwK"/>
                                     <constraint firstAttribute="bottom" secondItem="j5O-fh-XM7" secondAttribute="bottom" constant="8" id="goL-u1-BD1"/>
                                     <constraint firstItem="dpk-J2-Mr8" firstAttribute="leading" secondItem="BV1-LB-PIe" secondAttribute="leading" id="nHv-Zs-TN0"/>
