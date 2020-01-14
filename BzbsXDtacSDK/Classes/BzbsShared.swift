@@ -54,7 +54,7 @@ struct DtacLoginParams {
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
     
-    let isDebugMode = true
+    @objc public var isDebugMode = false
     var userLogin: BzbsUser?
     var arrCategory :[BzbsCategory]?
     var blueCategory : BzbsCategory?

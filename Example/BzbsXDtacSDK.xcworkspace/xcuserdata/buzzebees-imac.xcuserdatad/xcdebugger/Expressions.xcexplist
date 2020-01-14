@@ -11,13 +11,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in static BuzzebeesCore.apiSetupPrefix(successCallback:failCallback:):BuzzebeesCore.swift">
+         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "BuzzebeesCore.blobUrl">
+               value = "campaignConfig">
             </PersistentString>
             <PersistentString
-               value = "response.data">
+               value = "_isCallApi">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -65,13 +65,13 @@
          contextName = "CampaignCVCell.setupWith(_:isShowDistance:):CampaignCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "lblTitle.numberOfVisibleLines">
+               value = "!(isShowDistance &amp;&amp; LocationManager.shared.authorizationStatus == .authorizedWhenInUse)">
             </PersistentString>
             <PersistentString
                value = "imv.contentMode">
             </PersistentString>
             <PersistentString
-               value = "!(isShowDistance &amp;&amp; LocationManager.shared.authorizationStatus == .authorizedWhenInUse)">
+               value = "lblTitle.numberOfVisibleLines">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -299,10 +299,10 @@
          contextName = "CampaignRotateCVCell.dashboardItems.didset:CampaignRotateCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "frameSize">
+               value = "pageControl.numberOfPages &gt; 1">
             </PersistentString>
             <PersistentString
-               value = "pageControl.numberOfPages &gt; 1">
+               value = "frameSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -316,16 +316,16 @@
                value = "LocaleCore.shared.wordingDict">
             </PersistentString>
             <PersistentString
-               value = "bundle.localizations">
+               value = "NSLocalizedString(self, bundle: bundle, comment: &quot;my_comment&quot;)">
             </PersistentString>
             <PersistentString
                value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
             </PersistentString>
             <PersistentString
-               value = "Bzbs.shared.currentBundle.localizations">
+               value = "bundle.localizations">
             </PersistentString>
             <PersistentString
-               value = "NSLocalizedString(self, bundle: bundle, comment: &quot;my_comment&quot;)">
+               value = "Bzbs.shared.currentBundle.localizations">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -439,10 +439,10 @@
          contextName = "RecommendCVCell.setupWith(_:):RecommendCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "item.distance">
+               value = "Double(round(100 * distance) / 100)">
             </PersistentString>
             <PersistentString
-               value = "Double(round(100 * distance) / 100)">
+               value = "item.distance">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -469,10 +469,10 @@
          contextName = "CampaignStatus.init(dict:):CampaignModel.swift">
          <PersistentStrings>
             <PersistentString
-               value = "BuzzebeesConvert.DoubleFromObject(dict[&quot;quantity&quot;])">
+               value = "dict[&quot;quantity&quot;]">
             </PersistentString>
             <PersistentString
-               value = "dict[&quot;quantity&quot;]">
+               value = "BuzzebeesConvert.DoubleFromObject(dict[&quot;quantity&quot;])">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -723,13 +723,13 @@
          contextName = "BzbsMainViewController.collectionView(_:didSelectItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "indexPath.row - 1">
+               value = "arrCampaign.count">
             </PersistentString>
             <PersistentString
                value = "indexPath.row">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count">
+               value = "indexPath.row - 1">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -745,7 +745,7 @@
          contextName = "closure #1 in BuzzebeesCore.requestAlamofire(_:strURL:params:headers:successCallback:failCallback:):BuzzebeesCore.swift">
          <PersistentStrings>
             <PersistentString
-               value = "response">
+               value = "resultError.localizedDescription">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -772,13 +772,13 @@
          contextName = "CampaignByCatViewController.collectionView(_:numberOfItemsInSection:):CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "currentSubCat.name.lowercased()">
+               value = "arrCategory">
             </PersistentString>
             <PersistentString
                value = "dashboardItems">
             </PersistentString>
             <PersistentString
-               value = "arrCategory">
+               value = "currentSubCat.name.lowercased()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -939,10 +939,10 @@
                value = "currentCat">
             </PersistentString>
             <PersistentString
-               value = "arrCategory">
+               value = "currentSubCat.name.lowercased()">
             </PersistentString>
             <PersistentString
-               value = "currentSubCat.name.lowercased()">
+               value = "arrCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -958,13 +958,13 @@
          contextName = "CampaignByCatViewController.getApi():CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "campaignList">
+               value = "vwCampaignList">
             </PersistentString>
             <PersistentString
                value = "currentSubCat">
             </PersistentString>
             <PersistentString
-               value = "vwCampaignList">
+               value = "campaignList">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1078,6 +1078,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #2 in CampaignDetailViewController.getApiCampaignDetail():CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
          contextName = "RecommedCell.collectionView(_:layout:sizeForItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -1147,16 +1150,16 @@
          contextName = "BzbsMainViewController.collectionView(_:cellForItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrCampaign.count + 1">
+               value = "arrCampaign">
             </PersistentString>
             <PersistentString
                value = "dashboardItems">
             </PersistentString>
             <PersistentString
-               value = "self.arrCategory">
+               value = "arrCampaign.count + 1">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign">
+               value = "self.arrCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1232,13 +1235,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+         contextName = "closure #1 in static BuzzebeesCore.apiSetupPrefix(successCallback:failCallback:):BuzzebeesCore.swift">
          <PersistentStrings>
             <PersistentString
-               value = "campaignConfig">
+               value = "BuzzebeesCore.blobUrl">
             </PersistentString>
             <PersistentString
-               value = "_isCallApi">
+               value = "response.data">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

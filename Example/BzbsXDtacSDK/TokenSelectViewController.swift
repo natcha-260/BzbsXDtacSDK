@@ -129,6 +129,7 @@ class TokenSelectViewController: UIViewController {
     var dtacReward : UIViewController!
     func gotoMain()
     {
+        Bzbs.shared.isDebugMode = true
         if UIDevice.current.model == "iPad"
         {
             let storyboard = UIStoryboard(name: "Main_iPad", bundle: nil)

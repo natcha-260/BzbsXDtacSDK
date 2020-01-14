@@ -183,6 +183,10 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         self.getApiCampaignDetail()
                     }
                 }
+                if Bzbs.shared.isDebugMode
+                {
+                    print(error.code, error.message)
+                }
                 return
             }
 
@@ -192,7 +196,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 }
             } else {
                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                PopupManager.informationPopup(self, title: nil, message: "Something went wrong") { () in
+                PopupManager.informationPopup(self, title: nil, message: "campaign_detail_fail".localized()) { () in
                     self.back_1_step()
                 }
             }

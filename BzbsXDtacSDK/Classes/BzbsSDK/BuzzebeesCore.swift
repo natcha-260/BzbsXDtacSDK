@@ -13,7 +13,14 @@ import Alamofire
  Core of Buzzebees api object
  */
 public class BuzzebeesCore: NSObject {
-    public var isDebugMode: Bool! = true
+    public var isDebugMode: Bool! {
+        get {
+            return Bzbs.shared.isDebugMode
+        }
+        set {
+            Bzbs.shared.isDebugMode = newValue
+        }
+    }
     public var appId = "353144231924127"
     public var strSubscriptionKey: String?
     
@@ -278,12 +285,20 @@ public class BuzzebeesCore: NSObject {
                             return
                         }
                     }
-
+                    
+                    var statusCode = "-9999"
+                    var message = "json serialization error"
+                    if let resultError = response.result.error as? NSError
+                    {
+                        statusCode = "\(resultError.code)"
+                        message = resultError.localizedDescription
+                    }
+                    
                     if(self.isDebugMode) {
                         let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
                         print("**response time =====\(strURL) ===  : \(String(format:"%.2f sec",resposeTime))")
                     }
-                    let error = BzbsError(strId: "-9999", strCode: "-9999", strType: "framework send", strMessage: "json serialization error")
+                    let error = BzbsError(strId: "-9999", strCode: statusCode, strType: "framework send", strMessage: message)
                     failCallback(error)
                 }
         }
