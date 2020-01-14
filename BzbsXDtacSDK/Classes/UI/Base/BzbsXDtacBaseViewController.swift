@@ -515,12 +515,21 @@ extension BzbsXDtacBaseViewController {
        openDeepLinkURL(url)
     }
     
-    func openDeepLinkURL(_ _url:URL?)
+    func isDeepLinkPrefix(_ url:URL) -> Bool
     {
-        guard let url = _url else { return }
         Bzbs.shared.deepLinkUrl = nil
         let scheme = url.scheme
         if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta") && url.host == "reward"
+        {
+            return true
+        }
+        return false
+    }
+    
+    func openDeepLinkURL(_ _url:URL?)
+    {
+        guard let url = _url else { return }
+        if isDeepLinkPrefix(url)
         {
             var params = Dictionary<String, AnyObject>()
             if let query = url.query

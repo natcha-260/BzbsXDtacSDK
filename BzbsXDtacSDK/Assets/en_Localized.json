@@ -1,7 +1,7 @@
 {
     "main_title" : "dtac reward",
     "main_level_title" : "dtac reward Tier",
-    "main_footer_msg" : "dtac reward, Over 25,000 participating retail and service nationwide…just around the corner.",
+    "main_footer_msg" : "dtac reward, Over 30,000 participating retail and service nationwide…just around the corner.",
     "main_footer_fav" : "Favorite",
     "main_footer_hist" : "History",
     "main_footer_faq" : "FAQ",
@@ -37,6 +37,7 @@
     "campaign_detail_url_wrong_format" : "Page can not be found. Please check it again.",
     "campaign_detail_like" : "Favorites",
     "campaign_detail_history" : "History",
+    "campaign_detail_fail" : "Can not do the transaction. Please try again later.",
     
     "favorite_title" : "Favorites",
     "favorite_exp" : "Exp",

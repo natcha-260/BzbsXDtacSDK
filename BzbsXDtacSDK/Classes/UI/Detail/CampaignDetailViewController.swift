@@ -143,6 +143,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     // MARK:- Call Api
     // MARK:-
+    var isRetry = false
     func getApiCampaignDetail() {
         showLoader()
         BuzzebeesCampaign().detail(campaignId: campaign.ID
@@ -173,7 +174,17 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
 
                 self.getApiCampaignStatus()
         }) { (error) in
-
+            
+            if error.id == "-9999"
+            {
+                if !self.isRetry{
+                    self.isRetry = true
+                    self.delay(0.33) {
+                        self.getApiCampaignDetail()
+                    }
+                }
+                return
+            }
 
             if !self.isConnectedToInternet() {
                 self.showPopupInternet(){
@@ -491,33 +502,22 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Image Slide Show
     // MARK:-
     func assignImageSlideShow() {
-        if let strUrl = campaign.fullImageUrl
+        if let strUrl = campaign.fullImageUrl,
+            let url = URL(string: strUrl)?.convertCDNAddTime()
         {
-            var newStrUrl = strUrl
-            let time = Date().toString(format: "ddMMyyyyHHmm")
-            if strUrl.contains("?")
-            {
-                newStrUrl = strUrl + "&Bzbstime=\(time)"
-            } else {
-                newStrUrl = strUrl + "?Bzbstime=\(time)"
-            }
-            
-            if let source = AlamofireSource(urlString: newStrUrl)
-            {
-                listImageCampaign = [source]
-            }
+            listImageCampaign = [AlamofireSource(url: url)]
         }
         
-        if(campaign.pictures.count > 1)
+        if campaign.pictures.count > 1
         {
             listImageCampaign.removeAll()
             
             for item in campaign.pictures
             {
-                if let strUrl = item.fullImageUrl {
-                    let time = Date().toString(format: "ddMMyyyyHHmm")
-                    let url = strUrl + "?time=\(time)"
-                    listImageCampaign.append(AlamofireSource(urlString: url)!)
+                if let strUrl = item.fullImageUrl ,
+                    let url = URL(string: strUrl)?.convertCDNAddTime()
+                {
+                    listImageCampaign.append(AlamofireSource(url: url))
                 }
             }
         }

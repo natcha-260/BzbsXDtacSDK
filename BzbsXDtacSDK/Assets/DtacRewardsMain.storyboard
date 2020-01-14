@@ -108,10 +108,10 @@
                                             <constraint firstItem="r4m-Fq-xee" firstAttribute="leading" secondItem="Lmy-D2-khm" secondAttribute="leading" id="F8i-Bi-VDY"/>
                                             <constraint firstAttribute="height" constant="60" id="FCa-FO-gJQ"/>
                                             <constraint firstItem="IDi-Eo-sV0" firstAttribute="top" secondItem="Lmy-D2-khm" secondAttribute="top" constant="8" id="JSb-bv-84j"/>
+                                            <constraint firstAttribute="trailing" secondItem="eJy-QX-S00" secondAttribute="trailing" constant="8" id="LHy-yD-fnX"/>
                                             <constraint firstAttribute="bottom" secondItem="eJy-QX-S00" secondAttribute="bottom" constant="8" id="O7r-sY-G2j"/>
                                             <constraint firstAttribute="trailing" secondItem="r4m-Fq-xee" secondAttribute="trailing" id="Yoc-oW-9bi"/>
                                             <constraint firstAttribute="trailing" secondItem="IDi-Eo-sV0" secondAttribute="trailing" constant="8" id="kRb-QZ-t0z"/>
-                                            <constraint firstAttribute="trailing" secondItem="eJy-QX-S00" secondAttribute="trailing" constant="8" id="lsL-bb-s7i"/>
                                             <constraint firstAttribute="bottom" secondItem="IDi-Eo-sV0" secondAttribute="bottom" constant="8" id="nww-vO-XRk"/>
                                             <constraint firstItem="eJy-QX-S00" firstAttribute="top" secondItem="Lmy-D2-khm" secondAttribute="top" constant="8" id="zDI-1L-AXN"/>
                                         </constraints>

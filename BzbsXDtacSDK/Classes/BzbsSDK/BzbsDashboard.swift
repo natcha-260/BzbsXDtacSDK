@@ -64,6 +64,15 @@ public class BzbsDashboard {
             imgType = BuzzebeesConvert.StringFromObject(item["imgtype"])
             id = BuzzebeesConvert.StringFromObject(item["id"])
             icon_url = BuzzebeesConvert.StringFromObject(item["icon_url"])
+            if let url = URL(string:icon_url), let host = url.host, host == "buzzebees.blob.core.windows.net"
+            {
+                let newStrUrl = icon_url.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+                if let _ = URL(string: newStrUrl)
+                {
+                    icon_url = newStrUrl
+                }
+            }
+            
             imageUrl = BuzzebeesConvert.StringFromObject(item["image_url"])
             if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
             {
@@ -73,6 +82,7 @@ public class BzbsDashboard {
                     imageUrl = newStrUrl
                 }
             }
+            
             ios_schema = BuzzebeesConvert.StringFromObject(item["ios_schema"])
             line1 = BuzzebeesConvert.StringFromObject(item["line1"])
             line2 = BuzzebeesConvert.StringFromObject(item["line2"])

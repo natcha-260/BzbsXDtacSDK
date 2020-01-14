@@ -81,7 +81,7 @@ class CampaignGroupListViewController: BaseListController {
             , search: ""
             , catId: nil
             , hashTag: hashTag
-            , token: nil
+            , token: Bzbs.shared.userLogin?.token
             , center : LocationManager.shared.getCurrentCoorndate()
             , successCallback: { (tmpList) in
                 

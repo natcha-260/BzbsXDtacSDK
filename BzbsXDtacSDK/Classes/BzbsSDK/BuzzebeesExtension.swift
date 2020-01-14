@@ -104,18 +104,45 @@ extension Double {
 
 extension UIImageView {
     func bzbsSetImage(withURL strUrl:String) {
-        if let _ = URL(string: strUrl) {
-            var url = URL(string: strUrl)!
-            if let host = url.host, host == "buzzebees.blob.core.windows.net"
+        if let url = URL(string: strUrl) {
+            af_setImage(withURL: url.convertCDNAddTime())
+        }
+    }
+}
+
+extension URL {
+    func convertCDNAddTime() -> URL
+    {
+        let strUrl = self.absoluteString
+        var url = URL(string: strUrl)!
+        
+        if let host = url.host, host == "buzzebees.blob.core.windows.net"
+        {
+            let newStrUrl = strUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+            if let newUrl = URL(string: newStrUrl)
             {
-                let newStrUrl = strUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+                url = newUrl
+            }
+        }
+        
+        if !url.absoluteString.contains("time=") {
+            var newStrUrl = url.absoluteString
+            let dateString = Date().toString()
+            if !newStrUrl.contains("?")
+            {
+                newStrUrl = newStrUrl + "?time=" + dateString
+                if let newUrl = URL(string: newStrUrl)
+                {
+                    url = newUrl
+                }
+            } else {
+                newStrUrl = newStrUrl + "&time=" + dateString
                 if let newUrl = URL(string: newStrUrl)
                 {
                     url = newUrl
                 }
             }
-            
-            af_setImage(withURL: url)
         }
+        return url
     }
 }

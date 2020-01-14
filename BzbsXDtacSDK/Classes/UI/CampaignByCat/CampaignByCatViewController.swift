@@ -10,6 +10,7 @@ import Alamofire
 import CoreLocation
 import AVFoundation
 import FirebaseAnalytics
+import WebKit
 
 class CampaignByCatViewController: BaseListController {
     
@@ -147,6 +148,8 @@ class CampaignByCatViewController: BaseListController {
     
     var isSendImpressionItems = false
     var impressionItems = [BzbsCampaign]()
+    
+    var webView : WKWebView?
 
     // MARK:- View life cycle
     // MARK:-
@@ -994,49 +997,118 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
 // MARK:- ScanQRViewControllerDelegate
 extension CampaignByCatViewController: ScanQRViewControllerDelegate{
     func didScanWithResult(result: String) {
-        if let url = URL(string:result), let params = url.queryParameters
-        {
-            if params.keys.contains("thrdPrtyCmpgId") || params.keys.contains("cmpggroupid"){
-                var campaignId :Int?
-                if let id = BuzzebeesConvert.IntFromObjectNull(params["thrdPrtyCmpgId"] as AnyObject?) {
-                    campaignId = id
-                } else if let id = BuzzebeesConvert.IntFromObjectNull(params["cmpggroupid"] as AnyObject?) {
-                    campaignId = id
-                }
-                guard let _ = campaignId else{
-                    DispatchQueue.main.async {
-                        PopupManager.scanQrFailPopup(self, close: nil)
+        if let url = URL(string:result){
+            if let params = url.queryParameters
+            {
+                if params.keys.contains("thrdPrtyCmpgId") || params.keys.contains("cmpggroupid"){
+                    var campaignId :Int?
+                    if let id = BuzzebeesConvert.IntFromObjectNull(params["thrdPrtyCmpgId"] as AnyObject?) {
+                        campaignId = id
+                    } else if let id = BuzzebeesConvert.IntFromObjectNull(params["cmpggroupid"] as AnyObject?) {
+                        campaignId = id
                     }
-                    return
+                    guard let _ = campaignId else{
+                        DispatchQueue.main.async {
+                            PopupManager.scanQrFailPopup(self, close: nil)
+                        }
+                        return
+                    }
+                    // Check Campaign is valid for Dtac
+                    showLoader()
+                    BzbsCoreApi().getCampaignStatus(campaignId: campaignId!,
+                                                    deviceLocale: String(LocaleCore.shared.getUserLocale()),
+                                                    center: LocationManager.shared.getCurrentCoorndate(),
+                                                    token: Bzbs.shared.userLogin?.token,
+                                                    successCallback: { (status) in
+                                                        let campaign = BzbsCampaign()
+                                                        campaign.ID = campaignId!
+                                                        DispatchQueue.main.async {
+                                                            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self)
+                                                        }
+                                                        self.hideLoader()
+                    },
+                                                    failCallback: { (error) in
+                                                        self.hideLoader()
+                                                        if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                                        DispatchQueue.main.async {
+                                                            PopupManager.scanQrFailPopup(self, close: nil)
+                                                        }
+                    })
+                    
                 }
-                // Check Campaign is valid for Dtac
+            } else {
                 showLoader()
-                BzbsCoreApi().getCampaignStatus(campaignId: campaignId!,
-                                               deviceLocale: String(LocaleCore.shared.getUserLocale()),
-                                               center: LocationManager.shared.getCurrentCoorndate(),
-                                               token: Bzbs.shared.userLogin?.token,
-                                               successCallback: { (status) in
-                                                let campaign = BzbsCampaign()
-                                                campaign.ID = campaignId!
-                                               DispatchQueue.main.async {
-                                                   if let nav = self.navigationController
-                                                   {
-                                                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
-                                                   }
-                                               }
-                                                   self.hideLoader()
-               },
-                                               failCallback: { (error) in
-                                                   self.hideLoader()
-                                                   if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                                                   DispatchQueue.main.async {
-                                                       PopupManager.scanQrFailPopup(self, close: nil)
-                                                   }
-               })
-    
+                if webView == nil {
+                    let config = WKWebViewConfiguration()
+                    let contentController = WKUserContentController()
+                    contentController.add(
+                        self,
+                        name: "callbackHandler"
+                    )
+                    config.userContentController = contentController
+                    webView = WKWebView(frame: self.view.frame, configuration: config)
+                    webView!.navigationDelegate = self
+                    webView!.isHidden = true
+                    self.view.addSubview(webView!)
+                }
+                if let scheme = url.scheme, scheme == "http"
+                {
+                    let newStrUrl = url.absoluteString.replace("http", replacement: "https")
+                    let request = URLRequest(url: URL(string:newStrUrl)!)
+                    webView!.load(request)
+                } else {
+                    let request = URLRequest(url: url)
+                    webView!.load(request)
+                }
             }
         } else {
             PopupManager.scanQrFailPopup(self, close: nil)
         }
     }
+}
+
+extension CampaignByCatViewController : WKNavigationDelegate, WKScriptMessageHandler
+{
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        
+    }
+    
+    public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        if let url = webView.url
+        {
+            let strUrl = url.absoluteString
+            print("didStartProvisionalNavigation : \(strUrl)")
+            if isDeepLinkPrefix(url) {
+                openDeepLinkURL(url)
+                webView.stopLoading()
+                hideLoader()
+            } else if let params = url.queryParameters {
+                if params.keys.contains("thrdPrtyCmpgId") || params.keys.contains("cmpggroupid"){
+                    didScanWithResult(result: strUrl)
+                    webView.stopLoading()
+                    hideLoader()
+                }
+            }
+        }
+    }
+    
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        if let url = webView.url
+        {
+            let strUrl = url.absoluteString
+            print("navigationResponse URL Open : \(strUrl)")
+        }
+
+        decisionHandler(.allow)
+    }
+    
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let url = webView.url
+        {
+            let strUrl = url.absoluteString
+            print("navigationAction URL Open : \(strUrl)")
+        }
+        decisionHandler(.allow)
+    }
+    
 }

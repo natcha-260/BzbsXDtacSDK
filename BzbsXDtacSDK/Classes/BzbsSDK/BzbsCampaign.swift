@@ -236,6 +236,14 @@ public class BzbsCampaign {
         }
 
         agencyLogoUrl = BuzzebeesConvert.StringFromObject(dict["AgencyLogoUrl"])
+        if let url = URL(string:agencyLogoUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
+        {
+            let newStrUrl = agencyLogoUrl.replace("buzzebees.blob.core.windows.net", replacement: "cdndtw.buzzebees.com")
+            if let _ = URL(string: newStrUrl)
+            {
+                agencyLogoUrl = newStrUrl
+            }
+        }
         agencyName = BuzzebeesConvert.StringFromObject(dict["AgencyName"])
         agencyTel = BuzzebeesConvert.StringFromObject(dict["AgencyTel"])
         agencyWebsite = BuzzebeesConvert.StringFromObject(dict["AgencyWebsite"])
