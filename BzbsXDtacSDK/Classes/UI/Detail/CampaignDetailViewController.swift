@@ -182,10 +182,15 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     self.delay(0.33) {
                         self.getApiCampaignDetail()
                     }
+                } else {
+                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_fail".localized()) { () in
+                        self.back_1_step()
+                    }
                 }
+                
                 if Bzbs.shared.isDebugMode
                 {
-                    print(error.code, error.message)
+                    print(error.code ?? "-", error.message ?? "-")
                 }
                 return
             }
@@ -474,7 +479,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
 
                 let _ = GotoPage.gotoMap(nav, campaigns: campaignList, customHeader: campaign.agencyName, isShowBackToList:false, gotoPin: nearestPlace)
 
-            } 
+            }
         }
         else if let website = campaign.website,
             website != ""
