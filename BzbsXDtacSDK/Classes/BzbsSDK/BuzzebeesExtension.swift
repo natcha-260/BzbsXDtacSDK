@@ -127,7 +127,26 @@ extension URL {
         
         if !url.absoluteString.contains("time=") {
             var newStrUrl = url.absoluteString
-            let dateString = Date().toString()
+            let date = Date()
+            var dateString = date.toString(format: "ddMMyyyyHH")
+            var min = Int(date.toString(format: "mm")) ?? 0
+            
+            switch min {
+            case 0..<15:
+                min = 0
+                break
+            case 15..<30:
+                min = 15
+                break
+            case 30..<45:
+                min = 30
+                break
+            default:
+                min = 45
+            }
+            
+            dateString = dateString + "\(min)"
+            
             if !newStrUrl.contains("?")
             {
                 newStrUrl = newStrUrl + "?time=" + dateString

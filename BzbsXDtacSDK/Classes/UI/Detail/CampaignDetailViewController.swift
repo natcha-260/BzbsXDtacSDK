@@ -447,8 +447,8 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 let place = BzbsPlace()
                 place.id = branch.id
                 place.locationId = campaign.locationAgencyId
-                place.name = branch.name
-                place.name_en = branch.name
+                place.name = tmpCampaign.agencyName
+                place.name_en = tmpCampaign.agencyName
                 place.longitude = branch.longitude
                 place.latitude = branch.latitude
                 tmpCampaign.places = [place]
@@ -479,7 +479,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
 
                 let _ = GotoPage.gotoMap(nav, campaigns: campaignList, customHeader: campaign.agencyName, isShowBackToList:false, gotoPin: nearestPlace)
 
-            }
+            } 
         }
         else if let website = campaign.website,
             website != ""
@@ -541,6 +541,8 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         vcRight.isUserInteractionEnabled = true
         lblLeft.font = UIFont.mainFont()
         lblRight.font = UIFont.mainFont()
+        lblRight.textColor = UIColor.white
+        lblLeft.textColor = UIColor.lightGray
         vcLeft.cornerRadius(corner: 4.0, borderColor: UIColor.gray, borderWidth: 1.0)
         vcRight.cornerRadius(corner: 4.0)
         
@@ -550,13 +552,9 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         if let type = campaign.type{
             if type == 1 {
                 lblRight.text = "campaign_detail_status_redeem".localized()
-                lblLeft.textColor = UIColor.lightGray
-                lblRight.textColor = UIColor.white
                 vcRight.backgroundColor = UIColor.dtacBlue
             } else if type == 9 {
                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                lblLeft.textColor = UIColor.lightGray
-                lblRight.textColor = UIColor.white
                 vcRight.backgroundColor = UIColor.mainLightGray
             }
         }
@@ -584,7 +582,6 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         vcRight.isUserInteractionEnabled = false
                         
                         lblRight.text = "campaign_detail_status_redeem".localized()
-                        lblRight.textColor = UIColor.white
                         vcRight.backgroundColor = UIColor.mainLightGray
                         
                         if let type = campaign.type{
@@ -597,8 +594,6 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     
                     if let type = campaign.type, type == 9 {
                         lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                        lblLeft.textColor = UIColor.lightGray
-                        lblRight.textColor = UIColor.white
                         vcRight.backgroundColor = UIColor.mainLightGray
                         return
                     }
@@ -711,8 +706,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
             
             let imgAgency = cell.viewWithTag(11) as! UIImageView
             if let blobUrl = Bzbs.shared.blobUrl {
-                let time = Date().toString(format: "ddMMyyyyHHmm")
-                let imageStrUrl = blobUrl + "/agencies/\(campaign.locationAgencyId ?? campaign.agencyID ?? 0)?time=\(time)"
+                let imageStrUrl = blobUrl + "/agencies/\(campaign.locationAgencyId ?? campaign.agencyID ?? 0)"
                 imgAgency.bzbsSetImage(withURL: imageStrUrl)
             }
             

@@ -135,6 +135,7 @@ import WebKit
         {
             navigationItem.rightBarButtonItems = BarItem.generate_message(self, isHasNewMessage: Bzbs.shared.isHasNewMessage, messageSelector: #selector(clickMessage))
         }
+        
         analyticsSetScreen(screenName: "dtac_reward")
         
         navigationController?.navigationBar.backgroundColor = .white

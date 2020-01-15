@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,7 +33,7 @@
                                         <rect key="frame" x="115" y="8" width="289" height="91"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dean &amp; Deluca" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SK4-Bk-o9y">
-                                                <rect key="frame" x="0.0" y="0.0" width="89.5" height="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="239.5" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -53,6 +53,7 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
+                                            <constraint firstItem="gzd-BC-QAF" firstAttribute="leading" secondItem="SK4-Bk-o9y" secondAttribute="trailing" constant="3" id="1N6-qh-hiG"/>
                                             <constraint firstItem="gzd-BC-QAF" firstAttribute="top" secondItem="IJj-sp-DGm" secondAttribute="top" id="BcC-qW-D4N"/>
                                             <constraint firstItem="DOn-gq-4y3" firstAttribute="leading" secondItem="IJj-sp-DGm" secondAttribute="leading" id="Cbv-r0-234"/>
                                             <constraint firstAttribute="trailing" secondItem="gzd-BC-QAF" secondAttribute="trailing" id="D8m-gs-Ura"/>

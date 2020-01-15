@@ -18,41 +18,65 @@ class BarItem: NSObject {
         var titleWidth:CGFloat = 0
         
         let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNonzeroMagnitude, height: 30))
-        lblTitle.font = UIFont.mainFont(.big,style:.bold)
+        lblTitle.font = UIFont.mainFont(.dtacHeaderSize,style:.bold)
         lblTitle.textAlignment = .left
         lblTitle.text = "main_title".localized()
 
         lblTitle.sizeToFit()
         titleWidth = lblTitle.frame.size.width + 4
-        lblTitle.frame = CGRect(x: 40, y: 5, width: titleWidth, height: 44)
+        lblTitle.frame = CGRect(x: 0, y: 0, width: titleWidth, height: 44)
         
-        let vwHeader = UIView(frame: CGRect(x: 0, y: 0, width: titleWidth + 4 + 44, height: barHeight))
+        let vwHeader = UIView(frame: CGRect(x: 0, y: 0, width: titleWidth + 4 , height: barHeight))
         vwHeader.backgroundColor = .clear
-        let imv = UIImageView(frame: CGRect(x: 0, y: 10, width: 27, height: 27))
-        imv.image = UIImage(named: "img_navbar_logo", in: Bzbs.shared.currentBundle, compatibleWith: nil)
-        imv.contentMode = .scaleAspectFill
-        vwHeader.addSubview(imv)
-        
+//        let imv = UIImageView(frame: CGRect(x: 0, y: 10, width: 27, height: 27))
+//        imv.image = UIImage(named: "img_navbar_logo", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+//        imv.contentMode = .scaleAspectFill
+//        vwHeader.addSubview(imv)
+//
         vwHeader.addSubview(lblTitle)
         
-        return [spaceFix, UIBarButtonItem(customView: vwHeader)]
+        return [spaceFix, UIBarDtacIcon(), UIBarButtonItem(customView: vwHeader)]
+    }
+    
+    class func UIBarDtacIcon() -> UIBarButtonItem {
+        let iconView = UIView()
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        iconView.widthAnchor.constraint(equalToConstant: 26.0).isActive = true
+        iconView.heightAnchor.constraint(equalToConstant: 26.0).isActive = true
+        
+        let icon = UIImageView(image: UIImage(named: "img_navbar_logo", in: Bzbs.shared.currentBundle, compatibleWith: nil))
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.contentMode = .scaleAspectFit
+        iconView.addSubview(icon)
+        
+        icon.topAnchor.constraint(equalTo: iconView.topAnchor).isActive = true
+        icon.leadingAnchor.constraint(equalTo: iconView.leadingAnchor).isActive = true
+        icon.trailingAnchor.constraint(equalTo: iconView.trailingAnchor).isActive = true
+        icon.bottomAnchor.constraint(equalTo: iconView.bottomAnchor).isActive = true
+        
+        iconView.layoutIfNeeded()
+        
+        return UIBarButtonItem(customView: iconView)
     }
         
     class func generate_message(_ target: AnyObject, isHasNewMessage:Bool, messageSelector:Selector) -> [UIBarButtonItem]?  {
         let spaceFix: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         spaceFix.width = -15
         
-        let view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: isHasNewMessage ? 30 : 40, height: barHeight))
+        let width:CGFloat = 30
+        let view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: barHeight))
         let imv = UIImageView(frame: CGRect(x: 0, y: 5, width: 30, height: 30))
         imv.contentMode = .scaleAspectFit
         imv.image = UIImage(named: "img_navbar_icon_noti_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         view.addSubview(imv)
-        
+
         if isHasNewMessage {
             
-            let inboxBadge:UILabel = UILabel(frame: CGRect(x: 16, y: 14, width: 20, height: 20))
+            let size = CGSize(width: 20, height: 20)
+            let origin = CGPoint(x: 15, y: 13)
+            let inboxBadge = UILabel(frame: CGRect(origin: origin, size: size))
             inboxBadge.textAlignment = .center
-            inboxBadge.backgroundColor = UIColor.red
+            inboxBadge.backgroundColor = UIColor(red: 250.0 / 255.0, green: 62.0 / 255.0, blue: 62.0 / 255.0, alpha: 1.0)
             inboxBadge.textColor = UIColor.white
             inboxBadge.font = UIFont.mainFont(FontSize.xsmall)
             inboxBadge.text = "N"
@@ -60,11 +84,11 @@ class BarItem: NSObject {
             
             view.addSubview(inboxBadge)
         }
-        
+
         let btn = UIButton(frame: view.frame)
         btn.addTarget(target, action: messageSelector, for: UIControl.Event.touchUpInside)
         view.addSubview(btn)
-        
+
         return [spaceFix, UIBarButtonItem(customView: view)]
     }
     

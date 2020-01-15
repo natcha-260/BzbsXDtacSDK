@@ -152,16 +152,16 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         imvDecoBottom.image = UIImage()
         vwQrShadow.addShadow(shadowRadius: 4)
         
-        let bgStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/edge.png?time=" + Date().toString()
+        let bgStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/edge.png"
         imvSeasonBG.bzbsSetImage(withURL: bgStrUrl)
 
-        let headerStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/header.png?time=" + Date().toString()
+        let headerStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/header.png"
         imvSeasonHeader.bzbsSetImage(withURL: headerStrUrl)
         
-        let decoTopStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/decoration1.png?time=" + Date().toString()
+        let decoTopStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/decoration1.png"
         imvDecoTop.bzbsSetImage(withURL: decoTopStrUrl)
         
-        let decoBottomStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/decoration2.png?time=" + Date().toString()
+        let decoBottomStrUrl = BuzzebeesCore.blobUrl + "/dtac/redeem/decoration2.png"
         imvDecoBottom.bzbsSetImage(withURL: decoBottomStrUrl)
         
         if UIDevice.current.deviceName() == .iPhone_XR_11

@@ -197,7 +197,7 @@ struct DtacLoginParams {
     var isShowLoading = false
     private var timer : Timer?
     private var showLoaderDate : TimeInterval = 0
-    public var defaultLoadingTime : TimeInterval = 5
+    public var defaultLoadingTime : TimeInterval = 30
     @objc public func showLoader(on vc:UIViewController)
     {
         if isShowLoading || vc.presentedViewController != nil { return }

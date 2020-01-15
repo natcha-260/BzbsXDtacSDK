@@ -43,9 +43,8 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     func setActive(_ isActive:Bool)
     {
         lblCategory.textColor = isActive ? UIColor.dtacBlue : UIColor(hexString: "1A1A1A")
-        let time = Date().toString()
         self.imgCategory.image = UIImage()
-        let strUrl = cat.imageUrl + (isActive ? "_active?time=\(time)" : "_inactive?time=\(time)")
+        let strUrl = cat.imageUrl + (isActive ? "_active" : "_inactive")
         self.imgCategory.bzbsSetImage(withURL: strUrl)
     }
     
