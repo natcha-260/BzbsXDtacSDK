@@ -55,15 +55,21 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     var rewardLeft:CGFloat{
         if let quantity = campaignStatus?.quantity {
             if quantity == -1 { return 1 }
-            if quantity > 50 {
+            if quantity >= 51 || quantity <= -1 {
                 return 1
-            }else if quantity <= 50 && quantity > 20 {
+            } else if quantity >= 21 && quantity < 51 {
                 return 0.5
-            } else if quantity <= 20 && quantity > 0 {
+            } else if quantity < 21 {
+                if quantity == 0 {
+                    return 0
+                }
                 return 0.25
             }
+            
         }
         return 0.0
+        
+        
     }
     
     var arrBranch = [Branch]()
@@ -255,6 +261,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     self.getApiCampaignStatus()
                 }
             }
+            self.hideLoader()
         }
     }
     
@@ -545,9 +552,10 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         lblLeft.textColor = UIColor.lightGray
         vcLeft.cornerRadius(corner: 4.0, borderColor: UIColor.gray, borderWidth: 1.0)
         vcRight.cornerRadius(corner: 4.0)
+        vcRight.backgroundColor = UIColor.mainLightGray
         
         lblLeft.text = "campaign_detail_back".localized()
-        lblRight.text = "campaign_detail_status_use_at_shop".localized()
+        lblRight.text = "campaign_detail_status_redeem".localized()
         
         if let type = campaign.type{
             if type == 1 {
@@ -578,26 +586,17 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             {
                 if isLoggedIn()
                 {
-                    if campaignStatus == nil {
-                        vcRight.isUserInteractionEnabled = false
-                        
-                        lblRight.text = "campaign_detail_status_redeem".localized()
-                        vcRight.backgroundColor = UIColor.mainLightGray
-                        
-                        if let type = campaign.type{
-                            if type == 9 {
-                                lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                            }
-                        }
-                        return
-                    }
+                    vcRight.isUserInteractionEnabled = false
                     
-                    if let type = campaign.type, type == 9 {
-                        lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                        vcRight.backgroundColor = UIColor.mainLightGray
-                        return
-                    }
+                    lblRight.text = "campaign_detail_status_redeem".localized()
                     vcRight.backgroundColor = UIColor.mainLightGray
+                    
+                    if let type = campaign.type{
+                        if type == 9 {
+                            lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                        }
+                    }
+                    return
                 } else {
                     vcRight.backgroundColor = UIColor.dtacBlue
                 }
@@ -614,9 +613,9 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         
         if _campaingStatus.quantity >= 51 || _campaingStatus.quantity <= -1 {
             return .mainGreen
-        }else if _campaingStatus.quantity >= 21 && _campaingStatus.quantity <= 50 {
+        } else if _campaingStatus.quantity >= 21 && _campaingStatus.quantity < 51 {
             return .mainYellow
-        }else if _campaingStatus.quantity <= 20 {
+        } else if _campaingStatus.quantity < 21 {
             if _campaingStatus.quantity == 0 {
                 return .mainLightGray
             }
