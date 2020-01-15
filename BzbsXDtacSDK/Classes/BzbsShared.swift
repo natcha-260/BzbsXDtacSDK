@@ -222,19 +222,8 @@ struct DtacLoginParams {
         timer?.invalidate()
         timer = nil
         
-        delay(0.33) {
+        LoadingViewController.shared.dismiss(animated: false) {
             self.isShowLoading = false
-        }
-        
-        DispatchQueue.main.async {
-            LoadingViewController.shared.dismiss(animated: false) {
-                self.delay(2) {
-                    DispatchQueue.main.async {
-                        LoadingViewController.shared.dismiss(animated: false) {
-                        }
-                    }
-                }
-            }
         }
     }
     
