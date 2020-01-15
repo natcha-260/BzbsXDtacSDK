@@ -14,6 +14,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static BarItem.generate_message(_:isHasNewMessage:messageSelector:):BarItem.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "inboxBadge.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
       </ContextState>
       <ContextState
@@ -34,7 +42,21 @@
          contextName = "closure #1 in CampaignDetailViewController.getApiCampaignStatus():CampaignDetailViewController.swift">
       </ContextState>
       <ContextState
+         contextName = "CampaignDetailViewController.clickSeeMoreDetail(_:):CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in BzbsXDtacBaseViewController.reLogin():BzbsXDtacBaseViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "contentViewController.view.backgroundColor == .clear">
+            </PersistentString>
+            <PersistentString
+               value = "view5.subviews">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
