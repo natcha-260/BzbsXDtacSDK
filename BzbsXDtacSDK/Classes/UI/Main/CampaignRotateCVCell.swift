@@ -61,6 +61,7 @@ class CampaignRotateCVCell: UICollectionViewCell {
                         imageList.append(AlamofireSource(url: url))
                     }
                 }
+                imageSlideShow.slideshowInterval = 5
                 imageSlideShow.contentScaleMode = .scaleAspectFill
                 imageSlideShow.setImageInputs(imageList)
 //                imageSlideShow.delegate = self
