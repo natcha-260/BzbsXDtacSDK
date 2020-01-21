@@ -183,17 +183,17 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             
             if error.id == "-9999"
             {
-                if !self.isRetry{
-                    self.isRetry = true
-                    self.delay(0.33) {
-                        self.getApiCampaignDetail()
-                    }
-                } else {
-                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_fail".localized()) { () in
-                        self.back_1_step()
-                    }
-                }
-                
+//                if !self.isRetry{
+//                    self.isRetry = true
+//                    self.delay(0.33) {
+//                        self.getApiCampaignDetail()
+//                    }
+//                } else {
+//                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_fail".localized()) { () in
+//                        self.back_1_step()
+//                    }
+//                }
+
                 if Bzbs.shared.isDebugMode
                 {
                     print(error.code ?? "-", error.message ?? "-")

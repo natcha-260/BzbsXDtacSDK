@@ -71,7 +71,7 @@ struct DtacLoginParams {
         return resourceBundle
     }
     
-    @objc public func setup(token:String, ticket:String, language:String, delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = true){
+    @objc public func setup(token:String, ticket:String, language:String, delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
         var loginParams = DtacLoginParams()
         loginParams.token = token
         loginParams.ticket = ticket
