@@ -111,16 +111,16 @@ class CampaignByCatViewController: BaseListController {
                 self._isEnd = false
                 self._intSkip = 0
                 generateSubCatView()
-                if campaignCV != nil {
-                    delay(0.33) {
-                        if self.isCategoryAll()  {
-                            self.getAllDashboard()
-                        } else {
-                            self.getApi()
-                        }
-                        self.getDashboard()
-                    }
-                }
+//                if campaignCV != nil {
+//                    delay(0.33) {
+//                        if self.isCategoryAll()  {
+//                            self.getAllDashboard()
+//                        } else {
+//                            self.getApi()
+//                        }
+//                        self.getDashboard()
+//                    }
+//                }
             }
         }
     }
