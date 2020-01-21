@@ -37,7 +37,7 @@ struct DtacLoginParams {
         }
     }
     @objc public var delegate: BzbsDelegate?
-    @objc public var isHasNewMessage :Bool = true
+    @objc public var isHasNewMessage :Bool = false
     
     var apiPrefix:String?// = "https://dev.buzzebees.com"
     private var webMiscUrl:String?{
