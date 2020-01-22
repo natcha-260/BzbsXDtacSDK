@@ -11,6 +11,8 @@ import UIKit
 
 class BarItem: NSObject {
     private static let barHeight :CGFloat = 44
+    
+    //MARK:- ===== Left Main =====
     class func generate_logo() -> [UIBarButtonItem]? 
     {
         let spaceFix: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
@@ -28,11 +30,6 @@ class BarItem: NSObject {
         
         let vwHeader = UIView(frame: CGRect(x: 0, y: 0, width: titleWidth + 4 , height: barHeight))
         vwHeader.backgroundColor = .clear
-//        let imv = UIImageView(frame: CGRect(x: 0, y: 10, width: 27, height: 27))
-//        imv.image = UIImage(named: "img_navbar_logo", in: Bzbs.shared.currentBundle, compatibleWith: nil)
-//        imv.contentMode = .scaleAspectFill
-//        vwHeader.addSubview(imv)
-//
         vwHeader.addSubview(lblTitle)
         
         return [spaceFix, UIBarDtacIcon(), UIBarButtonItem(customView: vwHeader)]
@@ -41,8 +38,8 @@ class BarItem: NSObject {
     class func UIBarDtacIcon() -> UIBarButtonItem {
         let iconView = UIView()
         iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.widthAnchor.constraint(equalToConstant: 26.0).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 26.0).isActive = true
+        iconView.widthAnchor.constraint(equalToConstant: 25.5).isActive = true
+        iconView.heightAnchor.constraint(equalToConstant: 24.5).isActive = true
         
         let icon = UIImageView(image: UIImage(named: "img_navbar_logo", in: Bzbs.shared.currentBundle, compatibleWith: nil))
         icon.translatesAutoresizingMaskIntoConstraints = false
@@ -58,32 +55,33 @@ class BarItem: NSObject {
         
         return UIBarButtonItem(customView: iconView)
     }
-        
+
+    //MARK:- ===== Right Main =====
     class func generate_message(_ target: AnyObject, isHasNewMessage:Bool, messageSelector:Selector) -> [UIBarButtonItem]?  {
         let spaceFix: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         spaceFix.width = -15
         
-        let width:CGFloat = 30
+        let width:CGFloat = 40
         let view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: barHeight))
-        let imv = UIImageView(frame: CGRect(x: 0, y: 5, width: 30, height: 30))
+        let imv = UIImageView(frame: CGRect(x: 6, y: 1.5, width: 32, height: 32))
         imv.contentMode = .scaleAspectFit
         imv.image = UIImage(named: "img_navbar_icon_noti_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         view.addSubview(imv)
 
-        if isHasNewMessage {
-            
-            let size = CGSize(width: 20, height: 20)
-            let origin = CGPoint(x: 15, y: 13)
-            let inboxBadge = UILabel(frame: CGRect(origin: origin, size: size))
-            inboxBadge.textAlignment = .center
-            inboxBadge.backgroundColor = UIColor(red: 250.0 / 255.0, green: 62.0 / 255.0, blue: 62.0 / 255.0, alpha: 1.0)
-            inboxBadge.textColor = UIColor.white
-            inboxBadge.font = UIFont.mainFont(FontSize.xsmall)
-            inboxBadge.text = "N"
-            inboxBadge.cornerRadius(corner: 10.0)
-            
-            view.addSubview(inboxBadge)
-        }
+//        if isHasNewMessage {
+//
+//            let size = CGSize(width: 20, height: 20)
+//            let origin = CGPoint(x: 15, y: 13)
+//            let inboxBadge = UILabel(frame: CGRect(origin: origin, size: size))
+//            inboxBadge.textAlignment = .center
+//            inboxBadge.backgroundColor = UIColor(red: 250.0 / 255.0, green: 62.0 / 255.0, blue: 62.0 / 255.0, alpha: 1.0)
+//            inboxBadge.textColor = UIColor.white
+//            inboxBadge.font = UIFont.mainFont(FontSize.xsmall)
+//            inboxBadge.text = "N"
+//            inboxBadge.cornerRadius(corner: 10.0)
+//
+//            view.addSubview(inboxBadge)
+//        }
 
         let btn = UIButton(frame: view.frame)
         btn.addTarget(target, action: messageSelector, for: UIControl.Event.touchUpInside)
@@ -92,6 +90,7 @@ class BarItem: NSObject {
         return [spaceFix, UIBarButtonItem(customView: view)]
     }
     
+    //MARK:- ===== Back =====
     class func generate_back(_ target: AnyObject, selector: Selector, isWhiteIcon:Bool = false) -> [UIBarButtonItem]?  {
         let spaceFix: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         spaceFix.width = -15
