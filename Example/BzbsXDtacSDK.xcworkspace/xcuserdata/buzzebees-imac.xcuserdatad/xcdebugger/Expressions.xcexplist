@@ -322,10 +322,10 @@
                value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
             </PersistentString>
             <PersistentString
-               value = "bundle.localizations">
+               value = "Bzbs.shared.currentBundle.localizations">
             </PersistentString>
             <PersistentString
-               value = "Bzbs.shared.currentBundle.localizations">
+               value = "bundle.localizations">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -642,6 +642,22 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "vc.presentingViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.getUrlFAQ():BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "webUrl + pathUrlFAQ + &quot;?locale=\(LocaleCore.shared.getUserLocale())&quot;">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "CampaignDetailViewController.tableView(_:cellForRowAt:):CampaignDetailViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -723,10 +739,10 @@
          contextName = "BzbsMainViewController.collectionView(_:didSelectItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrCampaign.count">
+               value = "indexPath.row">
             </PersistentString>
             <PersistentString
-               value = "indexPath.row">
+               value = "arrCampaign.count">
             </PersistentString>
             <PersistentString
                value = "indexPath.row - 1">
@@ -1156,10 +1172,10 @@
                value = "dashboardItems">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count + 1">
+               value = "self.arrCategory">
             </PersistentString>
             <PersistentString
-               value = "self.arrCategory">
+               value = "arrCampaign.count + 1">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

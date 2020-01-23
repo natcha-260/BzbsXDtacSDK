@@ -31,11 +31,7 @@ struct DtacLoginParams {
 @objc public class Bzbs: NSObject {
     @objc public static var shared = Bzbs()
     
-    var dtacLoginParams = DtacLoginParams() {
-        didSet{
-            NotificationCenter.default.post(name: NSNotification.Name.BzbsTokenTicketDidChange, object: nil)
-        }
-    }
+    var dtacLoginParams = DtacLoginParams()
     @objc public var delegate: BzbsDelegate?
     @objc public var isHasNewMessage :Bool = false
     
@@ -46,9 +42,9 @@ struct DtacLoginParams {
     var blobUrl:String?{
         BuzzebeesCore.blobUrl
     }
-    private let pathUrlMemberLevel = "/DTW/level-info.aspx"
-    private let pathUrlFAQ = "/DTW/faq.aspx"
-    private let pathUrlAbout = "/DTW/about-us.aspx"
+    private let pathUrlMemberLevel = "/misc/levelinfo"
+    private let pathUrlFAQ = "/misc/faq"
+    private let pathUrlAbout = "/misc/about"
     
     @objc public var versionString :String = "0.0.3"
     let agencyID = "110807"
@@ -78,6 +74,7 @@ struct DtacLoginParams {
         loginParams.language = language
         
         self.dtacLoginParams = loginParams
+        relogin()
         self.isHasNewMessage = isHasNewMessage
         if delegate != nil {
             self.delegate = delegate
@@ -102,7 +99,15 @@ struct DtacLoginParams {
         login(token: token, ticket: ticket, language: language, completionHandler: nil, failureHandler: nil)
     }
     
-    func login(token:String, ticket:String, language:String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
+    func relogin(completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
+    {
+        let token = dtacLoginParams.token
+        let ticket = dtacLoginParams.ticket
+        let language = dtacLoginParams.language ?? "th"
+        login(token: token, ticket: ticket, language: language, completionHandler: completionHandler, failureHandler: failureHandler)
+    }
+    
+    func login(token:String?, ticket:String?, language:String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
     {
         if isCallingLogin { return }
         isCallingLogin = true
@@ -113,6 +118,7 @@ struct DtacLoginParams {
                 self.login(token:token, ticket:ticket, language:language, completionHandler: completionHandler, failureHandler: failureHandler)
             }) {
                 self.isCallingLogin = false
+                self.login(token:token, ticket:ticket, language:language, completionHandler: completionHandler, failureHandler: failureHandler)
             }
             return
         }
@@ -223,7 +229,9 @@ struct DtacLoginParams {
         timer = nil
         
         LoadingViewController.shared.dismiss(animated: false) {
-            self.isShowLoading = false
+            self.delay(0.44) {
+                self.isShowLoading = false
+            }
         }
     }
     

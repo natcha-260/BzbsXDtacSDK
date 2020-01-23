@@ -10,7 +10,6 @@ import BzbsXDtacSDK
 
 class TokenSelectViewController: UIViewController {
 
-    @IBOutlet weak var txtVersion: UITextField!
     @IBOutlet weak var segmentEndpoint: UISegmentedControl!
     @IBOutlet weak var segmentLang: UISegmentedControl!
     var isDev:Bool {
@@ -25,30 +24,38 @@ class TokenSelectViewController: UIViewController {
     var language:String{
         return segmentLang.selectedSegmentIndex == 0 ? "en" : "th"
     }
-    var strVersion = "0.0.3"
-//    ver. 0.0.3 = PRD.
-//    ver. 0.0.4 = STG.
-//    ver. 0.0.5 = DEV.
+    var versionList = ["0.0.3","0.0.4","0.0.5","0.0.6"]
+    var strVersion:String {
+        segmentVersion.titleForSegment(at: segmentVersion.selectedSegmentIndex) ?? versionList.first!
+    }
+    
+    @IBOutlet weak var segmentVersion: UISegmentedControl! {
+        didSet{
+            segmentVersion.removeAllSegments()
+            for i in 0..<versionList.count {
+                let title = versionList[i]
+                segmentVersion.insertSegment(withTitle: title, at: i, animated: true)
+            }
+        }
+    }
+    
+    //    ver. 0.0.3 = PRD. DtacApp:9.0.1
+//    ver. 0.0.4 = PRD.
+//    ver. 0.0.5 = STG.
+//    ver. 0.0.6 = DEV.
     override func viewDidLoad() {
         super.viewDidLoad()
         segmentEndpoint.selectedSegmentIndex = 2
-        txtVersion.placeholder = "x.x.x"
-        txtVersion.text = strVersion
-        txtVersion.delegate = self
+        segmentVersion.selectedSegmentIndex = 0
         // Do any additional setup after loading the view.
     }
+    
     @IBAction func didChangeEndpoint(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            strVersion = "0.0.5"
-        case 1:
-            strVersion = "0.0.4"
-        case 2:
-            strVersion = "0.0.3"
-        default:
-            strVersion = "0.0.3"
-        }
-        txtVersion.text = strVersion
+        
+    }
+    
+    @IBAction func didChangeVersion(_ sender: UISegmentedControl) {
+        
     }
     
     @IBAction func clickSkipLogin(_ sender: Any) {
@@ -141,6 +148,9 @@ class TokenSelectViewController: UIViewController {
             tabbar.modalPresentationStyle = .fullScreen
             self.present(tabbar, animated: true, completion: nil)
         }
+//        delay(10) {
+//            Bzbs.shared.setup(token: "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8=", ticket: "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ=", language: "th")
+//        }
     }
     
     

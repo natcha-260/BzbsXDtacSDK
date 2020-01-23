@@ -56,52 +56,9 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
         }
     }
     
-    var isCallingLogin :Bool {
-        set{
-            Bzbs.shared.isCallingLogin = newValue
-        }
-        get {
-            return Bzbs.shared.isCallingLogin
-        }
-    }
-    
     @objc func reLogin()
     {
-        if isCallingLogin { return }
-        isCallingLogin = true
-        if let token = Bzbs.shared.dtacLoginParams.token,
-            let ticket = Bzbs.shared.dtacLoginParams.ticket,
-            let language = Bzbs.shared.dtacLoginParams.language
-        {
-    //        let strVersion = Bzbs.shared.prefixApp + (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)
-            let version = Bzbs.shared.versionString
-            let strVersion = Bzbs.shared.prefixApp + version
-            let loginParams = DeviceLoginParams(uuid: token
-                , os: "ios " + UIDevice.current.systemVersion
-                , platform: UIDevice.current.model
-                , macAddress: UIDevice.current.identifierForVendor!.uuidString
-                , deviceNotiEnable: false
-                , clientVersion: strVersion
-                , deviceToken: token, customInfo: ticket, language:language)
-            
-            BuzzebeesAuth().login(loginParams: loginParams, successCallback: { (user,dict) in
-                self.isCallingLogin = false
-                Bzbs.shared.userLogin = user
-                NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
-            }) { (error) in
-                Bzbs.shared.userLogin = nil
-                self.isCallingLogin = false
-                NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
-                if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-            }
-        } else {
-            Bzbs.shared.userLogin = nil
-            self.isCallingLogin = false
-            NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
-        }
+        Bzbs.shared.relogin()
     }
     
     @objc func refreshApi()

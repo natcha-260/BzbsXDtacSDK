@@ -14,6 +14,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static BarItem.generate_message(_:isHasNewMessage:messageSelector:):BarItem.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "inboxBadge.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
       </ContextState>
       <ContextState
@@ -42,6 +50,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+<<<<<<< HEAD
          contextName = "closure #2 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
       </ContextState>
       <ContextState
@@ -49,6 +58,26 @@
       </ContextState>
       <ContextState
          contextName = "CampaignDetailViewController.manageFooter():CampaignDetailViewController.swift">
+=======
+         contextName = "CampaignDetailViewController.clickSeeMoreDetail(_:):CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BzbsXDtacBaseViewController.reLogin():BzbsXDtacBaseViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "contentViewController.view.backgroundColor == .clear">
+            </PersistentString>
+            <PersistentString
+               value = "view5.subviews">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+>>>>>>> 94e9d3c24411301e1b3bfc75e9f3fa6bd7cde3dc
          <PersistentStrings>
             <PersistentString
                value = "campaign.ID">

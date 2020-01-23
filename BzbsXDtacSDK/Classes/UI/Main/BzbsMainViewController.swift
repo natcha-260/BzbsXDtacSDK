@@ -202,9 +202,6 @@ import WebKit
                 getApi()
             }
         } else {
-//            PopupManager.informationPopup(self, message: "popup_dtac_login_error".localized()) {
-//                Bzbs.shared.delegate?.reTokenTicket()
-//            }
             getApiCategory()
             getApiRecommend()
             getApi()
@@ -263,24 +260,10 @@ import WebKit
     
     func apiLogin(_ token:String, ticket: String, language:String)
     {
-        if isCallingLogin { return }
-        isCallingLogin = true
-        let version = Bzbs.shared.versionString
-        let strVersion = Bzbs.shared.prefixApp + version
-        let loginParams = DeviceLoginParams(uuid: token
-            , os: "ios " + UIDevice.current.systemVersion
-            , platform: UIDevice.current.model
-            , macAddress: UIDevice.current.identifierForVendor!.uuidString
-            , deviceNotiEnable: false
-            , clientVersion: strVersion
-            , deviceToken: token, customInfo: ticket, language:language)
-        
         let isNeedupdateUI = Bzbs.shared.userLogin == nil
-        
-        BuzzebeesAuth().login(loginParams: loginParams, successCallback: { (user,dict) in
-            Bzbs.shared.userLogin = user
-            self.isCallingLogin = false
-            if user.dtacLevel == .no_level {
+        Bzbs.shared.login(token: token, ticket: ticket, language: language, completionHandler: {
+            
+            if let user = Bzbs.shared.userLogin, user.dtacLevel == .no_level {
                 Bzbs.shared.delegate?.reLogin()
             }
             if isNeedupdateUI {
@@ -288,12 +271,9 @@ import WebKit
             } else {
                 self.hideLoader()
             }
-
+            
         }) { (error) in
-            Bzbs.shared.userLogin = nil
-            self.isCallingLogin = false
-            NotificationCenter.default.post(name: NSNotification.Name(BBEnumNotificationCenter.updateUI.rawValue), object: nil)
-//            self.resetAPI()
+            
             if self.isDtacError(Int(error.id)!, code:Int(error.code)!, message: error.message) {
                 return
             } else {

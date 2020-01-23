@@ -179,39 +179,41 @@
                                     <action selector="didChangeEndpoint:" destination="jpG-8U-5ab" eventType="valueChanged" id="KCa-qX-s2O"/>
                                 </connections>
                             </segmentedControl>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ES0-b3-5ec">
-                                <rect key="frame" x="259" y="17" width="100" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="7Ql-yY-fVy"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="M9p-TG-hrK">
-                                <rect key="frame" x="15" y="59" width="200" height="32"/>
+                                <rect key="frame" x="15" y="112" width="71" height="32"/>
                                 <segments>
                                     <segment title="En"/>
                                     <segment title="Th"/>
                                 </segments>
                             </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xef-WP-TJ0">
+                                <rect key="frame" x="15" y="66" width="200" height="32"/>
+                                <segments>
+                                    <segment title="Dev"/>
+                                    <segment title="Staging"/>
+                                    <segment title="Prod"/>
+                                </segments>
+                                <connections>
+                                    <action selector="didChangeVersion:" destination="jpG-8U-5ab" eventType="valueChanged" id="8L1-Ek-IfW"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ES0-b3-5ec" firstAttribute="trailing" secondItem="Mrs-gz-fxc" secondAttribute="trailingMargin" id="4IF-Kb-J3F"/>
+                            <constraint firstItem="M9p-TG-hrK" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leading" constant="15" id="6tY-dv-P1N"/>
+                            <constraint firstItem="M9p-TG-hrK" firstAttribute="top" secondItem="xef-WP-TJ0" secondAttribute="bottom" constant="15" id="7gg-zL-cIs"/>
                             <constraint firstItem="3rS-db-5P2" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leadingMargin" constant="-1" id="81e-0P-daD"/>
                             <constraint firstItem="3rS-db-5P2" firstAttribute="top" secondItem="qML-Sz-EbI" secondAttribute="bottom" constant="20" id="HbT-BS-DMA"/>
-                            <constraint firstItem="ES0-b3-5ec" firstAttribute="top" secondItem="qML-Sz-EbI" secondAttribute="bottom" constant="17" id="Hwg-Ih-edj"/>
+                            <constraint firstItem="xef-WP-TJ0" firstAttribute="top" secondItem="3rS-db-5P2" secondAttribute="bottom" constant="15" id="MCP-G3-xvd"/>
                             <constraint firstItem="KX5-tj-BMX" firstAttribute="centerY" secondItem="Mrs-gz-fxc" secondAttribute="centerY" id="ZB2-vu-hFh"/>
                             <constraint firstItem="KX5-tj-BMX" firstAttribute="centerX" secondItem="Mrs-gz-fxc" secondAttribute="centerX" id="abt-ov-Sg3"/>
-                            <constraint firstItem="M9p-TG-hrK" firstAttribute="trailing" secondItem="3rS-db-5P2" secondAttribute="trailing" id="p0E-IL-znE"/>
-                            <constraint firstItem="M9p-TG-hrK" firstAttribute="leading" secondItem="3rS-db-5P2" secondAttribute="leading" id="tDl-N1-KKn"/>
-                            <constraint firstItem="M9p-TG-hrK" firstAttribute="top" secondItem="3rS-db-5P2" secondAttribute="bottom" constant="8" id="uBJ-R5-PWK"/>
+                            <constraint firstItem="xef-WP-TJ0" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leading" constant="15" id="nXy-io-F32"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="segmentEndpoint" destination="3rS-db-5P2" id="meB-O5-K0z"/>
                         <outlet property="segmentLang" destination="M9p-TG-hrK" id="bE4-Bi-nCx"/>
-                        <outlet property="txtVersion" destination="ES0-b3-5ec" id="xdS-oT-3YL"/>
+                        <outlet property="segmentVersion" destination="xef-WP-TJ0" id="hjF-RD-Nd9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UdP-ad-UMo" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -40,11 +40,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CC3-le-LKT">
                                         <rect key="frame" x="145" y="184" width="124" height="450"/>
                                         <subviews>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4eB-FE-NFc">
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4eB-FE-NFc">
                                                 <rect key="frame" x="0.0" y="0.0" width="124" height="450"/>
                                                 <subviews>
-                                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFQ-nH-L9a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="124" height="379"/>
+                                                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EFQ-nH-L9a">
+                                                        <rect key="frame" x="0.0" y="0.0" width="124" height="382"/>
                                                         <subviews>
                                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qNe-jI-I6m">
                                                                 <rect key="frame" x="0.0" y="0.0" width="124" height="124"/>
@@ -168,11 +168,11 @@
                                                                     <constraint firstAttribute="height" constant="72" id="u8J-Ze-WsF"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_logobzbs" translatesAutoresizingMaskIntoConstraints="NO" id="kVi-LJ-NxQ">
-                                                                <rect key="frame" x="-23" y="266" width="170" height="45"/>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="img_logo_dtac" translatesAutoresizingMaskIntoConstraints="NO" id="kVi-LJ-NxQ">
+                                                                <rect key="frame" x="-52" y="279" width="228" height="31"/>
                                                             </imageView>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAw-zE-fOC">
-                                                                <rect key="frame" x="0.0" y="262" width="124" height="53"/>
+                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SAw-zE-fOC">
+                                                                <rect key="frame" x="0.0" y="271" width="124" height="47"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Out" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BnO-yj-gXA">
                                                                         <rect key="frame" x="16" y="1.5" width="61.5" height="17.5"/>
@@ -186,14 +186,17 @@
                                                                         <color key="textColor" red="0.75376826519999995" green="0.01179720089" blue="0.0080285519359999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_logobzbs" translatesAutoresizingMaskIntoConstraints="NO" id="0uW-hI-v8G">
-                                                                        <rect key="frame" x="-62" y="0.0" width="170" height="45"/>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="748" image="img_logo_dtac" translatesAutoresizingMaskIntoConstraints="NO" id="0uW-hI-v8G">
+                                                                        <rect key="frame" x="-120" y="0.0" width="228" height="25"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="25" id="zRM-fP-bly"/>
+                                                                        </constraints>
                                                                     </imageView>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstItem="BnO-yj-gXA" firstAttribute="firstBaseline" secondItem="qP7-HM-JGi" secondAttribute="firstBaseline" id="3nh-so-Pgh"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="0uW-hI-v8G" secondAttribute="bottom" constant="8" id="cEr-WL-d8x"/>
+                                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0uW-hI-v8G" secondAttribute="bottom" constant="16" id="cEr-WL-d8x"/>
                                                                     <constraint firstItem="qP7-HM-JGi" firstAttribute="leading" secondItem="BnO-yj-gXA" secondAttribute="trailing" constant="8" id="h2n-Oy-WS4"/>
                                                                     <constraint firstAttribute="trailing" secondItem="0uW-hI-v8G" secondAttribute="trailing" constant="16" id="idn-eh-XtT"/>
                                                                     <constraint firstItem="0uW-hI-v8G" firstAttribute="top" secondItem="SAw-zE-fOC" secondAttribute="top" id="jbi-Id-Thc"/>
@@ -201,11 +204,11 @@
                                                                     <constraint firstItem="qP7-HM-JGi" firstAttribute="top" secondItem="SAw-zE-fOC" secondAttribute="top" id="sey-QA-ChW"/>
                                                                 </constraints>
                                                             </view>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="img_icon_redeem_expired" translatesAutoresizingMaskIntoConstraints="NO" id="ak3-mf-LWb">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="img_icon_redeem_expired" translatesAutoresizingMaskIntoConstraints="NO" id="ak3-mf-LWb">
                                                                 <rect key="frame" x="24" y="1125" width="283" height="295.5"/>
                                                             </imageView>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1I-GS-Qze">
-                                                                <rect key="frame" x="16" y="331" width="376" height="40"/>
+                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T1I-GS-Qze">
+                                                                <rect key="frame" x="16" y="334" width="30" height="40"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press to confirm the redemption (for staff only)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfP-f5-2fw">
                                                                         <rect key="frame" x="8" y="0.0" width="360" height="40"/>
@@ -214,7 +217,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LkM-oi-L5l">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="376" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
                                                                         <connections>
                                                                             <action selector="clickUse:" destination="0wZ-ZV-pLT" eventType="touchUpInside" id="7DM-BK-kCa"/>
                                                                         </connections>
@@ -252,6 +255,7 @@
                                                             <constraint firstItem="2zs-Tr-NT6" firstAttribute="centerX" secondItem="EFQ-nH-L9a" secondAttribute="centerX" id="RD1-C2-uxl"/>
                                                             <constraint firstAttribute="trailing" secondItem="OxI-tY-7eg" secondAttribute="trailing" constant="16" id="Rd2-js-wNh"/>
                                                             <constraint firstItem="hTW-MT-Mg1" firstAttribute="centerX" secondItem="EFQ-nH-L9a" secondAttribute="centerX" id="T5D-8f-cqU"/>
+                                                            <constraint firstItem="kVi-LJ-NxQ" firstAttribute="width" secondItem="0uW-hI-v8G" secondAttribute="width" id="TMv-Qq-iag"/>
                                                             <constraint firstItem="ak3-mf-LWb" firstAttribute="centerX" secondItem="EFQ-nH-L9a" secondAttribute="centerX" id="VXf-Pk-YXV"/>
                                                             <constraint firstItem="5hd-bh-xgy" firstAttribute="leading" secondItem="hTW-MT-Mg1" secondAttribute="trailing" id="VgV-ky-fjO"/>
                                                             <constraint firstItem="T1I-GS-Qze" firstAttribute="top" secondItem="SAw-zE-fOC" secondAttribute="bottom" constant="16" id="WkM-xT-bzt"/>
@@ -270,6 +274,7 @@
                                                             <constraint firstItem="hlf-Xh-kxh" firstAttribute="centerX" secondItem="EFQ-nH-L9a" secondAttribute="centerX" id="lAI-fI-KPx"/>
                                                             <constraint firstItem="ak3-mf-LWb" firstAttribute="centerY" secondItem="EFQ-nH-L9a" secondAttribute="centerY" id="miy-dS-J2U"/>
                                                             <constraint firstItem="qNe-jI-I6m" firstAttribute="bottom" secondItem="hlf-Xh-kxh" secondAttribute="bottom" constant="60" id="n65-vF-thT"/>
+                                                            <constraint firstItem="kVi-LJ-NxQ" firstAttribute="height" secondItem="0uW-hI-v8G" secondAttribute="height" id="nwg-yW-GZU"/>
                                                             <constraint firstItem="JvD-lZ-uYg" firstAttribute="top" secondItem="2zs-Tr-NT6" secondAttribute="bottom" constant="16" id="y2Z-ax-pnY"/>
                                                             <constraint firstItem="T1I-GS-Qze" firstAttribute="leading" secondItem="EFQ-nH-L9a" secondAttribute="leading" constant="16" id="zKp-oK-fb4"/>
                                                         </constraints>
@@ -611,7 +616,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nQ6-Q0-GnZ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="61.5" height="36.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="36.5"/>
                                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                         <connections>
                                                             <action selector="clickConfirm:" destination="Fha-66-EPn" eventType="touchUpInside" id="NN4-uY-3Rn"/>
@@ -945,6 +950,6 @@
         <image name="img_icon_close" width="23.5" height="23.5"/>
         <image name="img_icon_redeem_expired" width="489.5" height="295.5"/>
         <image name="img_icon_sad" width="32" height="32"/>
-        <image name="img_logobzbs" width="85" height="22.5"/>
+        <image name="img_logo_dtac" width="114" height="31"/>
     </resources>
 </document>

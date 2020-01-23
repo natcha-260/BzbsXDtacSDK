@@ -511,7 +511,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             viewImageSlideshow.contentScaleMode = .scaleAspectFill
             viewImageSlideshow.backgroundColor = UIColor.clear
             viewImageSlideshow.setImageInputs(listImageCampaign)
-            viewImageSlideshow.slideshowInterval = 3.0
+            viewImageSlideshow.slideshowInterval = 5.0
         }
     }
     
@@ -589,7 +589,6 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     vcRight.isUserInteractionEnabled = false
                     
                     lblRight.text = "campaign_detail_status_redeem".localized()
-                    vcRight.backgroundColor = UIColor.mainLightGray
                     
                     if let type = campaign.type{
                         if type == 9 {
