@@ -814,7 +814,13 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
                 if let distance = campaign.distance, locationAuthStatus != .denied
                 {
                     lblReadMore.adjustsFontSizeToFitWidth = true
-                    lblReadMore.text = String(format: "%@ : %.2f %@","campaign_detail_nearest".localized(), distance / 1000, "util_km".localized())
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    numberFormatter.maximumFractionDigits = 2
+                    numberFormatter.minimumFractionDigits = 2
+                    let value: Double = distance / Double(1000)
+                    let formattedNumber = numberFormatter.string(from: NSNumber(value:value))
+                    lblReadMore.text = String(format: "%@ : %@ %@","campaign_detail_nearest".localized(), formattedNumber ?? "0.0", "util_km".localized())
                     lblClick.text = "campaign_detail_see_map".localized()
                 } else if campaign.website != "" {
                     lblReadMore.text = "campaign_detail_more_detail".localized()
