@@ -297,7 +297,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         }) { (error) in
             self.hideLoader()
             if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-            PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized(), close: nil)
+            PopupManager.informationPopup(self, title: nil, message: error.message ?? "campaign_detail_status_fail".localized(), close: nil)
             self.refreshApi()
         }
     }
@@ -400,34 +400,40 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             if let type = campaign.type
             {
                 if type == 1 {
-                    showLoader()
-                    BzbsCoreApi().getCampaignStatus(campaignId: campaign.ID,
-                                                    deviceLocale: String(LocaleCore.shared.getUserLocale()),
-                                                    center: LocationManager.shared.getCurrentCoorndate(),
-                                                    token: Bzbs.shared.userLogin?.token,
-                                                    successCallback: { (status) in
-                                                        self.hideLoader()
-                                                        let message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
-                                                        PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
-                                                            self.apiRedeem()
-                                                        }) {
-                                                            
-                                                        }
-                                                        self.hideLoader()
-                    },
-                                                    failCallback: { (error) in
-                                                        self.hideLoader()
-                                                        if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                                                        PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized()) {
-                                                            let tmp = CampaignStatus()
-                                                            tmp.quantity = 0
-                                                            tmp.status = false
-                                                            
-                                                            self.campaignStatus = tmp
-                                                            self.manageFooter()
-                                                            self.tableView.reloadData()
-                                                        }
-                    })
+                    let message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
+                    PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
+                        self.apiRedeem()
+                    }) {
+                        
+                    }
+//                    showLoader()
+//                    BzbsCoreApi().getCampaignStatus(campaignId: campaign.ID,
+//                                                    deviceLocale: String(LocaleCore.shared.getUserLocale()),
+//                                                    center: LocationManager.shared.getCurrentCoorndate(),
+//                                                    token: Bzbs.shared.userLogin?.token,
+//                                                    successCallback: { (status) in
+//                                                        self.hideLoader()
+//                                                        let message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
+//                                                        PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
+//                                                            self.apiRedeem()
+//                                                        }) {
+//
+//                                                        }
+//                                                        self.hideLoader()
+//                    },
+//                                                    failCallback: { (error) in
+//                                                        self.hideLoader()
+//                                                        if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+//                                                        PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized()) {
+//                                                            let tmp = CampaignStatus()
+//                                                            tmp.quantity = 0
+//                                                            tmp.status = false
+//
+//                                                            self.campaignStatus = tmp
+//                                                            self.manageFooter()
+//                                                            self.tableView.reloadData()
+//                                                        }
+//                    })
                 }
             }
         } else {
@@ -591,14 +597,14 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 if isLoggedIn()
                 {
                     if campaignStatus == nil {
-                        vcRight.isUserInteractionEnabled = false
                         
                         lblRight.text = "campaign_detail_status_redeem".localized()
-                        vcRight.backgroundColor = UIColor.mainLightGray
+                        vcRight.backgroundColor = UIColor.dtacBlue
                         
                         if let type = campaign.type{
                             if type == 9 {
                                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                                vcRight.backgroundColor = UIColor.mainLightGray
                             }
                         }
                         return
