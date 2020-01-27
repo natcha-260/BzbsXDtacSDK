@@ -31,7 +31,8 @@ class GreetingCVCell: UICollectionViewCell {
         lblLevelTitle.textColor = .mainGray
         
         imvGreeting.cornerRadius(corner: 16)
-        imvLevel.image = UIImage(named: "imgt_icon_dtac", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+        imvLevel.image = nil// UIImage(named: "imgt_icon_dtac", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+        imvLevel.isHidden = true
     }
     
     func setupWithModel(_ item:GreetingModel?, target:UIViewController, levelSelector:Selector)

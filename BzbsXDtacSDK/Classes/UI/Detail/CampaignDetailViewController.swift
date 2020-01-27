@@ -586,20 +586,29 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             {
                 if isLoggedIn()
                 {
-                    vcRight.isUserInteractionEnabled = false
-                    
-                    lblRight.text = "campaign_detail_status_redeem".localized()
-                    
-                    if let type = campaign.type{
-                        if type == 9 {
-                            lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                    if campaignStatus == nil {
+                        vcRight.isUserInteractionEnabled = false
+                        
+                        lblRight.text = "campaign_detail_status_redeem".localized()
+                        vcRight.backgroundColor = UIColor.mainLightGray
+                        
+                        if let type = campaign.type{
+                            if type == 9 {
+                                lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                            }
                         }
+                        return
                     }
-                    return
+
+                    if let type = campaign.type, type == 9 {
+                        lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                        vcRight.backgroundColor = UIColor.mainLightGray
+                        return
+                    }
+                    vcRight.backgroundColor = UIColor.mainLightGray
                 } else {
                     vcRight.backgroundColor = UIColor.dtacBlue
                 }
-                
             } else {
                 vcRight.backgroundColor = UIColor.dtacBlue
             }
