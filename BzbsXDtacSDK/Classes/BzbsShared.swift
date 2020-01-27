@@ -46,7 +46,7 @@ struct DtacLoginParams {
     private let pathUrlFAQ = "/misc/faq"
     private let pathUrlAbout = "/misc/about"
     
-    @objc public var versionString :String = "0.0.3"
+    @objc public var versionString :String = "0.0.4"
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
     
