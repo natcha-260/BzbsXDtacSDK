@@ -150,7 +150,10 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Call Api
     // MARK:-
     var isRetry = false
+    var isCallingCampaignDetail = false
     func getApiCampaignDetail() {
+        if isCallingCampaignDetail { return }
+        isCallingCampaignDetail = true
         showLoader()
         BuzzebeesCampaign().detail(campaignId: campaign.ID
             , deviceLocale: String(LocaleCore.shared.getUserLocale())
@@ -158,7 +161,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             , center : LocationManager.shared.getCurrentCoorndate()
             , token: Bzbs.shared.userLogin?.token
             , successCallback: { (itemCampaign) in
-                
+                self.isCallingCampaignDetail = false
                 self.campaign = itemCampaign
                 if self.campaign.condition == "-"
                 {
@@ -180,7 +183,8 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
 
                 self.getApiCampaignStatus()
         }) { (error) in
-            
+
+            self.isCallingCampaignDetail = false
             if error.id == "-9999"
             {
 //                if !self.isRetry{
