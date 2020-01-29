@@ -24,6 +24,9 @@ public class BuzzebeesCore: NSObject {
     public var appId = "353144231924127"
     public var strSubscriptionKey: String?
     
+    var configuration :URLSessionConfiguration!
+    var sessionManager :SessionManager!
+    
     static var isSetEndpoint = false
     static var apiUrl: String! = ""
     static var blobUrl : String! = ""
@@ -45,6 +48,9 @@ public class BuzzebeesCore: NSObject {
     let prefixApp = "ios_dtw"
     
     public override init() {
+        configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30
+        sessionManager = Alamofire.SessionManager(configuration: configuration)
         super.init()
     }
     
@@ -237,11 +243,15 @@ public class BuzzebeesCore: NSObject {
             print("//==============================\r\n")
         }
         
-        request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination: .methodDependent), headers: itemHeaders)
+        sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination: .methodDependent), headers: itemHeaders)
             .responseJSON { response in
                 do{
                     let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                    
+
+                    if(self.isDebugMode) {
+                        let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                        print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
+                    }
                     if let dictJSON = json as? Dictionary<String, AnyObject>  {
                         // Check error azure portal
                         if let statusCode = dictJSON["statusCode"] as? Int {
@@ -253,23 +263,11 @@ public class BuzzebeesCore: NSObject {
                         }
                         
                         if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
-                            if(self.isDebugMode) {
-                                let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                                print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                            }
                             successCallback(json as AnyObject)
                         }
                     } else if let arrJson = json as? [Dictionary<String, AnyObject>]  {
-                        if(self.isDebugMode) {
-                            let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                            print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                        }
                         successCallback(arrJson as AnyObject)
                     } else{
-                        if(self.isDebugMode) {
-                            let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                            print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                        }
                         successCallback(json as AnyObject)
                     }
                 } catch _ as NSError {
@@ -304,112 +302,6 @@ public class BuzzebeesCore: NSObject {
         }
     }
     
-    func requestAlamofireUpload(_ strURL: String
-        , uiImage: UIImage
-        , strKeyImage: String
-        , params: Dictionary<String, AnyObject>
-        , headers:[String: String]? = nil
-        , successCallback: @escaping (AnyObject) -> Void
-        , failCallback: @escaping (_ error: BzbsError) -> Void) {
-        
-        // Add appId all api
-        var itemParams = params
-        itemParams["device_app_id"] = self.appId as AnyObject?
-        itemParams["app_id"] = self.appId as AnyObject?
-        
-        // Add Ocp-Apim-Subscription-Key
-        var itemHeaders = headers
-        if(itemHeaders == nil) {
-            itemHeaders = HTTPHeaders()
-        }
-        itemHeaders!["Ocp-Apim-Subscription-Key"] = self.strSubscriptionKey
-        
-        if(isDebugMode == true) {
-            print("\r\n//==============================")
-            print("URL:= " + strURL)
-            print("Params:= ")
-            
-            for item in itemParams {
-                if let value = item.value as? String
-                {
-                    print(item.key + ":" + value)
-                } else {
-                    print(item.key + ":" + String(describing: item.value))
-                }
-            }
-            
-            if let item = itemHeaders {
-                print("")
-                print("Header:= ")
-                for headersTemp in item
-                {
-                    print(headersTemp.key + ":" + (headersTemp.value))
-                }
-                print("//==============================\r\n")
-            }
-        }
-        
-        let imageData = uiImage.pngData()
-        
-        upload(
-            multipartFormData: { multipartFormData in
-                multipartFormData.append(imageData!, withName: strKeyImage, mimeType: "image/png")
-                
-                for (key, value) in params {
-                    if let valueData = value as? String
-                    {
-                        multipartFormData.append(valueData.data(using: String.Encoding.utf8)!, withName: key)
-                    }
-                }
-        },
-            to: strURL,
-            headers: itemHeaders,
-            encodingCompletion: { encodingResult in
-                switch encodingResult {
-                case .success(let upload, _, _):
-                    upload.responseJSON { response in
-                        do{
-                            let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                            
-                            if let dictJSON = json as? Dictionary<String, AnyObject>  {
-                                // Check error azure portal
-                                if let statusCode = dictJSON["statusCode"] as? Int {
-                                    if let statusMessage = dictJSON["message"] as? String {
-                                        let error = BzbsError(strId: "-9999", strCode: String(statusCode), strType: "framework send", strMessage: statusMessage)
-                                        failCallback(error)
-                                        return
-                                    }
-                                }
-                                
-                                if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
-                                    successCallback(json as AnyObject)
-                                }
-                            } else if let arrJson = json as? [Dictionary<String, AnyObject>]  {
-                                successCallback(arrJson as AnyObject)
-                            } else{
-                                successCallback(json as AnyObject)
-                            }
-                        } catch _ as NSError {
-                            // work around support server success than not return data, use check status code
-                            if let statusCode = response.response?.statusCode {
-                                // 200: Success, 204: No content
-                                if statusCode == 200 || statusCode == 204 {
-                                    successCallback("Success" as AnyObject)
-                                    return
-                                }
-                            }
-                            
-                            let error = BzbsError(strId: "-9999", strCode: "-9999", strType: "framework send", strMessage: "json serialization error")
-                            failCallback(error)
-                        }
-                    }
-                case .failure( _):
-                    let error = BzbsError(strId: "-9999", strCode: "-9999", strType: "framework send", strMessage: "json serialization error")
-                    failCallback(error)
-                }
-        }
-        )
-    }
 }
 
 extension String: ParameterEncoding {

@@ -46,12 +46,25 @@ class TokenSelectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         segmentEndpoint.selectedSegmentIndex = 2
-        segmentVersion.selectedSegmentIndex = 0
+        segmentVersion.selectedSegmentIndex = 1
         // Do any additional setup after loading the view.
     }
     
     @IBAction func didChangeEndpoint(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0
+        {
+            segmentVersion.selectedSegmentIndex = 1
+        }
         
+        if sender.selectedSegmentIndex == 1
+        {
+            segmentVersion.selectedSegmentIndex = 2
+        }
+        
+        if sender.selectedSegmentIndex == 2
+        {
+            segmentVersion.selectedSegmentIndex = 3
+        }
     }
     
     @IBAction func didChangeVersion(_ sender: UISegmentedControl) {

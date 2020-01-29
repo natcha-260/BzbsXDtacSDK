@@ -615,9 +615,9 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 return 1
             }
             if isCategoryAll() {
-                return dashboardAllItems.count == 0 ? 1 : dashboardAllItems.count
+                return dashboardAllItems.count == 0 ? (_isCallApi ? 0 : 1) : dashboardAllItems.count
             }
-            return _arrDataShow.count == 0 ? 1 : _arrDataShow.count
+            return _arrDataShow.count == 0 ? (_isCallApi ? 0 : 1) : _arrDataShow.count
         }
         return 0
     }
