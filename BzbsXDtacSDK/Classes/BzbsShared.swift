@@ -204,12 +204,22 @@ struct DtacLoginParams {
     private var timer : Timer?
     private var showLoaderDate : TimeInterval = 0
     public var defaultLoadingTime : TimeInterval = 30
+    
     @objc public func showLoader(on vc:UIViewController)
     {
-        if isShowLoading || vc.presentedViewController != nil { return }
+        if isShowLoading { return }
         isShowLoading = true
-        LoadingViewController.shared.modalPresentationStyle = .overFullScreen
-        vc.present(LoadingViewController.shared, animated: false, completion: nil)
+        if let window = UIApplication.shared.keyWindow {
+            let vc = LoadingViewController.shared
+            let height : CGFloat = UIScreen.main.bounds.size.height
+            let widht : CGFloat = UIScreen.main.bounds.size.width
+            vc.view.frame = CGRect(x: 0, y: 0, width: widht, height: height)
+            
+            if vc.parent == nil {
+                window.addSubview(vc.view)
+                window.bringSubviewToFront(vc.view)
+            }
+        }
         showLoaderDate = Date().timeIntervalSince1970
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
@@ -227,12 +237,9 @@ struct DtacLoginParams {
     {
         timer?.invalidate()
         timer = nil
-        
-        LoadingViewController.shared.dismiss(animated: false) {
-            self.delay(0.44) {
-                self.isShowLoading = false
-            }
-        }
+
+        LoadingViewController.shared.view.removeFromSuperview()
+        self.isShowLoading = false
     }
     
     @objc public func backToMainView()

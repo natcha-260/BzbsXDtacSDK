@@ -261,6 +261,9 @@ import WebKit
     func apiLogin(_ token:String, ticket: String, language:String)
     {
         let isNeedupdateUI = Bzbs.shared.userLogin == nil
+        if !isNeedupdateUI {
+            showLoader()
+        }
         Bzbs.shared.login(token: token, ticket: ticket, language: language, completionHandler: {
             
             if let user = Bzbs.shared.userLogin, user.dtacLevel == .no_level {
@@ -273,7 +276,7 @@ import WebKit
             }
             
         }) { (error) in
-            
+            self.hideLoader()
             if self.isDtacError(Int(error.id)!, code:Int(error.code)!, message: error.message) {
                 return
             } else {
