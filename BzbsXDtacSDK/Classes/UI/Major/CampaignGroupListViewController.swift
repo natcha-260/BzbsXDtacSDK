@@ -123,7 +123,7 @@ extension CampaignGroupListViewController : UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 { return 1 }
-        return self._arrDataShow.count == 0 ? 1 : self._arrDataShow.count
+        return self._arrDataShow.count == 0 ? (_isCallApi ? 0 : 1)  : self._arrDataShow.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

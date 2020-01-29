@@ -245,19 +245,22 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                                     self.hideLoader()
             },
                                                    failCallback: { (error) in
-                                                    self.hideLoader()
                                                     self.isLoadedStatus = true
+                                                    self.campaignStatus = nil
+                                                    self.manageFooter()
+                                                    self.tableView.reloadData()
+                                                    self.hideLoader()
                                                     
                                                     if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                                                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized()) {
-                                                        let tmp = CampaignStatus()
-                                                        tmp.quantity = 0
-                                                        tmp.status = false
-                                                        
-                                                        self.campaignStatus = tmp
-                                                        self.manageFooter()
-                                                        self.tableView.reloadData()
-                                                    }
+//                                                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized()) {
+//                                                        let tmp = CampaignStatus()
+//                                                        tmp.quantity = 0
+//                                                        tmp.status = false
+//
+//                                                        self.campaignStatus = nil
+//                                                        self.manageFooter()
+//                                                        self.tableView.reloadData()
+//                                                    }
             })
         } else {
             if Bzbs.shared.isCallingLogin {
@@ -296,8 +299,12 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             PopupManager.serialPopup(onView: self, purchase: purchase)
         }) { (error) in
             self.hideLoader()
+            var message = error.message
+            if message == nil || message?.lowercased() == "conflict"{
+                message = "campaign_detail_status_fail".localized()
+            }
             if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-            PopupManager.informationPopup(self, title: nil, message: error.message ?? "campaign_detail_status_fail".localized(), close: nil)
+            PopupManager.informationPopup(self, title: nil, message: message ?? "campaign_detail_status_fail".localized(), close: nil)
             self.refreshApi()
         }
     }
