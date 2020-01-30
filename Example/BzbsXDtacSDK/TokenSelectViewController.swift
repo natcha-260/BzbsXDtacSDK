@@ -53,7 +53,7 @@ class TokenSelectViewController: UIViewController {
     @IBAction func didChangeEndpoint(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0
         {
-            segmentVersion.selectedSegmentIndex = 1
+            segmentVersion.selectedSegmentIndex = 3
         }
         
         if sender.selectedSegmentIndex == 1
@@ -63,7 +63,7 @@ class TokenSelectViewController: UIViewController {
         
         if sender.selectedSegmentIndex == 2
         {
-            segmentVersion.selectedSegmentIndex = 3
+            segmentVersion.selectedSegmentIndex = 1
         }
     }
     

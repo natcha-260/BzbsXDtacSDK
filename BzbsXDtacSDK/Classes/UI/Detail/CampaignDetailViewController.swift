@@ -299,12 +299,12 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             PopupManager.serialPopup(onView: self, purchase: purchase)
         }) { (error) in
             self.hideLoader()
-            var message = error.message
-            if message == nil || message?.lowercased() == "conflict"{
-                message = "campaign_detail_status_fail".localized()
-            }
+//            var message = error.message
+//            if message == nil || message?.lowercased() == "conflict"{
+//                message = "campaign_detail_status_fail".localized()
+//            }
             if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-            PopupManager.informationPopup(self, title: nil, message: message ?? "campaign_detail_status_fail".localized(), close: nil)
+            PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized(), close: nil)
             self.refreshApi()
         }
     }
@@ -941,7 +941,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
         
         if cellIdent == "detail"
         {
-            if campaign.condition == "-"
+            if campaign.condition == "-" || isCallingCampaignDetail
             {
                 return tableView.dequeueReusableCell(withIdentifier: "cellBlank", for: indexPath)
             }
