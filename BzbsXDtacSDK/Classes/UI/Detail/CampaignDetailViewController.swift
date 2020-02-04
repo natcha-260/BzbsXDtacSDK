@@ -72,6 +72,8 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         
     }
     
+    var isCallingApiRedeem = false
+    var isCallingCampaignDetail = false
     var arrBranch = [Branch]()
     
     var cellList = ["image_name","info","line","tab","detail"]
@@ -149,8 +151,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     // MARK:- Call Api
     // MARK:-
-    var isRetry = false
-    var isCallingCampaignDetail = false
+    
     func getApiCampaignDetail() {
         if isCallingCampaignDetail { return }
         isCallingCampaignDetail = true
@@ -292,11 +293,13 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     func apiRedeem()
     {
         guard let token = Bzbs.shared.userLogin?.token else { return }
+        isCallingApiRedeem = true
         showLoader()
         BuzzebeesCampaign().redeem(token:token , campaignId: campaign.ID, successCallback: { (dict) in
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)
             PopupManager.serialPopup(onView: self, purchase: purchase)
+            self.isCallingApiRedeem = false
         }) { (error) in
             self.hideLoader()
 //            var message = error.message
@@ -306,6 +309,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
             PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized(), close: nil)
             self.refreshApi()
+            self.isCallingApiRedeem = false
         }
     }
     
@@ -389,7 +393,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     @IBAction func clickRight(_ sender: Any) {
         
-        if let type = campaign.type, type == 9 {
+        if let type = campaign.type, type == 9 || isCallingApiRedeem {
             return
         }
         
