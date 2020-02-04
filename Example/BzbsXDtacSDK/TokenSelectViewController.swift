@@ -146,9 +146,12 @@ class TokenSelectViewController: UIViewController {
             tabbar.modalPresentationStyle = .fullScreen
             self.present(tabbar, animated: true, completion: nil)
         }
-//        delay(10) {
-//            Bzbs.shared.setup(token: "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8=", ticket: "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ=", language: "th")
-//        }
+        delay(10) {
+            Bzbs.shared.isHasNewMessage = true
+            self.delay(2) {
+                Bzbs.shared.set
+            }
+        }
     }
     
     

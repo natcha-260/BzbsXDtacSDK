@@ -308,6 +308,7 @@ public extension NSNotification.Name {
     static let BzbsLanguageDidChange = Notification.Name("bzbsLanguageDidChange")
     static let BzbsDeeplinkAction = Notification.Name("bzbsDeeplinkAction")
     static let BzbsBackToMainView = Notification.Name("bzbsBackToMainView")
+    static let BzbsUpdateNavigationBar = Notification.Name("bzbsUpdateNavigationBar")
 }
 
 enum DtacUserLevel {
