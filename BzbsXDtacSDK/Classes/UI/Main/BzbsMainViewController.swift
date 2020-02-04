@@ -125,16 +125,13 @@ import WebKit
         NotificationCenter.default.addObserver(self, selector: #selector(resetAPI), name: NSNotification.Name.BzbsApiReset, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reLogin), name: NSNotification.Name.BzbsLanguageDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(backToMainView), name: NSNotification.Name.BzbsBackToMainView, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateNavigationBar), name: NSNotification.Name.BzbsUpdateNavigationBar, object: nil)
         
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationItem.leftBarButtonItems = BarItem.generate_logo()
-        if UIDevice.current.userInterfaceIdiom == .phone
-        {
-            navigationItem.rightBarButtonItems = BarItem.generate_message(self, isHasNewMessage: Bzbs.shared.isHasNewMessage, messageSelector: #selector(clickMessage))
-        }
+        updateNavigationBar()
         
         analyticsSetScreen(screenName: "dtac_reward")
         
@@ -206,12 +203,7 @@ import WebKit
             getApiRecommend()
             getApi()
         }
-        
-        navigationItem.leftBarButtonItems = BarItem.generate_logo()
-        if UIDevice.current.userInterfaceIdiom == .phone
-        {
-            navigationItem.rightBarButtonItems = BarItem.generate_message(self, isHasNewMessage: Bzbs.shared.isHasNewMessage, messageSelector: #selector(clickMessage))
-        }
+        updateNavigationBar()
         viewSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
         viewSearch.addShadow()
         viewScan.cornerRadius()
@@ -225,13 +217,18 @@ import WebKit
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.mainFont(), NSAttributedString.Key.foregroundColor:UIColor.black]
     }
     
-    public override func updateUI() {
-        super.updateUI()
+    @objc func updateNavigationBar()
+    {
         navigationItem.leftBarButtonItems = BarItem.generate_logo()
         if UIDevice.current.userInterfaceIdiom == .phone
         {
             navigationItem.rightBarButtonItems = BarItem.generate_message(self, isHasNewMessage: Bzbs.shared.isHasNewMessage, messageSelector: #selector(clickMessage))
         }
+    }
+    
+    public override func updateUI() {
+        super.updateUI()
+        updateNavigationBar()
         viewSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
         viewSearch.addShadow()
         txtSearch.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])

@@ -33,7 +33,11 @@ struct DtacLoginParams {
     
     var dtacLoginParams = DtacLoginParams()
     @objc public var delegate: BzbsDelegate?
-    @objc public var isHasNewMessage :Bool = false
+    @objc public var isHasNewMessage :Bool = false{
+        didSet {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
+        }
+    }
     
     var apiPrefix:String?// = "https://dev.buzzebees.com"
     private var webMiscUrl:String?{
@@ -311,6 +315,7 @@ public extension NSNotification.Name {
     static let BzbsLanguageDidChange = Notification.Name("bzbsLanguageDidChange")
     static let BzbsDeeplinkAction = Notification.Name("bzbsDeeplinkAction")
     static let BzbsBackToMainView = Notification.Name("bzbsBackToMainView")
+    static let BzbsUpdateNavigationBar = Notification.Name("bzbsUpdateNavigationBar")
 }
 
 enum DtacUserLevel {

@@ -134,13 +134,11 @@ class TokenSelectViewController: UIViewController {
         Bzbs.shared.versionString = strVersion
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8=", ticket: "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ=", language: language)
+            Bzbs.shared.setup(token: "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU=", ticket: "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M=", language: language)
         }
         
         if isPrd {
-//            Bzbs.shared.setup(token: "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1WPRR5G8XlhiNKFsJC0LgrcPK+Nv9T6pWw=", ticket: "wAKsqNAX7l3JMmf2k9vISrked/Qpoi/ydSNPBM9hnfjf9WhDYqcGuzYKtHo=", language: language)
             Bzbs.shared.setup(token: "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc=", ticket: "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU=", language: language)
-            
         }
         
         gotoMain()
@@ -161,9 +159,12 @@ class TokenSelectViewController: UIViewController {
             tabbar.modalPresentationStyle = .fullScreen
             self.present(tabbar, animated: true, completion: nil)
         }
-//        delay(10) {
-//            Bzbs.shared.setup(token: "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8=", ticket: "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ=", language: "th")
-//        }
+        delay(10) {
+            Bzbs.shared.isHasNewMessage = true
+            self.delay(2) {
+                Bzbs.shared.set
+            }
+        }
     }
     
     
