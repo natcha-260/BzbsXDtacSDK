@@ -10,6 +10,9 @@ import UIKit
 import GoogleMaps
 import BzbsXDtacSDK
 import Firebase
+import AppCenter
+import AppCenterAnalytics
+import AppCenterCrashes
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,6 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        com.buzzebees.xDtac
         FirebaseApp.configure()
         GMSServices.provideAPIKey("AIzaSyD16TFAFMmV0bsu8Hi-kkGFS8dYkWPtIM0")
+        MSAppCenter.start("909eb374-e9b4-4369-a09a-2f23bbe1cc03", withServices:[
+          MSAnalytics.self,
+          MSCrashes.self
+        ])
         UINavigationBar.appearance().backgroundColor = .blue
         return true
     }

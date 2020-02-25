@@ -294,6 +294,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     {
         guard let token = Bzbs.shared.userLogin?.token else { return }
         isCallingApiRedeem = true
+        manageFooter()
         showLoader()
         BuzzebeesCampaign().redeem(token:token , campaignId: campaign.ID, successCallback: { (dict) in
             self.hideLoader()
@@ -539,10 +540,11 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Image Slide Show
     // MARK:-
     func assignImageSlideShow() {
+        let placeholderImage = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         if let strUrl = campaign.fullImageUrl,
             let url = URL(string: strUrl)?.convertCDNAddTime()
         {
-            listImageCampaign = [AlamofireSource(url: url)]
+            listImageCampaign = [AlamofireSource(url: url, placeholder: placeholderImage)]
         }
         
         if campaign.pictures.count > 1
@@ -633,6 +635,11 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             } else {
                 vcRight.backgroundColor = UIColor.dtacBlue
             }
+        }
+        
+        if isCallingApiRedeem || isCallingCampaignDetail {
+            vcRight.isUserInteractionEnabled = false
+            vcRight.backgroundColor = UIColor.mainLightGray
         }
     }
     
@@ -1052,6 +1059,8 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
 extension CampaignDetailViewController: PopupSerialDelegate
 {
     func didClosePopup() {
+        vcRight.isUserInteractionEnabled = false
+        vcRight.backgroundColor = UIColor.mainLightGray
         getApiCampaignDetail()
     }
 }

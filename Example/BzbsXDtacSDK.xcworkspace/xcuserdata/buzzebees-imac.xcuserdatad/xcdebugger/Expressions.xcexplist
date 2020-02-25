@@ -322,10 +322,10 @@
                value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
             </PersistentString>
             <PersistentString
-               value = "Bzbs.shared.currentBundle.localizations">
+               value = "bundle.localizations">
             </PersistentString>
             <PersistentString
-               value = "bundle.localizations">
+               value = "Bzbs.shared.currentBundle.localizations">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -443,6 +443,14 @@
             </PersistentString>
             <PersistentString
                value = "item.distance">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in NearbyListViewController.getApi():NearbyListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self._arrDataShow">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -634,18 +642,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CategoryTableViewCell.collectionView(_:layout:sizeForItemAt:):CategoryTableViewCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "collectionView.frame.size.width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
          <PersistentStrings>
             <PersistentString
                value = "vc.presentingViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CategoryTableViewCell.collectionView(_:layout:sizeForItemAt:):CategoryTableViewCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "collectionView.frame.size.width">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -662,6 +670,9 @@
          <PersistentStrings>
             <PersistentString
                value = "campaign.locationAgencyId">
+            </PersistentString>
+            <PersistentString
+               value = "campaign.agencyID">
             </PersistentString>
             <PersistentString
                value = "Date().toString(format: &quot;yyyyMMddHHmm&quot;)">
@@ -697,6 +708,9 @@
          <PersistentStrings>
             <PersistentString
                value = "url.absoluteString">
+            </PersistentString>
+            <PersistentString
+               value = "url.convertCDNAddTime()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -739,10 +753,10 @@
          contextName = "BzbsMainViewController.collectionView(_:didSelectItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "indexPath.row">
+               value = "arrCampaign.count">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count">
+               value = "indexPath.row">
             </PersistentString>
             <PersistentString
                value = "indexPath.row - 1">
@@ -1172,10 +1186,10 @@
                value = "dashboardItems">
             </PersistentString>
             <PersistentString
-               value = "self.arrCategory">
+               value = "arrCampaign.count + 1">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count + 1">
+               value = "self.arrCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

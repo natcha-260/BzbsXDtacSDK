@@ -41,7 +41,7 @@ class PopupInformationViewController: UIViewController {
             }
         }
         
-        imvIcon.image = UIImage(named: "img_icon_sad", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+        imvIcon.image = UIImage(named: "ic_sorry", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         vwContainer.cornerRadius()
         lblTitle.font = UIFont.mainFont(FontSize.xbig, style:.bold)
         lblMessage.font = UIFont.mainFont()

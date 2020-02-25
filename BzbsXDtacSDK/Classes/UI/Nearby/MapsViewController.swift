@@ -142,6 +142,15 @@ class MapsViewController: BzbsXDtacBaseViewController ,UIScrollViewDelegate{
         analyticsSetScreen(screenName: "dtac_reward_map")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !isConnectedToInternet() {
+            showPopupInternet()
+            return
+        }
+    }
+    
     override func back_1_step() {
         backSelector?()
         super.back_1_step()

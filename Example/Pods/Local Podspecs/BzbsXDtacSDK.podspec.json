@@ -1,6 +1,6 @@
 {
   "name": "BzbsXDtacSDK",
-  "version": "0.0.69",
+  "version": "1.0.16",
   "summary": "Buzzebees SDK For Dtac Rewards",
   "description": "Buzzebees SDK For Dtac Rewards",
   "homepage": "https://buzzebees.com/Views/BzbsForBusiness/OurService.aspx",
@@ -12,8 +12,8 @@
     "natchaporing": "natcha@buzzebees.com"
   },
   "source": {
-    "git": "https://buzzebees@dev.azure.com/buzzebees/Buzzebees/_git/iOS_Project_Dtac_Rewards",
-    "tag": "0.0.69"
+    "git": "https://github.com/natcha-260/BzbsXDtacSDK.git",
+    "tag": "1.0.16"
   },
   "platforms": {
     "ios": "9.0"

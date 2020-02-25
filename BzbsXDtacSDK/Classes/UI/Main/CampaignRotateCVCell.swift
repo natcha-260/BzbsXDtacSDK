@@ -58,7 +58,8 @@ class CampaignRotateCVCell: UICollectionViewCell {
                     if let imageUrl = item.imageUrl ,
                     let url = URL(string: imageUrl)?.convertCDNAddTime()
                     {
-                        imageList.append(AlamofireSource(url: url))
+                        let placeholderImage = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+                        imageList.append(AlamofireSource(url: url, placeholder: placeholderImage))
                     }
                 }
                 imageSlideShow.slideshowInterval = 5

@@ -83,6 +83,7 @@ class HistoryViewController: BaseListController {
     {
         tableView.register(HistoryCell.getNib(), forCellReuseIdentifier: "historyCell")
         tableView.register(EmptyTVCell.getNib(), forCellReuseIdentifier: "emptyCell")
+        tableView.register(BlankTVCell.getNib(), forCellReuseIdentifier: "blankCell")
     }
     
     // MARK:- API
@@ -163,7 +164,12 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate
         
         if _arrDataShow.count == 0
         {
+            if _isCallApi {
+                return tableView.dequeueReusableCell(withIdentifier: "blankCell", for: indexPath)
+            }
             let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTVCell
+            cell.imv.image = UIImage(named: "ic_reward_history", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            cell.lbl.text = "history_empty".localized()
             return cell
         }
         let item = _arrDataShow[indexPath.row] as! BzbsHistory

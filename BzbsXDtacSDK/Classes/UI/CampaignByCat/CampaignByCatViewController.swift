@@ -648,10 +648,18 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 headerView.delegate = self
                 return headerView
             }
+            
             if isCategoryAll()
             {
                 if dashboardAllItems.count == 0 {
-                    return collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath)
+                    if _isCallApi
+                    {
+                        return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+                    }
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
+                    cell.imv.image = UIImage(named: "ic_reward_document", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+                    cell.lbl.text = "major_empty".localized()
+                    return cell
                 }
                 let item = dashboardAllItems[indexPath.row]
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
@@ -659,8 +667,17 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 sendImpressionItem(item.subCampaignDetails)
                 return cell
             }
-            if _arrDataShow.count == 0 {
-                return collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath)
+            
+            if self._arrDataShow.count == 0
+            {
+                if _isCallApi
+                {
+                    return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+                }
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
+                cell.imv.image = UIImage(named: "ic_reward_document", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+                cell.lbl.text = "major_empty".localized()
+                return cell
             }
             let item = _arrDataShow[indexPath.row] as! BzbsCampaign
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell

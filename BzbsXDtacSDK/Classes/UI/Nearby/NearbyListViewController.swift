@@ -16,6 +16,7 @@ class NearbyListViewController: BaseListController {
             collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
             collectionView.register(CampaignRotateCVCell.getNib(), forCellWithReuseIdentifier: "campaignRotateCell")
             collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
+            collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
             collectionView.contentInset = UIEdgeInsets(top: 8, left: 4, bottom: 0, right: 4)
             collectionView.alwaysBounceVertical = true
         }
@@ -126,6 +127,11 @@ class NearbyListViewController: BaseListController {
             _isEnd = true
         }
         
+        if !isConnectedToInternet() {
+            showPopupInternet()
+            return
+        }
+        
         if _isCallApi || _isEnd
         {
             self.loadedData()
@@ -188,7 +194,13 @@ extension NearbyListViewController : UICollectionViewDataSource, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if _arrDataShow.count == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath)
+            if _isCallApi
+            {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
+            cell.imv.image = UIImage(named: "ic_reward_location", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            cell.lbl.text = "nearby_empty".localized()
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell

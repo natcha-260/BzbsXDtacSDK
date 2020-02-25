@@ -973,10 +973,12 @@ extension BzbsMainViewController : CategoryCVCellDelegate
             }, cancel: nil)
             return
         }
+        
         if !isConnectedToInternet() {
             showPopupInternet()
             return
         }
+        
         let item = arrCategory[index]
         if let nav = self.navigationController
         {

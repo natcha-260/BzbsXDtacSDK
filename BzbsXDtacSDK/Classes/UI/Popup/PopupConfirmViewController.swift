@@ -67,14 +67,20 @@ class PopupConfirmViewController: UIViewController {
     
     @IBAction func clickClose(_ sender: Any) {
 //        self.view.removeFromSuperview()
-        closeSelector?()
-        self.dismiss(animated: true, completion: nil)
+//        closeSelector?()
+//        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            self.closeSelector?()
+        }
     }
     
     @IBAction func clickConfirm(_ sender: Any) {
 //        self.view.removeFromSuperview()
-        confirmSelector?()
-        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
+        
+        self.dismiss(animated: true) {
+            self.confirmSelector?()
+        }
     }
 }
 

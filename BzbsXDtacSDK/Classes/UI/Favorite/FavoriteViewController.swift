@@ -111,6 +111,7 @@ class FavoriteViewController: BaseListController {
     {
         tableView.register(FavoriteCell.getNib(), forCellReuseIdentifier: "favoriteCell")
         tableView.register(EmptyTVCell.getNib(), forCellReuseIdentifier: "emptyCell")
+        tableView.register(BlankTVCell.getNib(), forCellReuseIdentifier: "blankCell")
     }
     
     // MARK:- API
@@ -228,20 +229,20 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         if _arrDataShow.count == 0 {
+            if _isCallApi {
+                return tableView.dequeueReusableCell(withIdentifier: "blankCell", for: indexPath)
+            }
             let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTVCell
+            cell.imv.image = UIImage(named: "ic_reward_favorite", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            cell.lbl.text = "favorite_empty".localized()
             return cell
         }
         
-        if _arrDataShow.count > 0
-        {
-            let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-            let cell = tableView.dequeueReusableCell(withIdentifier: "favoriteCell", for: indexPath) as! FavoriteCell
-            cell.setupWith(item)
-            cell.btnFav.addTarget(self, action: #selector(self.clickFavourite), for: UIControl.Event.touchUpInside)
-            return cell
-        }
-        
-        return UITableViewCell()
+        let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        let cell = tableView.dequeueReusableCell(withIdentifier: "favoriteCell", for: indexPath) as! FavoriteCell
+        cell.setupWith(item)
+        cell.btnFav.addTarget(self, action: #selector(self.clickFavourite), for: UIControl.Event.touchUpInside)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -181,7 +181,7 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     
     func showPopupInternet(_ closeCallback:(() -> Void)? = nil)
     {
-        PopupManager.informationPopup(self, title: nil, message: "util_msg_no_internet".localized() , close: closeCallback)
+        PopupManager.informationPopup(self, title: "util_header_no_internet".localized(), message: "util_msg_no_internet".localized() , close: closeCallback)
     }
     
     // MARK:- Languaget

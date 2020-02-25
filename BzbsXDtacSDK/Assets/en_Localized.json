@@ -16,6 +16,7 @@
     "nearby_map_title" : "Near By",
     "nearby_direction" : "Direction",
     "nearby_cat_title" : "Nearby",
+    "nearby_empty" : "No nearby privileges found.",
     
     "campaign_detail_back" : "Cancel",
     "campaign_detail_reward_left" : "Reward Left",
@@ -41,14 +42,17 @@
     
     "favorite_title" : "Favorites",
     "favorite_exp" : "Exp",
+    "favorite_empty" : "No favorites found.",
     
     "history_title" : "History",
     "history_redeem_on" : "Redeem on",
     "history_status_avilable" : "Available",
     "history_status_expired" : "Expired",
+    "history_empty" : "No nearby privileges found.",
     
     "util_km" : "Km.",
-    "util_msg_no_internet" :"Internet not connect, please try again.",
+    "util_header_no_internet" : "We're sorry",
+    "util_msg_no_internet" :"Please connect to the internet to use this feature",
     "util_no_data" : "No Data",
     
     "scan_title" : "Scan",
@@ -82,4 +86,6 @@
     "popup_retry_login_fail" : "Retry",
     
     "recommend_title" : "Recommend for you",
+    
+    "major_empty" : "No privilege campaign found.",
 }

@@ -15,6 +15,7 @@
     "nearby_map_title" : "ร้านค้าใกล้ตัว",
     "nearby_direction" : "นำทาง",
     "nearby_cat_title" : "ร้านค้าใกล้ตัว",
+    "nearby_empty" : "ไม่พบร้านค้าที่ใกล้เคียง",
     
     "campaign_detail_back" : "ยกเลิก",
     "campaign_detail_reward_left" : "สิทธิพิเศษคงเหลือ",
@@ -40,14 +41,17 @@
     
     "favorite_title" : "รายการโปรด",
     "favorite_exp" : "หมดอายุ",
+    "favorite_empty" : "ไม่พบรายการโปรด",
     
     "history_title" : "ประวัติ",
     "history_redeem_on" : "แลกเมื่อ",
     "history_status_avilable" : "ดู Code",
     "history_status_expired" : "หมดอายุแล้ว",
+    "history_empty" : "ไม่พบร้านค้าที่ใกล้เคียง",
     
     "util_km" : "กม.",
-    "util_msg_no_internet" : "ไม่สามารถเชื่อมต่ออินเตอร์เน็ต กรุณาลองใหม่อีกครั้ง",
+    "util_header_no_internet" : "ขออภัยค่ะ",
+    "util_msg_no_internet" : "รบกวนเชื่อมต่ออินเตอร์เน็ตเพื่อใช้งานฟีเจอร์นี้",
     "util_no_data" : "ไม่พบข้อมูล",
     
     "scan_title" : "สแกน",
@@ -81,4 +85,6 @@
     "popup_retry_login_fail" : "ลองใหม่",
     
     "recommend_title" : "ร้านค้าแนะนำสำหรับคุณ",
+    
+    "major_empty" : " ไม่พบรายการสิทธิพิเศษ",
 }

@@ -38,6 +38,7 @@ class SearchResultListController: BaseListController {
     override func loadView() {
         super.loadView()
         collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
+        collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
         collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
         collectionView.alwaysBounceVertical = true
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 2, bottom: 8, right: 2)
@@ -134,7 +135,14 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if self._arrDataShow.count == 0 {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath)
+            if _isCallApi
+            {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
+            cell.imv.image = UIImage(named: "ic_reward_document", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            cell.lbl.text = "major_empty".localized()
+            return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign

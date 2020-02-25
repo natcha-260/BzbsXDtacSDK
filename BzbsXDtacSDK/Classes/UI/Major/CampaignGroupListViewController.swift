@@ -26,6 +26,7 @@ class CampaignGroupListViewController: BaseListController {
             collectionView.dataSource = self
             collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
             collectionView.register(CampaignRotateCVCell.getNib(), forCellWithReuseIdentifier: "campaignRotateCell")
+            collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
             collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
             collectionView.contentInset = UIEdgeInsets.zero
             collectionView.alwaysBounceVertical = true
@@ -100,6 +101,7 @@ class CampaignGroupListViewController: BaseListController {
     }
     
     override func loadedData() {
+        self.hideLoader()
         collectionView.es.stopPullToRefresh()
         collectionView.reloadData()
         _isCallApi = false
@@ -137,9 +139,16 @@ extension CampaignGroupListViewController : UICollectionViewDataSource, UICollec
             
             return cell
         }
+        
         if self._arrDataShow.count == 0
         {
+            if _isCallApi
+            {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+            }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
+            cell.imv.image = UIImage(named: "ic_reward_document", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            cell.lbl.text = "major_empty".localized()
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
