@@ -10,7 +10,7 @@ PODS:
   - AppCenter/Core (3.0.0)
   - AppCenter/Crashes (3.0.0):
     - AppCenter/Core
-  - BzbsXDtacSDK (1.0.16):
+  - BzbsXDtacSDK (1.1.0):
     - Alamofire
     - AlamofireImage
     - ESPullToRefresh
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   AppCenter: 7a0bbe928d07467ac8b2d7f6f2a675872a6471d8
-  BzbsXDtacSDK: 4f40a0281d64e58464ec656cebfe035f8774c4cc
+  BzbsXDtacSDK: 67d33171b0a408d4bafbed128cae791a3284b047
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   ESPullToRefresh: efed00d52597065e9a84e1e52fa444fdb1a1dee0
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
