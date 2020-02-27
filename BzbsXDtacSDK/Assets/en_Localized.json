@@ -48,7 +48,7 @@
     "history_redeem_on" : "Redeem on",
     "history_status_avilable" : "Available",
     "history_status_expired" : "Expired",
-    "history_empty" : "No nearby privileges found.",
+    "history_empty" : "No redemption history found.",
     
     "util_km" : "Km.",
     "util_header_no_internet" : "We're sorry",
