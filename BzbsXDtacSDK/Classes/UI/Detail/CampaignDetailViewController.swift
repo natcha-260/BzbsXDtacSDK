@@ -993,6 +993,8 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
             txvText.isEditable = false
             if isShowTab == .branch
             {
+                lblText.attributedText = nil
+                txvText.attributedText = nil
                 lblText.text = str
                 txvText.text = str
             } else {

@@ -74,14 +74,14 @@ class TokenSelectViewController: UIViewController {
     @IBAction func clickSkipLogin(_ sender: Any) {
         view.endEditing(true)
         Bzbs.shared.versionString = strVersion
-        Bzbs.shared.setup(token: "", ticket: "", language: language)
+        Bzbs.shared.setup(token: "", ticket: "", language: language, DTACSegment: "")
         gotoMain()
     }
     
     @IBAction func clickNoToken(_ sender: Any) {
         view.endEditing(true)
         Bzbs.shared.versionString = strVersion
-        Bzbs.shared.setup(token: "", ticket: "", language: language)
+        Bzbs.shared.setup(token: "", ticket: "", language: language, DTACSegment: "")
         gotoMain()
     }
     
@@ -89,15 +89,15 @@ class TokenSelectViewController: UIViewController {
         view.endEditing(true)
         Bzbs.shared.versionString = strVersion
         if isDev {
-            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY=", ticket: "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM=", language: language)
+            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY=", ticket: "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM=", language: language, DTACSegment: "4000")
         }
         
         if isStg {
-            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY=", ticket: "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM=", language: language)
+            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY=", ticket: "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM=", language: language, DTACSegment: "4000")
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxoH1KiSmJ6WvfESsSSBNfz94XtJABzCNG4=", ticket: "AgN3VXKvpl2a9BVRZgx8SpkaLjWQuKc7h/nMZAJdoGaE4MKLPAvJPPVMU5c=", language: language)
+            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxoH1KiSmJ6WvfESsSSBNfz94XtJABzCNG4=", ticket: "AgN3VXKvpl2a9BVRZgx8SpkaLjWQuKc7h/nMZAJdoGaE4MKLPAvJPPVMU5c=", language: language, DTACSegment: "4000")
         }
         gotoMain()
     }
@@ -106,11 +106,11 @@ class TokenSelectViewController: UIViewController {
         view.endEditing(true)
         Bzbs.shared.versionString = strVersion
         if isDev || isStg {
-            Bzbs.shared.setup(token: "6SjkaciPnsVcxjSQsgJJ3jaKF48+uteT37l/Rhh01xxg8zlK5dP1hB7HQRkLZ+3aHEqDusyKx28=", ticket: "1QKNrsS2El4Eu5PDEIVs/1boJiOWTyH1ZC3EOZiXtI5KlD7uFRpm55srYSY=", language: language)
+            Bzbs.shared.setup(token: "6SjkaciPnsVcxjSQsgJJ3jaKF48+uteT37l/Rhh01xxg8zlK5dP1hB7HQRkLZ+3aHEqDusyKx28=", ticket: "1QKNrsS2El4Eu5PDEIVs/1boJiOWTyH1ZC3EOZiXtI5KlD7uFRpm55srYSY=", language: language, DTACSegment: "3000")
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "ecTRUtHv6HxkdJJ4h2KpOs1vGEd8NPmy95FUzj7RpzqwhNGkzRBJi7Z3/Z0MxnOEj7hyj2ovEG4=", ticket: "zABxi7c6310ZoxU8etbjI84fOsNBp3tCku3aNKb8TdryP93K54b0jLVCghw=", language: language)
+            Bzbs.shared.setup(token: "ecTRUtHv6HxkdJJ4h2KpOs1vGEd8NPmy95FUzj7RpzqwhNGkzRBJi7Z3/Z0MxnOEj7hyj2ovEG4=", ticket: "zABxi7c6310ZoxU8etbjI84fOsNBp3tCku3aNKb8TdryP93K54b0jLVCghw=", language: language, DTACSegment: "3000")
         }
         gotoMain()
     }
@@ -120,11 +120,11 @@ class TokenSelectViewController: UIViewController {
         Bzbs.shared.versionString = strVersion
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs=", ticket: "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA=", language: language)
+            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs=", ticket: "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA=", language: language, DTACSegment: "2000")
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ8H1KiSmJ6WvfESsSSBNfz9ELcMZ6lm4hY=", ticket: "IQEcGD5nrV1bwWvTVzaoYAEnRbw0aPwTVLzIZQ3jZlTiZ6qxDfojfAw0RNs=", language: language)
+            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ8H1KiSmJ6WvfESsSSBNfz9ELcMZ6lm4hY=", ticket: "IQEcGD5nrV1bwWvTVzaoYAEnRbw0aPwTVLzIZQ3jZlTiZ6qxDfojfAw0RNs=", language: language, DTACSegment: "2000")
         }
         gotoMain()
     }
@@ -134,11 +134,11 @@ class TokenSelectViewController: UIViewController {
         Bzbs.shared.versionString = strVersion
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU=", ticket: "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M=", language: language)
+            Bzbs.shared.setup(token: "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU=", ticket: "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M=", language: language, DTACSegment: "1000")
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc=", ticket: "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU=", language: language)
+            Bzbs.shared.setup(token: "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc=", ticket: "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU=", language: language, DTACSegment: "1000")
         }
         
         gotoMain()

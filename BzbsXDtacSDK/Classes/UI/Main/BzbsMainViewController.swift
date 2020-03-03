@@ -189,10 +189,11 @@ import WebKit
         
         getApiGreeting()
         if let token = Bzbs.shared.dtacLoginParams.token, token != "",
-            let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != ""
+            let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != "",
+            let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != ""
         {
             let language = Bzbs.shared.dtacLoginParams.language ?? "th"
-            apiLogin(token, ticket: ticket, language:language)
+            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment)
             if Bzbs.shared.userLogin != nil {
                 getApiCategory()
                 getApiRecommend()
@@ -255,13 +256,13 @@ import WebKit
         }
     }
     
-    func apiLogin(_ token:String, ticket: String, language:String)
+    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String)
     {
         let isNeedupdateUI = Bzbs.shared.userLogin == nil
         if !isNeedupdateUI {
             showLoader()
         }
-        Bzbs.shared.login(token: token, ticket: ticket, language: language, completionHandler: {
+        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, completionHandler: {
             
             if let user = Bzbs.shared.userLogin, user.dtacLevel == .no_level {
                 Bzbs.shared.delegate?.reLogin()

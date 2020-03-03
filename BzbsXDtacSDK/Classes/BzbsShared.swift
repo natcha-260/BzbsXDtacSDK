@@ -16,6 +16,7 @@ struct DtacLoginParams {
     var token:String?
     var ticket :String?
     var language :String?
+    var DTACSegment : String?
 }
 
 @objc public protocol BzbsDelegate {
@@ -71,11 +72,12 @@ struct DtacLoginParams {
         return resourceBundle
     }
     
-    @objc public func setup(token:String, ticket:String, language:String, delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
+    @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
         var loginParams = DtacLoginParams()
         loginParams.token = token
         loginParams.ticket = ticket
         loginParams.language = language
+        loginParams.DTACSegment = DTACSegment
         
         self.dtacLoginParams = loginParams
         relogin()
@@ -98,9 +100,9 @@ struct DtacLoginParams {
     
     var isCallingLogin = false
     
-    @objc public func login(token:String, ticket:String, language:String)
+    @objc public func login(token:String, ticket:String, language:String, DTACSegment:String)
     {
-        login(token: token, ticket: ticket, language: language, completionHandler: nil, failureHandler: nil)
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, completionHandler: nil, failureHandler: nil)
     }
     
     func relogin(completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
@@ -108,10 +110,11 @@ struct DtacLoginParams {
         let token = dtacLoginParams.token
         let ticket = dtacLoginParams.ticket
         let language = dtacLoginParams.language ?? "th"
-        login(token: token, ticket: ticket, language: language, completionHandler: completionHandler, failureHandler: failureHandler)
+        let DTACSegment = dtacLoginParams.DTACSegment ?? ""
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, completionHandler: completionHandler, failureHandler: failureHandler)
     }
     
-    func login(token:String?, ticket:String?, language:String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
+    func login(token:String?, ticket:String?, language:String, DTACSegment: String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
     {
         if isCallingLogin { return }
         isCallingLogin = true
@@ -119,31 +122,32 @@ struct DtacLoginParams {
         {
             BuzzebeesCore.apiSetupPrefix(successCallback: {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, completionHandler: completionHandler, failureHandler: failureHandler)
             }) {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, completionHandler: completionHandler, failureHandler: failureHandler)
             }
             return
         }
         
-        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language)
+        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment)
         
         if let token = dtacLoginParams.token, token != "",
             let ticket = dtacLoginParams.ticket, ticket != "",
-            let language = dtacLoginParams.language
+            let language = dtacLoginParams.language,
+            let DTACSegment = dtacLoginParams.DTACSegment, DTACSegment != ""
         {
             let version = Bzbs.shared.versionString
             let strVersion = Bzbs.shared.prefixApp + version
-            let loginParams = DeviceLoginParams(uuid: token
+            let loginParams = DtacDeviceLoginParams(uuid: token
                 , os: "ios " + UIDevice.current.systemVersion
                 , platform: UIDevice.current.model
                 , macAddress: UIDevice.current.identifierForVendor!.uuidString
                 , deviceNotiEnable: false
                 , clientVersion: strVersion
-                , deviceToken: token, customInfo: ticket, language:language)
+                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment)
             
-            BuzzebeesAuth().login(loginParams: loginParams, successCallback: { (user,dict) in
+            BuzzebeesAuth().loginDtac(loginParams: loginParams, successCallback: { (user,dict) in
                 self.isCallingLogin = false
                 Bzbs.shared.userLogin = user
                 NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
@@ -381,5 +385,23 @@ extension BzbsUser
         default:
             return .customer
         }
+    }
+}
+
+class DtacDeviceLoginParams : DeviceLoginParams {
+    var DTACSegment:String!
+    
+    init(uuid: String, os: String, platform: String, macAddress: String, deviceNotiEnable: Bool, clientVersion: String, deviceToken: String?, customInfo: String?, language: String?, DTACSegment:String?) {
+        super.init(uuid: uuid,
+                   os: os,
+                   platform: platform,
+                   macAddress: macAddress,
+                   deviceNotiEnable: deviceNotiEnable,
+                   clientVersion: clientVersion,
+                   deviceToken: deviceToken,
+                   customInfo:customInfo,
+                   language:language)
+        
+        self.DTACSegment = DTACSegment
     }
 }

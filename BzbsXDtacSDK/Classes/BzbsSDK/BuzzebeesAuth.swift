@@ -483,3 +483,57 @@ public class BuzzebeesAuth: BuzzebeesCore {
         } , failCallback: failCallback )
     }
 }
+
+extension BuzzebeesAuth {
+    
+    func loginDtac(loginParams: DtacDeviceLoginParams
+    , successCallback: @escaping (_ result: BzbsUser, _ dict:Dictionary<String, AnyObject>) -> Void
+    , failCallback: @escaping (_ error: BzbsError) -> Void) {
+        
+        var locale = 1054
+        if let language = loginParams.language?.lowercased()
+        {
+            if language == "en" {
+                locale = 1033
+            } else {
+                locale = 1054
+            }
+        }
+        
+        var params = [
+            "uuid": loginParams.uuid as Any,
+            "app_id": self.appId as Any,
+            "os": loginParams.os as Any,
+            "platform": loginParams.platform as Any,
+            "mac_address": loginParams.mac_address as Any,
+            "device_noti_enable": String(loginParams.device_noti_enable),
+            "client_version": loginParams.client_version as Any,
+            "info": loginParams.customInfo as Any,
+            "locale": locale as Any,
+            "device_locale": locale as Any
+            ] as [String : Any]
+        
+        if let strDeviceToken = loginParams.device_token {
+            params["device_token"] = strDeviceToken
+        }
+        
+        if let DTACSegment = loginParams.DTACSegment {
+            params["segment_code"] = DTACSegment
+        }
+        
+        requestAlamofire(HTTPMethod.post
+            , strURL: BuzzebeesCore.apiUrl + "/api/auth/device_login"
+            , params: params as [String : AnyObject]?
+            , successCallback: { (ao) in
+                if let dictJSON = ao as? Dictionary<String, AnyObject> {
+                    if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
+                        successCallback(BzbsUser(dict: dictJSON), dictJSON)
+                        return
+                    }
+                }
+                
+                self.serverSendDataWrongFormat(failCallback: failCallback)
+                return
+        } , failCallback: failCallback )
+    }
+}
