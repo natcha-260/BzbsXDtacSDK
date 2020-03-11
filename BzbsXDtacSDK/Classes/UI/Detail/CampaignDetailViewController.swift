@@ -285,8 +285,12 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     self.arrBranch = tmpBranchList
                     self.tableView.reloadData()
             }) { (error) in
-                
+                self.arrBranch.removeAll()
+            self.tableView.reloadData()
             }
+        } else {
+            self.arrBranch.removeAll()
+            self.tableView.reloadData()
         }
     }
     

@@ -134,7 +134,7 @@ class TokenSelectViewController: UIViewController {
         Bzbs.shared.versionString = strVersion
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU=", ticket: "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M=", language: language, DTACSegment: "1000")
+            Bzbs.shared.setup(token: "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8=", ticket: "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ=", language: language, DTACSegment: "1000")
         }
         
         if isPrd {

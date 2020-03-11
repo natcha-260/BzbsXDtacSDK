@@ -135,7 +135,7 @@ struct DtacLoginParams {
         if let token = dtacLoginParams.token, token != "",
             let ticket = dtacLoginParams.ticket, ticket != "",
             let language = dtacLoginParams.language,
-            let DTACSegment = dtacLoginParams.DTACSegment, DTACSegment != ""
+            let DTACSegment = dtacLoginParams.DTACSegment
         {
             let version = Bzbs.shared.versionString
             let strVersion = Bzbs.shared.prefixApp + version

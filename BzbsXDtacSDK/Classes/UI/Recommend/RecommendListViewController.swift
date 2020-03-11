@@ -46,6 +46,7 @@ class RecommendListViewController: BaseListController {
         super.loadView()
         collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
         collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
+        collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 2, bottom: 8, right: 2)
         collectionView.alwaysBounceVertical = true
     }
@@ -183,7 +184,13 @@ extension RecommendListViewController : UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if _arrDataShow.count == 0 {
+            if _isCallApi
+            {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+            }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
+            cell.imv.image = UIImage(named: "ic_reward_document", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            cell.lbl.text = "major_empty".localized()
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell

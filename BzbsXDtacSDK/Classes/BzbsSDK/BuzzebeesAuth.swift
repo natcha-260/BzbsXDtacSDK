@@ -517,9 +517,9 @@ extension BuzzebeesAuth {
             params["device_token"] = strDeviceToken
         }
         
-        if let DTACSegment = loginParams.DTACSegment {
-            params["segment_code"] = DTACSegment
-        }
+//        if let DTACSegment = loginParams.DTACSegment {
+//            params["segment_code"] = DTACSegment == "" ? "9999" : DTACSegment
+//        }
         
         requestAlamofire(HTTPMethod.post
             , strURL: BuzzebeesCore.apiUrl + "/api/auth/device_login"
