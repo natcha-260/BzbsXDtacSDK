@@ -896,7 +896,7 @@ extension CampaignByCatViewController: UITextFieldDelegate
         
         if !isLoggedIn()
         {
-            PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+            PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                 , strConfirm: "popup_retry_login_fail".localized()
                 , strClose: "popup_cancel".localized()
                 , confirm: {

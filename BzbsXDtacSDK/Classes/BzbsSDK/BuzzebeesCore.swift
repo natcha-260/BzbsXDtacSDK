@@ -28,6 +28,7 @@ public class BuzzebeesCore: NSObject {
     var sessionManager :SessionManager!
     
     static var isSetEndpoint = false
+    static var isCallingSetEndpoint = false
     static var apiUrl: String! = ""
     static var blobUrl : String! = ""
     static var miscUrl : String! = ""
@@ -56,6 +57,8 @@ public class BuzzebeesCore: NSObject {
     
     class func apiSetupPrefix(successCallback:@escaping () -> Void, failCallback:@escaping () -> Void)
     {
+        if isCallingSetEndpoint { return }
+        isCallingSetEndpoint = true
         let startTime = Date()
         let version = Bzbs.shared.versionString
         let endpointUrl = "https://apidtw.buzzebees.com/api/config/353144231924127_config_ios_\(version)/blob/"
@@ -112,6 +115,7 @@ public class BuzzebeesCore: NSObject {
                         urlSegmentImageBlue = URL(string: blueUrl)
                     }
                     
+                    
                     if let blobUrl = dictJSON["url_blob"] as? String ,
                         let baseUrl = dictJSON["url_base"] as? String ,
                         let miscUrl = dictJSON["url_misc"] as? String ,
@@ -139,13 +143,23 @@ public class BuzzebeesCore: NSObject {
                         }
                         
                         
-                        isSetEndpoint = true
-                        successCallback()
-                        return
+                        if let languageUrl = dictJSON["language"] as? Dictionary<String,AnyObject>
+                        {
+                            getLanguage(languageUrl, successCallback: successCallback, failCallback: failCallback)
+                            isCallingSetEndpoint = false
+                            return
+                        } else {
+                            failCallback()
+                            isSetEndpoint = true
+                            isCallingSetEndpoint = false
+                            return
+                        }
                     }
+                    
                 }
                 failCallback()
             } catch _ as NSError {
+                isCallingSetEndpoint = false
                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
                 print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
                 failCallback()
@@ -153,6 +167,48 @@ public class BuzzebeesCore: NSObject {
         }
     }
     
+    class func getLanguage(_ languageDict:Dictionary<String,AnyObject>, successCallback:@escaping () -> Void, failCallback:@escaping () -> Void){
+        if let language = Convert.IntFromObject(languageDict["version"])
+        {
+            let userDefault = UserDefaults.standard
+            let languageKey = "bzbs_langauge_\(language)"
+            if let languageDict = userDefault.object(forKey: languageKey) as? Dictionary<String,AnyObject>
+            {
+                LocaleCore.shared.generateExtraWordingString(languageDict)
+                isSetEndpoint = true
+                successCallback()
+            } else {
+                if let strUrl = languageDict["file"] as? String,
+                    let url = URL(string: strUrl)
+                {
+                    let startTime = Date()
+                    let urlRequest = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
+                    request(urlRequest).responseJSON { (response) in
+                        do {
+                            let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                            print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                            let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                            if let dictJSON = json as? Dictionary<String, AnyObject>  {
+                                userDefault.set(dictJSON, forKey: languageKey)
+                                
+                                LocaleCore.shared.generateExtraWordingString(dictJSON)
+                                isSetEndpoint = true
+                                successCallback()
+                            } else {
+                                failCallback()
+                            }
+                        } catch _ as NSError {
+                            let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                            print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                            failCallback()
+                        }
+                        
+                    }
+                }
+                failCallback()
+            }
+        }
+    }
     
     func haveErrorFromDict(dict: Dictionary<String, AnyObject>, failCallback: @escaping (_ error: BzbsError) -> Void) -> Bool {
         if let itemError = dict["error"] as? Dictionary<String, AnyObject> {

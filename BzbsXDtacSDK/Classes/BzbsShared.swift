@@ -60,6 +60,7 @@ struct DtacLoginParams {
     var arrCategory :[BzbsCategory]?
     var blueCategory : BzbsCategory?
     var deepLinkUrl : URL?
+    var isRetriedGetSegment = false
     
     var currentBundle : Bundle {
         let bundle = Bundle(for: BzbsMainViewController.self)
@@ -137,6 +138,11 @@ struct DtacLoginParams {
             let language = dtacLoginParams.language,
             let DTACSegment = dtacLoginParams.DTACSegment
         {
+            if DTACSegment == "" && !isRetriedGetSegment
+            {
+                delegate?.reLogin()
+                isRetriedGetSegment = true
+            }
             let version = Bzbs.shared.versionString
             let strVersion = Bzbs.shared.prefixApp + version
             let loginParams = DtacDeviceLoginParams(uuid: token
@@ -145,7 +151,7 @@ struct DtacLoginParams {
                 , macAddress: UIDevice.current.identifierForVendor!.uuidString
                 , deviceNotiEnable: false
                 , clientVersion: strVersion
-                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment)
+                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment == "" ? "9999" : DTACSegment)
             
             BuzzebeesAuth().loginDtac(loginParams: loginParams, successCallback: { (user,dict) in
                 self.isCallingLogin = false

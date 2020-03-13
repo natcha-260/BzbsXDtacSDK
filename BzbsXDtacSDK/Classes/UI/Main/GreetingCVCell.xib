@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,36 +33,42 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TcB-hV-c1j">
-                                <rect key="frame" x="431.5" y="16.5" width="126.5" height="37"/>
+                                <rect key="frame" x="385.5" y="14" width="172.5" height="42"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Reward Level :" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B5w-7v-SVX">
-                                        <rect key="frame" x="0.0" y="0.0" width="126.5" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Reward Level :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B5w-7v-SVX">
+                                        <rect key="frame" x="0.0" y="0.0" width="151.5" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgt_icon_dtac" translatesAutoresizingMaskIntoConstraints="NO" id="Ety-Mx-uzj">
-                                        <rect key="frame" x="5" y="17" width="121.5" height="20"/>
+                                        <rect key="frame" x="0.0" y="17" width="151.5" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Ety-Mx-uzj" secondAttribute="height" multiplier="1056: 174" id="ZBC-cm-Knj"/>
-                                            <constraint firstAttribute="height" constant="20" id="n7Q-Ou-LPu"/>
+                                            <constraint firstAttribute="height" constant="25" id="n7Q-Ou-LPu"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgD-qk-cgL">
-                                        <rect key="frame" x="0.0" y="0.0" width="126.5" height="37"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgD-qk-cgL">
+                                        <rect key="frame" x="1" y="0.0" width="166" height="42"/>
                                     </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_search_icon_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="WOD-X1-C8K">
+                                        <rect key="frame" x="159.5" y="17" width="13" height="25"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="B5w-7v-SVX" firstAttribute="top" secondItem="TcB-hV-c1j" secondAttribute="top" id="0vR-nd-3Li"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ety-Mx-uzj" secondAttribute="trailing" id="2f7-8y-9UB"/>
                                     <constraint firstItem="Ety-Mx-uzj" firstAttribute="top" secondItem="B5w-7v-SVX" secondAttribute="bottom" id="4t4-qO-wGu"/>
+                                    <constraint firstItem="WOD-X1-C8K" firstAttribute="top" secondItem="B5w-7v-SVX" secondAttribute="bottom" id="9f5-fh-M5L"/>
+                                    <constraint firstItem="WOD-X1-C8K" firstAttribute="leading" secondItem="Ety-Mx-uzj" secondAttribute="trailing" constant="8" id="9ou-W1-Leo"/>
                                     <constraint firstItem="hgD-qk-cgL" firstAttribute="leading" secondItem="TcB-hV-c1j" secondAttribute="leading" id="AX9-38-pvI"/>
+                                    <constraint firstItem="B5w-7v-SVX" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ety-Mx-uzj" secondAttribute="trailing" id="Hyh-DZ-akN"/>
                                     <constraint firstItem="B5w-7v-SVX" firstAttribute="leading" secondItem="TcB-hV-c1j" secondAttribute="leading" id="Hzz-iM-13s"/>
                                     <constraint firstAttribute="trailing" secondItem="hgD-qk-cgL" secondAttribute="trailing" id="IXC-xb-NOV"/>
-                                    <constraint firstItem="Ety-Mx-uzj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TcB-hV-c1j" secondAttribute="leading" id="Ssp-jU-rse"/>
-                                    <constraint firstAttribute="trailing" secondItem="B5w-7v-SVX" secondAttribute="trailing" id="YIS-85-dlh"/>
+                                    <constraint firstAttribute="trailing" secondItem="WOD-X1-C8K" secondAttribute="trailing" id="LHU-MH-vbA"/>
+                                    <constraint firstItem="Ety-Mx-uzj" firstAttribute="leading" secondItem="TcB-hV-c1j" secondAttribute="leading" id="Ssp-jU-rse"/>
                                     <constraint firstAttribute="bottom" secondItem="hgD-qk-cgL" secondAttribute="bottom" id="bqe-ZY-Tyt"/>
+                                    <constraint firstAttribute="bottom" secondItem="WOD-X1-C8K" secondAttribute="bottom" id="uTH-wO-881"/>
                                     <constraint firstItem="hgD-qk-cgL" firstAttribute="top" secondItem="TcB-hV-c1j" secondAttribute="top" id="vpC-83-F1S"/>
                                     <constraint firstAttribute="bottom" secondItem="Ety-Mx-uzj" secondAttribute="bottom" id="yha-0p-fGO"/>
                                 </constraints>
@@ -99,11 +105,13 @@
                 <outlet property="imvLevel" destination="Ety-Mx-uzj" id="vTX-Ky-qjJ"/>
                 <outlet property="lblGreeting" destination="XG8-6Q-AXr" id="A0S-2j-ElK"/>
                 <outlet property="lblLevelTitle" destination="B5w-7v-SVX" id="6cZ-7f-zMr"/>
+                <outlet property="vwLevel" destination="TcB-hV-c1j" id="S7x-Bj-Y2u"/>
             </connections>
             <point key="canvasLocation" x="-78.260869565217391" y="86.383928571428569"/>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="img_search_icon_arrow" width="6.5" height="13"/>
         <image name="imgt_icon_dtac" width="176" height="24.5"/>
     </resources>
 </document>

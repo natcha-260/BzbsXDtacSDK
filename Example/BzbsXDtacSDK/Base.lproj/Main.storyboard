@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jpG-8U-5ab">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jpG-8U-5ab">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -168,26 +168,15 @@
                                     <constraint firstItem="t0a-RU-yn5" firstAttribute="leading" secondItem="KX5-tj-BMX" secondAttribute="leading" id="Vmj-S0-3Zw"/>
                                 </constraints>
                             </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3rS-db-5P2">
-                                <rect key="frame" x="15" y="20" width="200" height="32"/>
-                                <segments>
-                                    <segment title="Dev"/>
-                                    <segment title="Staging"/>
-                                    <segment title="Prod"/>
-                                </segments>
-                                <connections>
-                                    <action selector="didChangeEndpoint:" destination="jpG-8U-5ab" eventType="valueChanged" id="KCa-qX-s2O"/>
-                                </connections>
-                            </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="M9p-TG-hrK">
-                                <rect key="frame" x="15" y="112" width="71" height="32"/>
+                                <rect key="frame" x="15" y="62" width="71" height="32"/>
                                 <segments>
                                     <segment title="En"/>
                                     <segment title="Th"/>
                                 </segments>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xef-WP-TJ0">
-                                <rect key="frame" x="15" y="66" width="200" height="32"/>
+                                <rect key="frame" x="15" y="16" width="200" height="32"/>
                                 <segments>
                                     <segment title="Dev"/>
                                     <segment title="Staging"/>
@@ -197,21 +186,27 @@
                                     <action selector="didChangeVersion:" destination="jpG-8U-5ab" eventType="valueChanged" id="8L1-Ek-IfW"/>
                                 </connections>
                             </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Hn-wh-fYJ">
+                                <rect key="frame" x="166.5" y="160" width="42" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="M9p-TG-hrK" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leading" constant="15" id="6tY-dv-P1N"/>
                             <constraint firstItem="M9p-TG-hrK" firstAttribute="top" secondItem="xef-WP-TJ0" secondAttribute="bottom" constant="15" id="7gg-zL-cIs"/>
-                            <constraint firstItem="3rS-db-5P2" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leadingMargin" constant="-1" id="81e-0P-daD"/>
-                            <constraint firstItem="3rS-db-5P2" firstAttribute="top" secondItem="qML-Sz-EbI" secondAttribute="bottom" constant="20" id="HbT-BS-DMA"/>
-                            <constraint firstItem="xef-WP-TJ0" firstAttribute="top" secondItem="3rS-db-5P2" secondAttribute="bottom" constant="15" id="MCP-G3-xvd"/>
+                            <constraint firstItem="7Hn-wh-fYJ" firstAttribute="centerX" secondItem="KX5-tj-BMX" secondAttribute="centerX" id="Cx1-Lc-Etq"/>
+                            <constraint firstItem="xef-WP-TJ0" firstAttribute="top" secondItem="qML-Sz-EbI" secondAttribute="bottom" constant="16" id="HV6-mp-kdl"/>
+                            <constraint firstItem="KX5-tj-BMX" firstAttribute="top" secondItem="7Hn-wh-fYJ" secondAttribute="bottom" constant="8" id="MoQ-FX-Hzt"/>
                             <constraint firstItem="KX5-tj-BMX" firstAttribute="centerY" secondItem="Mrs-gz-fxc" secondAttribute="centerY" id="ZB2-vu-hFh"/>
                             <constraint firstItem="KX5-tj-BMX" firstAttribute="centerX" secondItem="Mrs-gz-fxc" secondAttribute="centerX" id="abt-ov-Sg3"/>
                             <constraint firstItem="xef-WP-TJ0" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leading" constant="15" id="nXy-io-F32"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="segmentEndpoint" destination="3rS-db-5P2" id="meB-O5-K0z"/>
+                        <outlet property="lblEnv" destination="7Hn-wh-fYJ" id="W2R-5B-8w1"/>
                         <outlet property="segmentLang" destination="M9p-TG-hrK" id="bE4-Bi-nCx"/>
                         <outlet property="segmentVersion" destination="xef-WP-TJ0" id="hjF-RD-Nd9"/>
                     </connections>

@@ -501,6 +501,10 @@ extension SearchViewController: UITextFieldDelegate
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
+        if !string.isAllowedCharacter() {
+            return false
+        }
+        
         let textFieldText: NSString = (textField.text ?? "") as NSString
         let txtAfterUpdate = textFieldText.replacingCharacters(in: range, with: string)
         print(txtAfterUpdate)
@@ -586,6 +590,22 @@ extension SearchViewController : CategoryCVCellDelegate
 extension SearchViewController : UIGestureRecognizerDelegate
 {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
+
+
+extension String {
+
+    func isAllowedCharacter() -> Bool {
+        
+        var characterset = CharacterSet.letters.union(CharacterSet.alphanumerics)
+        characterset.insert("\'")
+        characterset.insert(" ")
+        
+        if self.rangeOfCharacter(from: characterset.inverted) != nil {
+            return false
+        }
         return true
     }
 }

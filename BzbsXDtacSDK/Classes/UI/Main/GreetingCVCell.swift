@@ -13,6 +13,7 @@ class GreetingCVCell: UICollectionViewCell {
     
     @IBOutlet weak var imvGreeting: UIImageView!
     @IBOutlet weak var lblGreeting: UILabel!
+    @IBOutlet weak var vwLevel: UIView!
     @IBOutlet weak var lblLevelTitle: UILabel!
     @IBOutlet weak var imvLevel: UIImageView!
     @IBOutlet weak var btnLevel: UIButton!
@@ -32,7 +33,7 @@ class GreetingCVCell: UICollectionViewCell {
         
         imvGreeting.cornerRadius(corner: 16)
         imvLevel.image = nil// UIImage(named: "imgt_icon_dtac", in: Bzbs.shared.currentBundle, compatibleWith: nil)
-        imvLevel.isHidden = true
+        vwLevel.isHidden = true
     }
     
     func setupWithModel(_ item:GreetingModel?, target:UIViewController, levelSelector:Selector)
@@ -50,8 +51,7 @@ class GreetingCVCell: UICollectionViewCell {
         }
         
         var levelImageUrl:URL?
-        imvLevel.isHidden = false
-        lblLevelTitle.isHidden = false
+        vwLevel.isHidden = false
         if let userLogin = Bzbs.shared.userLogin
         {
             switch userLogin.dtacLevel {
@@ -64,19 +64,16 @@ class GreetingCVCell: UICollectionViewCell {
             case .customer:
                 levelImageUrl = BuzzebeesCore.urlSegmentImageDtac
             case .no_level:
-                imvLevel.isHidden = true
-                lblLevelTitle.isHidden = true
+                vwLevel.isHidden = true
             }
         } else {
-            imvLevel.isHidden = true
-            lblLevelTitle.isHidden = true
+            vwLevel.isHidden = true
         }
         if let url = levelImageUrl
         {
             imvLevel.bzbsSetImage(withURL: url.absoluteString)
         } else {
-            imvLevel.isHidden = true
-            lblLevelTitle.isHidden = true
+            vwLevel.isHidden = true
         }
     }
 }

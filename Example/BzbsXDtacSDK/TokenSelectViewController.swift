@@ -10,21 +10,29 @@ import BzbsXDtacSDK
 
 class TokenSelectViewController: UIViewController {
 
-    @IBOutlet weak var segmentEndpoint: UISegmentedControl!
     @IBOutlet weak var segmentLang: UISegmentedControl!
+    @IBOutlet weak var lblEnv: UILabel!
+    
     var isDev:Bool {
-        return segmentEndpoint.selectedSegmentIndex == 0
+        return strVersion == "1.0.1"
     }
     var isStg:Bool {
-        return segmentEndpoint.selectedSegmentIndex == 1
+        return strVersion == "1.0.2" || strVersion == "0.0.5"
     }
     var isPrd:Bool {
-        return segmentEndpoint.selectedSegmentIndex == 2
+        return !(isStg && isDev)
     }
     var language:String{
         return segmentLang.selectedSegmentIndex == 0 ? "en" : "th"
     }
-    var versionList = ["0.0.3","0.0.4","0.0.5","0.0.6"]
+    var versionList = ["0.0.3","0.0.4","0.0.5","1.0.3","1.0.2","1.0.1"]
+    //  0.0.3 = PRD. DtacApp:9.0.1
+    //  0.0.4 = PRD. DtacApp:9.0.2
+    //  1.0.3 = PRD.
+    //  1.0.2 = STG.
+    //  1.0.1 = DEV.
+    // 20200313
+    
     var strVersion:String {
         segmentVersion.titleForSegment(at: segmentVersion.selectedSegmentIndex) ?? versionList.first!
     }
@@ -39,36 +47,24 @@ class TokenSelectViewController: UIViewController {
         }
     }
     
-    //    ver. 0.0.3 = PRD. DtacApp:9.0.1
-//    ver. 0.0.4 = PRD.
-//    ver. 0.0.5 = STG.
-//    ver. 0.0.6 = DEV.
     override func viewDidLoad() {
         super.viewDidLoad()
-        segmentEndpoint.selectedSegmentIndex = 2
-        segmentVersion.selectedSegmentIndex = 1
-        // Do any additional setup after loading the view.
-    }
-    
-    @IBAction func didChangeEndpoint(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0
-        {
-            segmentVersion.selectedSegmentIndex = 3
-        }
-        
-        if sender.selectedSegmentIndex == 1
-        {
-            segmentVersion.selectedSegmentIndex = 2
-        }
-        
-        if sender.selectedSegmentIndex == 2
-        {
-            segmentVersion.selectedSegmentIndex = 1
-        }
+        segmentVersion.selectedSegmentIndex = 4
+        didChangeVersion(segmentVersion)
+        lblEnv.textColor = .black
     }
     
     @IBAction func didChangeVersion(_ sender: UISegmentedControl) {
-        
+        var strLabel = ""
+        if isDev {
+            strLabel = "DEV : "
+        } else if isStg {
+            strLabel = "STG : "
+        } else if isPrd {
+            strLabel = "PRD : "
+        }
+        strLabel = strLabel + strVersion
+        lblEnv.text = strLabel
     }
     
     @IBAction func clickSkipLogin(_ sender: Any) {
@@ -81,7 +77,14 @@ class TokenSelectViewController: UIViewController {
     @IBAction func clickNoToken(_ sender: Any) {
         view.endEditing(true)
         Bzbs.shared.versionString = strVersion
-        Bzbs.shared.setup(token: "", ticket: "", language: language, DTACSegment: "")
+        
+        if isDev || isStg {
+            Bzbs.shared.setup(token: "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU=", ticket: "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M=", language: language, DTACSegment: "")
+        }
+        
+        if isPrd {
+            Bzbs.shared.setup(token: "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc=", ticket: "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU=", language: language, DTACSegment: "")
+        }
         gotoMain()
     }
     

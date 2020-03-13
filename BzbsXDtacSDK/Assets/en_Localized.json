@@ -1,6 +1,6 @@
 {
     "main_title" : "dtac reward",
-    "main_level_title" : "dtac reward Tier",
+    "main_level_title" : "Your reward status",
     "main_footer_msg" : "dtac reward, Over 30,000 participating retail and service nationwide…just around the corner.",
     "main_footer_fav" : "Favorite",
     "main_footer_hist" : "History",
@@ -84,6 +84,7 @@
     "popup_retry" : "Try again",
     "popup_dtac_login_fail" : "Please try again.",
     "popup_retry_login_fail" : "Retry",
+    "popup_suspend_info" : "Sorry, your mobile number is temporary suspended. Your request can not be processed.",
     
     "recommend_title" : "Recommend for you",
     

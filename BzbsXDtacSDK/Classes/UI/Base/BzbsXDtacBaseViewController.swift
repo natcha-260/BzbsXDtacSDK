@@ -181,7 +181,7 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     
     func showPopupInternet(_ closeCallback:(() -> Void)? = nil)
     {
-        PopupManager.informationPopup(self, title: "util_header_no_internet".localized(), message: "util_msg_no_internet".localized() , close: closeCallback)
+        PopupManager.informationPopup(self, title: "alert_internet_title".errorLocalized(), message: "alert_internet_description".errorLocalized() , close: closeCallback)
     }
     
     // MARK:- Languaget
@@ -448,6 +448,20 @@ extension BzbsXDtacBaseViewController {
         if id == 1905 || code == 1905
         {
             self.didReLogin()
+            return true
+        }
+        
+        if id == 499 || code == 499
+        {
+            PopupManager.informationPopup(self, message: "alert_error_timeout".errorLocalized()) {
+            }
+            return true
+        }
+        
+        if id == 1403 || code == 1403
+        {
+            PopupManager.informationPopup(self, message: "alert_error_redeem_1403".errorLocalized()) {
+            }
             return true
         }
         

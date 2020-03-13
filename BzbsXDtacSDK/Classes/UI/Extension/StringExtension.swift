@@ -22,6 +22,19 @@ extension String {
         return self
     }
     
+    func errorLocalized() -> String {
+        let lang = LocaleCore.shared.getUserLocale() == 1033 ? "en" : "th"
+        
+        if let wordingDict = LocaleCore.shared.extraWordingDict[lang]
+        {
+            if let wording = wordingDict[self]
+            {
+                return wording
+            }
+        }
+        return self
+    }
+    
     var htmlToAttributedString: NSMutableAttributedString? {
         let tmpString = self.replace("\n", replacement: "<br>")
         guard let data = tmpString.data(using: .utf8) else { return NSMutableAttributedString() }

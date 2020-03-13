@@ -158,6 +158,7 @@ open class BBLocale: NSObject
     }
     
     var wordingDict = Dictionary<String,Dictionary<String,String>>()
+    var extraWordingDict = Dictionary<String,Dictionary<String,String>>()
     func loadLanguageString()
     {
         let mainBundle = Bzbs.shared.currentBundle
@@ -194,6 +195,24 @@ open class BBLocale: NSObject
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func generateExtraWordingString(_ dict:Dictionary<String,AnyObject>)
+    {
+        extraWordingDict = Dictionary<String,Dictionary<String,String>>()
+        extraWordingDict["th"] = Dictionary<String,String>()
+        extraWordingDict["en"] = Dictionary<String,String>()
         
+        for key in dict.keys{
+            if let word = dict[key]
+            {
+                if let en = word["EN"] as? String ,
+                    let th = word["TH"] as? String
+                {
+                    extraWordingDict["th"]![key] = th
+                    extraWordingDict["en"]![key] = en
+                }
+            }
+        }
     }
 }

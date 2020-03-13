@@ -400,6 +400,7 @@ import WebKit
         },
                                  failCallback: { (error) in
                                  if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                 self.loadedData()
         })
     }
     
@@ -489,7 +490,7 @@ import WebKit
         
         if !isLoggedIn()
         {
-            PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+            PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                 , strConfirm: "popup_retry_login_fail".localized()
                 , strClose: "popup_cancel".localized()
                 , confirm: {
@@ -539,7 +540,7 @@ import WebKit
         
         if !isLoggedIn()
         {
-            PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+            PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                 , strConfirm: "popup_retry_login_fail".localized()
                 , strClose: "popup_cancel".localized()
                 , confirm: {
@@ -564,7 +565,7 @@ import WebKit
         
         if !isLoggedIn()
         {
-            PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+            PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                 , strConfirm: "popup_retry_login_fail".localized()
                 , strClose: "popup_cancel".localized()
                 , confirm: {
@@ -755,7 +756,7 @@ extension BzbsMainViewController: UITextFieldDelegate
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if !isLoggedIn()
         {
-            PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+            PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                 , strConfirm: "popup_retry_login_fail".localized()
                 , strClose: "popup_cancel".localized()
                 , confirm: {
@@ -899,7 +900,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         let section = indexPath.section
         let width = collectionView.bounds.size.width
         if section == 0 {
-            return CGSize(width: width, height: 60)
+            return CGSize(width: width, height: 65)
         }
         if section == 1 {
             if let first = dashboardItems.first
@@ -912,6 +913,9 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             return CGSize(width: width, height: 1)
         }
         if section == 2 {
+            if arrCategory.count == 0 {
+                return CGSize(width: width - 10, height: 0.1)
+            }
             let rows = ceil(CGFloat(arrCategory.count) / 4.0)
             return CGSize(width: width - 10, height: (85 * rows))
         }
@@ -966,7 +970,7 @@ extension BzbsMainViewController : CategoryCVCellDelegate
     func didSelectedItem(index: Int) {
         if !isLoggedIn()
         {
-            PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+            PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                 , strConfirm: "popup_retry_login_fail".localized()
                 , strClose: "popup_cancel".localized()
                 , confirm: {

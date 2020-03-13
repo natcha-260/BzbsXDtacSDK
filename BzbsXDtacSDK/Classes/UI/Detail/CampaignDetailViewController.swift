@@ -188,17 +188,6 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.isCallingCampaignDetail = false
             if error.id == "-9999"
             {
-//                if !self.isRetry{
-//                    self.isRetry = true
-//                    self.delay(0.33) {
-//                        self.getApiCampaignDetail()
-//                    }
-//                } else {
-//                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_fail".localized()) { () in
-//                        self.back_1_step()
-//                    }
-//                }
-
                 if Bzbs.shared.isDebugMode
                 {
                     print(error.code ?? "-", error.message ?? "-")
@@ -212,7 +201,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 }
             } else {
                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                PopupManager.informationPopup(self, title: nil, message: "campaign_detail_fail".localized()) { () in
+                PopupManager.informationPopup(self, title: nil, message: "alert_error_campaign_detail".errorLocalized()) { () in
                     self.back_1_step()
                 }
             }
@@ -225,7 +214,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     var isLoadedStatus = false
     func getApiCampaignStatus() {
-        if campaign.type == 16 {
+        if campaign.type == 16 || campaign.type == 9{
             self.manageFooter()
             self.tableView.reloadData()
             self.hideLoader()
@@ -252,16 +241,23 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                                     self.tableView.reloadData()
                                                     self.hideLoader()
                                                     
+                                                    if Int(error.id)! == 412 || Int(error.code)! == 412
+                                                    {
+                                                        PopupManager.informationPopup(self, message: "alert_error_query_privilege_412".errorLocalized()) {
+                                                        }
+                                                        return
+                                                    }
+                                                    
+                                                    if Int(error.id)! == 428 || Int(error.code)! == 428
+                                                    {
+                                                        PopupManager.informationPopup(self, message: "alert_error_query_privilege_428".errorLocalized()) {
+                                                        }
+                                                        return
+                                                    }
+
+                                                    
                                                     if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-//                                                    PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized()) {
-//                                                        let tmp = CampaignStatus()
-//                                                        tmp.quantity = 0
-//                                                        tmp.status = false
-//
-//                                                        self.campaignStatus = nil
-//                                                        self.manageFooter()
-//                                                        self.tableView.reloadData()
-//                                                    }
+
             })
         } else {
             if Bzbs.shared.isCallingLogin {
@@ -275,6 +271,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     func getApiBranch()
     {
+//        return
         if let agencyID = campaign.locationAgencyId ?? campaign.agencyID
         {
             let coordinate = LocationManager.shared.getCurrentCoorndate()
@@ -286,7 +283,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     self.tableView.reloadData()
             }) { (error) in
                 self.arrBranch.removeAll()
-            self.tableView.reloadData()
+                self.tableView.reloadData()
             }
         } else {
             self.arrBranch.removeAll()
@@ -307,14 +304,22 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.isCallingApiRedeem = false
         }) { (error) in
             self.hideLoader()
-//            var message = error.message
-//            if message == nil || message?.lowercased() == "conflict"{
-//                message = "campaign_detail_status_fail".localized()
-//            }
-            if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-            PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized(), close: nil)
             self.refreshApi()
             self.isCallingApiRedeem = false
+            
+            if Int(error.id)! == 428 || Int(error.code)! == 428
+            {
+                PopupManager.informationPopup(self, message: "alert_error_redeem_428".errorLocalized(), close: nil)
+                return
+            }
+            
+            if Int(error.id)! == 412 || Int(error.code)! == 412 {
+                PopupManager.informationPopup(self, message: error.message, close: nil)
+                return
+            }
+
+            if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+            PopupManager.informationPopup(self, title: nil, message: "alert_error_409".errorLocalized(), close: nil)
         }
     }
     
@@ -396,7 +401,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         back_1_step()
     }
     
-    @IBAction func clickRight(_ sender: Any) {
+    @IBAction func clickRedeem(_ sender: Any) {
         
         if let type = campaign.type, type == 9 || isCallingApiRedeem {
             return
@@ -415,6 +420,12 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             }
             if let type = campaign.type
             {
+                if let errorcode = campaignStatus?.errorCode,
+                    errorcode == "s2009"
+                    {
+                        PopupManager.informationPopup(self, message: "popup_suspend_info".localized(), close: nil)
+                    return
+                }
                 if type == 1 {
                     let message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
                     PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
@@ -422,40 +433,12 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     }) {
                         
                     }
-//                    showLoader()
-//                    BzbsCoreApi().getCampaignStatus(campaignId: campaign.ID,
-//                                                    deviceLocale: String(LocaleCore.shared.getUserLocale()),
-//                                                    center: LocationManager.shared.getCurrentCoorndate(),
-//                                                    token: Bzbs.shared.userLogin?.token,
-//                                                    successCallback: { (status) in
-//                                                        self.hideLoader()
-//                                                        let message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
-//                                                        PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
-//                                                            self.apiRedeem()
-//                                                        }) {
-//
-//                                                        }
-//                                                        self.hideLoader()
-//                    },
-//                                                    failCallback: { (error) in
-//                                                        self.hideLoader()
-//                                                        if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-//                                                        PopupManager.informationPopup(self, title: nil, message: "campaign_detail_status_fail".localized()) {
-//                                                            let tmp = CampaignStatus()
-//                                                            tmp.quantity = 0
-//                                                            tmp.status = false
-//
-//                                                            self.campaignStatus = tmp
-//                                                            self.manageFooter()
-//                                                            self.tableView.reloadData()
-//                                                        }
-//                    })
                 }
             }
         } else {
             if !isLoggedIn()
             {
-                PopupManager.confirmPopup(self, isWithImage:true, message: "popup_dtac_login_fail".localized()
+                PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
                     , strConfirm: "popup_retry_login_fail".localized()
                     , strClose: "popup_cancel".localized()
                     , confirm: {
@@ -588,56 +571,84 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             if type == 1 {
                 lblRight.text = "campaign_detail_status_redeem".localized()
                 vcRight.backgroundColor = UIColor.dtacBlue
-            } else if type == 9 {
-                lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                vcRight.backgroundColor = UIColor.mainLightGray
-            }
-        }
-        
-        if let _campaignStatus = campaignStatus {
-            if !_campaignStatus.status {
                 
-                vcRight.isUserInteractionEnabled = false
-                vcRight.backgroundColor = UIColor.mainLightGray
-                
-                if _campaignStatus.remark.lowercased() == "Not eligible with any campaign criteria".lowercased() {
-                    lblRight.text = "campaign_detail_status_not_eligible".localized()
-                }else if _campaignStatus.remark.lowercased() == "Redeemed".lowercased() {
-                    lblRight.text = "campaign_detail_status_redeemed".localized()
-                }else if _campaignStatus.remark.lowercased() == "Run out".lowercased() {
-                    lblRight.text = "campaign_detail_status_sold".localized()
-                }
-            }
-        } else {
-            if !isLoadedStatus
-            {
-                if isLoggedIn()
-                {
-                    if campaignStatus == nil {
-                        
-                        lblRight.text = "campaign_detail_status_redeem".localized()
+                if let _campaignStatus = campaignStatus {
+                    
+                    vcRight.isUserInteractionEnabled = false
+                    vcRight.backgroundColor = UIColor.mainLightGray
+                    let remark = _campaignStatus.errorCode
+                    var msgBtn = "alert_button_redeem_s2001".errorLocalized()
+                    
+                    switch remark {
+                    case "s2001":
+                        vcRight.isUserInteractionEnabled = true
                         vcRight.backgroundColor = UIColor.dtacBlue
-                        
-                        if let type = campaign.type{
-                            if type == 9 {
+                        msgBtn = "alert_button_redeem_s2001".errorLocalized()
+                        break
+                    case "s2002":
+                        msgBtn = "alert_button_redeem_s2002".errorLocalized()
+                        break
+                    case "s2003":
+                        msgBtn = "alert_button_redeem_s2003".errorLocalized()
+                        break
+                    case "s2006":
+                        msgBtn = "alert_button_redeem_s2006".errorLocalized()
+                        break
+                    case "s2007":
+                        msgBtn = "alert_button_redeem_s2007".errorLocalized()
+                        break
+                    case "s2008":
+                        msgBtn = "alert_button_redeem_s2008".errorLocalized()
+                        break
+                    case "s2009":
+                        vcRight.isUserInteractionEnabled = true
+                        vcRight.backgroundColor = UIColor.dtacBlue
+                        msgBtn = "alert_button_redeem_s2009".errorLocalized()
+                        break
+                    default:
+                        // default เป็น case redeem
+                        msgBtn = "alert_button_redeem_s2001".errorLocalized()
+                        PopupManager.informationPopup(self, message: "alert_button_redeem_default".errorLocalized(), close: nil)
+                    }
+                    
+                    lblRight.text = msgBtn
+                    
+                } else {
+                    if !isLoadedStatus
+                    {
+                        if isLoggedIn()
+                        {
+                            if campaignStatus == nil {
+                                
+                                lblRight.text = "campaign_detail_status_redeem".localized()
+                                vcRight.backgroundColor = UIColor.dtacBlue
+                                
+                                if let type = campaign.type{
+                                    if type == 9 {
+                                        lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                                        vcRight.backgroundColor = UIColor.mainLightGray
+                                    }
+                                }
+                                return
+                            }
+
+                            if let type = campaign.type, type == 9 {
                                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
                                 vcRight.backgroundColor = UIColor.mainLightGray
+                                return
                             }
+                            vcRight.backgroundColor = UIColor.mainLightGray
+                        } else {
+                            vcRight.backgroundColor = UIColor.dtacBlue
                         }
-                        return
+                    } else {
+                        vcRight.backgroundColor = UIColor.dtacBlue
                     }
-
-                    if let type = campaign.type, type == 9 {
-                        lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                        vcRight.backgroundColor = UIColor.mainLightGray
-                        return
-                    }
-                    vcRight.backgroundColor = UIColor.mainLightGray
-                } else {
-                    vcRight.backgroundColor = UIColor.dtacBlue
                 }
-            } else {
-                vcRight.backgroundColor = UIColor.dtacBlue
+            } else if type == 9 {
+                vcRight.isUserInteractionEnabled = false
+                lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                vcRight.backgroundColor = UIColor.mainLightGray
             }
         }
         
@@ -794,7 +805,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
             if (locationAuthStatus != .denied && campaign.distance != nil) ||
                 (campaign.website != "")
             {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "cell3Tab", for: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cellInfo3Tab", for: indexPath)
                 
                 let lblRewardLeft = cell.viewWithTag(11) as! UILabel
                 lblRewardLeft.text = "campaign_detail_reward_left".localized()
@@ -857,7 +868,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
                 return cell
             } else {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: "cell2Tab", for: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cellInfo2Tab", for: indexPath)
                 
                 let lblRewardLeft = cell.viewWithTag(11) as! UILabel
                 lblRewardLeft.text = "campaign_detail_reward_left".localized()
@@ -908,7 +919,12 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
         }
         
         if cellIdent == "tab" {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cellTab", for: indexPath)
+            var cell : UITableViewCell!
+            if arrBranch.count > 0 {
+                cell = tableView.dequeueReusableCell(withIdentifier: "cellDetail3Tab", for: indexPath)
+            } else {
+                cell = tableView.dequeueReusableCell(withIdentifier: "cellDetail2Tab", for: indexPath)
+            }
 
             let lblDetail = cell.viewWithTag(11) as! UILabel
             lblDetail.text = "campaign_detail_detail".localized()
@@ -927,15 +943,23 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
             let lineCondition = cell.viewWithTag(22)!
             lineCondition.isHidden = true
             lineCondition.backgroundColor = UIColor(hexString: "19AAF8")
+            
+            if arrBranch.count > 0 {
+                let lblBranch = cell.viewWithTag(31) as! UILabel
+                lblBranch.text = "campaign_detail_branch".localized()
+                lblBranch.font = UIFont.mainFont()
+                lblBranch.textColor = UIColor(hexString: "1a1a1a")
 
-            let lblBranch = cell.viewWithTag(31) as! UILabel
-            lblBranch.text = "campaign_detail_branch".localized()
-            lblBranch.font = UIFont.mainFont()
-            lblBranch.textColor = UIColor(hexString: "1a1a1a")
-
-            let lineBranch = cell.viewWithTag(32)!
-            lineBranch.isHidden = true
-            lineBranch.backgroundColor = UIColor(hexString: "19AAF8")
+                let lineBranch = cell.viewWithTag(32)!
+                lineBranch.isHidden = true
+                lineBranch.backgroundColor = UIColor(hexString: "19AAF8")
+                
+                if isShowTab == DetailTab.branch {
+                    lblBranch.textColor = UIColor.black
+                    lblBranch.font = UIFont.mainFont(style: .bold)
+                    lineBranch.isHidden = false
+                }
+            }
 
             if isShowTab == DetailTab.detail {
                 lblDetail.textColor = UIColor.black
@@ -945,11 +969,12 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
                 lblCondition.textColor = UIColor.black
                 lblCondition.font = UIFont.mainFont(style: .bold)
                 lineCondition.isHidden = false
-            } else if isShowTab == DetailTab.branch {
-                lblBranch.textColor = UIColor.black
-                lblBranch.font = UIFont.mainFont(style: .bold)
-                lineBranch.isHidden = false
             }
+//            else if isShowTab == DetailTab.branch {
+//                lblBranch.textColor = UIColor.black
+//                lblBranch.font = UIFont.mainFont(style: .bold)
+//                lineBranch.isHidden = false
+//            }
 
             return cell
         }
