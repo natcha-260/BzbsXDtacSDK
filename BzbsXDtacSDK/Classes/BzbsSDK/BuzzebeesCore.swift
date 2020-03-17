@@ -57,7 +57,10 @@ public class BuzzebeesCore: NSObject {
     
     class func apiSetupPrefix(successCallback:@escaping () -> Void, failCallback:@escaping () -> Void)
     {
-        if isCallingSetEndpoint { return }
+        if isCallingSetEndpoint {
+            successCallback()
+            return
+        }
         isCallingSetEndpoint = true
         let startTime = Date()
         let version = Bzbs.shared.versionString
@@ -202,10 +205,10 @@ public class BuzzebeesCore: NSObject {
                             print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
                             failCallback()
                         }
-                        
                     }
+                } else {
+                    failCallback()
                 }
-                failCallback()
             }
         }
     }

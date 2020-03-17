@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+1.1.7
+- fix issue 
+- update pod spec
 1.1.6
 - remove placeholder on greeting cell
 - fix failCallback
