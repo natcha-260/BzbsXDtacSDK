@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+1.1.6
+- remove placeholder on greeting cell
+- fix failCallback
 1.1.5
 - handle redeem error id 412 in detail
 - handle check on errorCode not on status in detail

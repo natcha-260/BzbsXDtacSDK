@@ -147,17 +147,17 @@ public class BuzzebeesCore: NSObject {
                         {
                             getLanguage(languageUrl, successCallback: successCallback, failCallback: failCallback)
                             isCallingSetEndpoint = false
-                            return
                         } else {
                             failCallback()
                             isSetEndpoint = true
                             isCallingSetEndpoint = false
-                            return
                         }
+                    } else {
+                        failCallback()
                     }
-                    
-                }
-                failCallback()
+                } else {
+                   failCallback()
+               }
             } catch _ as NSError {
                 isCallingSetEndpoint = false
                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970

@@ -71,7 +71,7 @@ class GreetingCVCell: UICollectionViewCell {
         }
         if let url = levelImageUrl
         {
-            imvLevel.bzbsSetImage(withURL: url.absoluteString)
+            imvLevel.bzbsSetImage(withURL: url.absoluteString, isUsePlaceholder:false)
         } else {
             vwLevel.isHidden = true
         }

@@ -163,10 +163,7 @@ class TokenSelectViewController: UIViewController {
             self.present(tabbar, animated: true, completion: nil)
         }
 //        delay(10) {
-//            Bzbs.shared.isHasNewMessage = true
-//            self.delay(2) {
-//                Bzbs.shared.isHasNewMessage = true
-//            }
+//            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs=", ticket: "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA=", language: self.language, DTACSegment: "2000")
 //        }
     }
     
