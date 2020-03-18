@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+1.1.8
+- remove check calling api
 1.1.7
 - fix issue 
 - update pod spec

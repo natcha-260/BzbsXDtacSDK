@@ -57,11 +57,11 @@ public class BuzzebeesCore: NSObject {
     
     class func apiSetupPrefix(successCallback:@escaping () -> Void, failCallback:@escaping () -> Void)
     {
-        if isCallingSetEndpoint {
-            successCallback()
-            return
-        }
-        isCallingSetEndpoint = true
+//        if isCallingSetEndpoint {
+//            successCallback()
+//            return
+//        }
+//        isCallingSetEndpoint = true
         let startTime = Date()
         let version = Bzbs.shared.versionString
         let endpointUrl = "https://apidtw.buzzebees.com/api/config/353144231924127_config_ios_\(version)/blob/"
