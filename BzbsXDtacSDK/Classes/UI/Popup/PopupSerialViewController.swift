@@ -135,7 +135,7 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         lblAgency.font = UIFont.mainFont(.xsmall)
         
         lblCopy.textColor = .mainGray
-        lblBtnUse.textColor = .mainGray
+        lblBtnUse.textColor = .white
         lblTimeValue.textColor = .mainBlue
         lblTime.textColor = .mainGray
         lblCode.textColor = .mainBlue
@@ -143,7 +143,8 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         lblAgency.textColor = .white
         lblBtnUse.adjustsFontSizeToFitWidth = true
         
-        vwBtnUse.cornerRadius(borderColor: UIColor.mainGray, borderWidth: 1)
+        vwBtnUse.cornerRadius()
+        vwBtnUse.backgroundColor = .dtacBlue
         vwCopy.cornerRadius(borderColor: UIColor.mainGray, borderWidth: 1)
         
         imvSeasonHeader.image = UIImage(named: "img_header", in: Bzbs.shared.currentBundle, compatibleWith: nil)

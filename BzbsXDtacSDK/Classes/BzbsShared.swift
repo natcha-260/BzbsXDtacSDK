@@ -142,6 +142,13 @@ struct DtacLoginParams {
             {
                 delegate?.reLogin()
                 isRetriedGetSegment = true
+                Bzbs.shared.userLogin = nil
+                self.isCallingLogin = false
+                NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
+                BzbsCoreApi().dtacLog(token: token, ticket: ticket, sequence: 2, successCallback: nil) { (error) in  }
+                return
+                
             }
             let version = Bzbs.shared.versionString
             let strVersion = Bzbs.shared.prefixApp + version
@@ -169,6 +176,7 @@ struct DtacLoginParams {
             self.isCallingLogin = false
             NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
             NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
+            BzbsCoreApi().dtacLog(token: "", ticket: "", sequence: 2, successCallback: nil) { (error) in  }
         }
     }
     
@@ -203,7 +211,7 @@ struct DtacLoginParams {
         if let token = dtacLoginParams.token, token != ""{
             
             let scheme = url.scheme
-            if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta") && url.host == "reward"
+            if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta" || scheme == "dtac-beta") && url.host == "reward"
             {
                 NotificationCenter.default.post(name: NSNotification.Name.BzbsDeeplinkAction, object: nil, userInfo: ["strUrl":url.absoluteString])
             }

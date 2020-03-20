@@ -53,6 +53,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     var viewImageSlideshow: ImageSlideshow!
     var isShowTab = DetailTab.detail
     var rewardLeft:CGFloat{
+        if campaign.type == 9 { return 1 }
         if let quantity = campaignStatus?.quantity {
             if quantity == -1 { return 1 }
             if quantity >= 51 || quantity <= -1 {
@@ -214,7 +215,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     var isLoadedStatus = false
     func getApiCampaignStatus() {
-        if campaign.type == 16 || campaign.type == 9{
+        if campaign.type == 16 || campaign.type == 9 {
             self.manageFooter()
             self.tableView.reloadData()
             self.hideLoader()
@@ -244,6 +245,8 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                                     if Int(error.id)! == 412 || Int(error.code)! == 412
                                                     {
                                                         PopupManager.informationPopup(self, message: "alert_error_query_privilege_412".errorLocalized()) {
+                                                            self.vcRight.isUserInteractionEnabled = false
+                                                            self.vcRight.backgroundColor = UIColor.mainLightGray
                                                         }
                                                         return
                                                     }
@@ -251,10 +254,21 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                                     if Int(error.id)! == 428 || Int(error.code)! == 428
                                                     {
                                                         PopupManager.informationPopup(self, message: "alert_error_query_privilege_428".errorLocalized()) {
+                                                            self.vcRight.isUserInteractionEnabled = false
+                                                            self.vcRight.backgroundColor = UIColor.mainLightGray
                                                         }
                                                         return
                                                     }
-
+                                                    
+                                                    
+                                                    if Int(error.id)! == 500 || Int(error.code)! == 500
+                                                    {
+                                                        PopupManager.informationPopup(self, title: nil, message: "alert_error_campaign_detail".errorLocalized()) { () in
+                                                            self.vcRight.isUserInteractionEnabled = false
+                                                            self.vcRight.backgroundColor = UIColor.mainLightGray
+                                                        }
+                                                        return
+                                                    }
                                                     
                                                     if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
 
@@ -307,14 +321,17 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.refreshApi()
             self.isCallingApiRedeem = false
             
-            if Int(error.id)! == 428 || Int(error.code)! == 428
-            {
-                PopupManager.informationPopup(self, message: "alert_error_redeem_428".errorLocalized(), close: nil)
+            if Int(error.id)! == 412 || Int(error.code)! == 412 {
+                PopupManager.informationPopup(self, message: error.message) {
+                    self.vcRight.isUserInteractionEnabled = false
+                    self.vcRight.backgroundColor = UIColor.mainLightGray
+                }
                 return
             }
             
-            if Int(error.id)! == 412 || Int(error.code)! == 412 {
-                PopupManager.informationPopup(self, message: error.message, close: nil)
+            if Int(error.id)! == 428 || Int(error.code)! == 428
+            {
+                PopupManager.informationPopup(self, message: "alert_error_redeem_428".errorLocalized(), close: nil)
                 return
             }
 
@@ -423,11 +440,17 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 if let errorcode = campaignStatus?.errorCode,
                     errorcode == "s2009"
                     {
-                        PopupManager.informationPopup(self, message: "popup_suspend_info".localized(), close: nil)
+                        PopupManager.informationPopup(self, message: "popup_suspend_info".localized(), strClose:"popup_ok".localized(), close: nil)
                     return
                 }
                 if type == 1 {
-                    let message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
+                    var message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
+                    
+                    if let minAfterUse = campaign.minutesValidAfterUsed , minAfterUse > 0{
+                        let strMinAfteruse = String(format: "popup_confirm_redeem_minute_afteruse".localized(), String(minAfterUse))
+                        message = message + "\n\n" + strMinAfteruse
+                    }
+                    
                     PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
                         self.apiRedeem()
                     }) {
@@ -659,7 +682,9 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     }
     
     func getProgressColor() -> UIColor {
-        
+        if  campaign.type == 9 {
+            return .mainGreen
+        }
         guard let _campaingStatus = campaignStatus else { return .gray }
         
         if _campaingStatus.quantity >= 51 || _campaingStatus.quantity <= -1 {

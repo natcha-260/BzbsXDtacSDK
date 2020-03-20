@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+1.1.9
+- fix issue
+- add retoken log to api
 1.1.8
 - remove check calling api
 1.1.7

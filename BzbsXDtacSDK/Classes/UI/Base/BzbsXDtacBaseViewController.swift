@@ -490,7 +490,7 @@ extension BzbsXDtacBaseViewController {
     {
         Bzbs.shared.deepLinkUrl = nil
         let scheme = url.scheme
-        if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta") && url.host == "reward"
+        if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta" || scheme == "dtac-beta") && url.host == "reward"
         {
             return true
         }

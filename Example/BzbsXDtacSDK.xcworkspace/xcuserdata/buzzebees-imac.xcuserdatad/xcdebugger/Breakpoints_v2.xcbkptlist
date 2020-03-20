@@ -3,4 +3,86 @@
    uuid = "5F8A00BB-8563-4268-90E1-A0787B25A4D5"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E7146AD5-86E2-474E-B1F4-8EE495852677"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Detail/CampaignDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "690"
+            endingLineNumber = "690"
+            landmarkName = "getProgressColor()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "84B08E7F-C0A0-4CC1-88E4-317937411FB4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Base/Core/BzbsCoreApi.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "dtacLog(token:ticket:sequence:successCallback:failCallback:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3A981970-67A1-412E-A900-42A6465652EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../BzbsXDtacSDK/Classes/BzbsShared.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "login(token:ticket:language:DTACSegment:completionHandler:failureHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3A981970-67A1-412E-A900-42A6465652EC - 803356d5d562e31a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BzbsXDtacSDK.Bzbs.login(token: Swift.Optional&lt;Swift.String&gt;, ticket: Swift.Optional&lt;Swift.String&gt;, language: Swift.String, DTACSegment: Swift.String, completionHandler: Swift.Optional&lt;() -&gt; ()&gt;, failureHandler: Swift.Optional&lt;(BzbsXDtacSDK.BzbsError) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "BzbsXDtacSDK_Example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/buzzebees-imac/Desktop/iOS_Project/iOS_Project_Dtac_Rewards/BzbsXDtacSDK/Classes/BzbsShared.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "149"
+                  endingLineNumber = "149"
+                  offsetFromSymbolStart = "3560">
+               </Location>
+               <Location
+                  uuid = "3A981970-67A1-412E-A900-42A6465652EC - 976fa0afd16ec7b5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (BzbsXDtacSDK.BzbsError) -&gt; () in BzbsXDtacSDK.Bzbs.login(token: Swift.Optional&lt;Swift.String&gt;, ticket: Swift.Optional&lt;Swift.String&gt;, language: Swift.String, DTACSegment: Swift.String, completionHandler: Swift.Optional&lt;() -&gt; ()&gt;, failureHandler: Swift.Optional&lt;(BzbsXDtacSDK.BzbsError) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "BzbsXDtacSDK_Example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/buzzebees-imac/Desktop/iOS_Project/iOS_Project_Dtac_Rewards/BzbsXDtacSDK/Classes/BzbsShared.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "149"
+                  endingLineNumber = "149"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -222,4 +222,24 @@ public class BzbsCoreApi: BuzzebeesCore {
                 return
         } , failCallback: failCallback )
     }
+    
+    public func dtacLog(token: String, ticket:String, sequence:Int,
+                        successCallback: (() -> Void)?,
+                                  failCallback: @escaping (_ error: BzbsError) -> Void) {
+        
+        let params = [
+            "uuid": token ,
+            "info" : ticket ,
+            "sequence" : "\(sequence)"
+        ]
+        
+        let strURL = BuzzebeesCore.apiUrl + "/modules/dtac/log/segment"
+        requestAlamofire(HTTPMethod.post
+            , strURL: strURL
+            , params: params as [String : AnyObject]?
+            , headers: nil
+            , successCallback: { (ao) in
+                successCallback?()
+        } , failCallback: failCallback )
+    }
 }
