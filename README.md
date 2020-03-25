@@ -1,4 +1,8 @@
 # BzbsXDtacSDK
+1.1.10
+- fix detail 
+- update pod 
+- check ios 10 on nearby
 1.1.9
 - fix issue
 - add retoken log to api

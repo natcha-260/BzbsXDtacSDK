@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E7146AD5-86E2-474E-B1F4-8EE495852677"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../BzbsXDtacSDK/Classes/UI/Detail/CampaignDetailViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "690"
-            endingLineNumber = "690"
-            landmarkName = "getProgressColor()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "84B08E7F-C0A0-4CC1-88E4-317937411FB4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -64,7 +48,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "149"
                   endingLineNumber = "149"
-                  offsetFromSymbolStart = "3560">
+                  offsetFromSymbolStart = "3628">
                </Location>
                <Location
                   uuid = "3A981970-67A1-412E-A900-42A6465652EC - 976fa0afd16ec7b5"

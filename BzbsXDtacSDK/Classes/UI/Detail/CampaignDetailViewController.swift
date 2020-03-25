@@ -578,14 +578,14 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:-
     func manageFooter(){
         
-        vcRight.isUserInteractionEnabled = true
         lblLeft.font = UIFont.mainFont()
         lblRight.font = UIFont.mainFont()
         lblRight.textColor = UIColor.white
         lblLeft.textColor = UIColor.lightGray
         vcLeft.cornerRadius(corner: 4.0, borderColor: UIColor.gray, borderWidth: 1.0)
         vcRight.cornerRadius(corner: 4.0)
-        vcRight.backgroundColor = UIColor.mainLightGray
+        
+        setButton(isEnable: false)
         
         lblLeft.text = "campaign_detail_back".localized()
         lblRight.text = "campaign_detail_status_redeem".localized()
@@ -597,15 +597,13 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 
                 if let _campaignStatus = campaignStatus {
                     
-                    vcRight.isUserInteractionEnabled = false
-                    vcRight.backgroundColor = UIColor.mainLightGray
+                    setButton(isEnable: false)
                     let remark = _campaignStatus.errorCode
                     var msgBtn = "alert_button_redeem_s2001".errorLocalized()
                     
                     switch remark {
                     case "s2001":
-                        vcRight.isUserInteractionEnabled = true
-                        vcRight.backgroundColor = UIColor.dtacBlue
+                        setButton(isEnable: true)
                         msgBtn = "alert_button_redeem_s2001".errorLocalized()
                         break
                     case "s2002":
@@ -624,8 +622,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         msgBtn = "alert_button_redeem_s2008".errorLocalized()
                         break
                     case "s2009":
-                        vcRight.isUserInteractionEnabled = true
-                        vcRight.backgroundColor = UIColor.dtacBlue
+                        setButton(isEnable: true)
                         msgBtn = "alert_button_redeem_s2009".errorLocalized()
                         break
                     default:
@@ -642,14 +639,13 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         if isLoggedIn()
                         {
                             if campaignStatus == nil {
-                                
-                                lblRight.text = "campaign_detail_status_redeem".localized()
-                                vcRight.backgroundColor = UIColor.dtacBlue
-                                
                                 if let type = campaign.type{
                                     if type == 9 {
                                         lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                                        vcRight.backgroundColor = UIColor.mainLightGray
+                                        setButton(isEnable: false)
+                                    } else {
+                                        lblRight.text = "campaign_detail_status_redeem".localized()
+                                        setButton(isEnable: isCallingApiRedeem || isCallingCampaignDetail)
                                     }
                                 }
                                 return
@@ -657,7 +653,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
 
                             if let type = campaign.type, type == 9 {
                                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                                vcRight.backgroundColor = UIColor.mainLightGray
+                                setButton(isEnable: false)
                                 return
                             }
                             vcRight.backgroundColor = UIColor.mainLightGray
@@ -669,16 +665,20 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     }
                 }
             } else if type == 9 {
-                vcRight.isUserInteractionEnabled = false
                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                vcRight.backgroundColor = UIColor.mainLightGray
+                setButton(isEnable: false)
             }
         }
         
         if isCallingApiRedeem || isCallingCampaignDetail {
-            vcRight.isUserInteractionEnabled = false
-            vcRight.backgroundColor = UIColor.mainLightGray
+            setButton(isEnable: false)
         }
+    }
+    
+    func setButton(isEnable:Bool)
+    {
+        vcRight.isUserInteractionEnabled = isEnable
+        vcRight.backgroundColor = isEnable ? UIColor.dtacBlue : UIColor.mainLightGray
     }
     
     func getProgressColor() -> UIColor {
