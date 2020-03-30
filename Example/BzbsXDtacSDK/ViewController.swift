@@ -47,18 +47,26 @@ extension ViewController : BzbsDelegate
     }
     
     func analyticsScreen(screenName: String) {
-        printLog("Screen -> Name : \(screenName)")
+//        printLog("Screen -> Name : \(screenName)")
+        if screenName.contains("log") {
+            self.log(screenName)
+            return
+        }
         Analytics.setScreenName(screenName, screenClass: screenName)
     }
     
     func analyticsEventEcommerce(eventName: String, params: [String : AnyObject]) {
-        printLog("EventEcommerce -> event : \(eventName) ,\n\tparams:\(params)")
+//        printLog("EventEcommerce -> event : \(eventName) ,\n\tparams:\(params)")
         Analytics.logEvent(eventName, parameters: params)
     }
     
     func analyticsEvent(event: String, category: String, action: String, label: String) {
-        printLog("Event -> event : \(event) ,\n\tcategory:\(category), \n\tevent:\(action), \n\tlabel:\(label)")
+//        printLog("Event -> event : \(event) ,\n\tcategory:\(category), \n\tevent:\(action), \n\tlabel:\(label)")
         Analytics.logEvent(event, parameters: ["category": category, "action":action, "label":label])
+    }
+    
+    func log(_ strlog:String) {
+        printLog(strlog)
     }
     
     func reTokenTicket()
@@ -71,7 +79,8 @@ extension ViewController : BzbsDelegate
         i += 1
         if let tabbar = self.tabBarController
         {
-            if let vc = tabbar.viewControllers?[1] as? AnalyticDebugViewController
+            if let nav = tabbar.viewControllers?[1] as? UINavigationController,
+                let vc = nav.viewControllers.first as? AnalyticDebugViewController
             {
                 vc.printLog("\(i) => \n \(string) \n<=\n")
             }

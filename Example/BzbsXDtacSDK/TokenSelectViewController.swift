@@ -20,7 +20,7 @@ class TokenSelectViewController: UIViewController {
         return strVersion == "1.0.2" || strVersion == "0.0.5"
     }
     var isPrd:Bool {
-        return !(isStg && isDev)
+        return !(isStg || isDev)
     }
     var language:String{
         return segmentLang.selectedSegmentIndex == 0 ? "en" : "th"
@@ -150,7 +150,7 @@ class TokenSelectViewController: UIViewController {
     var dtacReward : UIViewController!
     func gotoMain()
     {
-        Bzbs.shared.isDebugMode = true
+        Bzbs.shared.isDebugMode = !isPrd
         if UIDevice.current.model == "iPad"
         {
             let storyboard = UIStoryboard(name: "Main_iPad", bundle: nil)

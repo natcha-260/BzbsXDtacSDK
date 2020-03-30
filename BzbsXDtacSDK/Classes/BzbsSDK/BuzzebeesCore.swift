@@ -33,6 +33,8 @@ public class BuzzebeesCore: NSObject {
     static var blobUrl : String! = ""
     static var miscUrl : String! = ""
     static var shareUrl : String! = ""
+    static var inquiryBaseUrl : String! = ""
+    static var redeemBaseUrl : String! = ""
     
     static var urlSegmentImageDtac : URL?
     static var urlSegmentImageSilver : URL?
@@ -74,7 +76,10 @@ public class BuzzebeesCore: NSObject {
         request(urlRequest).responseJSON { response in
             do{
                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                if Bzbs.shared.isDebugMode {
+                    Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                    print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                }
                 let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                 if let dictJSON = json as? Dictionary<String, AnyObject>  {
 
@@ -122,27 +127,39 @@ public class BuzzebeesCore: NSObject {
                     if let blobUrl = dictJSON["url_blob"] as? String ,
                         let baseUrl = dictJSON["url_base"] as? String ,
                         let miscUrl = dictJSON["url_misc"] as? String ,
-                        let shareUrl = dictJSON["url_share"] as? String
+                        let shareUrl = dictJSON["url_share"] as? String ,
+                        let inquiryBaseUrl = dictJSON["url_base_inquiry"] as? String ,
+                        let redeemBaseUrl = dictJSON["url_base_redeem"] as? String
                     {
                         BuzzebeesCore.blobUrl = blobUrl
                         BuzzebeesCore.apiUrl = baseUrl
                         BuzzebeesCore.miscUrl = miscUrl
                         BuzzebeesCore.shareUrl = shareUrl
+                        BuzzebeesCore.inquiryBaseUrl = inquiryBaseUrl
+                        BuzzebeesCore.redeemBaseUrl = redeemBaseUrl
                         
-                        if BuzzebeesCore.blobUrl .last == "/" {
-                            BuzzebeesCore.blobUrl .removeLast()
+                        if BuzzebeesCore.blobUrl.last == "/" {
+                            BuzzebeesCore.blobUrl.removeLast()
                         }
                         
-                        if BuzzebeesCore.apiUrl .last == "/" {
-                            BuzzebeesCore.apiUrl .removeLast()
+                        if BuzzebeesCore.apiUrl.last == "/" {
+                            BuzzebeesCore.apiUrl.removeLast()
                         }
                         
-                        if BuzzebeesCore.miscUrl .last == "/" {
-                            BuzzebeesCore.miscUrl .removeLast()
+                        if BuzzebeesCore.miscUrl.last == "/" {
+                            BuzzebeesCore.miscUrl.removeLast()
                         }
                         
-                        if BuzzebeesCore.shareUrl .last == "/" {
-                            BuzzebeesCore.shareUrl .removeLast()
+                        if BuzzebeesCore.shareUrl.last == "/" {
+                            BuzzebeesCore.shareUrl.removeLast()
+                        }
+                        
+                        if BuzzebeesCore.inquiryBaseUrl.last == "/" {
+                            BuzzebeesCore.inquiryBaseUrl.removeLast()
+                        }
+                        
+                        if BuzzebeesCore.redeemBaseUrl.last == "/" {
+                            BuzzebeesCore.redeemBaseUrl.removeLast()
                         }
                         
                         
@@ -164,7 +181,10 @@ public class BuzzebeesCore: NSObject {
             } catch _ as NSError {
                 isCallingSetEndpoint = false
                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                if Bzbs.shared.isDebugMode {
+                    Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                    print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                }
                 failCallback()
             }
         }
@@ -189,7 +209,10 @@ public class BuzzebeesCore: NSObject {
                     request(urlRequest).responseJSON { (response) in
                         do {
                             let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                            print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                            if Bzbs.shared.isDebugMode {
+                                Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                                print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                            }
                             let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                             if let dictJSON = json as? Dictionary<String, AnyObject>  {
                                 userDefault.set(dictJSON, forKey: languageKey)
@@ -202,7 +225,10 @@ public class BuzzebeesCore: NSObject {
                             }
                         } catch _ as NSError {
                             let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                            print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                            if Bzbs.shared.isDebugMode {
+                                Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                                print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
+                            }
                             failCallback()
                         }
                     }
@@ -278,37 +304,42 @@ public class BuzzebeesCore: NSObject {
             itemHeaders["Ocp-Apim-Subscription-Key"] = subKey
         }
         
-        if(self.isDebugMode) {
-            print("\r\n//\(startTime.toString()) ==============================")
-            print("Method:= \(method.rawValue)")
-            print("URL:= " + strURL)
-            print("Params:= ")
+        if self.isDebugMode {
+            var stringLog = ""
+            stringLog = stringLog + "\r\n//\(startTime.toString()) =============================="
+            stringLog = stringLog + "\nMethod:= \(method.rawValue)"
+            stringLog = stringLog + "\nURL:= " + strURL
+            stringLog = stringLog + "\nParams:= "
             
             if let paramsTemp = itemParams {
                 for item in paramsTemp {
                     if let value = item.value as? String {
-                        print(item.key + ":" + value)
+                        stringLog = stringLog + "\n" + item.key + ":" + value
                     } else {
-                        print(item.key + ":" + String(describing: item.value))
+                        stringLog = stringLog + "\n" + item.key + ":" + String(describing: item.value)
                     }
                 }
             }
             
-            print("")
-            print("Header:= ")
+            stringLog = stringLog + "\n"
+            stringLog = stringLog + "\nHeader:= "
             for headersTemp in itemHeaders {
-                print(headersTemp.key + ":" + (headersTemp.value))
+                stringLog = stringLog + "\n" + headersTemp.key + ":" + (headersTemp.value)
+                print()
             }
-            print("//==============================\r\n")
+            stringLog = stringLog + "\n//==============================\r\n"
+            print(stringLog)
+            Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + stringLog)
         }
         
-        sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination: .methodDependent), headers: itemHeaders)
-            .responseJSON { response in
+        sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination:.methodDependent), headers: itemHeaders)
+           .responseJSON { response in
                 do{
                     let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
 
-                    if(self.isDebugMode) {
+                    if self.isDebugMode {
                         let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                        Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
                         print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
                     }
                     if let dictJSON = json as? Dictionary<String, AnyObject>  {
@@ -334,8 +365,9 @@ public class BuzzebeesCore: NSObject {
                     if let statusCode = response.response?.statusCode {
                         // 200: Success, 204: No content
                         if statusCode == 200 || statusCode == 204 {
-                            if(self.isDebugMode) {
+                            if self.isDebugMode {
                                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                                Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
                                 print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
                             }
                             successCallback("Success" as AnyObject)
@@ -351,8 +383,9 @@ public class BuzzebeesCore: NSObject {
                         message = resultError.localizedDescription
                     }
                     
-                    if(self.isDebugMode) {
+                    if self.isDebugMode {
                         let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                        Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
                         print("**response time =====\(strURL) ===  : \(String(format:"%.2f sec",resposeTime))")
                     }
                     let error = BzbsError(strId: "-9999", strCode: statusCode, strType: "framework send", strMessage: message)
@@ -367,7 +400,7 @@ extension String: ParameterEncoding {
     
     public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
         var request = try urlRequest.asURLRequest()
-        request.httpBody = data(using: .utf8, allowLossyConversion: false)
+        request.httpBody = data(using:.utf8, allowLossyConversion: false)
         return request
     }
     

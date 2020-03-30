@@ -175,7 +175,7 @@ public class BuzzebeesCampaign: BuzzebeesCore {
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.post
-            , strURL: BuzzebeesCore.apiUrl + "/api/campaign/" + String(campaignId) + "/redeem"
+            , strURL: BuzzebeesCore.redeemBaseUrl + "/api/campaign/" + String(campaignId) + "/redeem"
             , params: nil
             , headers: headers
             , successCallback: { (ao) in

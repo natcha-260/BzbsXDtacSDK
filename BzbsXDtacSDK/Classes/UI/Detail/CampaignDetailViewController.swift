@@ -224,6 +224,33 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         
         if let token = Bzbs.shared.userLogin?.token
         {
+            if Bzbs.shared.isDebugMode
+            {
+                let strUrl = BuzzebeesCore.inquiryBaseUrl + "/modules/dtac/campaign/\(campaign.ID ?? 0)"
+                let lbl = UILabel(frame: self.view.bounds)
+                lbl.text = strUrl
+                lbl.textColor = .white
+                lbl.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+                lbl.numberOfLines = 0
+                lbl.font = UIFont.mainFont()
+                lbl.sizeToFit()
+                let width = lbl.bounds.size.width - 32
+                let height =  lbl.bounds.size.height
+                lbl.frame = CGRect(
+                    x: (self.view.bounds.size.width - width - 16) / 2,
+                    y: (self.view.bounds.size.height - height - 16),
+                    width: width,
+                    height: height)
+                let window = UIApplication.shared.keyWindow!
+                window.addSubview(lbl)
+                delay(3.0) {
+                    UIView.animate(withDuration: 0.33, animations: {
+                        lbl.alpha = 0
+                    }) { (_) in
+                        lbl.removeFromSuperview()
+                    }
+                }
+            }
             BzbsCoreApi().getCampaignStatus(campaignId: campaign.ID,
                                                    deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                                    center: LocationManager.shared.getCurrentCoorndate(),
@@ -311,6 +338,33 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         isCallingApiRedeem = true
         manageFooter()
         showLoader()
+        if Bzbs.shared.isDebugMode
+        {
+            let strUrl = BuzzebeesCore.redeemBaseUrl + "/api/campaign/\(campaign.ID ?? 0)/redeem"
+            let lbl = UILabel(frame: self.view.bounds)
+            lbl.text = strUrl
+            lbl.textColor = .white
+            lbl.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+            lbl.numberOfLines = 0
+            lbl.font = UIFont.mainFont()
+            lbl.sizeToFit()
+            let width = lbl.bounds.size.width - 32
+            let height =  lbl.bounds.size.height
+            lbl.frame = CGRect(
+                x: (self.view.bounds.size.width - width - 16) / 2,
+                y: (self.view.bounds.size.height - height - 16),
+                width: width,
+                height: height)
+            let window = UIApplication.shared.keyWindow!
+            window.addSubview(lbl)
+            delay(3.0) {
+                UIView.animate(withDuration: 0.33, animations: {
+                    lbl.alpha = 0
+                }) { (_) in
+                    lbl.removeFromSuperview()
+                }
+            }
+        }
         BuzzebeesCampaign().redeem(token:token , campaignId: campaign.ID, successCallback: { (dict) in
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)

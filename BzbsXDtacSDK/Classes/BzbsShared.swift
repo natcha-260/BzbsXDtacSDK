@@ -176,7 +176,9 @@ struct DtacLoginParams {
             self.isCallingLogin = false
             NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
             NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
-            BzbsCoreApi().dtacLog(token: "", ticket: "", sequence: 2, successCallback: nil) { (error) in  }
+            if let token = dtacLoginParams.token, token == "logout" { } else {
+                BzbsCoreApi().dtacLog(token: "", ticket: "", sequence: 2, successCallback: nil) { (error) in  }
+            }
         }
     }
     
@@ -188,7 +190,7 @@ struct DtacLoginParams {
     
     @objc public func logout()
     {
-        dtacLoginParams = DtacLoginParams()
+        dtacLoginParams = DtacLoginParams(token: "logout", ticket: nil, language: nil, DTACSegment: nil)
         Bzbs.shared.userLogin = nil
         reLogin()
         backToMainView()

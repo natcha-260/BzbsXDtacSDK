@@ -205,7 +205,7 @@ public class BzbsCoreApi: BuzzebeesCore {
             headers!["Authorization"] = "token \(bzbToken)"
         }
         
-        let strURL = BuzzebeesCore.apiUrl + "/modules/dtac/campaign/\(campaignId)"
+        let strURL = BuzzebeesCore.inquiryBaseUrl + "/modules/dtac/campaign/\(campaignId)"
         requestAlamofire(HTTPMethod.get
             , strURL: strURL
             , params: params as [String : AnyObject]?

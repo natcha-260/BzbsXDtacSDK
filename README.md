@@ -1,4 +1,8 @@
 # BzbsXDtacSDK
+1.1.11
+- update log logic
+- add custom redeem/inquiry api
+- show log redeem/inquiry api on debug mode
 1.1.10
 - fix detail 
 - update pod 
