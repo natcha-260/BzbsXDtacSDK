@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,9 +21,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view alpha="0.89999997615814209" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMd-MM-dcd">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMd-MM-dcd">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2t-3U-hDg" userLabel="Parent View">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
@@ -32,10 +32,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" image="decoration1" translatesAutoresizingMaskIntoConstraints="NO" id="dvt-eH-Vvw" customClass="ScaledHeightImageView" customModule="BzbsXDtacSDK" customModuleProvider="target">
-                                        <rect key="frame" x="145" y="-43" width="124" height="227"/>
+                                        <rect key="frame" x="145" y="70.5" width="124" height="113.5"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="decoration2" translatesAutoresizingMaskIntoConstraints="NO" id="nRY-qH-rg1" customClass="ScaledHeightImageView" customModule="BzbsXDtacSDK" customModuleProvider="target">
-                                        <rect key="frame" x="145" y="634" width="124" height="124"/>
+                                        <rect key="frame" x="145" y="634" width="124" height="62"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CC3-le-LKT">
                                         <rect key="frame" x="145" y="184" width="124" height="450"/>
@@ -50,7 +50,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="124" height="124"/>
                                                                 <subviews>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_header" translatesAutoresizingMaskIntoConstraints="NO" id="PQY-ej-20C">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="124" height="717"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="124" height="358.5"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </imageView>
                                                                 </subviews>
@@ -169,7 +169,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="img_logo_dtac" translatesAutoresizingMaskIntoConstraints="NO" id="kVi-LJ-NxQ">
-                                                                <rect key="frame" x="-52" y="279" width="228" height="31"/>
+                                                                <rect key="frame" x="5" y="279" width="114" height="31"/>
                                                             </imageView>
                                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SAw-zE-fOC">
                                                                 <rect key="frame" x="0.0" y="271" width="124" height="47"/>
@@ -187,7 +187,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="748" image="img_logo_dtac" translatesAutoresizingMaskIntoConstraints="NO" id="0uW-hI-v8G">
-                                                                        <rect key="frame" x="-120" y="0.0" width="228" height="25"/>
+                                                                        <rect key="frame" x="-6" y="0.0" width="114" height="25"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="25" id="zRM-fP-bly"/>
                                                                         </constraints>
@@ -208,7 +208,7 @@
                                                                 <rect key="frame" x="24" y="1125" width="283" height="295.5"/>
                                                             </imageView>
                                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T1I-GS-Qze">
-                                                                <rect key="frame" x="16" y="334" width="30" height="40"/>
+                                                                <rect key="frame" x="16" y="334" width="376" height="40"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press to confirm the redemption (for staff only)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfP-f5-2fw">
                                                                         <rect key="frame" x="8" y="0.0" width="360" height="40"/>
@@ -217,7 +217,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LkM-oi-L5l">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="376" height="40"/>
                                                                         <connections>
                                                                             <action selector="clickUse:" destination="0wZ-ZV-pLT" eventType="touchUpInside" id="7DM-BK-kCa"/>
                                                                         </connections>
@@ -572,7 +572,7 @@
                                             <constraint firstAttribute="height" constant="2" id="yTu-eD-S3k"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CYk-ph-ejy">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYk-ph-ejy">
                                         <rect key="frame" x="20" y="91" width="143" height="36.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xGu-xf-Gin">
@@ -585,7 +585,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wxL-By-nns">
-                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="36.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="61.5" height="36.5"/>
                                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                         <connections>
                                                             <action selector="clickClose:" destination="Fha-66-EPn" eventType="touchUpInside" id="Yja-yF-qOL"/>
@@ -773,7 +773,7 @@
         <scene sceneID="21h-ba-FAa">
             <objects>
                 <viewController storyboardIdentifier="popup_confirm_image" id="gLA-BO-iY1" customClass="PopupConfirmViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="ADD-j9-tbN">
+                    <view key="view" contentMode="scaleToFill" id="ADD-j9-tbN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -781,7 +781,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="0.0" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8rL-lk-9IM">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8rL-lk-9IM">
                                 <rect key="frame" x="207" y="356" width="0.0" height="194.5"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_sorry" translatesAutoresizingMaskIntoConstraints="NO" id="frp-Lz-dzq">
@@ -810,7 +810,7 @@
                                             <constraint firstAttribute="height" constant="2" id="k8A-9H-Nl2"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzN-Cr-Ktx">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fzN-Cr-Ktx">
                                         <rect key="frame" x="20" y="142" width="143" height="36.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fCg-NM-crX">

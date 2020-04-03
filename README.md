@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+1.1.12
+- adjust popup qrcode
 1.1.11
 - update log logic
 - add custom redeem/inquiry api
