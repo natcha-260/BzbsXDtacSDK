@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+1.1.13
+- fix manage campaign detail footer
 1.1.12
 - adjust popup qrcode
 1.1.11

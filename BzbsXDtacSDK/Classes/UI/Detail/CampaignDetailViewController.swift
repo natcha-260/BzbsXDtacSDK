@@ -712,7 +712,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                             }
                             vcRight.backgroundColor = UIColor.mainLightGray
                         } else {
-                            vcRight.backgroundColor = UIColor.dtacBlue
+                            setButton(isEnable: true)
                         }
                     } else {
                         vcRight.backgroundColor = UIColor.dtacBlue
