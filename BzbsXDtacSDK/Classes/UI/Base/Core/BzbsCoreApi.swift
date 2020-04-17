@@ -223,6 +223,30 @@ public class BzbsCoreApi: BuzzebeesCore {
         } , failCallback: failCallback )
     }
     
+    public func getMajorInfo(_ hashtag: String,
+                             successCallback: ((Dictionary<String,AnyObject>) -> Void)?,
+                                  failCallback: @escaping (_ error: BzbsError) -> Void) {
+        
+        let params = [
+            "key" : "\(hashtag)"
+        ]
+        
+        let strURL = BuzzebeesCore.apiUrl + "/modules/dtac/main/campaign_group"
+        requestAlamofire(HTTPMethod.get
+            , strURL: strURL
+            , params: params as [String : AnyObject]?
+            , headers: nil
+            , successCallback: { (ao) in
+                if let dict = ao as? Dictionary<String,AnyObject>
+                {
+                    successCallback?(dict)
+                } else {
+                    failCallback(
+                    BzbsError(strId: "9999", strCode: "9999", strType: "manual", strMessage: "campaign group not found"))
+                }
+        } , failCallback: failCallback )
+    }
+    
     public func dtacLog(token: String, ticket:String, sequence:Int,
                         successCallback: (() -> Void)?,
                                   failCallback: @escaping (_ error: BzbsError) -> Void) {

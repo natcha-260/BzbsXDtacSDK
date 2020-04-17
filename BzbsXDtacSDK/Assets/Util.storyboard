@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -243,10 +243,10 @@
             </objects>
             <point key="canvasLocation" x="225" y="822"/>
         </scene>
-        <!--Campaign Group List View Controller-->
+        <!--Major Campaign List View Controller-->
         <scene sceneID="T3j-lN-8Ts">
             <objects>
-                <viewController storyboardIdentifier="major_list_view" id="T6Y-og-baB" customClass="CampaignGroupListViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="major_list_view" id="T6Y-og-baB" customClass="MajorCampaignListViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9df-2b-tt4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -255,19 +255,31 @@
                                 <rect key="frame" x="0.0" y="148" width="414" height="714"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZNJ-Ih-fdL">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="279" height="203"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="x3o-KL-8IS">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cellBannerDefault" id="x3o-KL-8IS">
+                                        <rect key="frame" x="67.5" y="0.0" width="279" height="203"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="279" height="203"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="20" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BoQ-fo-OpK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="279" height="203"/>
+                                                </imageView>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="BoQ-fo-OpK" firstAttribute="leading" secondItem="x3o-KL-8IS" secondAttribute="leading" id="8zq-W1-IfT"/>
+                                            <constraint firstItem="BoQ-fo-OpK" firstAttribute="top" secondItem="x3o-KL-8IS" secondAttribute="top" id="Esq-WA-7YM"/>
+                                            <constraint firstAttribute="bottom" secondItem="BoQ-fo-OpK" secondAttribute="bottom" id="eIa-7j-AJ3"/>
+                                            <constraint firstAttribute="trailing" secondItem="BoQ-fo-OpK" secondAttribute="trailing" id="ptC-Vb-XqK"/>
+                                        </constraints>
+                                        <size key="customSize" width="279" height="203"/>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>

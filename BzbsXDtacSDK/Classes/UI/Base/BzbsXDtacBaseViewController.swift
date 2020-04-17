@@ -480,10 +480,15 @@ extension BzbsXDtacBaseViewController {
     
     @objc func actionDeeplink(notification: Notification)
     {
+        if BzbsXDtacBaseViewController.isOpeningDeeplink { return }
+        BzbsXDtacBaseViewController.isOpeningDeeplink = true
         guard let userInfo = notification.userInfo else { return }
         guard let strUrl = userInfo["strUrl"] as? String,
             let url = URL(string: strUrl) else { return }
-       openDeepLinkURL(url)
+        openDeepLinkURL(url)
+        delay(0.44) {
+            BzbsXDtacBaseViewController.isOpeningDeeplink = false
+        }
     }
     
     func isDeepLinkPrefix(_ url:URL) -> Bool
@@ -531,6 +536,11 @@ extension BzbsXDtacBaseViewController {
                     break
                 case "blue":
                     gotoBlueMember()
+                    break
+                case "major":
+                    if let hashtag = params["majorCmpg"] as? String{
+                        openCampaignHashtag(hashtag)
+                    }
                     break
                 default:
                     if let strId = params["bzbID"] as? String,
@@ -677,6 +687,17 @@ extension BzbsXDtacBaseViewController {
         vc.hidesBottomBarWhenPushed = true
         vc.campaign = campaign
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func openCampaignHashtag(_ hashtag:String) {
+        if let nav = self.navigationController {
+            let vc = MajorCampaignListViewController.getViewController()
+            let item = BzbsDashboard()
+            item.hashtag = hashtag
+            vc.dashboard = item
+            vc.hidesBottomBarWhenPushed = true
+            nav.pushViewController(vc, animated: true)
+        }
     }
 
 }

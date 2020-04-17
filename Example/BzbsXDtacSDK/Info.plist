@@ -25,6 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>dtac-test</string>
 				<string>dtacapp</string>
 				<string>dtac</string>
 				<string>dtacapp-beta</string>

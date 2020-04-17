@@ -1025,7 +1025,7 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
             switch type {
             case "hashtag" :
                 if let nav = self.navigationController {
-                    let vc = CampaignGroupListViewController.getViewController()
+                    let vc = MajorCampaignListViewController.getViewController()
                     vc.dashboard = item
                     vc.hidesBottomBarWhenPushed = true
                     eventLabel = "\(item.hashtag ?? "")|\(item.line1 ?? "")"

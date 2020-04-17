@@ -26,6 +26,6 @@ public class BzbsError {
     }
     
     func description() -> String {
-        return "\(String(describing: type)):id:\(String(describing: id)),code:\(String(describing: code))\nmessage:\(String(describing: message))"
+        return "BzbsError \n\(String(describing: type))\nid:\(String(describing: id))\ncode:\(String(describing: code))\nmessage:\(String(describing: message))"
     }
 }

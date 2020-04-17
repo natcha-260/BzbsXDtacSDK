@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+1.1.15
+- handle major campaign deeplink
 1.1.14
 - fix iPhone SE ui
 1.1.13

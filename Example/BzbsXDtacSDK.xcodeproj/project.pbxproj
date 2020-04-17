@@ -182,7 +182,6 @@
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				DB8FB733233B07AD0032D4BE /* ShellScript */,
 				47BB930B0AF4FF7E9D486025 /* [CP] Embed Pods Frameworks */,
 				0647D5026D38BAA9220CCE80 /* [CP] Copy Pods Resources */,
 			);
@@ -357,23 +356,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BzbsXDtacSDK_Example/Pods-BzbsXDtacSDK_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		DB8FB733233B07AD0032D4BE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 98347a5d7abab07bf31d588fe01e1d415f0275e7 f6a9e6cd8323f1f4ae6c530adf8e5d039ea54a973343f289305eea3e381e6c6a\n";
 		};
 		EEAC1EC94B652BE306BEF821 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

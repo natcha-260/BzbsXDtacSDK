@@ -288,8 +288,8 @@ public class BuzzebeesCore: NSObject {
         if(itemParams == nil) {
             itemParams = [String: String]() as [String : AnyObject]?
         }
-        itemParams!["app_id"] = self.appId as AnyObject?
-        itemParams!["device_app_id"] = self.appId as AnyObject?
+//        itemParams!["app_id"] = self.appId as AnyObject?
+//        itemParams!["device_app_id"] = self.appId as AnyObject?
         if let dtacId = Bzbs.shared.userLogin?.uuid
         {
             itemParams!["dtac_id"] = dtacId as AnyObject
