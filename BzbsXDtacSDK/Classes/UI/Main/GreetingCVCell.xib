@@ -51,7 +51,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgD-qk-cgL">
                                         <rect key="frame" x="0.0" y="0.0" width="166.33333333333334" height="42"/>
                                     </button>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_search_icon_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="WOD-X1-C8K">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="img_search_icon_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="WOD-X1-C8K">
                                         <rect key="frame" x="159.66666666666663" y="17" width="6.6666666666666572" height="25"/>
                                     </imageView>
                                 </subviews>

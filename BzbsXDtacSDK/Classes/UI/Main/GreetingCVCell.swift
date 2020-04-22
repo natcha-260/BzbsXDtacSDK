@@ -27,6 +27,7 @@ class GreetingCVCell: UICollectionViewCell {
         lblGreeting.textAlignment = .right
         lblGreeting.text = "Good morning".localized()
         lblGreeting.textColor = .mainGray
+        lblGreeting.adjustsFontSizeToFitWidth = true
         
         lblLevelTitle.font = UIFont.mainFont()
         lblLevelTitle.textColor = .mainGray

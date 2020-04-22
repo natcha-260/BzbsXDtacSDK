@@ -55,6 +55,10 @@ class MajorCampaignListViewController: BaseListController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     // MARK:- View Life cycle
     // MARK:-
     
@@ -74,6 +78,7 @@ class MajorCampaignListViewController: BaseListController {
     override func getApi() {
         if _isCallApi || _isEnd { return }
         _isCallApi = true
+        collectionView.reloadData()
         showLoader()
         controller.list(config: getConfig()
             , top : _intTop
@@ -106,9 +111,9 @@ class MajorCampaignListViewController: BaseListController {
             self.dashboard.line1 = dict["line1"] as? String
             self.dashboard.line2 = dict["line2"] as? String
             self.dashboard.imageUrl = dict["image_url"] as? String
-            self.loadedData()
+            self.collectionView.reloadData()
         }) { (error) in
-            self.loadedData()
+            self.collectionView.reloadData()
             print(error.description())
         }
     }
