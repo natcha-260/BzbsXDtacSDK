@@ -53,7 +53,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     var viewImageSlideshow: ImageSlideshow!
     var isShowTab = DetailTab.detail
     var rewardLeft:CGFloat{
-        if campaign.type == 9 { return 1 }
+//        if campaign.type == 9 { return 1 }
         if let quantity = campaignStatus?.quantity {
             if quantity == -1 { return 1 }
             if quantity >= 51 || quantity <= -1 {
@@ -215,7 +215,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     var isLoadedStatus = false
     func getApiCampaignStatus() {
-        if campaign.type == 16 || campaign.type == 9 {
+        if campaign.type == 16 {
             self.manageFooter()
             self.tableView.reloadData()
             self.hideLoader()
@@ -736,10 +736,10 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     }
     
     func getProgressColor() -> UIColor {
-        if  campaign.type == 9 {
-            return .mainGreen
-        }
-        guard let _campaingStatus = campaignStatus else { return .gray }
+//        if  campaign.type == 9 {
+//            return .mainGreen
+//        }
+        guard let _campaingStatus = campaignStatus else { return .mainLightGray }
         
         if _campaingStatus.quantity >= 51 || _campaingStatus.quantity <= -1 {
             return .mainGreen
