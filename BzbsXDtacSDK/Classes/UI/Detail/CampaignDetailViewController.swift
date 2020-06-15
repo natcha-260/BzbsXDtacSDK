@@ -183,7 +183,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     self.tableView.reloadData()
                 })
 
-                self.getApiCampaignStatus()
+                self.getCacheStatus()
         }) { (error) in
 
             self.isCallingCampaignDetail = false
@@ -214,6 +214,21 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     }
     
     var isLoadedStatus = false
+    
+    func getCacheStatus(){
+        CacheCore.shared.loadCacheData(key: BBCache.keys.statusCampaign, customKey: "\(campaign.ID!)", successCallback: { (ao) in
+            if let dict = ao as? Dictionary<String, AnyObject> {
+                self.campaignStatus = CampaignStatus(dict: dict)
+                self.manageFooter()
+                self.tableView.reloadData()
+                self.hideLoader()
+            } else {
+                self.getApiCampaignStatus()
+            }
+        }) {
+            self.getApiCampaignStatus()
+        }
+    }
     func getApiCampaignStatus() {
         if campaign.type == 16 {
             self.manageFooter()
@@ -255,9 +270,12 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                                    deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                                    center: LocationManager.shared.getCurrentCoorndate(),
                                                    token: token,
-                                                   successCallback: { (status) in
+                                                   successCallback: { (status, dict) in
                                                     self.isLoadedStatus = true
                                                     self.campaignStatus = status
+                                                    if status.quantity == 0 {
+                                                        CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.statusCampaign,  customKey: "\(self.campaign.ID!)" , lifetime: BuzzebeesCore.cacheTimeQuota)
+                                                    }
                                                     self.manageFooter()
                                                     self.tableView.reloadData()
                                                     self.hideLoader()

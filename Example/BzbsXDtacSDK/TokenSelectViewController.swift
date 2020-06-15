@@ -49,7 +49,7 @@ class TokenSelectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        segmentVersion.selectedSegmentIndex = 4
+        segmentVersion.selectedSegmentIndex = 5
         didChangeVersion(segmentVersion)
         lblEnv.textColor = .black
     }

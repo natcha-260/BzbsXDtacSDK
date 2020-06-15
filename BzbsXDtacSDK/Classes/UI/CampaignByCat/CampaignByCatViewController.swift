@@ -1023,7 +1023,7 @@ extension CampaignByCatViewController: ScanQRViewControllerDelegate{
                                                     deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                                     center: LocationManager.shared.getCurrentCoorndate(),
                                                     token: Bzbs.shared.userLogin?.token,
-                                                    successCallback: { (status) in
+                                                    successCallback: { (status, _)  in
                                                         let campaign = BzbsCampaign()
                                                         campaign.ID = campaignId!
                                                         DispatchQueue.main.async {

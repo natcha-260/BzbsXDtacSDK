@@ -18,6 +18,7 @@ class BarItem: NSObject {
         var titleWidth:CGFloat = 0
         
         let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNonzeroMagnitude, height: 30))
+        lblTitle.textColor = .black
         lblTitle.font = UIFont.mainFont(.dtacHeaderSize,style:.bold)
         lblTitle.textAlignment = .left
         lblTitle.text = "main_title".localized()

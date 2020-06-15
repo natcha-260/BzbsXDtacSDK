@@ -73,18 +73,56 @@ struct DtacLoginParams {
         return resourceBundle
     }
     
+    func getCacheLoginParams(loginCacheSelector: ((DtacLoginParams?) -> Void))
+    {
+        CacheCore.shared.loadCacheData(key: BBCache.keys.loginparam, successCallback: { (ao) in
+            if let dict = ao as? Dictionary<String, String>
+            {
+                var loginParams = DtacLoginParams()
+                loginParams.token = dict["token"]
+                loginParams.ticket = dict["ticket"]
+                loginParams.DTACSegment = dict["DTACSegment"]
+                loginCacheSelector(loginParams)
+            } else {
+                loginCacheSelector(nil)
+            }
+        }) {
+            loginCacheSelector(nil)
+        }
+    }
+    
     @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
         var loginParams = DtacLoginParams()
-        loginParams.token = token
-        loginParams.ticket = ticket
-        loginParams.language = language
-        loginParams.DTACSegment = DTACSegment
-        
-        self.dtacLoginParams = loginParams
-        relogin()
-        self.isHasNewMessage = isHasNewMessage
-        if delegate != nil {
-            self.delegate = delegate
+        if token == "" || ticket == "" || DTACSegment == ""
+        {
+            getCacheLoginParams { (loginParamsCache) in
+                if loginParamsCache != nil {
+                    loginParams = loginParamsCache!
+                    loginParams.language = language
+                    self.dtacLoginParams = loginParams
+                }
+                self.relogin()
+                self.isHasNewMessage = isHasNewMessage
+                if delegate != nil {
+                    self.delegate = delegate
+                }
+            }
+        } else {
+            loginParams.token = token
+            loginParams.ticket = ticket
+            loginParams.language = language
+            loginParams.DTACSegment = DTACSegment
+            var dict = Dictionary<String, String>()
+            dict["token"] = token
+            dict["ticket"] = ticket
+            dict["DTACSegment"] = DTACSegment
+            CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.loginparam, lifetime: BuzzebeesCore.cacheTimeSegment)
+            self.dtacLoginParams = loginParams
+            relogin()
+            self.isHasNewMessage = isHasNewMessage
+            if delegate != nil {
+                self.delegate = delegate
+            }
         }
     }
     

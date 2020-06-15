@@ -46,6 +46,9 @@ public class BuzzebeesCore: NSObject {
     static var levelNameGold = ""
     static var levelNameBlue = ""
     
+    static var cacheTimeSegment:TimeInterval = Date().timeIntervalSince1970 + (10 * 60)
+    static var cacheTimeQuota:TimeInterval = Date().timeIntervalSince1970 + (5 * 60)
+    
     let appName = "dtac"
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
@@ -122,7 +125,20 @@ public class BuzzebeesCore: NSObject {
                     {
                         urlSegmentImageBlue = URL(string: blueUrl)
                     }
-                    
+
+                    if let cacheConfig = dictJSON["cache"] as? Dictionary<String, AnyObject> {
+                        if let cacheTimeSegment = cacheConfig["segment"] as? Int
+                        {
+                            let cacheDateSegment = Date().timeIntervalSince1970 + TimeInterval(cacheTimeSegment * 60)
+                            self.cacheTimeSegment = cacheDateSegment
+                        }
+                        
+                        if let cacheTimeQuota = cacheConfig["quota"] as? Int
+                        {
+                            let cacheDateQuota = Date().timeIntervalSince1970 + TimeInterval(cacheTimeQuota * 60)
+                            self.cacheTimeQuota = cacheDateQuota
+                        }
+                    }
                     
                     if let blobUrl = dictJSON["url_blob"] as? String ,
                         let baseUrl = dictJSON["url_base"] as? String ,

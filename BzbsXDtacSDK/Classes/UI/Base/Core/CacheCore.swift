@@ -29,9 +29,24 @@ import UIKit
  */
 open class BBCache: NSObject
 {
+    
+    public enum keys : String {
+        case loginparam = "loginparam"
+        case statusCampaign = "status"
+        
+        var folder :String {
+            switch self {
+                case .loginparam:
+                    return "login"
+                case .statusCampaign:
+                    return "campaign"
+            }
+        }
+    }
+    
     public override init()
     {
-        print("init BBCache");
+        print("init BBCache")
     }
     
     let _documentFolderForSavingFiles = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -39,122 +54,73 @@ open class BBCache: NSObject
     /**
      โหลดข้อมูลจากเครื่อง
      */
-    open func loadCacheData(_ folderName: String
-        , fileName: String
-        , isArchiver: Bool = false
+    open func loadCacheData(key:BBCache.keys, customKey:String? = nil
         , successCallback: (AnyObject) -> Void
         , failCallback: () -> Void)
     {
-        //        var dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(getVersion() + "/" + folderName);
-        //        dataPath = dataPath.stringByAppendingString("/");
-        //        let pathToTheFile = dataPath.stringByAppendingString(fileName);
-        let strPath = getVersion() + "/" + folderName + "/";
-        let dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(strPath) + "/";
-        let pathToTheFile = dataPath + fileName;
         
-        if(isArchiver == true)
+        let folderName: String = key.folder
+        var fileName: String = key.rawValue
+        if let key = customKey {
+            fileName = "\(fileName)_\(key)"
+        }
+        
+        let strPath = getVersion() + "/" + folderName + "/"
+        let dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(strPath) + "/"
+        let pathToTheFile = dataPath + fileName
+        
+        if let data = NSKeyedUnarchiver.unarchiveObject(withFile: pathToTheFile) as? Dictionary<String, AnyObject>
         {
-            if let data = NSKeyedUnarchiver.unarchiveObject(withFile: pathToTheFile)
+            if let value  = data["value"],
+                let lifetime = data["lifetime"] as? TimeInterval
             {
-                successCallback(data as AnyObject);
-            }else{
-                failCallback();
+                let date = Date().timeIntervalSince1970
+                if date < lifetime {
+                    successCallback(value as AnyObject)
+                } else {
+                    failCallback()
+                }
+            } else {
+                failCallback()
             }
-        }else{
-            var error:NSError?
-            var stringJSON: String?
-            do {
-                stringJSON = try String(contentsOfFile: pathToTheFile, encoding:String.Encoding.utf8)
-            } catch let error1 as NSError {
-                error = error1
-                stringJSON = nil
-            }
-            if let theError = error {
-                print("\(theError.localizedDescription)", terminator: "");
-                failCallback();
-                return;
-            }
-            
-            // convert String to NSData
-            let data: Data = stringJSON!.data(using: String.Encoding.utf8)!
-            // convert NSData to 'AnyObject'
-            do {
-                let anyObj = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
-                
-                successCallback(anyObj as AnyObject);
-                return;
-            } catch let error1 as NSError {
-                error = error1
-            }
-            
-            if let _ = error {
-                failCallback();
-                return;
-            }
+        } else {
+            failCallback()
         }
     }
     /**
      บันทึกข้อมูลลงเครื่อง
      */
-    open func saveCacheData(_ ao : AnyObject
-        , folderName: String
-        , fileName: String
-        , isArchiver: Bool = false)
+    open func saveCacheData(_ ao : AnyObject, key:BBCache.keys, customKey:String? = nil , lifetime:TimeInterval)
     {
-        // Get Path
-        //        var dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(getVersion() + "/" + folderName);
-        //        dataPath = dataPath.stringByAppendingString("/");
-        //        let pathToTheFile = dataPath.stringByAppendingString(fileName);
-        let strPath = getVersion() + "/" + folderName + "/";
-        let dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(strPath) + "/";
-        let pathToTheFile = dataPath + fileName;
         
-        if(isArchiver == true)
-        {
-            let theFileManager = FileManager.default
-            
-            var error: NSError?
-            if (!theFileManager.fileExists(atPath: dataPath)) {
-                do {
-                    //set true for create sub folder
-                    try theFileManager.createDirectory(atPath: dataPath, withIntermediateDirectories: true, attributes: nil)
-                } catch let error1 as NSError {
-                    error = error1
-                    print(error!);
-                };
-            }
-            
-            NSKeyedArchiver.archiveRootObject(ao, toFile: pathToTheFile);
-        }else{
-            // Convert to string json
-            let stringJSON = Convert.JSONStringify(ao, prettyPrinted: true)
-            let theFileManager = FileManager.default
-            
-            var error: NSError?
-            if (!theFileManager.fileExists(atPath: dataPath)) {
-                do {
-                    //set true for create sub folder
-                    try theFileManager.createDirectory(atPath: dataPath, withIntermediateDirectories: true, attributes: nil)
-                } catch let error1 as NSError {
-                    error = error1
-                    print(error!);
-                };
-            }
-            
-            var theWriteError: NSError?
+        let folderName: String = key.folder
+        var fileName: String = key.rawValue
+        if let key = customKey {
+            fileName = "\(fileName)_\(key)"
+        }
+        
+        let strPath = getVersion() + "/" + folderName + "/"
+        let dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(strPath) + "/"
+        let pathToTheFile = dataPath + fileName
+        let theFileManager = FileManager.default
+        
+        var error: NSError?
+        if (!theFileManager.fileExists(atPath: dataPath)) {
             do {
-                try stringJSON.write(toFile: pathToTheFile, atomically: true, encoding: String.Encoding.utf8)
-            } catch let error as NSError {
-                theWriteError = error
-            }
-            
-            if theWriteError == nil
-            {
-                //            println("Success \(stringJSON)")
-            }else{
-                print("Error \(String(describing: theWriteError))")
+                //set true for create sub folder
+                try theFileManager.createDirectory(atPath: dataPath, withIntermediateDirectories: true, attributes: nil)
+            } catch let error1 as NSError {
+                error = error1
+                print(error!)
             }
         }
+        
+        var data = Dictionary<String, AnyObject>()
+        data["value"] = ao
+        data["lifetime"] = lifetime as AnyObject
+        
+        NSKeyedArchiver.archiveRootObject(data, toFile: pathToTheFile)
+
     }
     
     // MARK: Util
@@ -164,7 +130,7 @@ open class BBCache: NSObject
     fileprivate func getVersion() -> String
     {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            return "version_" + version.replacingOccurrences(of: ".", with: "_");
+            return "version_" + version.replacingOccurrences(of: ".", with: "_")
         }
         return "no_version_info"
     }

@@ -188,7 +188,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                                   deviceLocale: String,
                                   center: String?,
                                   token: String?,
-                                  successCallback: @escaping (_ result: CampaignStatus) -> Void,
+                                  successCallback: @escaping (_ result: CampaignStatus, Dictionary<String, AnyObject>) -> Void,
                                   failCallback: @escaping (_ error: BzbsError) -> Void) {
         
         var params = [
@@ -213,7 +213,7 @@ public class BzbsCoreApi: BuzzebeesCore {
             , successCallback: { (ao) in
                 if let dictJSON = ao as? Dictionary<String, AnyObject> {
                     if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
-                        successCallback(CampaignStatus(dict: dictJSON))
+                        successCallback(CampaignStatus(dict: dictJSON), dictJSON)
                         return
                     }
                 }
