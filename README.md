@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 1.1.19
+- Fix deeplink blue segment
 ## 1.1.18
 - Add cache segment and quota
 ## 1.1.17

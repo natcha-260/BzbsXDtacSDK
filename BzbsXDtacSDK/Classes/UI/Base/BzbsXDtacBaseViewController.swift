@@ -555,8 +555,8 @@ extension BzbsXDtacBaseViewController {
     
     func gotoCategory(catName tmpCatName:String?,subCatName tmpSubCatName:String?)
     {
-        let catName = tmpCatName?.removingPercentEncoding
-        let subCatName = tmpSubCatName?.removingPercentEncoding
+        let catName = tmpCatName?.removingPercentEncoding?.lowercased()
+        let subCatName = tmpSubCatName?.removingPercentEncoding?.lowercased()
         print("goto \(catName ?? ""), \(subCatName ?? "")")
         guard let arrCat = Bzbs.shared.arrCategory else {
             delay(0.33) {
@@ -569,14 +569,14 @@ extension BzbsXDtacBaseViewController {
         var subCat : BzbsCategory?
         if let catName = catName {
             if let _cat = arrCat.first(where: { (tmpCat) -> Bool in
-                return tmpCat.nameEn.lowercased() == catName
-            }) {
+                return tmpCat.nameEn.lowercased() == catName })
+            {
                 cat = _cat
                 if let subCatName = subCatName
                 {
                     if let _subCat = _cat.subCat.first(where: { (tmpSubCat) -> Bool in
-                        return tmpSubCat.nameEn.lowercased() == subCatName
-                    }) {
+                        return tmpSubCat.nameEn.lowercased() == subCatName })
+                    {
                         subCat = _subCat
                     }
                 }
@@ -605,43 +605,6 @@ extension BzbsXDtacBaseViewController {
                 }
             }
         }
-//
-//        if let _ = cat {
-//            if self is CampaignByCatViewController
-//            {
-//                let vc = self as! CampaignByCatViewController
-//                vc.currentCat = cat
-//                if let _ = subCat
-//                {
-//                    vc.currentSubCat = subCat
-//                }
-//            } else {
-//                if let nav = self.navigationController {
-//                    GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
-//                } else {
-//                    delay(0.33) {
-//                        self.gotoCategory(catName: catName, subCatName: subCatName)
-//                    }
-//                }
-//            }
-//        } else {
-//            if let first = arrCat.first
-//            {
-//                if self is CampaignByCatViewController
-//                {
-//                    let vc = self as! CampaignByCatViewController
-//                    vc.currentCat = first
-//                } else {
-//                    if let nav = self.navigationController {
-//                        GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
-//                    } else {
-//                        delay(0.33) {
-//                            self.gotoCategory(catName: catName, subCatName: subCatName)
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
     
     func gotoFavorite()
@@ -674,7 +637,13 @@ extension BzbsXDtacBaseViewController {
         {
             if userLogin.dtacLevel == .blue
             {
-                gotoCategory(catName: "blue%20member", subCatName: nil)
+                guard let arrCat = Bzbs.shared.arrCategory else {
+                    delay(0.33) {
+                        self.gotoBlueMember()
+                    }
+                    return
+                }
+                gotoCategory(catName: arrCat.first?.nameEn, subCatName: nil)
             }
         }
     }
