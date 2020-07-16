@@ -258,6 +258,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     height: height)
                 let window = UIApplication.shared.keyWindow!
                 window.addSubview(lbl)
+                window.bringSubviewToFront(lbl)
                 delay(3.0) {
                     UIView.animate(withDuration: 0.33, animations: {
                         lbl.alpha = 0

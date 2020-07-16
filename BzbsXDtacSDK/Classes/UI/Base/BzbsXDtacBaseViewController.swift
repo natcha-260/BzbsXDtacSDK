@@ -637,13 +637,13 @@ extension BzbsXDtacBaseViewController {
         {
             if userLogin.dtacLevel == .blue
             {
-                guard let arrCat = Bzbs.shared.arrCategory else {
+                guard let _ = Bzbs.shared.arrCategory, let blueCat = Bzbs.shared.blueCategory else {
                     delay(0.33) {
                         self.gotoBlueMember()
                     }
                     return
                 }
-                gotoCategory(catName: arrCat.first?.nameEn, subCatName: nil)
+                gotoCategory(catName: blueCat.nameEn, subCatName: nil)
             }
         }
     }
