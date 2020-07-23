@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 1.1.21
+- Fix deeplink blue segment
 ## 1.1.20
 - Fix deeplink blue segment
 ## 1.1.19

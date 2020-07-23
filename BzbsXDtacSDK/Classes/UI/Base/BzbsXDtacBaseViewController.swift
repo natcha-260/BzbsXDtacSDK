@@ -645,6 +645,10 @@ extension BzbsXDtacBaseViewController {
                 }
                 gotoCategory(catName: blueCat.nameEn, subCatName: nil)
             }
+        } else {
+            delay(0.33) {
+                self.gotoBlueMember()
+            }
         }
     }
     
