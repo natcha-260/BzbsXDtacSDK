@@ -637,13 +637,26 @@ extension BzbsXDtacBaseViewController {
         {
             if userLogin.dtacLevel == .blue
             {
-                guard let _ = Bzbs.shared.arrCategory, let blueCat = Bzbs.shared.blueCategory else {
+                guard let arrCat = Bzbs.shared.arrCategory, let blueCat = Bzbs.shared.blueCategory else {
                     delay(0.33) {
                         self.gotoBlueMember()
                     }
                     return
                 }
-                gotoCategory(catName: blueCat.nameEn, subCatName: nil)
+                
+                if self is CampaignByCatViewController
+                {
+                    let vc = self as! CampaignByCatViewController
+                    vc.currentCat = blueCat
+                } else {
+                    if let nav = self.navigationController {
+                        GotoPage.gotoCategory(nav, cat: blueCat, subCat: nil, arrCategory: arrCat)
+                    } else {
+                        delay(0.33) {
+                            self.gotoBlueMember()
+                        }
+                    }
+                }
             }
         } else {
             delay(0.33) {
