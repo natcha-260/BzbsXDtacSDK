@@ -181,19 +181,6 @@ class BuzzebeesConvert {
         return ""
     }
     
-    class func DateToString(_ dateValue: Date, stringFormat: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = stringFormat
-        
-        let gregorian = Calendar(identifier: Calendar.Identifier.buddhist)
-        dateFormatter.calendar = gregorian
-        
-        let nsLocale = generate_NSLocale_from_base_locale_code("th_TH")
-        dateFormatter.locale = nsLocale
-        
-        return dateFormatter.string(from: dateValue)
-    }
-    
     /**
      NSLocale With String
      */

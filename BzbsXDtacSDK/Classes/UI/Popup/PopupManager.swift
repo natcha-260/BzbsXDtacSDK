@@ -59,6 +59,14 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
+    class func pointHistoryPopup(onView target:UIViewController!, pointlog:PointLog)
+    {
+        let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "popup_point_history_detail") as! PopupPointHistoryDetailViewController
+        vc.pointLog = pointlog
+        present(view: vc, on: target)
+    }
+    
     private class func present(view vc:UIViewController,on target:UIViewController)
     {
 //        Bzbs.shared.delay(0.66) {

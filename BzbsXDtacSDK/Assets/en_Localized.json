@@ -91,4 +91,12 @@
     "recommend_title" : "Recommend for you",
     
     "major_empty" : "No privilege campaign found.",
+    
+    "coin_balance_title" : "Coin Balance",
+    "coin_earn_no_data" : "dtac Coin is coming soon",
+    "coin_burn_no_data" : "You don't have any redemption",
+    "your_coin" : "YOUR COIN",
+    "valid_till" : "Valid till",
+    "coin_earn_title" : "Earned",
+    "coin_burn_title" : "Redeemed",
 }

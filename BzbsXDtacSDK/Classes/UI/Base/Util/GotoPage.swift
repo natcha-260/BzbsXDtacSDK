@@ -103,6 +103,13 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
+    class func gotoPointHistory(_ nav:UINavigationController) {
+        let storboard = UIStoryboard(name: "History", bundle: currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "scene_point_history") as! PointHistoryViewController
+        vc.hidesBottomBarWhenPushed = true
+        nav.pushViewController(vc, animated: true)
+    }
+    
     class func gotoHistoryPopupExpired(_ nav: UINavigationController, item: BzbsHistory) {
 //        let storboard = UIStoryboard(name: "History", bundle: currentBundle)
 //        let vc = storboard.instantiateViewController(withIdentifier: "scene_popup_history_expired") as! HistoryViewPopupExpiredController

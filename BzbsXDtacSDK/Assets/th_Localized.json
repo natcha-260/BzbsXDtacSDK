@@ -90,4 +90,11 @@
     "recommend_title" : "ร้านค้าแนะนำสำหรับคุณ",
     
     "major_empty" : " ไม่พบรายการสิทธิพิเศษ",
+    "coin_balance_title" : "Coin คงเหลือ",
+    "coin_earn_no_data" : "dtac Coin มันกำลังมา",
+    "coin_burn_no_data" : "ยังไม่มีการรับแลกสิิทธิ์",
+    "your_coin" : "COIN ของคุณ",
+    "valid_till" : "หมดอายุภายใน",
+    "coin_earn_title" : "ได้รับ",
+    "coin_burn_title" : "รับสิทธิ์",
 }

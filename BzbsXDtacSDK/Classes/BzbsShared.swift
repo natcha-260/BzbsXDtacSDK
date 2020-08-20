@@ -17,6 +17,7 @@ struct DtacLoginParams {
     var ticket :String?
     var language :String?
     var DTACSegment : String?
+    var TelType : String?
 }
 
 @objc public protocol BzbsDelegate {
@@ -82,6 +83,7 @@ struct DtacLoginParams {
                 loginParams.token = dict["token"]
                 loginParams.ticket = dict["ticket"]
                 loginParams.DTACSegment = dict["DTACSegment"]
+                loginParams.TelType = dict["TelType"]
                 loginCacheSelector(loginParams)
             } else {
                 loginCacheSelector(nil)
@@ -91,7 +93,7 @@ struct DtacLoginParams {
         }
     }
     
-    @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
+    @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String, TelType: String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
         var loginParams = DtacLoginParams()
         if token == "" || ticket == "" || DTACSegment == ""
         {
@@ -112,10 +114,12 @@ struct DtacLoginParams {
             loginParams.ticket = ticket
             loginParams.language = language
             loginParams.DTACSegment = DTACSegment
+            loginParams.TelType = TelType
             var dict = Dictionary<String, String>()
             dict["token"] = token
             dict["ticket"] = ticket
             dict["DTACSegment"] = DTACSegment
+            dict["TelType"] = TelType
             CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.loginparam, lifetime: BuzzebeesCore.cacheTimeSegment)
             self.dtacLoginParams = loginParams
             relogin()
@@ -139,9 +143,9 @@ struct DtacLoginParams {
     
     var isCallingLogin = false
     
-    @objc public func login(token:String, ticket:String, language:String, DTACSegment:String)
+    @objc public func login(token:String, ticket:String, language:String, DTACSegment:String, TelType: String)
     {
-        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, completionHandler: nil, failureHandler: nil)
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, completionHandler: nil, failureHandler: nil)
     }
     
     func relogin(completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
@@ -150,10 +154,11 @@ struct DtacLoginParams {
         let ticket = dtacLoginParams.ticket
         let language = dtacLoginParams.language ?? "th"
         let DTACSegment = dtacLoginParams.DTACSegment ?? ""
-        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, completionHandler: completionHandler, failureHandler: failureHandler)
+        let TelType = dtacLoginParams.TelType ?? ""
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, completionHandler: completionHandler, failureHandler: failureHandler)
     }
     
-    func login(token:String?, ticket:String?, language:String, DTACSegment: String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
+    func login(token:String?, ticket:String?, language:String, DTACSegment: String, TelType: String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
     {
         if isCallingLogin { return }
         isCallingLogin = true
@@ -161,15 +166,15 @@ struct DtacLoginParams {
         {
             BuzzebeesCore.apiSetupPrefix(successCallback: {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, completionHandler: completionHandler, failureHandler: failureHandler)
             }) {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, completionHandler: completionHandler, failureHandler: failureHandler)
             }
             return
         }
         
-        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment)
+        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType)
         
         if let token = dtacLoginParams.token, token != "",
             let ticket = dtacLoginParams.ticket, ticket != "",

@@ -22,6 +22,20 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "PointHistoryViewController.isEarnEnd.getter:PointHistoryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "strEarnDate">
+            </PersistentString>
+            <PersistentString
+               value = "endDate &lt; date">
+            </PersistentString>
+            <PersistentString
+               value = "dateFormatter.date(from: strEarnDate)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "PopupSerialViewController.apiUse():PopupSerialViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -325,18 +339,10 @@
                value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
             </PersistentString>
             <PersistentString
-               value = "Bzbs.shared.currentBundle.localizations">
-            </PersistentString>
-            <PersistentString
                value = "bundle.localizations">
             </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BBLocale.getPathLanguage(_:):LocaleCore.swift">
-         <PersistentStrings>
             <PersistentString
-               value = "bundle.path(forResource: &quot;th&quot;, ofType: &quot;lproj&quot;)">
+               value = "Bzbs.shared.currentBundle.localizations">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -345,6 +351,14 @@
          <PersistentStrings>
             <PersistentString
                value = "url.host">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BBLocale.getPathLanguage(_:):LocaleCore.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "bundle.path(forResource: &quot;th&quot;, ofType: &quot;lproj&quot;)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -788,10 +802,10 @@
          contextName = "BzbsMainViewController.collectionView(_:didSelectItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "indexPath.row">
+               value = "arrCampaign.count">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count">
+               value = "indexPath.row">
             </PersistentString>
             <PersistentString
                value = "indexPath.row - 1">
@@ -1081,6 +1095,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "PopupPointHistoryDetailViewController.setupUI():PopupPointHistoryDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "pointLog">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "TokenSelectViewController.clickBlueMember(_:):TokenSelectViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -1224,10 +1246,10 @@
                value = "dashboardItems">
             </PersistentString>
             <PersistentString
-               value = "self.arrCategory">
+               value = "arrCampaign.count + 1">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count + 1">
+               value = "self.arrCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

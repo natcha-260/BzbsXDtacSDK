@@ -12,44 +12,62 @@ import AlamofireImage
 class GreetingCVCell: UICollectionViewCell {
     
     @IBOutlet weak var imvGreeting: UIImageView!
+    @IBOutlet weak var vwGreeting: UIView!
     @IBOutlet weak var lblGreeting: UILabel!
     @IBOutlet weak var vwLevel: UIView!
     @IBOutlet weak var lblLevelTitle: UILabel!
     @IBOutlet weak var imvLevel: UIImageView!
     @IBOutlet weak var btnLevel: UIButton!
+    @IBOutlet weak var vwCoin: UIView!
+    @IBOutlet weak var lblCoinTitle: UILabel!
+    @IBOutlet weak var lblCoin: UILabel!
+    @IBOutlet weak var btnCoin: UIButton!
     
     class func getNib() -> UINib{
         return UINib(nibName: "GreetingCVCell", bundle: Bzbs.shared.currentBundle)
     }
     
     override func awakeFromNib() {
-        lblGreeting.font = UIFont.mainFont(style:.bold)
+        lblGreeting.font = UIFont.mainFont(.xbig ,style:.bold)
         lblGreeting.textAlignment = .right
         lblGreeting.text = "Good morning".localized()
         lblGreeting.textColor = .mainGray
         lblGreeting.adjustsFontSizeToFitWidth = true
+        vwGreeting.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        vwGreeting.cornerRadius()
+        
+        vwCoin.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        vwCoin.cornerRadius()
         
         lblLevelTitle.font = UIFont.mainFont()
-        lblLevelTitle.textColor = .mainGray
+        lblCoinTitle.font = UIFont.mainFont()
+        lblCoin.font = UIFont.mainFont()
+        lblCoin.adjustsFontSizeToFitWidth = true
         
-        imvGreeting.cornerRadius(corner: 16)
+        lblLevelTitle.textColor = .mainGray
+        lblCoinTitle.textColor = .mainGray
+        
         imvLevel.image = nil// UIImage(named: "imgt_icon_dtac", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         vwLevel.isHidden = true
     }
     
-    func setupWithModel(_ item:GreetingModel?, target:UIViewController, levelSelector:Selector)
+    func setupWithModel(_ item:GreetingModel?, coin: Int, target:UIViewController, levelSelector:Selector, coinSelector: Selector)
     {
         btnLevel.addTarget(target, action: levelSelector, for: UIControl.Event.touchUpInside)
+        btnCoin.addTarget(target, action: coinSelector, for: UIControl.Event.touchUpInside)
         lblLevelTitle.text = "main_level_title".localized()
+        lblCoinTitle.text = "your_coin".localized()
         if item != nil
         {
             let strGreeting = item?.greetingText ?? "Good morning"
             lblGreeting.text = strGreeting
 
             if let strUrl = item?.imageUrl {
-                imvGreeting.bzbsSetImage(withURL: strUrl)
+                imvGreeting.bzbsSetImage(withURL: strUrl, isUsePlaceholder:false)
             }
         }
+        
+        lblCoin.text = coin.withCommas()
         
         var levelImageUrl:URL?
         vwLevel.isHidden = false

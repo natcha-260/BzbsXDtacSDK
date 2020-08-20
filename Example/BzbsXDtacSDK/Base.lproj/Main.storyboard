@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jpG-8U-5ab">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jpG-8U-5ab">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -192,9 +192,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="eok-gg-E4b">
+                                <rect key="frame" x="15" y="101" width="159" height="32"/>
+                                <segments>
+                                    <segment title="Pre-Paid"/>
+                                    <segment title="Post-Paid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="didChangeTelType:" destination="jpG-8U-5ab" eventType="valueChanged" id="kBA-pf-Ecw"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="eok-gg-E4b" firstAttribute="leading" secondItem="M9p-TG-hrK" secondAttribute="leading" id="0A3-Cm-r61"/>
+                            <constraint firstItem="eok-gg-E4b" firstAttribute="top" secondItem="M9p-TG-hrK" secondAttribute="bottom" constant="8" id="20C-nQ-D2v"/>
                             <constraint firstItem="M9p-TG-hrK" firstAttribute="leading" secondItem="Mrs-gz-fxc" secondAttribute="leading" constant="15" id="6tY-dv-P1N"/>
                             <constraint firstItem="M9p-TG-hrK" firstAttribute="top" secondItem="xef-WP-TJ0" secondAttribute="bottom" constant="15" id="7gg-zL-cIs"/>
                             <constraint firstItem="7Hn-wh-fYJ" firstAttribute="centerX" secondItem="KX5-tj-BMX" secondAttribute="centerX" id="Cx1-Lc-Etq"/>
@@ -208,6 +220,7 @@
                     <connections>
                         <outlet property="lblEnv" destination="7Hn-wh-fYJ" id="W2R-5B-8w1"/>
                         <outlet property="segmentLang" destination="M9p-TG-hrK" id="bE4-Bi-nCx"/>
+                        <outlet property="segmentTelType" destination="eok-gg-E4b" id="eu3-u5-OKd"/>
                         <outlet property="segmentVersion" destination="xef-WP-TJ0" id="hjF-RD-Nd9"/>
                     </connections>
                 </viewController>

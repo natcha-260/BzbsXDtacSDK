@@ -107,6 +107,8 @@ extension UIImageView {
         if let url = URL(string: strUrl) {
             let placeholderImage = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
             af_setImage(withURL: url.convertCDNAddTime(),placeholderImage: isUsePlaceholder ?  placeholderImage : nil)
+        } else {
+            self.image = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         }
     }
 }

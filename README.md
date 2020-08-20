@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.0
+- Add Earn point
+- Add TelType
 ## 1.1.22 
 - Fix deeplink blue segment
 ## 1.1.21

@@ -190,10 +190,11 @@ import WebKit
         getApiGreeting()
         if let token = Bzbs.shared.dtacLoginParams.token, token != "",
             let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != "",
-            let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != ""
+            let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != "",
+            let TelType = Bzbs.shared.dtacLoginParams.TelType
         {
             let language = Bzbs.shared.dtacLoginParams.language ?? "th"
-            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment)
+            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment, TelType: TelType)
             if Bzbs.shared.userLogin != nil {
                 getApiCategory()
                 getApiRecommend()
@@ -256,13 +257,13 @@ import WebKit
         }
     }
     
-    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String)
+    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String, TelType: String)
     {
         let isNeedupdateUI = Bzbs.shared.userLogin == nil
         if !isNeedupdateUI {
             showLoader()
         }
-        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, completionHandler: {
+        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType: TelType, completionHandler: {
             
             if let user = Bzbs.shared.userLogin, user.dtacLevel == .no_level {
                 Bzbs.shared.delegate?.reLogin()
@@ -420,7 +421,7 @@ import WebKit
                                  center: currentCenter,
                                  successCallback: { (listCampaign) in
                                     
-                                    if listCampaign.count < 6 {
+                                    if listCampaign.count < 4 {
                                         self._isEnd = true
                                     }
 
@@ -655,6 +656,12 @@ import WebKit
         }
     }
     
+    @objc func clickCoin() {
+        if let nav = self.navigationController {
+            GotoPage.gotoPointHistory(nav)
+        }
+    }
+    
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ma_segue"
         {
@@ -787,7 +794,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         case 3 :
             return 1
         case 4 :
-            return 1 + arrCampaign.count + (_isEnd ? 0 : 1)
+            return 1 + arrCampaign.count// + (_isEnd ? 0 : 1)
         case 5 :
             return 1
         default:
@@ -800,7 +807,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         let row = indexPath.row
         if section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "greetingCell", for: indexPath) as! GreetingCVCell
-            cell.setupWithModel(self.greetingModel, target: self, levelSelector: #selector(clickLevel))
+            cell.setupWithModel(self.greetingModel, coin: Bzbs.shared.userLogin?.bzbsPoints ?? 0, target: self, levelSelector: #selector(clickLevel), coinSelector: #selector(clickCoin))
             return cell
         }
         if section == 1 {
@@ -900,7 +907,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         let section = indexPath.section
         let width = collectionView.bounds.size.width
         if section == 0 {
-            return CGSize(width: width, height: 65)
+            return CGSize(width: width, height: (width / 3) + 4)
         }
         if section == 1 {
             if let first = dashboardItems.first
