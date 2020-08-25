@@ -71,7 +71,7 @@ public class BuzzebeesHistory: BuzzebeesCore {
         } , failCallback: failCallback )
     }
     
-    public func pointHistory(token: String, lastRowKey:String? = "0", top:Int = 1000, date:String, type:String = "earn"
+    public func pointHistory(token: String, lastRowKey:String? = "0", top:Int = 1000, date:String
         , successCallback: @escaping (_ result: [Dictionary<String, AnyObject>]) -> Void
         , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
@@ -79,7 +79,6 @@ public class BuzzebeesHistory: BuzzebeesCore {
             "lastRowKey": lastRowKey ?? "0",
             "month": date,
             "top": top,
-            "type": type
             ] as [String : Any]
         
         var headers = HTTPHeaders()
@@ -192,8 +191,13 @@ open class PointLog {
         points = Convert.IntFromObject(dict["Points"])
         info = Convert.StringFromObject(dict["Info"])
         detail = Convert.StringFromObject(dict["Detail"])
-        extractDetail()
-        customHandle()
+        if type == "adjust" {
+            historyEN = "Adjust Coins"
+            historyTH = "ปรับ Coins"
+        } else {
+            extractDetail()
+            customHandle()
+        }
     }
     
     func extractDetail() {

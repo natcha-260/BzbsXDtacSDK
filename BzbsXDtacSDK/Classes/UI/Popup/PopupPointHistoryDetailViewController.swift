@@ -8,7 +8,7 @@
 import UIKit
 
 class PopupPointHistoryDetailViewController: UIViewController {
-
+    
     @IBOutlet weak var imv: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cstHeight: NSLayoutConstraint!
@@ -27,7 +27,7 @@ class PopupPointHistoryDetailViewController: UIViewController {
             overrideUserInterfaceStyle = .light
         }
         lblTitle.text = "-"
-        lblPoint.text = "Earn : -"
+        lblPoint.text = "coin_earn_detail".localized() + " : -"
         lblTitle.font = UIFont.mainFont(style:.bold)
         lblPoint.font = UIFont.mainFont(style:.bold)
         lblClose.font = UIFont.mainFont()
@@ -38,43 +38,58 @@ class PopupPointHistoryDetailViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(PointHistoryDetailCell.getNib(), forCellReuseIdentifier: "pointHistoryDetailCell")
         Bzbs.shared.showLoader(on: self)
+        imv.bzbsSetImage(withURL: "")
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupUI()
     }
     
     func setupUI() {
         lblTitle.text = pointLog.title
-        lblPoint.text = "Earn : " + pointLog.points.withCommas()
-        let productID = pointLog.productId ?? "0"
-        let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
-        if let url = URL(string: strUrl) {
-            imv.af_setImage(withURL: url)
+        if pointLog.type == "adjust"
+        {
+            var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/"
+            if pointLog.points > 0 {
+                strUrl = strUrl + "add.jpg"
+                lblPoint.text = "coin_ajust_add".localized() + " : \(pointLog.points.withCommas())"
+            } else {
+                strUrl = strUrl + "deduct.jpg"
+                lblPoint.text = "coin_ajust_deduct".localized() + " : \(pointLog.points.withCommas())"
+            }
+            imv.bzbsSetImage(withURL: strUrl)
+            listCell = ["adjust_date"]
+        } else {
+            lblPoint.text = "coin_earn_detail".localized() + " : " + pointLog.points.withCommas()
+            let productID = pointLog.productId ?? "0"
+            let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
+            imv.bzbsSetImage(withURL: strUrl)
+            
+            switch pointLog.productId {
+            case "1":
+                listCell = ["package_sub", "sub_date", "package_fee"]
+                break
+            case "2":
+                listCell = ["refill_date"]
+                break
+            case "3":
+                listCell = ["paid_amount" , "paid_date"]
+                break
+            case "4":
+                listCell = ["paid_amount" , "paid_date"]
+                break
+            case "5":
+                listCell = ["first_use_date"]
+                break
+            case "6":
+                listCell = ["checkin_date"]
+                break
+            default:
+                break
+            }
         }
-        switch pointLog.productId {
-        case "1":
-            listCell = ["package_sub", "sub_date", "package_fee"]
-            break
-        case "2":
-            listCell = ["refill_date"]
-            break
-        case "3":
-            listCell = ["paid_amount" , "paid_date"]
-            break
-        case "4":
-            listCell = ["paid_amount" , "paid_date"]
-            break
-        case "5":
-            listCell = ["first_use_date"]
-            break
-        case "6":
-            listCell = ["checkin_date"]
-            break
-        default:
-            break
-        }
+        
         
         tableView.reloadData()
         Bzbs.shared.delay(0.33) {
@@ -87,7 +102,7 @@ class PopupPointHistoryDetailViewController: UIViewController {
                     Bzbs.shared.hideLoader()
                 }
             }
-
+            
         }
     }
     
@@ -107,7 +122,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
         let cellIdent = listCell[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "pointHistoryDetailCell", for: indexPath) as! PointHistoryDetailCell
         if cellIdent == "package_sub" {
-            cell.title = "Package subscribed : "
+            cell.title = "coin_package_sub".localized() + " : "
             cell.detail = pointLog.historyDetail
         }
         else if cellIdent.contains("date") {
@@ -117,7 +132,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
             
             if cellIdent == "sub_date" {
-                cell.title = "Subscribed on : "
+                cell.title = "coin_sub_date".localized() + " : "
                 formatter.dateFormat = "dd/MM/yyyy - HH:mm"
                 if let activityDate = pointLog.activityDate {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
@@ -126,7 +141,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 }
             } else if cellIdent == "paid_date" {
                 
-                cell.title = "Paid Date : "
+                cell.title = "coin_paid_date".localized() + " : "
                 
                 formatter.dateFormat = pointLog.periodFormat ?? "dd MMMM yyyy"
                 
@@ -137,7 +152,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 }
             } else if cellIdent == "checkin_date"
             {
-                cell.title = "Check-in month : "
+                cell.title = "coin_checkin_date".localized() + " : "
                 
                 formatter.dateFormat = "MMMM yyyy"
                 
@@ -148,7 +163,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 }
             } else if cellIdent == "refill_date"
             {
-                cell.title = "Refill date : "
+                cell.title = "coin_refill_date".localized() + " : "
                 
                 formatter.dateFormat = "dd MMMM yyyy"
                 
@@ -159,7 +174,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 }
             } else if cellIdent == "first_use_date"
             {
-                cell.title = "First use on : "
+                cell.title = "coin_first_use_date".localized() + " : "
                 
                 formatter.dateFormat = "dd MMMM yyyy"
                 
@@ -168,21 +183,31 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 } else {
                     cell.detail = "-"
                 }
+            } else if cellIdent == "adjust_date"
+            {
+                cell.title = "coin_ajust_date".localized() + " : "
+                
+                formatter.dateFormat = "dd MMMM yyyy"
+                
+                if let activityDate = pointLog.timestamp {
+                    cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
+                } else {
+                    cell.detail = "-"
+                }
             }
-            
             
         }
         else if cellIdent == "package_fee" ||
-                cellIdent == "paid_amount"
+            cellIdent == "paid_amount"
         {
             if cellIdent == "package_fee" {
-                cell.title = "Package fee (Includ VAT) : "
+                cell.title = "coin_package_fee".localized() + " : "
             } else if cellIdent == "paid_amount" {
-                cell.title = "Paid amount : "
+                cell.title = "coin_paid_amount".localized() + " : "
             }
             
             if let amount = pointLog.amount {
-                cell.detail = amount.withCommas() + " Baht"
+                cell.detail = amount.withCommas() + " " + "baht".localized()
             } else {
                 cell.detail = "-"
             }

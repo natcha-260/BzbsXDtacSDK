@@ -68,20 +68,20 @@ class BarItem: NSObject {
         let view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: barHeight))
         let imv = UIImageView(frame: CGRect(x: 0, y: 5, width: 30, height: 30))
         imv.contentMode = .scaleAspectFit
-        imv.image = UIImage(named: "img_navbar_icon_noti_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+        imv.image = UIImage(named: "ic_nav_bell", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         view.addSubview(imv)
 
         if isHasNewMessage {
             
-            let size = CGSize(width: 20, height: 20)
-            let origin = CGPoint(x: 15, y: 13)
+            let size = CGSize(width: 17, height: 17)
+            let origin = CGPoint(x: 15, y: 11)
             let inboxBadge = UILabel(frame: CGRect(origin: origin, size: size))
             inboxBadge.textAlignment = .center
             inboxBadge.backgroundColor = UIColor(red: 250.0 / 255.0, green: 62.0 / 255.0, blue: 62.0 / 255.0, alpha: 1.0)
             inboxBadge.textColor = UIColor.white
             inboxBadge.font = UIFont.mainFont(FontSize.xsmall)
             inboxBadge.text = "N"
-            inboxBadge.cornerRadius(corner: 10.0)
+            inboxBadge.cornerRadius(corner: 8.5)
             
             view.addSubview(inboxBadge)
         }

@@ -172,9 +172,6 @@ open class BaseListController: BzbsXDtacBaseViewController
         _isCallApi = false
         _isLoadData = true
         self.hideLoader()
-        if tableView != nil {
-            tableView.reloadData()
-        }
-        //        tableView.stopPullToRefresh()
+        tableView?.reloadData()
     }
 }

@@ -187,13 +187,14 @@ class PointHistoryViewController: BaseListController {
     // MARK:-
     override func getApi() {
         if _isCallApi { return }
-        _isCallApi = true
         if isEarn {
             if isEarnEnd { return }
+            _isCallApi = true
             guard let token = Bzbs.shared.userLogin?.token else {return}
             showLoader()
             BuzzebeesHistory().pointHistory(token: token, date: getDate(), successCallback: { (arr) in
                 if arr.count == 0 {
+                    self.loadedData()
                     self.getApi()
                 } else {
                     for dict in arr {
@@ -208,6 +209,7 @@ class PointHistoryViewController: BaseListController {
             }
         } else {
             if isBurnEnd { return }
+            _isCallApi = true
             self.loadedData()
             self.tableView.es.stopPullToRefresh()
             return

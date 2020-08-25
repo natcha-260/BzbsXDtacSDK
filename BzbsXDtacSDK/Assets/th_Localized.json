@@ -88,13 +88,32 @@
     "popup_suspend_info" : "ขอโทษค่ะ เลขหมายนี้ไม่สามารถใช้บริการได้เนื่องจากถูกระงับบริการชั่วคราว",
     
     "recommend_title" : "ร้านค้าแนะนำสำหรับคุณ",
-    
     "major_empty" : " ไม่พบรายการสิทธิพิเศษ",
-    "coin_balance_title" : "Coin คงเหลือ",
-    "coin_earn_no_data" : "dtac Coin มันกำลังมา",
-    "coin_burn_no_data" : "ยังไม่มีการรับแลกสิิทธิ์",
-    "your_coin" : "COIN ของคุณ",
-    "valid_till" : "หมดอายุภายใน",
+    
+    "your_coin" : "Coins ของฉัน",
+    "coin_balance_title" : "Coins คงเหลือ",
+    "coin_earn_no_data" : "ยังไม่มีรายการ Coins ที่ได้รับ",
+    "coin_burn_no_data" : "ยังไม่มีรายการ Coins ที่ถูกใช้",
+    "valid_till" : "ใช้ได้รับ",
+    "coin_earn" : "ที่ได้รับ",
+    "coin_earn_on" : "วันที่",
     "coin_earn_title" : "ได้รับ",
     "coin_burn_title" : "รับสิทธิ์",
+    
+    "coin_earn_detail" : "ได้รับ",
+    "coin_package_sub" : "แพ็กเกจที่สมัคร",
+    "coin_sub_date" : "วันที่ทำรายการ",
+    "coin_package_fee" : "ราคาแพ็กเกจ (ไม่รวม VAT)",
+    "baht" : "บาท",
+    "coin_refill_date" : "วันที่เติมเงิน",
+    "coin_paid_amount" : "ยอดชำระ",
+    "coin_paid_date" : "วันที่ทำรายการ",
+    "coin_first_use_date" : "วันที่เปิดแอพครั้งแรก",
+    "coin_checkin_date" : "วันที่เช็คอินสำเร็จ",
+    "coin_adjust_date" : "วันที่ปรับปรุง",
+    
+    "coin_ajust" : "ปรับปรุง Coins",
+    "coin_ajust_add" : "เพิ่ม",
+    "coin_ajust_deduct" : "ลด",
+    "coin_ajust_date" : "วันที่ปรับปรุง",
 }

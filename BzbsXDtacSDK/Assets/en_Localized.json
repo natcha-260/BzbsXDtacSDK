@@ -89,14 +89,32 @@
     "popup_suspend_info" : "Sorry, your mobile number is temporary suspended. Your request can not be processed.",
     
     "recommend_title" : "Recommend for you",
-    
     "major_empty" : "No privilege campaign found.",
     
-    "coin_balance_title" : "Coin Balance",
+    "your_coin" : "YOUR COINS",
+    "coin_balance_title" : "Coins Balance",
     "coin_earn_no_data" : "dtac Coin is coming soon",
     "coin_burn_no_data" : "You don't have any redemption",
-    "your_coin" : "YOUR COIN",
     "valid_till" : "Valid till",
+    "coin_earn" : "Earned",
+    "coin_earn_on" : "on",
     "coin_earn_title" : "Earned",
     "coin_burn_title" : "Redeemed",
+    
+    "coin_earn_detail" : "Earn",
+    "coin_package_sub" : "Package subscribed",
+    "coin_sub_date" : "Subscribed on",
+    "coin_package_fee" : "Package fee (Inclu VAT)",
+    "baht" : "Baht",
+    "coin_refill_date" : "Refill date",
+    "coin_paid_amount" : "Paid amont",
+    "coin_paid_date" : "Paid Date",
+    "coin_first_use_date" : "First use on",
+    "coin_checkin_date" : "Check-in month",
+    "coin_adjust_date" : "Adjust date",
+    
+    "coin_ajust" : "Adjust Coins",
+    "coin_ajust_add" : "Add",
+    "coin_ajust_deduct" : "Deduct",
+    "coin_ajust_date" : "Adjust date",
 }

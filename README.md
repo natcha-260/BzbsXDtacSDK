@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.1
+- Handle point history ui
 ## 2.0.0
 - Add Earn point
 - Add TelType

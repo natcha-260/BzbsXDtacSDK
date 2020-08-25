@@ -28,13 +28,23 @@ class PointHistoryCell: UITableViewCell {
     }
     
     func setupU(_ item:PointLog) {
-        let productID = item.productId ?? "0"
-        let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
+        var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/"
+        if item.type == "adjust" {
+            if item.points > 0 {
+                strUrl = strUrl + "add.jpg"
+                lblEarn.text = "coin_ajust_add".localized() + " : \(item.points.withCommas())"
+            } else {
+                strUrl = strUrl + "deduct.jpg"
+                lblEarn.text = "coin_ajust_deduct".localized() + " : \(item.points.withCommas())"
+            }
+        } else {
+            let productID = item.productId ?? "0"
+            strUrl = strUrl + "product\(productID).jpg"
+            lblEarn.text = "coin_earn".localized() + " : \(item.points.withCommas())"
+        }
         imv.bzbsSetImage(withURL: strUrl)
         
         lblTitle.text = item.title ?? ""
-        
-        lblEarn.text = "Earned : \(item.points.withCommas())"
         
         let date = Date(timeIntervalSince1970: item.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
         let formatter = DateFormatter()
@@ -42,7 +52,7 @@ class PointHistoryCell: UITableViewCell {
         formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        lblDate.text = "on " + formatter.string(from: date)
+        lblDate.text = "coin_earn_on".localized() + " " + formatter.string(from: date)
         
     }
     
