@@ -53,10 +53,10 @@ class PopupPointHistoryDetailViewController: UIViewController {
             var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/"
             if pointLog.points > 0 {
                 strUrl = strUrl + "add.jpg"
-                lblPoint.text = "coin_ajust_add".localized() + " : \(pointLog.points.withCommas())"
+                lblPoint.text = "coin_adjust_add".localized() + " : \(pointLog.points.withCommas())"
             } else {
                 strUrl = strUrl + "deduct.jpg"
-                lblPoint.text = "coin_ajust_deduct".localized() + " : \(pointLog.points.withCommas())"
+                lblPoint.text = "coin_adjust_deduct".localized() + " : \(pointLog.points.withCommas())"
             }
             imv.bzbsSetImage(withURL: strUrl)
             listCell = ["adjust_date"]
@@ -130,6 +130,11 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             let formatter = DateFormatter()
             formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
             formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+            formatter.dateFormat = "dd MMMM yyyy"
+            if let periodFormat = pointLog.periodFormat
+            {
+                formatter.dateFormat = periodFormat
+            }
             
             if cellIdent == "sub_date" {
                 cell.title = "coin_sub_date".localized() + " : "
@@ -143,8 +148,6 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 
                 cell.title = "coin_paid_date".localized() + " : "
                 
-                formatter.dateFormat = pointLog.periodFormat ?? "dd MMMM yyyy"
-                
                 if let activityDate = pointLog.period {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
@@ -153,8 +156,6 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             } else if cellIdent == "checkin_date"
             {
                 cell.title = "coin_checkin_date".localized() + " : "
-                
-                formatter.dateFormat = "MMMM yyyy"
                 
                 if let activityDate = pointLog.period {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
@@ -165,8 +166,6 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             {
                 cell.title = "coin_refill_date".localized() + " : "
                 
-                formatter.dateFormat = "dd MMMM yyyy"
-                
                 if let activityDate = pointLog.period {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
@@ -176,8 +175,6 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             {
                 cell.title = "coin_first_use_date".localized() + " : "
                 
-                formatter.dateFormat = "dd MMMM yyyy"
-                
                 if let activityDate = pointLog.period {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
@@ -185,9 +182,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 }
             } else if cellIdent == "adjust_date"
             {
-                cell.title = "coin_ajust_date".localized() + " : "
-                
-                formatter.dateFormat = "dd MMMM yyyy"
+                cell.title = "coin_adjust_date".localized() + " : "
                 
                 if let activityDate = pointLog.timestamp {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))

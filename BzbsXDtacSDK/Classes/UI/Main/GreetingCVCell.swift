@@ -18,6 +18,7 @@ class GreetingCVCell: UICollectionViewCell {
     @IBOutlet weak var lblLevelTitle: UILabel!
     @IBOutlet weak var imvLevel: UIImageView!
     @IBOutlet weak var btnLevel: UIButton!
+    @IBOutlet weak var vwCoinAmount: UIView!
     @IBOutlet weak var vwCoin: UIView!
     @IBOutlet weak var lblCoinTitle: UILabel!
     @IBOutlet weak var lblCoin: UILabel!
@@ -28,16 +29,16 @@ class GreetingCVCell: UICollectionViewCell {
     }
     
     override func awakeFromNib() {
-        lblGreeting.font = UIFont.mainFont(.xbig ,style:.bold)
+        lblGreeting.font = UIFont.mainFont(.big ,style:.bold)
         lblGreeting.textAlignment = .right
         lblGreeting.text = "Good morning".localized()
         lblGreeting.textColor = .mainGray
         lblGreeting.adjustsFontSizeToFitWidth = true
-        vwGreeting.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        vwGreeting.cornerRadius()
+//        vwGreeting.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+//        vwGreeting.cornerRadius()
         
-        vwCoin.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        vwCoin.cornerRadius()
+        vwCoinAmount.backgroundColor = UIColor.white.withAlphaComponent(0.7)
+        vwCoinAmount.cornerRadius()
         
         lblLevelTitle.font = UIFont.mainFont()
         lblCoinTitle.font = UIFont.mainFont()
@@ -49,6 +50,7 @@ class GreetingCVCell: UICollectionViewCell {
         
         imvLevel.image = nil// UIImage(named: "imgt_icon_dtac", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         vwLevel.isHidden = true
+        vwCoin.isHidden = true
     }
     
     func setupWithModel(_ item:GreetingModel?, coin: Int, target:UIViewController, levelSelector:Selector, coinSelector: Selector)
@@ -71,6 +73,7 @@ class GreetingCVCell: UICollectionViewCell {
         
         var levelImageUrl:URL?
         vwLevel.isHidden = false
+        vwCoin.isHidden = false
         if let userLogin = Bzbs.shared.userLogin
         {
             switch userLogin.dtacLevel {
@@ -84,9 +87,11 @@ class GreetingCVCell: UICollectionViewCell {
                 levelImageUrl = BuzzebeesCore.urlSegmentImageDtac
             case .no_level:
                 vwLevel.isHidden = true
+                vwCoin.isHidden = true
             }
         } else {
             vwLevel.isHidden = true
+            vwCoin.isHidden = true
         }
         if let url = levelImageUrl
         {

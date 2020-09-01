@@ -86,19 +86,12 @@ import WebKit
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        let resourceBundle = Bzbs.shared.currentBundle
-        
-        UIFont.registerFont(withFilenameString: "DTAC2018-Regular.otf", bundle: resourceBundle)
-        UIFont.registerFont(withFilenameString: "DTAC2018-Bold.otf", bundle: resourceBundle)
-        UIFont.registerFont(withFilenameString: "MyriadPro-Regular.otf", bundle: resourceBundle)
-        
-        // init for wording
-        LocaleCore.shared.loadLanguageString()
         
         collectionView.es.addPullToRefresh {
             self.currentCenter = LocationManager.shared.getCurrentCoorndate()
             self._intSkip = 0
             self._isEnd = false
+            self.getExpiringPoint()
             self.getApiGreeting()
             self.getApiCategory()
             self.getApiRecommend()
@@ -339,6 +332,25 @@ import WebKit
     // MARK:-
     override func getCache() {
         
+    }
+    
+    func getExpiringPoint()
+    {
+        guard let token = Bzbs.shared.userLogin?.token else { return }
+        showLoader()
+        BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
+            if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
+                let first = arr.first
+            {
+                if let expiringPoint = first["points"] as? Int {
+                    Bzbs.shared.userLogin?.bzbsPoints = expiringPoint
+                }
+            }
+            self.collectionView.reloadSections(IndexSet([0]))
+            self.hideLoader()
+        }) { (error) in
+            self.hideLoader()
+        }
     }
     
     override func getApi() {
@@ -658,7 +670,7 @@ import WebKit
     
     @objc func clickCoin() {
         if let nav = self.navigationController {
-            GotoPage.gotoPointHistory(nav)
+            GotoPage.gotoCoinHistory(nav)
         }
     }
     
@@ -907,7 +919,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         let section = indexPath.section
         let width = collectionView.bounds.size.width
         if section == 0 {
-            return CGSize(width: width, height: (width / 3) + 4)
+            return CGSize(width: width, height: ((width * 104) / 375) + 4)
         }
         if section == 1 {
             if let first = dashboardItems.first

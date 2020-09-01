@@ -141,7 +141,7 @@ struct DtacLoginParams {
         return false
     }
     
-    var isCallingLogin = false
+    private(set) var isCallingLogin = false
     
     @objc public func login(token:String, ticket:String, language:String, DTACSegment:String, TelType: String)
     {
@@ -208,17 +208,20 @@ struct DtacLoginParams {
                 Bzbs.shared.userLogin = user
                 NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
+                completionHandler?()
             }) { (error) in
                 Bzbs.shared.userLogin = nil
                 self.isCallingLogin = false
                 NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
+                failureHandler?(error)
             }
         } else {
             Bzbs.shared.userLogin = nil
             self.isCallingLogin = false
             NotificationCenter.default.post(name: Notification.Name.BzbsApiReset, object: nil)
             NotificationCenter.default.post(name: Notification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
+            failureHandler?(BzbsError())
             if let token = dtacLoginParams.token, token == "logout" { } else {
                 BzbsCoreApi().dtacLog(token: "", ticket: "", sequence: 2, successCallback: nil) { (error) in  }
             }

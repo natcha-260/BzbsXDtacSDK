@@ -32,10 +32,10 @@ class PointHistoryCell: UITableViewCell {
         if item.type == "adjust" {
             if item.points > 0 {
                 strUrl = strUrl + "add.jpg"
-                lblEarn.text = "coin_ajust_add".localized() + " : \(item.points.withCommas())"
+                lblEarn.text = "coin_adjust_add".localized() + " : \(item.points.withCommas())"
             } else {
                 strUrl = strUrl + "deduct.jpg"
-                lblEarn.text = "coin_ajust_deduct".localized() + " : \(item.points.withCommas())"
+                lblEarn.text = "coin_adjust_deduct".localized() + " : \(item.points.withCommas())"
             }
         } else {
             let productID = item.productId ?? "0"

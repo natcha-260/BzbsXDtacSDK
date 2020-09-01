@@ -16,7 +16,7 @@ enum DetailTab {
     case branch
 }
 
-class CampaignDetailViewController: BzbsXDtacBaseViewController {
+public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Properties
     var campaignStatus : CampaignStatus?
     
@@ -82,7 +82,7 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Life Cycle
     // MARK:-
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         if let type = self.campaign.type, type == 16 {
             self.cellList = ["image_name_detail","line","detail"]
@@ -98,10 +98,18 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         lblHistory.font = UIFont.mainFont(.xsmall)
         
         NotificationCenter.default.addObserver(self, selector: #selector(resetAPI), name: NSNotification.Name.BzbsApiReset, object: nil)
+        
+        if Bzbs.shared.isLoggedIn() {
+            resetAPI()
+        } else {
+            showLoader()
+            checkAPI()
+        }
     }
     
+    
     let gradient: CAGradientLayer = CAGradientLayer()
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         
         gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
         gradient.locations = [0.0 , 1.0]
@@ -110,25 +118,69 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
         vwNav.layer.insertSublayer(gradient, at: 0)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    override func updateUI() {
+    public override func updateUI() {
         super.updateUI()
         self.tableView.reloadData()
         lblLike.text = "campaign_detail_like".localized()
         lblHistory.text = "campaign_detail_history".localized()
         resetAPI()
     }
+    
+    func checkAPI() {
+        if Bzbs.shared.isCallingLogin {
+            Bzbs.shared.delay(0.1) {
+                self.checkAPI()
+            }
+        } else {
+            if Bzbs.shared.isLoggedIn() {
+                self.resetAPI()
+            } else {
+                Bzbs.shared.relogin(completionHandler: {
+                    self.resetAPI()
+                }) { (_) in
+                    self.hideLoader()
+                }
+            }
+        }
+    }
+    
+    // MARK:- Class function
+    // MARK:-
+    @objc public class func getView(campaignId:String) -> CampaignDetailViewController
+    {
+        let storyboard = UIStoryboard(name: "Campaign", bundle: Bzbs.shared.currentBundle)
+        let controller = storyboard.instantiateViewController(withIdentifier: "scene_campaign_detail") as! CampaignDetailViewController
+        let campaign = BzbsCampaign()
+        campaign.ID = Int(campaignId)!
+        controller.campaign = campaign
+        controller.view.translatesAutoresizingMaskIntoConstraints = true
+        return controller
+    }
+    
+    @objc public class func getViewWithNavigationBar(campaignId:String, isHideNavigationBar:Bool = true) -> UINavigationController
+    {
+        let nav = UINavigationController(rootViewController: getView(campaignId:campaignId))
+        nav.isNavigationBarHidden = isHideNavigationBar
+        nav.navigationBar.backgroundColor = .white
+        nav.navigationBar.tintColor = .mainBlue
+        nav.navigationBar.barTintColor = .white
+        return nav
+    }
+    
+    // MARK:- API
+    // MARK:-
     
     @objc func resetAPI()
     {
@@ -838,11 +890,11 @@ class CampaignDetailViewController: BzbsXDtacBaseViewController {
 extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSource
 {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellList.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdent = cellList[indexPath.row]
         if cellIdent == "image_name"
         {
@@ -1138,11 +1190,11 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
         return tableView.dequeueReusableCell(withIdentifier: "cellBlank", for: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return getCellHeight(indexPath)
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellIdent = cellList[indexPath.row]
         if cellIdent == "detail"
         {

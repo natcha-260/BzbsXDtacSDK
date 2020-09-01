@@ -15,7 +15,10 @@ public class BzbsError {
     public var message: String!
     
     init(){
-        
+        id = "-9999"
+        code = "-9999"
+        type = "Framework"
+        message = "Default"
     }
     
     init(strId: String, strCode: String, strType: String, strMessage: String) {

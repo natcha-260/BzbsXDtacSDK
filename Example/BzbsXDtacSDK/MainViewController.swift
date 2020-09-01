@@ -10,7 +10,7 @@ import UIKit
 import BzbsXDtacSDK
 import FirebaseAnalytics
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
     var logAlalytics = ""
     var i = 0
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController : BzbsDelegate
+extension MainViewController : BzbsDelegate
 {
     
     func suspend() {

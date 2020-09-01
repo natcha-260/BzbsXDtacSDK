@@ -9,9 +9,14 @@ import UIKit
 
 extension String {
     
-    func localized() -> String {
+    func localized(locale:Int? = nil) -> String {
         
-        let lang = LocaleCore.shared.getUserLocale() == 1033 ? "en" : "th"
+        var lang = LocaleCore.shared.getUserLocale() == 1033 ? "en" : "th"
+        if locale != nil {
+            if locale == 1033 || locale == 1054 {
+                lang = (locale! == 1033) ? "en" : "th"
+            }
+        }
         if let wordingDict = LocaleCore.shared.wordingDict[lang]
         {
             if let wording = wordingDict[self]

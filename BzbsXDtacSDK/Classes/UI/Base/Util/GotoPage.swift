@@ -103,7 +103,7 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoPointHistory(_ nav:UINavigationController) {
+    class func gotoCoinHistory(_ nav:UINavigationController) {
         let storboard = UIStoryboard(name: "History", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_point_history") as! PointHistoryViewController
         vc.hidesBottomBarWhenPushed = true

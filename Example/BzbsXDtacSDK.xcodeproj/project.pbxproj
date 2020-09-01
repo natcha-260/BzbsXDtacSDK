@@ -10,12 +10,14 @@
 		18A9F3892341E4DB005244F8 /* TokenSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A9F3882341E4DB005244F8 /* TokenSelectViewController.swift */; };
 		21CBA4591FBF0A592DB0F5CA /* Pods_BzbsXDtacSDK_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ABF5DAFF999E2DC19BE5178 /* Pods_BzbsXDtacSDK_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
+		607FACD81AFB9204008FA782 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* MainViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		8C316B685CD9C41AAD050DD9 /* Pods_BzbsXDtacSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA84DEB007265BC8DD29D8F /* Pods_BzbsXDtacSDK_Example.framework */; };
+		DB2B18F624F500500060DF05 /* CoinHistoryMockupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B18F524F500500060DF05 /* CoinHistoryMockupViewController.swift */; };
+		DB2B18FA24F506E10060DF05 /* CoinHistoryMockupDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B18F924F506E10060DF05 /* CoinHistoryMockupDataViewController.swift */; };
 		DB9C3576239649EB0082C480 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB9C3575239649EB0082C480 /* GoogleService-Info.plist */; };
 		DBEF0B8923796AE1001FFE4E /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBEF0B8823796AE1001FFE4E /* Main_iPad.storyboard */; };
 		DBF403BD23754F7500DAF1AD /* AnalyticDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF403BC23754F7500DAF1AD /* AnalyticDebugViewController.swift */; };
@@ -40,7 +42,7 @@
 		607FACD01AFB9204008FA782 /* BzbsXDtacSDK_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BzbsXDtacSDK_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		607FACD71AFB9204008FA782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		607FACD71AFB9204008FA782 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -50,6 +52,8 @@
 		63EFAA15209765EBBA820059 /* Pods-BzbsXDtacSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BzbsXDtacSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-BzbsXDtacSDK_Tests/Pods-BzbsXDtacSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		8BD422196DC4E32B6D23D455 /* Pods-BzbsXDtacSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BzbsXDtacSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-BzbsXDtacSDK_Example/Pods-BzbsXDtacSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 		8C46BF33CAA41899DEE90ED7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		DB2B18F524F500500060DF05 /* CoinHistoryMockupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinHistoryMockupViewController.swift; sourceTree = "<group>"; };
+		DB2B18F924F506E10060DF05 /* CoinHistoryMockupDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinHistoryMockupDataViewController.swift; sourceTree = "<group>"; };
 		DB9C3575239649EB0082C480 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBEF0B8823796AE1001FFE4E /* Main_iPad.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main_iPad.storyboard; sourceTree = "<group>"; };
 		DBF403BC23754F7500DAF1AD /* AnalyticDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticDebugViewController.swift; sourceTree = "<group>"; };
@@ -112,15 +116,17 @@
 		607FACD21AFB9204008FA782 /* Example for BzbsXDtacSDK */ = {
 			isa = PBXGroup;
 			children = (
+				DBEF0B8823796AE1001FFE4E /* Main_iPad.storyboard */,
 				DBF403BC23754F7500DAF1AD /* AnalyticDebugViewController.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				DB2B18F924F506E10060DF05 /* CoinHistoryMockupDataViewController.swift */,
+				DB2B18F524F500500060DF05 /* CoinHistoryMockupViewController.swift */,
+				607FACD71AFB9204008FA782 /* MainViewController.swift */,
+				18A9F3882341E4DB005244F8 /* TokenSelectViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				DBEF0B8823796AE1001FFE4E /* Main_iPad.storyboard */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				18A9F3882341E4DB005244F8 /* TokenSelectViewController.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
 			);
 			name = "Example for BzbsXDtacSDK";
 			path = BzbsXDtacSDK;
@@ -408,8 +414,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				607FACD81AFB9204008FA782 /* MainViewController.swift in Sources */,
+				DB2B18F624F500500060DF05 /* CoinHistoryMockupViewController.swift in Sources */,
 				DBF403BD23754F7500DAF1AD /* AnalyticDebugViewController.swift in Sources */,
+				DB2B18FA24F506E10060DF05 /* CoinHistoryMockupDataViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				18A9F3892341E4DB005244F8 /* TokenSelectViewController.swift in Sources */,
 			);
@@ -570,7 +578,7 @@
 				INFOPLIST_FILE = BzbsXDtacSDK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.buzzebees.xDtac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -594,7 +602,7 @@
 				INFOPLIST_FILE = BzbsXDtacSDK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.buzzebees.xDtac;
 				PRODUCT_NAME = "$(TARGET_NAME)";

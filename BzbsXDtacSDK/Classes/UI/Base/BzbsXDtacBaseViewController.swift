@@ -11,6 +11,7 @@ import UIKit
 import Alamofire
 
 open class BzbsXDtacBaseViewController: BzbsBaseViewController {
+    static var isInitialized = false
     static var isOpeningDeeplink = false
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -26,6 +27,22 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(actionDeeplink(notification:)), name: NSNotification.Name.BzbsDeeplinkAction, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reLogin), name: NSNotification.Name.BzbsTokenTicketDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshApi), name: NSNotification.Name.BzbsApiReset, object: nil)
+        
+        if !BzbsXDtacBaseViewController.isInitialized {
+            BzbsXDtacBaseViewController.isInitialized = true
+            baseInitial()
+        }
+    }
+    
+    func baseInitial() {
+        let resourceBundle = Bzbs.shared.currentBundle
+        
+        UIFont.registerFont(withFilenameString: "DTAC2018-Regular.otf", bundle: resourceBundle)
+        UIFont.registerFont(withFilenameString: "DTAC2018-Bold.otf", bundle: resourceBundle)
+        UIFont.registerFont(withFilenameString: "MyriadPro-Regular.otf", bundle: resourceBundle)
+        
+        // init for wording
+        LocaleCore.shared.loadLanguageString()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -80,19 +97,19 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     }
     
     func logout() {
-//        if let draw = self.parent as? KYDrawerController
-//        {
-//            draw.setDrawerState(KYDrawerController.DrawerState.closed, animated: true)
-//        }
-//
-//        _appDelegate.logoutBzBs()
-//        _appDelegate.facebookCore.logout()
-////        ShortcutManager.shared.clearShortcut()
-//
-//        //ส่งเพื่อเปลี่ยนแปลงค่า point ให้เป็น 0
-//        UserDefaultManage().saveKey("isNeedUpdateLanguage", value: 0 as AnyObject)
-//        send_noti_bzbs_logout_success()
-//
+        //        if let draw = self.parent as? KYDrawerController
+        //        {
+        //            draw.setDrawerState(KYDrawerController.DrawerState.closed, animated: true)
+        //        }
+        //
+        //        _appDelegate.logoutBzBs()
+        //        _appDelegate.facebookCore.logout()
+        ////        ShortcutManager.shared.clearShortcut()
+        //
+        //        //ส่งเพื่อเปลี่ยนแปลงค่า point ให้เป็น 0
+        //        UserDefaultManage().saveKey("isNeedUpdateLanguage", value: 0 as AnyObject)
+        //        send_noti_bzbs_logout_success()
+        //
     }
     
     @objc override open func back_1_step() {
@@ -289,7 +306,7 @@ open class BzbsBaseViewController: UIViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(BzbsBaseViewController.updateUI), name: NSNotification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(BzbsBaseViewController.updateCartCount), name: NSNotification.Name(rawValue: BBEnumNotificationCenter.updateCartCount.rawValue), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(BzbsBaseViewController.buzzebees_updated_point(_:)), name: NSNotification.Name(rawValue: BBApiNotificationName.BzbsUpdatedPoint.rawValue), object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(BzbsBaseViewController.buzzebees_updated_point(_:)), name: NSNotification.Name(rawValue: BBApiNotificationName.BzbsUpdatedPoint.rawValue), object: nil)
         
         updateUI()
     }
@@ -297,7 +314,7 @@ open class BzbsBaseViewController: UIViewController
     deinit{
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BBEnumNotificationCenter.updateUI.rawValue), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BBEnumNotificationCenter.updateCartCount.rawValue), object: nil)
-//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BBApiNotificationName.BzbsUpdatedPoint.rawValue), object: nil)
+        //        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BBApiNotificationName.BzbsUpdatedPoint.rawValue), object: nil)
     }
     
     open override func didReceiveMemoryWarning() {
@@ -418,7 +435,7 @@ class ReachabilityManager: NSObject{
             self.initReachability()
             return
         }
-
+        
         manager.startListening()
         manager.listener = listener
     }
@@ -542,6 +559,9 @@ extension BzbsXDtacBaseViewController {
                         openCampaignHashtag(hashtag)
                     }
                     break
+                case "coin_history" :
+                    gotoCoinHistory()
+                    break
                 default:
                     if let strId = params["bzbID"] as? String,
                         let intId = Int(strId){
@@ -564,7 +584,7 @@ extension BzbsXDtacBaseViewController {
             }
             return
         }
-
+        
         var cat :BzbsCategory?
         var subCat : BzbsCategory?
         if let catName = catName {
@@ -586,7 +606,7 @@ extension BzbsXDtacBaseViewController {
                 cat = first
             }
         }
-
+        
         if cat == nil { return }
         if self is CampaignByCatViewController
         {
@@ -627,6 +647,18 @@ extension BzbsXDtacBaseViewController {
         } else {
             delay(0.33){
                 self.gotoNearby()
+            }
+        }
+    }
+    
+    func gotoCoinHistory()
+    {
+        if let nav = self.navigationController
+        {
+            GotoPage.gotoCoinHistory(nav)
+        } else {
+            delay(0.33){
+                self.gotoCoinHistory()
             }
         }
     }
@@ -685,5 +717,5 @@ extension BzbsXDtacBaseViewController {
             nav.pushViewController(vc, animated: true)
         }
     }
-
+    
 }

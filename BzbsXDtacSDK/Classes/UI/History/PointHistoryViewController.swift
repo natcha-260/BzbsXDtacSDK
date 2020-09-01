@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PointHistoryViewController: BaseListController {
+open class PointHistoryViewController: BaseListController {
     
     // MARK:- Properties
     // MARK:- Outlet
@@ -24,7 +24,6 @@ class PointHistoryViewController: BaseListController {
     var arrPointLogBurn = [PointLog]()
     var strEarnDate:String = ""
     var strBurnDate:String = ""
-    
     var isEarnEnd:Bool {
         if strEarnDate == "" {
             return false
@@ -48,7 +47,6 @@ class PointHistoryViewController: BaseListController {
 //
 //        return false
     }
-    
     let dateFormatter : DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -57,7 +55,30 @@ class PointHistoryViewController: BaseListController {
         return formatter
     }()
     
-    override func viewDidLoad() {
+    // MARK:- Class function
+    // MARK:-
+    @objc public class func getView() -> PointHistoryViewController
+    {
+        let storyboard = UIStoryboard(name: "History", bundle: Bzbs.shared.currentBundle)
+        let controller = storyboard.instantiateViewController(withIdentifier: "scene_point_history")
+        controller.view.translatesAutoresizingMaskIntoConstraints = true
+        return controller as! PointHistoryViewController
+    }
+    
+    @objc public class func getViewWithNavigationBar(_ isHideNavigationBar:Bool = true) -> UINavigationController
+    {
+        let nav = UINavigationController(rootViewController: getView())
+        nav.isNavigationBarHidden = isHideNavigationBar
+        nav.navigationBar.backgroundColor = .white
+        nav.navigationBar.tintColor = .mainBlue
+        nav.navigationBar.barTintColor = .white
+        return nav
+    }
+    
+    // MARK:- View life cycle
+    // MARK:-
+    
+    open override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(PointHistoryCell.getNib(), forCellReuseIdentifier: "pointHistoryCell")
         tableView.register(EmptyHistoryCell.getNib(), forCellReuseIdentifier: "emptyCell")
@@ -67,23 +88,54 @@ class PointHistoryViewController: BaseListController {
         lblExpireDate.font = UIFont.mainFont(.small,style: .bold)
         lblEarn.font = UIFont.mainFont()
         lblRedeemed.font = UIFont.mainFont()
+        lblPoint.text = ""
+        lblExpireDate.text = ""
         initNav()
         clickEarn(self)
         
         tableView.es.addPullToRefresh {
-            if self.isEarn {
-                self.arrPointLogEarn.removeAll()
-                self.strEarnDate = ""
-            } else {
-                self.arrPointLogBurn.removeAll()
-                self.strBurnDate = ""
-            }
-
-            self.getApi()
+            self.resetList()
         }
         
-        getApi()
-        getExpiringPoint()
+        NotificationCenter.default.addObserver(self, selector: #selector(resetList), name: NSNotification.Name.BzbsApiReset, object: nil)
+        
+        if Bzbs.shared.isLoggedIn() {
+            getApi()
+            getExpiringPoint()
+        } else {
+            showLoader()
+            checkAPI()
+        }
+    }
+    
+    func checkAPI() {
+        if Bzbs.shared.isCallingLogin {
+            Bzbs.shared.delay(0.5) {
+                self.checkAPI()
+            }
+        } else {
+            if Bzbs.shared.isLoggedIn() {
+                resetList()
+            } else {
+                Bzbs.shared.relogin(completionHandler: {
+                    self.resetList()
+                }) { (_) in
+                    self.loadedData()
+                }
+            }
+        }
+    }
+    
+    @objc override func resetList() {
+        if self.isEarn {
+            self.arrPointLogEarn.removeAll()
+            self.strEarnDate = ""
+        } else {
+            self.arrPointLogBurn.removeAll()
+            self.strBurnDate = ""
+        }
+        self.getApi()
+        self.getExpiringPoint()
     }
     
     override func initNav() {
@@ -101,11 +153,16 @@ class PointHistoryViewController: BaseListController {
         lblRedeemed.text = "coin_burn_title".localized()
     }
     
+    
+    // MARK:- API
+    // MARK:-
     func getExpiringPoint()
     {
-        lblPoint.text = ""
-        lblExpireDate.text = ""
-        guard let token = Bzbs.shared.userLogin?.token else { return }
+        guard let token = Bzbs.shared.userLogin?.token else {
+            lblPoint.text = ""
+            lblExpireDate.text = ""
+            return
+        }
         showLoader()
         BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
             if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
@@ -186,11 +243,14 @@ class PointHistoryViewController: BaseListController {
     // MARK:- Api
     // MARK:-
     override func getApi() {
+        guard let token = Bzbs.shared.userLogin?.token else {
+            self.loadedData()
+            return
+        }
         if _isCallApi { return }
         if isEarn {
             if isEarnEnd { return }
             _isCallApi = true
-            guard let token = Bzbs.shared.userLogin?.token else {return}
             showLoader()
             BuzzebeesHistory().pointHistory(token: token, date: getDate(), successCallback: { (arr) in
                 if arr.count == 0 {
@@ -206,6 +266,7 @@ class PointHistoryViewController: BaseListController {
             }) { (error) in
                 self.loadedData()
                 self.tableView.es.stopPullToRefresh()
+                print(error.description())
             }
         } else {
             if isBurnEnd { return }
@@ -222,7 +283,7 @@ class PointHistoryViewController: BaseListController {
 extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSource
 {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if isEarn {
             if arrPointLogEarn.count == 0 { return tableView.bounds.size.height * 0.9 }
         } else {
@@ -231,11 +292,11 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         return UITableView.automaticDimension
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isEarn {
             return arrPointLogEarn.count == 0 ? 1 : arrPointLogEarn.count
         } else {
@@ -243,7 +304,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isEarn {
             if  arrPointLogEarn.count == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyHistoryCell
@@ -264,7 +325,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEarn {
             if  arrPointLogEarn.count == 0 {
                 return
@@ -279,7 +340,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         PopupManager.pointHistoryPopup(onView: self, pointlog: item)
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if isEarn {
             if indexPath.row > arrPointLogEarn.count - 3 {
                 getApi()

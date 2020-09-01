@@ -9,10 +9,32 @@ import UIKit
 import BzbsXDtacSDK
 
 class TokenSelectViewController: UIViewController {
+    
+    // MARK:- Properties
+    // MARK:- Outlet
 
     @IBOutlet weak var segmentLang: UISegmentedControl!
     @IBOutlet weak var lblEnv: UILabel!
     
+    @IBOutlet weak var btnNoLevel: UIButton!
+    @IBOutlet weak var btnCustomer: UIButton!
+    @IBOutlet weak var btnSilver: UIButton!
+    @IBOutlet weak var btnGold: UIButton!
+    @IBOutlet weak var btnBlue: UIButton!
+    @IBOutlet weak var txtCampaignId: UITextField!
+    @IBOutlet weak var cstBottom: NSLayoutConstraint!
+    @IBOutlet weak var segmentTelType: UISegmentedControl!
+    @IBOutlet weak var segmentVersion: UISegmentedControl! {
+        didSet{
+            segmentVersion.removeAllSegments()
+            for i in 0..<versionList.count {
+                let title = versionList[i]
+                segmentVersion.insertSegment(withTitle: title, at: i, animated: true)
+            }
+        }
+    }
+    
+    // MARK:- Variable
     var isDev:Bool {
         return strVersion == "2.0.1"
     }
@@ -39,23 +61,69 @@ class TokenSelectViewController: UIViewController {
     
     var TelType = "T" // T = Postpaid , P = Prepaid
     
-    @IBOutlet weak var segmentVersion: UISegmentedControl! {
-        didSet{
-            segmentVersion.removeAllSegments()
-            for i in 0..<versionList.count {
-                let title = versionList[i]
-                segmentVersion.insertSegment(withTitle: title, at: i, animated: true)
-            }
-        }
-    }
-    
-    @IBOutlet weak var segmentTelType: UISegmentedControl!
+    var ticket :String?
+    var token :String?
+    var langauge :String?
+    var segment :String?
+
+    // MARK:- View life cycle
+    // MARK:-
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = .light
+        }
         segmentVersion.selectedSegmentIndex = 3
         didChangeVersion(segmentVersion)
         lblEnv.textColor = .black
+
+        if let campaignId = UserDefaults.standard.value(forKey: "campaignId") as? String
+        {
+            txtCampaignId.text = campaignId
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // MARK:- Keyboard
+    @objc func keyboardWillShow(_ notification: Notification)
+    {
+        let keyboardSize = ((notification.userInfo! as NSDictionary).object(forKey: UIResponder.keyboardFrameEndUserInfoKey) as AnyObject).cgRectValue.size
+        
+        UIView.animate(withDuration: 0.33) {
+            self.cstBottom.constant = keyboardSize.height
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        UIView.animate(withDuration: 0.33) {
+            self.cstBottom.constant = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @IBAction func clickView(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+    
+    func resetBtn()
+    {
+        btnNoLevel.isSelected = false
+        btnCustomer.isSelected = false
+        btnSilver.isSelected = false
+        btnGold.isSelected = false
+        btnBlue.isSelected = false
+        
     }
     
     @IBAction func didChangeVersion(_ sender: UISegmentedControl) {
@@ -69,110 +137,170 @@ class TokenSelectViewController: UIViewController {
         }
         strLabel = strLabel + strVersion
         lblEnv.text = strLabel
+        Bzbs.shared.versionString = strVersion
+        Bzbs.shared.isDebugMode = !isPrd
     }
     
     @IBAction func didChangeTelType(_ sender: Any) {
         TelType = segmentTelType.selectedSegmentIndex == 0 ? "T" : "P"
     }
     
-    @IBAction func clickSkipLogin(_ sender: Any) {
+    @IBAction func clickShowCampaignDetail(_ sender: Any) {
+        self.view.endEditing(true)
+        guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+        Bzbs.shared.logout()
+        if let txtId = txtCampaignId.text, txtId != ""
+        {
+            UserDefaults.standard.set(txtId, forKey: "campaignId")
+            if let nav = self.navigationController
+            {
+                delay(0.5) {
+                    DispatchQueue.main.async {
+                        Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                        nav.pushViewController(CampaignDetailViewController.getView(campaignId: txtId), animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func clickShowPointHistory(_ sender: Any) {
+        self.view.endEditing(true)
+        guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+        Bzbs.shared.logout()
+        if let nav = self.navigationController
+        {
+            delay(0.5) {
+                DispatchQueue.main.async {
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                    nav.pushViewController(PointHistoryViewController.getView(), animated: true)
+                }
+            }
+        }
+    }
+    
+    @IBAction func clickGoToMain(_ sender: Any) {
         view.endEditing(true)
-        Bzbs.shared.versionString = strVersion
-        Bzbs.shared.setup(token: "", ticket: "", language: language, DTACSegment: "", TelType: "")
-        gotoMain()
+        guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+        Bzbs.shared.logout()
+        delay(0.5) {
+            DispatchQueue.main.async {
+                Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                self.gotoMain()
+            }
+        }
+    }
+    
+    @IBAction func clickLogout(_ sender: Any) {
+        resetBtn()
+        Bzbs.shared.logout()
+    }
+    
+    @IBAction func clickLogin(_ sender: Any) {
+        Bzbs.shared.setup(token: token!, ticket: ticket!, language: language, DTACSegment: segment!, TelType: TelType)
     }
     
     @IBAction func clickNoToken(_ sender: Any) {
         view.endEditing(true)
-        Bzbs.shared.versionString = strVersion
+        resetBtn()
+        (sender as! UIButton).isSelected = true
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU=", ticket: "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M=", language: language, DTACSegment: "", TelType: TelType)
+            token = "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU="
+            ticket = "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M="
+            segment = ""
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc=", ticket: "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU=", language: language, DTACSegment: "", TelType: TelType)
+            token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
+            ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
+            segment = ""
         }
-        gotoMain()
     }
     
     @IBAction func clickCustomer(_ sender: Any) {
         view.endEditing(true)
-        Bzbs.shared.versionString = strVersion
+        resetBtn()
+        (sender as! UIButton).isSelected = true
+        
         if isDev {
-            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY=", ticket: "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM=", language: language, DTACSegment: "4000", TelType: TelType)
+            token = "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY="
+            ticket = "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM="
+            segment = "4000"
         }
         
         if isStg {
-            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY=", ticket: "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM=", language: language, DTACSegment: "4000", TelType: TelType)
+            token = "auB55gmxyG5qNny65t2HVj9gU8w9MvQYocfqExQ9ILYQgqO+5A0TCS1BAYI0wOUWqV+coBAgDbs="
+            ticket = "rAF4+rR7SF8rgDwzX+/yvNkdQVoSua0RYbZznjeI2gg2S8RFAE4IVo8CY2o="
+            segment = "4000"
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxoH1KiSmJ6WvfESsSSBNfz94XtJABzCNG4=", ticket: "AgN3VXKvpl2a9BVRZgx8SpkaLjWQuKc7h/nMZAJdoGaE4MKLPAvJPPVMU5c=", language: language, DTACSegment: "4000", TelType: TelType)
+            token = "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxoH1KiSmJ6WvfESsSSBNfz94XtJABzCNG4="
+            ticket = "AgN3VXKvpl2a9BVRZgx8SpkaLjWQuKc7h/nMZAJdoGaE4MKLPAvJPPVMU5c="
+            segment = "4000"
         }
-        gotoMain()
+//        gotoMain()
     }
     
     @IBAction func clickSilver(_ sender: Any) {
         view.endEditing(true)
-        Bzbs.shared.versionString = strVersion
+        resetBtn()
+        (sender as! UIButton).isSelected = true
+        
         if isDev || isStg {
-            Bzbs.shared.setup(token: "6SjkaciPnsVcxjSQsgJJ3jaKF48+uteT37l/Rhh01xxg8zlK5dP1hB7HQRkLZ+3aHEqDusyKx28=", ticket: "1QKNrsS2El4Eu5PDEIVs/1boJiOWTyH1ZC3EOZiXtI5KlD7uFRpm55srYSY=", language: language, DTACSegment: "3000", TelType: TelType)
+            token = "6SjkaciPnsVcxjSQsgJJ3jaKF48+uteT37l/Rhh01xxg8zlK5dP1hB7HQRkLZ+3aHEqDusyKx28="
+            ticket = "1QKNrsS2El4Eu5PDEIVs/1boJiOWTyH1ZC3EOZiXtI5KlD7uFRpm55srYSY="
+            segment = "3000"
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "ecTRUtHv6HxkdJJ4h2KpOs1vGEd8NPmy95FUzj7RpzqwhNGkzRBJi7Z3/Z0MxnOEj7hyj2ovEG4=", ticket: "zABxi7c6310ZoxU8etbjI84fOsNBp3tCku3aNKb8TdryP93K54b0jLVCghw=", language: language, DTACSegment: "3000", TelType: TelType)
+            token = "ecTRUtHv6HxkdJJ4h2KpOs1vGEd8NPmy95FUzj7RpzqwhNGkzRBJi7Z3/Z0MxnOEj7hyj2ovEG4="
+            ticket = "zABxi7c6310ZoxU8etbjI84fOsNBp3tCku3aNKb8TdryP93K54b0jLVCghw="
+            segment = "3000"
         }
-        gotoMain()
     }
     
     @IBAction func clickGold(_ sender: Any) {
         view.endEditing(true)
-        Bzbs.shared.versionString = strVersion
+        resetBtn()
+        (sender as! UIButton).isSelected = true
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs=", ticket: "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA=", language: language, DTACSegment: "2000", TelType: TelType)
+            token = "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs="
+            ticket = "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA="
+            segment = "2000"
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ8H1KiSmJ6WvfESsSSBNfz9ELcMZ6lm4hY=", ticket: "IQEcGD5nrV1bwWvTVzaoYAEnRbw0aPwTVLzIZQ3jZlTiZ6qxDfojfAw0RNs=", language: language, DTACSegment: "2000", TelType: TelType)
+            token = "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ8H1KiSmJ6WvfESsSSBNfz9ELcMZ6lm4hY="
+            ticket = "IQEcGD5nrV1bwWvTVzaoYAEnRbw0aPwTVLzIZQ3jZlTiZ6qxDfojfAw0RNs="
+            segment = "2000"
         }
-        gotoMain()
     }
     
     @IBAction func clickBlueMember(_ sender: Any) {
         view.endEditing(true)
-        Bzbs.shared.versionString = strVersion
+        resetBtn()
+        (sender as! UIButton).isSelected = true
         
         if isDev || isStg {
-            Bzbs.shared.setup(token: "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8=", ticket: "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ=", language: language, DTACSegment: "1000", TelType: TelType)
+            token = "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8="
+            ticket = "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ="
+            segment = "1000"
         }
         
         if isPrd {
-            Bzbs.shared.setup(token: "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc=", ticket: "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU=", language: language, DTACSegment: "1000", TelType: TelType)
+            token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
+            ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
+            segment = "1000"
         }
         
-        gotoMain()
     }
     
-    var dtacReward : UIViewController!
     func gotoMain()
     {
-        Bzbs.shared.isDebugMode = !isPrd
-        if UIDevice.current.model == "iPad"
-        {
-            let storyboard = UIStoryboard(name: "Main_iPad", bundle: nil)
-            let tabbar = storyboard.instantiateViewController(withIdentifier: "main_view")
-            self.present(tabbar, animated: true, completion: nil)
-        } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let tabbar = storyboard.instantiateViewController(withIdentifier: "tabbar")
-            tabbar.modalPresentationStyle = .fullScreen
-            self.present(tabbar, animated: true, completion: nil)
-        }
-//        delay(10) {
-//            Bzbs.shared.setup(token: "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs=", ticket: "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA=", language: self.language, DTACSegment: "2000")
-//        }
+        tabBarController?.selectedIndex = 2
     }
     
     

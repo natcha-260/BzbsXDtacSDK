@@ -1,4 +1,9 @@
 # BzbsXDtacSDK
+## 2.0.2
+- Fix ui
+- Add Point history get viewcontroller
+- Handle deeplink dtacapp://reward/coin_history
+- Update wording
 ## 2.0.1
 - Handle point history ui
 ## 2.0.0
