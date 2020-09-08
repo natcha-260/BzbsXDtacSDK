@@ -64,7 +64,7 @@ class GreetingCVCell: UICollectionViewCell {
             let strGreeting = item?.greetingText ?? "Good morning"
             lblGreeting.text = strGreeting
 
-            if let strUrl = item?.imageUrl {
+            if let strUrl = item?.imageBannerUrl {
                 imvGreeting.bzbsSetImage(withURL: strUrl, isUsePlaceholder:false)
             }
         }

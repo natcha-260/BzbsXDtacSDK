@@ -1,4 +1,8 @@
 # BzbsXDtacSDK
+## 2.0.3
+- Add point history footer
+- Fix Date format
+- Update wording
 ## 2.0.2
 - Fix ui
 - Add Point history get viewcontroller

@@ -20,6 +20,7 @@ class EmptyTVCell: UITableViewCell {
         super.awakeFromNib()
         lbl.font = UIFont.mainFont()
         lbl.textColor = UIColor.mainGray
+        lbl.numberOfLines = 0
         setupCell()
     }
     

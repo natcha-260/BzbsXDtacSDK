@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -73,14 +73,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qet-To-ICb">
-                                <rect key="frame" x="0.0" y="131" width="414" height="731"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="HYT-Jn-PyB" id="gcR-zH-d9p"/>
-                                    <outlet property="delegate" destination="HYT-Jn-PyB" id="xHT-AF-Rrl"/>
-                                </connections>
-                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DQ3-Xc-P7g">
                                 <rect key="frame" x="0.0" y="44" width="414" height="42"/>
                                 <subviews>
@@ -221,29 +213,69 @@
                                     <constraint firstItem="uWZ-OH-yrp" firstAttribute="width" secondItem="9Lt-yf-idC" secondAttribute="width" id="yg8-lB-MV7"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qet-To-ICb">
+                                <rect key="frame" x="0.0" y="131" width="414" height="631"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="HYT-Jn-PyB" id="gcR-zH-d9p"/>
+                                    <outlet property="delegate" destination="HYT-Jn-PyB" id="xHT-AF-Rrl"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCL-n5-066">
+                                <rect key="frame" x="0.0" y="762" width="414" height="100"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_logo_dtac" translatesAutoresizingMaskIntoConstraints="NO" id="Kwe-xp-vGk">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lIx-Ap-4mz">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                        <connections>
+                                            <action selector="clickGotoMission:" destination="HYT-Jn-PyB" eventType="touchUpInside" id="AMV-KU-EYV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="I94-na-k9R"/>
+                                    <constraint firstItem="lIx-Ap-4mz" firstAttribute="leading" secondItem="gCL-n5-066" secondAttribute="leading" id="IzO-7Z-6zz"/>
+                                    <constraint firstItem="Kwe-xp-vGk" firstAttribute="top" secondItem="gCL-n5-066" secondAttribute="top" priority="750" id="MhF-cF-pvH"/>
+                                    <constraint firstAttribute="bottom" secondItem="Kwe-xp-vGk" secondAttribute="bottom" id="OmE-9k-ag8"/>
+                                    <constraint firstItem="Kwe-xp-vGk" firstAttribute="leading" secondItem="gCL-n5-066" secondAttribute="leading" id="Zof-ZK-GG7"/>
+                                    <constraint firstItem="lIx-Ap-4mz" firstAttribute="top" secondItem="gCL-n5-066" secondAttribute="top" id="ekX-zv-4Xk"/>
+                                    <constraint firstAttribute="trailing" secondItem="lIx-Ap-4mz" secondAttribute="trailing" id="ijZ-PA-vcH"/>
+                                    <constraint firstAttribute="trailing" secondItem="Kwe-xp-vGk" secondAttribute="trailing" id="m9w-Au-UiD"/>
+                                    <constraint firstAttribute="bottom" secondItem="lIx-Ap-4mz" secondAttribute="bottom" id="y6h-tA-Fue"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="irh-fq-EqW" firstAttribute="leading" secondItem="tPf-st-hch" secondAttribute="leading" id="009-kL-RBu"/>
+                            <constraint firstItem="tPf-st-hch" firstAttribute="trailing" secondItem="gCL-n5-066" secondAttribute="trailing" id="4sZ-Za-WST"/>
                             <constraint firstItem="DQ3-Xc-P7g" firstAttribute="top" secondItem="tPf-st-hch" secondAttribute="top" id="G5b-sK-sVJ"/>
                             <constraint firstItem="Qet-To-ICb" firstAttribute="leading" secondItem="tPf-st-hch" secondAttribute="leading" id="Kqr-GW-Kut"/>
                             <constraint firstItem="tPf-st-hch" firstAttribute="trailing" secondItem="DQ3-Xc-P7g" secondAttribute="trailing" id="LSo-ls-HV8"/>
-                            <constraint firstItem="tPf-st-hch" firstAttribute="bottom" secondItem="Qet-To-ICb" secondAttribute="bottom" id="b4z-fb-F8H"/>
+                            <constraint firstItem="gCL-n5-066" firstAttribute="top" secondItem="Qet-To-ICb" secondAttribute="bottom" id="ZPj-6h-22c"/>
                             <constraint firstItem="Qet-To-ICb" firstAttribute="top" secondItem="irh-fq-EqW" secondAttribute="bottom" id="bgX-YX-3de"/>
+                            <constraint firstItem="gCL-n5-066" firstAttribute="leading" secondItem="tPf-st-hch" secondAttribute="leading" id="dDP-uj-cZt"/>
                             <constraint firstItem="tPf-st-hch" firstAttribute="trailing" secondItem="irh-fq-EqW" secondAttribute="trailing" id="nPv-5T-Gib"/>
                             <constraint firstItem="irh-fq-EqW" firstAttribute="top" secondItem="DQ3-Xc-P7g" secondAttribute="bottom" id="s7T-Jc-QfD"/>
+                            <constraint firstItem="tPf-st-hch" firstAttribute="bottom" secondItem="gCL-n5-066" secondAttribute="bottom" id="vIs-Yu-u0C"/>
                             <constraint firstItem="DQ3-Xc-P7g" firstAttribute="leading" secondItem="tPf-st-hch" secondAttribute="leading" id="xIN-pG-cby"/>
                             <constraint firstItem="tPf-st-hch" firstAttribute="trailing" secondItem="Qet-To-ICb" secondAttribute="trailing" id="xND-2A-h6P"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tPf-st-hch"/>
                     </view>
                     <connections>
+                        <outlet property="cstFooterHeight" destination="I94-na-k9R" id="zD1-VB-zZc"/>
+                        <outlet property="imvFooter" destination="Kwe-xp-vGk" id="n4N-11-JUY"/>
                         <outlet property="lblEarn" destination="ZUs-aE-OSO" id="Iir-el-SkJ"/>
                         <outlet property="lblExpireDate" destination="TW6-bl-9dI" id="7hs-ZM-F2B"/>
                         <outlet property="lblPoint" destination="iws-G0-SOY" id="WwU-TS-XSd"/>
                         <outlet property="lblRedeemed" destination="NG6-ec-bbH" id="Pf9-Oc-oHd"/>
                         <outlet property="tableView" destination="Qet-To-ICb" id="pIV-M3-M5b"/>
                         <outlet property="vwEarnLine" destination="0Kj-GR-TTn" id="INo-cy-ak6"/>
+                        <outlet property="vwFooter" destination="gCL-n5-066" id="0cO-aA-4h7"/>
                         <outlet property="vwRedeemedLine" destination="bgr-Ws-vip" id="Y5O-ee-CV1"/>
                     </connections>
                 </viewController>
@@ -252,4 +284,7 @@
             <point key="canvasLocation" x="1233.3333333333335" y="-429.24107142857139"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="img_logo_dtac" width="114" height="31"/>
+    </resources>
 </document>

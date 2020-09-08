@@ -40,6 +40,7 @@ public class BuzzebeesCore: NSObject {
     static var urlSegmentImageSilver : URL?
     static var urlSegmentImageGold : URL?
     static var urlSegmentImageBlue : URL?
+    static var urlDeeplinkHistory : URL?
     
     static var levelNameDtac = ""
     static var levelNameSilver = ""
@@ -124,6 +125,10 @@ public class BuzzebeesCore: NSObject {
                     if let blueUrl = dictJSON["blue_image_url"] as? String
                     {
                         urlSegmentImageBlue = URL(string: blueUrl)
+                    }
+                    
+                    if let deeplink = dictJSON["deeplink"] as? String {
+                        urlDeeplinkHistory = URL(string: deeplink)
                     }
 
                     if let cacheConfig = dictJSON["cache"] as? Dictionary<String, AnyObject> {

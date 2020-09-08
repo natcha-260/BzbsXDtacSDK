@@ -32,6 +32,9 @@ class MainViewController: UIViewController {
 
 extension MainViewController : BzbsDelegate
 {
+    func clickMission() {
+        print("clickMission")
+    }
     
     func suspend() {
         print("suspend")

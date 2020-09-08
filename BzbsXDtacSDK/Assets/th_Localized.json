@@ -1,6 +1,6 @@
 {
     "main_title" : "ดีแทค รีวอร์ด",
-    "main_level_title" : "สถานะรีวอร์ดของคุณ",
+    "main_level_title" : "สถานะรีวอร์ดของฉัน",
     "main_footer_msg" : "พบกับร้านค้าและบริการกว่า 30,000 แห่ง ทุกภาคทั่วไทย ใกล้บ้านคุณ ทั้งในห้างและนอกห้าง",
     "main_footer_fav" : "รายการโปรด",
     "main_footer_hist" : "ประวัติ",
@@ -110,7 +110,6 @@
     "coin_paid_date" : "วันที่ทำรายการ",
     "coin_first_use_date" : "วันที่เปิดแอพครั้งแรก",
     "coin_checkin_date" : "เดือนที่เช็คอินสำเร็จ",
-    "coin_adjust_date" : "วันที่ปรับปรุง",
     
     "coin_adjust" : "ปรับปรุง Coins",
     "coin_adjust_add" : "เพิ่ม",

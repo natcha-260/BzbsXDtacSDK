@@ -266,4 +266,16 @@ public class BzbsCoreApi: BuzzebeesCore {
                 successCallback?()
         } , failCallback: failCallback )
     }
+    
+    public func getImage(imageUrl:URL, successCallback: @escaping ((UIImage?) -> Void))
+    {
+        request(imageUrl).responseImage { (response) in
+            if let data = response.data
+            {
+                successCallback(UIImage(data: data))
+            } else {
+                successCallback(nil)
+            }
+        }
+    }
 }

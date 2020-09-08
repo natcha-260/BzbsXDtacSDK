@@ -70,7 +70,6 @@ struct DtacLoginParams {
             else {
                 return Bundle.main
         }
-        
         return resourceBundle
     }
     
@@ -94,6 +93,13 @@ struct DtacLoginParams {
     }
     
     @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String, TelType: String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
+        if isDebugMode {
+            BuzzebeesCore.apiSetupPrefix(successCallback: {
+                
+            }) {
+                
+            }
+        }
         var loginParams = DtacLoginParams()
         if token == "" || ticket == "" || DTACSegment == ""
         {

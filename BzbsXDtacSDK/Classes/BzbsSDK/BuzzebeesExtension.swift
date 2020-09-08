@@ -93,11 +93,11 @@ extension Int {
 }
 
 extension Double {
-    func withCommas() -> String {
+    func withCommas(fractionDigits:Int = 2) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        numberFormatter.minimumFractionDigits = 2
-        numberFormatter.maximumFractionDigits = 2
+        numberFormatter.minimumFractionDigits = fractionDigits
+        numberFormatter.maximumFractionDigits = fractionDigits
         return numberFormatter.string(from: NSNumber(value:self))!
     }
 }

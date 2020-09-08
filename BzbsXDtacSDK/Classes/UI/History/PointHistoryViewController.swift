@@ -17,6 +17,9 @@ open class PointHistoryViewController: BaseListController {
     @IBOutlet weak var vwEarnLine: UIView!
     @IBOutlet weak var lblRedeemed: UILabel!
     @IBOutlet weak var vwRedeemedLine: UIView!
+    @IBOutlet weak var cstFooterHeight: NSLayoutConstraint!
+    @IBOutlet weak var vwFooter: UIView!
+    @IBOutlet weak var imvFooter: UIImageView!
     
     // MARK:- Variable
     var isEarn = false
@@ -55,6 +58,13 @@ open class PointHistoryViewController: BaseListController {
         return formatter
     }()
     
+    var strUrlFooter :String {
+        if LocaleCore.shared.getUserLocale() == 1054 {
+            return BuzzebeesCore.blobUrl + "/config/353144231924127/history/bannerth.jpg"
+        }
+        return BuzzebeesCore.blobUrl + "/config/353144231924127/history/banneren.jpg"
+    }
+    
     // MARK:- Class function
     // MARK:-
     @objc public class func getView() -> PointHistoryViewController
@@ -80,6 +90,7 @@ open class PointHistoryViewController: BaseListController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        cstFooterHeight.constant = 0
         tableView.register(PointHistoryCell.getNib(), forCellReuseIdentifier: "pointHistoryCell")
         tableView.register(EmptyHistoryCell.getNib(), forCellReuseIdentifier: "emptyCell")
         tableView.register(BlankTVCell.getNib(), forCellReuseIdentifier: "blankCell")
@@ -105,6 +116,50 @@ open class PointHistoryViewController: BaseListController {
         } else {
             showLoader()
             checkAPI()
+        }
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        analyticsSetScreen(screenName: "your_coin_earn")
+        apiGetimagefooter()
+    }
+    
+    func apiGetimagefooter() {
+        if let url = URL(string: strUrlFooter) {
+            BzbsCoreApi().getImage(imageUrl: url) { (image) in
+                DispatchQueue.main.async {
+                    self.setImagefooter(image: image)
+                }
+            }
+        }
+    }
+    
+    func setImagefooter(image:UIImage?)
+    {
+        imvFooter.image = image
+        imvFooter.contentMode = .scaleAspectFit
+        imvFooter.alpha = 0
+        if image == nil {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0) {
+                    self.cstFooterHeight.constant = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else {
+            let width = self.tableView.bounds.size.width
+            let height = (width / 827) * 192
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.33, animations: {
+                    self.cstFooterHeight.constant = height
+                    self.view.layoutIfNeeded()
+                }) { (_) in
+                    UIView.animate(withDuration: 0.33) {
+                        self.imvFooter.alpha = 1
+                    }
+                }
+            }
         }
     }
     
@@ -134,6 +189,7 @@ open class PointHistoryViewController: BaseListController {
             self.arrPointLogBurn.removeAll()
             self.strBurnDate = ""
         }
+        apiGetimagefooter()
         self.getApi()
         self.getExpiringPoint()
     }
@@ -240,6 +296,13 @@ open class PointHistoryViewController: BaseListController {
         tableView.reloadData()
     }
     
+    @IBAction func clickGotoMission(_ sender: Any) {
+        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
+        if let url = BuzzebeesCore.urlDeeplinkHistory {
+            UIApplication.shared.openURL(url)
+        }
+    }
+    
     // MARK:- Api
     // MARK:-
     override func getApi() {
@@ -337,6 +400,15 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         }
         
         let item = isEarn ? arrPointLogEarn[indexPath.row] : arrPointLogBurn[indexPath.row]
+        
+        let date = Date(timeIntervalSince1970: item.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
+        let formatter = DateFormatter()
+        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(item.title ?? "") | \(formatter.string(from: date)) | \(item.points ?? 0)")
+        
         PopupManager.pointHistoryPopup(onView: self, pointlog: item)
     }
     

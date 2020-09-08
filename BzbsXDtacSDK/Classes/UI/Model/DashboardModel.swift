@@ -18,6 +18,7 @@ public class GreetingModel: NSObject {
     var greetingText_th: String!
     var greetingText_en: String!
     var imageUrl: String!
+    var imageBannerUrl: String!
     
     init(dict: Dictionary<String, AnyObject>) {
         super.init()
@@ -25,6 +26,7 @@ public class GreetingModel: NSObject {
         greetingText_th = BuzzebeesConvert.StringFromObject(dict["Text"])
         greetingText_en = BuzzebeesConvert.StringFromObject(dict["TextEN"])
         imageUrl = BuzzebeesConvert.StringFromObject(dict["ImageUrl"])
+        imageBannerUrl = BuzzebeesConvert.StringFromObject(dict["ImageUrl01"])
     }
     
 }
