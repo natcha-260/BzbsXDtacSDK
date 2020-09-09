@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.5
+- Update wording
 ## 2.0.4
 - Update wording
 ## 2.0.3

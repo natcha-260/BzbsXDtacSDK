@@ -61,7 +61,7 @@ class PopupPointHistoryDetailViewController: UIViewController {
             imv.bzbsSetImage(withURL: strUrl)
             listCell = ["adjust_date"]
         } else {
-            lblPoint.text = "coin_earn_detail".localized() + ":" + pointLog.points.withCommas()
+            lblPoint.text = "coin_earn_detail".localized() + ": " + pointLog.points.withCommas()
             let productID = pointLog.productId ?? "0"
             let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
             imv.bzbsSetImage(withURL: strUrl)
