@@ -297,7 +297,7 @@ open class PointHistoryViewController: BaseListController {
     }
     
     @IBAction func clickGotoMission(_ sender: Any) {
-        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
+        analyticsSetEvent(isNeedProcess: false, event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
         if let url = BuzzebeesCore.urlDeeplinkHistory {
             UIApplication.shared.openURL(url)
         }
@@ -407,7 +407,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(item.title ?? "") | \(formatter.string(from: date)) | \(item.points ?? 0)")
+        analyticsSetEvent(isNeedProcess: false,event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(item.title ?? "") | \(formatter.string(from: date)) | \(item.points ?? 0)")
         
         PopupManager.pointHistoryPopup(onView: self, pointlog: item)
     }
