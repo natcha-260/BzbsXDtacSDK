@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.7
+- Add refresh coin on dashboard appear
 ## 2.0.6
 - Fix Analytics
 ## 2.0.5

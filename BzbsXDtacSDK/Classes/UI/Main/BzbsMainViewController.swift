@@ -80,6 +80,7 @@ import WebKit
     var impressionItems = [BzbsCampaign]()
     
     var webView : WKWebView?
+    var isCallingExpiringPoint = false
     
     // MARK:- Life Cycle
     // MARK:-
@@ -127,6 +128,7 @@ import WebKit
         updateNavigationBar()
         
         analyticsSetScreen(screenName: "dtac_reward")
+        self.getExpiringPoint()
         
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -336,6 +338,8 @@ import WebKit
     
     func getExpiringPoint()
     {
+        if isCallingExpiringPoint { return }
+        isCallingExpiringPoint = true
         guard let token = Bzbs.shared.userLogin?.token else { return }
         showLoader()
         BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
@@ -347,8 +351,10 @@ import WebKit
                 }
             }
             self.collectionView.reloadSections(IndexSet([0]))
+            self.isCallingExpiringPoint = false
             self.hideLoader()
         }) { (error) in
+            self.isCallingExpiringPoint = false
             self.hideLoader()
         }
     }
