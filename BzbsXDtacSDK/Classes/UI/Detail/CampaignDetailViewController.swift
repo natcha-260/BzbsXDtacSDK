@@ -103,7 +103,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             resetAPI()
         } else {
             showLoader()
-            checkAPI()
+//            checkAPI()
         }
     }
     

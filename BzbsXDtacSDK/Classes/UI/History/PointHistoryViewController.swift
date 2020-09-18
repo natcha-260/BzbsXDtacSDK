@@ -115,7 +115,7 @@ open class PointHistoryViewController: BaseListController {
             getExpiringPoint()
         } else {
             showLoader()
-            checkAPI()
+//            checkAPI()
         }
     }
     
@@ -163,23 +163,23 @@ open class PointHistoryViewController: BaseListController {
         }
     }
     
-    func checkAPI() {
-        if Bzbs.shared.isCallingLogin {
-            Bzbs.shared.delay(0.5) {
-                self.checkAPI()
-            }
-        } else {
-            if Bzbs.shared.isLoggedIn() {
-                resetList()
-            } else {
-                Bzbs.shared.relogin(completionHandler: {
-                    self.resetList()
-                }) { (_) in
-                    self.loadedData()
-                }
-            }
-        }
-    }
+//    func checkAPI() {
+//        if Bzbs.shared.isCallingLogin {
+//            Bzbs.shared.delay(0.5) {
+//                self.checkAPI()
+//            }
+//        } else {
+//            if Bzbs.shared.isLoggedIn() {
+//                resetList()
+//            } else {
+//                Bzbs.shared.relogin(completionHandler: {
+//                    self.resetList()
+//                }) { (_) in
+//                    self.loadedData()
+//                }
+//            }
+//        }
+//    }
     
     @objc override func resetList() {
         if self.isEarn {

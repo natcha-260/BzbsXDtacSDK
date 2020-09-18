@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.8
+- Fix refresh coin on dashboard appear
+- Fix duplicate transactions in history
 ## 2.0.7
 - Add refresh coin on dashboard appear
 ## 2.0.6

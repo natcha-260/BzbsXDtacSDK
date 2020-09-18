@@ -338,9 +338,9 @@ import WebKit
     
     func getExpiringPoint()
     {
+        guard let token = Bzbs.shared.userLogin?.token else { return }
         if isCallingExpiringPoint { return }
         isCallingExpiringPoint = true
-        guard let token = Bzbs.shared.userLogin?.token else { return }
         showLoader()
         BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
             if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
