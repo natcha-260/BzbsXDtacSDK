@@ -37,6 +37,9 @@ Pod::Spec.new do |s|
     'BzbsXDtacSDK' => ['BzbsXDtacSDK/Assets/*.storyboard', 'BzbsXDtacSDK/Assets/Asset.xcassets', 'BzbsXDtacSDK/Assets/Font/*','BzbsXDtacSDK/Classes/**/*.xib', 'BzbsXDtacSDK/Assets/dtac_loading.json','BzbsXDtacSDK/Assets/*.lproj/*.strings','BzbsXDtacSDK/Assets/*.json']
   }
 
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'AVFoundation'
   s.static_framework = true
