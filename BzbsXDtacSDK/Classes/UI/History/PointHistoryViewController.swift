@@ -20,11 +20,12 @@ open class PointHistoryViewController: BaseListController {
     @IBOutlet weak var cstFooterHeight: NSLayoutConstraint!
     @IBOutlet weak var vwFooter: UIView!
     @IBOutlet weak var imvFooter: UIImageView!
+    @IBOutlet weak var burnTableView: UITableView!
     
     // MARK:- Variable
     var isEarn = false
     var arrPointLogEarn = [PointLog]()
-    var arrPointLogBurn = [PointLog]()
+    var arrPointLogBurn = [BzbsHistory]()
     var strEarnDate:String = ""
     var strBurnDate:String = ""
     var isEarnEnd:Bool {
@@ -38,18 +39,10 @@ open class PointHistoryViewController: BaseListController {
 
         return false
     }
-    var isBurnEnd : Bool {
-        return true
-//        if strBurnDate == "" {
-//            return false
-//        }
-//        let endDate = Date().timeIntervalSince1970 + (-2 * 30 * 24 * 60 * 60)
-//        if let date = dateFormatter.date(from: strBurnDate)?.timeIntervalSince1970 {
-//            return endDate > date
-//        }
-//
-//        return false
-    }
+    
+    var isBurnEnd = false
+    var _isCallBurnApi = false
+    
     let dateFormatter : DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -91,10 +84,7 @@ open class PointHistoryViewController: BaseListController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         cstFooterHeight.constant = 0
-        tableView.register(PointHistoryCell.getNib(), forCellReuseIdentifier: "pointHistoryCell")
-        tableView.register(EmptyHistoryCell.getNib(), forCellReuseIdentifier: "emptyCell")
-        tableView.register(BlankTVCell.getNib(), forCellReuseIdentifier: "blankCell")
-        
+        registerCell()
         lblPoint.font = UIFont.mainFont(.big, style: .bold)
         lblExpireDate.font = UIFont.mainFont(.small,style: .bold)
         lblEarn.font = UIFont.mainFont()
@@ -105,18 +95,45 @@ open class PointHistoryViewController: BaseListController {
         clickEarn(self)
         
         tableView.es.addPullToRefresh {
-            self.resetList()
+            self.arrPointLogEarn.removeAll()
+            self.strEarnDate = ""
+            self.apiGetimagefooter()
+            self.getApi()
+            self.getExpiringPoint()
         }
+        
+        burnTableView.es.addPullToRefresh {
+            self._intSkip = 0
+            self.arrPointLogBurn.removeAll()
+            self.apiGetimagefooter()
+            self.getApiPurchase()
+            self.getExpiringPoint()
+        }
+
         
         NotificationCenter.default.addObserver(self, selector: #selector(resetList), name: NSNotification.Name.BzbsApiReset, object: nil)
         
         if Bzbs.shared.isLoggedIn() {
             getApi()
+            getApiPurchase()
             getExpiringPoint()
         } else {
             showLoader()
 //            checkAPI()
         }
+    }
+    
+    func registerCell() {
+        
+        tableView.register(PointHistoryCell.getNib(), forCellReuseIdentifier: "pointHistoryCell")
+        tableView.register(PointBurnHistoryCell.getNib(), forCellReuseIdentifier: "pointBurnHistoryCell")
+        tableView.register(EmptyHistoryCell.getNib(), forCellReuseIdentifier: "emptyCell")
+        tableView.register(BlankTVCell.getNib(), forCellReuseIdentifier: "blankCell")
+        
+        burnTableView.register(PointHistoryCell.getNib(), forCellReuseIdentifier: "pointHistoryCell")
+        burnTableView.register(PointBurnHistoryCell.getNib(), forCellReuseIdentifier: "pointBurnHistoryCell")
+        burnTableView.register(EmptyHistoryCell.getNib(), forCellReuseIdentifier: "emptyCell")
+        burnTableView.register(BlankTVCell.getNib(), forCellReuseIdentifier: "blankCell")
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -190,8 +207,9 @@ open class PointHistoryViewController: BaseListController {
             self.strBurnDate = ""
         }
         apiGetimagefooter()
-        self.getApi()
-        self.getExpiringPoint()
+        getApi()
+        getApiPurchase()
+        getExpiringPoint()
     }
     
     override func initNav() {
@@ -283,7 +301,9 @@ open class PointHistoryViewController: BaseListController {
         resetButton()
         lblEarn.textColor = .black
         vwEarnLine.isHidden = false
-        tableView.reloadData()
+        
+        tableView.isHidden = false
+        burnTableView.isHidden = true
     }
     
     @IBAction func clickRedeemed(_ sender: Any) {
@@ -293,7 +313,9 @@ open class PointHistoryViewController: BaseListController {
         lblRedeemed.font = UIFont.mainFont(style:.bold)
         lblRedeemed.textColor = .black
         vwRedeemedLine.isHidden = false
-        tableView.reloadData()
+        
+        tableView.isHidden = true
+        burnTableView.isHidden = false
     }
     
     @IBAction func clickGotoMission(_ sender: Any) {
@@ -311,32 +333,57 @@ open class PointHistoryViewController: BaseListController {
             return
         }
         if _isCallApi { return }
-        if isEarn {
-            if isEarnEnd { return }
-            _isCallApi = true
-            showLoader()
-            BuzzebeesHistory().pointHistory(token: token, date: getDate(), successCallback: { (arr) in
-                if arr.count == 0 {
-                    self.loadedData()
-                    self.getApi()
-                } else {
-                    for dict in arr {
-                        self.arrPointLogEarn.append(PointLog(dict: dict))
-                    }
+        if isEarnEnd { return }
+        _isCallApi = true
+        showLoader()
+        BuzzebeesHistory().pointHistory(token: token, date: getDate(), successCallback: { (arr) in
+            if arr.count == 0 {
+                self.loadedData()
+                self.getApi()
+            } else {
+                for dict in arr {
+                    let item = PointLog(dict: dict)
+                    if item.type == "rollback" || item.type == "redeem" { continue }
+                    self.arrPointLogEarn.append(item)
                 }
-                self.loadedData()
-                self.tableView.es.stopPullToRefresh()
-            }) { (error) in
-                self.loadedData()
-                self.tableView.es.stopPullToRefresh()
-                print(error.description())
             }
-        } else {
-            if isBurnEnd { return }
-            _isCallApi = true
             self.loadedData()
             self.tableView.es.stopPullToRefresh()
+        }) { (error) in
+            self.loadedData()
+            self.tableView.es.stopPullToRefresh()
+            print(error.description())
+        }
+    }
+    
+    func getApiPurchase() {
+        guard let token = Bzbs.shared.userLogin?.token else {
+            self.loadedData()
             return
+        }
+        
+        if isBurnEnd { return }
+        _isCallBurnApi = true
+        showLoader()
+
+        BuzzebeesHistory().list(config: "purchase_coin", token: token, skip: _intSkip) { (arr) in
+            if self._intSkip == 0 {
+                self.arrPointLogBurn = arr
+            } else {
+                self.arrPointLogBurn.append(contentsOf: arr)
+            }
+            self._intSkip += 25
+            self.isBurnEnd = arr.count < 25
+            self.loadedData()
+            self._isCallBurnApi = false
+            self.burnTableView.reloadData()
+            self.burnTableView.es.stopPullToRefresh()
+        } failCallback: { (error) in
+            self.loadedData()
+            self.burnTableView.reloadData()
+            self.burnTableView.es.stopPullToRefresh()
+            self._isCallBurnApi = false
+            print(error.description())
         }
     }
 }
@@ -347,7 +394,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
 {
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if isEarn {
+        if tableView == self.tableView {
             if arrPointLogEarn.count == 0 { return tableView.bounds.size.height * 0.9 }
         } else {
             if arrPointLogBurn.count == 0 { return tableView.bounds.size.height * 0.9 }
@@ -360,7 +407,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isEarn {
+        if tableView == self.tableView {
             return arrPointLogEarn.count == 0 ? 1 : arrPointLogEarn.count
         } else {
             return arrPointLogBurn.count == 0 ? 1 : arrPointLogBurn.count
@@ -368,58 +415,79 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isEarn {
+        if tableView == self.tableView {
             if  arrPointLogEarn.count == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyHistoryCell
                 cell.setupCell(message: "coin_earn_no_data".localized(), imageName: "doll-earned")
                 return cell
             }
+            
+            let item = arrPointLogEarn[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "pointHistoryCell", for: indexPath) as! PointHistoryCell
+            cell.setupUI(item)
+            return cell
         } else {
             if  arrPointLogBurn.count == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyHistoryCell
                 cell.setupCell(message: "coin_burn_no_data".localized(), imageName: "doll-redeem")
                 return cell
             }
+            
+            let item = arrPointLogBurn[indexPath.row]
+            if item.categoryID == BuzzebeesCore.catIdVoiceNet {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "pointHistoryCell", for: indexPath) as! PointHistoryCell
+                cell.setupUI(item)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "pointBurnHistoryCell", for: indexPath) as! PointBurnHistoryCell
+                cell.setupUI(item)
+                return cell
+            }
         }
-        
-        let item = isEarn ? arrPointLogEarn[indexPath.row] : arrPointLogBurn[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "pointHistoryCell", for: indexPath) as! PointHistoryCell
-        cell.setupU(item)
-        return cell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isEarn {
+        if tableView == self.tableView {
             if  arrPointLogEarn.count == 0 {
                 return
             }
+            
+            let item = arrPointLogEarn[indexPath.row]
+
+            let date = Date(timeIntervalSince1970: item.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
+            let formatter = DateFormatter()
+            formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+            formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = "dd/MM/yyyy HH:mm"
+            analyticsSetEvent(isNeedProcess: false,event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(item.title ?? "") | \(formatter.string(from: date)) | \(item.points ?? 0)")
+
+            PopupManager.pointHistoryPopup(onView: self, pointlog: item)
+    
         } else {
             if  arrPointLogBurn.count == 0 {
                 return
             }
+            clickBurn(item: arrPointLogBurn[indexPath.row])
         }
-        
-        let item = isEarn ? arrPointLogEarn[indexPath.row] : arrPointLogBurn[indexPath.row]
-        
-        let date = Date(timeIntervalSince1970: item.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
-        let formatter = DateFormatter()
-        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
-        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        analyticsSetEvent(isNeedProcess: false,event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(item.title ?? "") | \(formatter.string(from: date)) | \(item.points ?? 0)")
-        
-        PopupManager.pointHistoryPopup(onView: self, pointlog: item)
+    }
+    
+    func clickBurn(item:BzbsHistory) {
+        if item.categoryID == BuzzebeesCore.catIdVoiceNet {
+            PopupManager.subscriptionPopup(onView: self, purchase: item)
+        } else {
+            PopupManager.serialPopup(onView: self, purchase: item)
+        }
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if isEarn {
+        if tableView == self.tableView {
             if indexPath.row > arrPointLogEarn.count - 3 {
                 getApi()
             }
         } else {
             if indexPath.row == arrPointLogBurn.count - 2 {
-                getApi()
+                getApiPurchase()
             }
         }
     }

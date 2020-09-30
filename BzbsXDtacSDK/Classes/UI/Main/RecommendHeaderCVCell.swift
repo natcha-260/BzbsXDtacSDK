@@ -26,10 +26,14 @@ class RecommendHeaderCVCell: UICollectionViewCell {
         lblViewAll.text = "view_all".localized()
     }
     
-    func setupWith(target:UIViewController, selector:Selector)
+    func setupWith(title:String, target:UIViewController, selector:Selector)
     {
-        lblTitle.text = "recommend_title".localized()
+        lblTitle.text = title
         lblViewAll.text = "view_all".localized()
+        if let _ = btnViewAll.actions(forTarget: target, forControlEvent: UIControl.Event.touchUpInside)
+        {
+            btnViewAll.removeTarget(target, action: nil, for: UIControl.Event.touchUpInside)
+        }
         btnViewAll.addTarget(target, action: selector, for: UIControl.Event.touchUpInside)
     }
 

@@ -1,4 +1,9 @@
 # BzbsXDtacSDK
+## 2.0.9
+- Handle new point type in history
+- Check TelType
+- Update ui
+- Add new ui serial timer
 ## 2.0.8
 - Fix refresh coin on dashboard appear
 - Fix duplicate transactions in history

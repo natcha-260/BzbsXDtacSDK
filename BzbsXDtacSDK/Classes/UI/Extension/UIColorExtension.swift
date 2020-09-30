@@ -19,6 +19,7 @@ extension UIColor {
     class var mainYellow: UIColor { return UIColor(hexString: "#FFCB96") }
     class var mainRed: UIColor { return UIColor(hexString: "#FFB4B4") }
     class var mainLightGray: UIColor { return UIColor(hexString: "#D6D6D6") }
+    class var mainBlueSubscription: UIColor { return UIColor(hexString: "#E6FBFF") }
     
     
     class var popupBGBlue: UIColor { return UIColor(hexString: "#003371") }
@@ -26,6 +27,8 @@ extension UIColor {
     class var popupBGSilver: UIColor { return UIColor(hexString: "#B9B9B9") }
     class var popupBGCustomer: UIColor { return UIColor(hexString: "#009EF0") }
     
+    class var historyStatusAvailable: UIColor { return UIColor(hexString: "#87E6BF") }
+    class var historyStatusExpired: UIColor { return UIColor(hexString: "#C7C7C7") }
     
     convenience init(hexString: String) {
         var cString: String = hexString.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()

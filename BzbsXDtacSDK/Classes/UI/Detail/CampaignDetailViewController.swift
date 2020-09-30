@@ -35,6 +35,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     @IBOutlet weak var lblHistory: UILabel!
     @IBOutlet weak var cstBottom: NSLayoutConstraint!
     @IBOutlet weak var vwButton: UIView!
+    @IBOutlet weak var imvCoin: UIImageView!
+    @IBOutlet weak var cstCoinHeight: NSLayoutConstraint!
     
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -84,6 +86,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        cstCoinHeight.constant = isRedeemCoinCampaign() ? 25 : 0
+        
         if let type = self.campaign.type, type == 16 {
             self.cellList = ["image_name_detail","line","detail"]
             analyticsSetScreen(screenName: "dtac_reward_blue_detail")
@@ -193,11 +197,9 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     {
         imvLike.image = UIImage(named: self.campaign.isFavourite ? "img_navbar_icon_fav_active" : "img_navbar_icon_fav_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         
-        if self.campaign.type! == 16 {
-//            vwShare.isHidden = true
+        if campaign.type! == 16 || isRedeemCoinCampaign() {
             vwLike.isHidden = true
         } else {
-//            vwShare.isHidden = false
             vwLike.isHidden = false
         }
     }
@@ -439,7 +441,11 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         BuzzebeesCampaign().redeem(token:token , campaignId: campaign.ID, successCallback: { (dict) in
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)
-            PopupManager.serialPopup(onView: self, purchase: purchase)
+            if purchase.categoryID == BuzzebeesCore.catIdVoiceNet {
+                PopupManager.subscriptionPopup(onView: self, purchase: purchase)
+            } else {
+                PopupManager.serialPopup(onView: self, purchase: purchase)
+            }
             self.isCallingApiRedeem = false
         }) { (error) in
             self.hideLoader()
@@ -571,8 +577,23 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 if type == 1 {
                     var message = "popup_confirm_redeem_prefix".localized() + "\n" + self.campaign.name
                     
-                    if let minAfterUse = campaign.minutesValidAfterUsed , minAfterUse > 0{
-                        let strMinAfteruse = String(format: "popup_confirm_redeem_minute_afteruse".localized(), String(minAfterUse))
+                    if isRedeemCoinCampaign() {
+                        if let pointPerUnit = campaign.pointPerUnit {
+                            if pointPerUnit > (Bzbs.shared.userLogin?.bzbsPoints ?? -1) {
+                                return
+                            }
+                        }
+                    
+                        let strCoinToRedeem = String(format: "popup_confirm_redeem_coin".localized(), campaign.pointPerUnit.withCommas())
+                        message = message + "\n\n" + strCoinToRedeem
+                        
+                        if let minAfterUse = campaign.minutesValidAfterUsed , minAfterUse > 0 {
+                            let strMinAfteruse = String(format: "popup_confirm_redeem_minute_afteruse".localized(), TimeInterval(minAfterUse).toTimeString())
+                            message = message + "\n" + strMinAfteruse
+                        }
+                    }
+                    else if let minAfterUse = campaign.minutesValidAfterUsed , minAfterUse > 0 {
+                        let strMinAfteruse = String(format: "popup_confirm_redeem_minute_afteruse".localized(), TimeInterval(minAfterUse).toTimeString())
                         message = message + "\n\n" + strMinAfteruse
                     }
                     
@@ -699,9 +720,40 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         initImage()
     }
     
+    func isRedeemCoinCampaign() -> Bool {
+        if campaign.categoryID == BuzzebeesCore.catIdCoin {
+            return true
+        }
+        return false
+    }
+    
+    func isUse3TabInfo() -> Bool {
+        if campaign.categoryID == BuzzebeesCore.catIdVoiceNet
+        ||  campaign.categoryID == BuzzebeesCore.catIdLineSticker
+            {
+            return false
+        }
+        let locationAuthStatus = LocationManager.shared.authorizationStatus
+        
+        return (locationAuthStatus != .denied && campaign.distance != nil) || (campaign.website != "")
+    }
+    
+    func isUse3Detail() -> Bool {
+        if campaign.categoryID == BuzzebeesCore.catIdVoiceNet
+            ||  campaign.categoryID == BuzzebeesCore.catIdLineSticker
+        {
+            return false
+        }
+        return arrBranch.count > 0
+        
+    }
+    
     // MARK:- Util
     // MARK:-
     func manageFooter(){
+        
+        cstCoinHeight.constant = isRedeemCoinCampaign() ? 25 : 0
+        lblRight.adjustsFontSizeToFitWidth = true
         
         lblLeft.font = UIFont.mainFont()
         lblRight.font = UIFont.mainFont()
@@ -714,10 +766,25 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         
         lblLeft.text = "campaign_detail_back".localized()
         lblRight.text = "campaign_detail_status_redeem".localized()
+        if isRedeemCoinCampaign() {
+            lblRight.text! += " \(campaign.pointPerUnit.withCommas())"
+        }
         
         if let type = campaign.type{
             if type == 1 {
                 lblRight.text = "campaign_detail_status_redeem".localized()
+                if isRedeemCoinCampaign() {
+                    if let pointPerUnit = campaign.pointPerUnit {
+                        if pointPerUnit <= (Bzbs.shared.userLogin?.bzbsPoints ?? -1) {
+                            lblRight.text! += " \(campaign.pointPerUnit.withCommas())"
+                        } else {
+                            setButton(isEnable: false)
+                            lblRight.textColor = .gray
+                            lblRight.text! = "coin_not_enough".localized()
+                            cstCoinHeight.constant = 0
+                        }
+                    }
+                }
                 vcRight.backgroundColor = UIColor.dtacBlue
                 
                 if let _campaignStatus = campaignStatus {
@@ -756,9 +823,25 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         PopupManager.informationPopup(self, message: "alert_button_redeem_default".errorLocalized(), close: nil)
                     }
                     
+                    if isRedeemCoinCampaign() && remark == "s2001" {
+                        if let pointPerUnit = campaign.pointPerUnit {
+                            if pointPerUnit <= (Bzbs.shared.userLogin?.bzbsPoints ?? -1) {
+                                msgBtn += " \(campaign.pointPerUnit.withCommas())"
+                            } else {
+                                setButton(isEnable: false)
+                                msgBtn = "coin_not_enough".localized()
+                                lblRight.textColor = .gray
+                                cstCoinHeight.constant = 0
+                            }
+                        }
+                    } else {
+                        cstCoinHeight.constant = 0
+                    }
+                    
                     lblRight.text = msgBtn
                     
-                } else {
+                }
+                else {
                     if !isLoadedStatus
                     {
                         if isLoggedIn()
@@ -767,9 +850,24 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                 if let type = campaign.type{
                                     if type == 9 {
                                         lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                                        cstCoinHeight.constant = 0
                                         setButton(isEnable: false)
                                     } else {
+                                        
                                         lblRight.text = "campaign_detail_status_redeem".localized()
+                                        if isRedeemCoinCampaign() {
+                                            if let pointPerUnit = campaign.pointPerUnit {
+                                                if pointPerUnit <= (Bzbs.shared.userLogin?.bzbsPoints ?? -1) {
+                                                    lblRight.text! += " \(campaign.pointPerUnit.withCommas())"
+                                                } else {
+                                                    setButton(isEnable: false)
+                                                    lblRight.text! = "coin_not_enough".localized()
+                                                    lblRight.textColor = .gray
+                                                    cstCoinHeight.constant = 0
+                                                }
+                                            }
+                                        }
+                                        
                                         setButton(isEnable: isCallingApiRedeem || isCallingCampaignDetail)
                                     }
                                 }
@@ -778,6 +876,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
 
                             if let type = campaign.type, type == 9 {
                                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                                cstCoinHeight.constant = 0
                                 setButton(isEnable: false)
                                 return
                             }
@@ -789,8 +888,10 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         vcRight.backgroundColor = UIColor.dtacBlue
                     }
                 }
-            } else if type == 9 {
+            }
+            else if type == 9 {
                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
+                cstCoinHeight.constant = 0
                 setButton(isEnable: false)
             }
         }
@@ -950,10 +1051,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
         }
         
         if cellIdent == "info" {
-            let locationAuthStatus = LocationManager.shared.authorizationStatus
-            
-            if (locationAuthStatus != .denied && campaign.distance != nil) ||
-                (campaign.website != "")
+            if isUse3TabInfo()
             {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cellInfo3Tab", for: indexPath)
                 
@@ -1000,6 +1098,8 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
                 lblReadMore.font = UIFont.mainFont(.small)
                 let lblClick = cell.viewWithTag(32) as! UILabel
                 lblClick.font = UIFont.mainFont(.small)
+                
+                let locationAuthStatus = LocationManager.shared.authorizationStatus
                 if let distance = campaign.distance, locationAuthStatus != .denied
                 {
                     lblReadMore.adjustsFontSizeToFitWidth = true
@@ -1070,7 +1170,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
         
         if cellIdent == "tab" {
             var cell : UITableViewCell!
-            if arrBranch.count > 0 {
+            if isUse3Detail() {
                 cell = tableView.dequeueReusableCell(withIdentifier: "cellDetail3Tab", for: indexPath)
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "cellDetail2Tab", for: indexPath)
@@ -1094,7 +1194,7 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
             lineCondition.isHidden = true
             lineCondition.backgroundColor = UIColor(hexString: "19AAF8")
             
-            if arrBranch.count > 0 {
+            if isUse3Detail() {
                 let lblBranch = cell.viewWithTag(31) as! UILabel
                 lblBranch.text = "campaign_detail_branch".localized()
                 lblBranch.font = UIFont.mainFont()

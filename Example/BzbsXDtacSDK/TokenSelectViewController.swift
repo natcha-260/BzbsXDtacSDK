@@ -142,12 +142,13 @@ class TokenSelectViewController: UIViewController {
     }
     
     @IBAction func didChangeTelType(_ sender: Any) {
-        TelType = segmentTelType.selectedSegmentIndex == 0 ? "T" : "P"
+        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
     }
     
     @IBAction func clickShowCampaignDetail(_ sender: Any) {
         self.view.endEditing(true)
         guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
         Bzbs.shared.logout()
         if let txtId = txtCampaignId.text, txtId != ""
         {
@@ -167,6 +168,7 @@ class TokenSelectViewController: UIViewController {
     @IBAction func clickShowPointHistory(_ sender: Any) {
         self.view.endEditing(true)
         guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
         Bzbs.shared.logout()
         if let nav = self.navigationController
         {
@@ -182,6 +184,7 @@ class TokenSelectViewController: UIViewController {
     @IBAction func clickGoToMain(_ sender: Any) {
         view.endEditing(true)
         guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
         Bzbs.shared.logout()
         delay(0.5) {
             DispatchQueue.main.async {

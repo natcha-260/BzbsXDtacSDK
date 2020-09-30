@@ -84,7 +84,7 @@ class RecommendListViewController: BaseListController {
     // MARK:-
     var customConfig : String?
     func getConfig() -> String{
-        return customConfig ?? Bzbs.shared.userLogin?.dtacLevel.campaignConfigAll ?? "campaign_dtac_guest"
+        return customConfig ?? Bzbs.shared.userLogin?.telType.configRecommend ?? "campaign_dtac_guest"
     }
     
     let _intTop = 25

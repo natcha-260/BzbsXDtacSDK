@@ -201,13 +201,14 @@ struct DtacLoginParams {
             }
             let version = Bzbs.shared.versionString
             let strVersion = Bzbs.shared.prefixApp + version
-            let loginParams = DtacDeviceLoginParams(uuid: token
-                , os: "ios " + UIDevice.current.systemVersion
-                , platform: UIDevice.current.model
-                , macAddress: UIDevice.current.identifierForVendor!.uuidString
-                , deviceNotiEnable: false
-                , clientVersion: strVersion
-                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment == "" ? "9999" : DTACSegment)
+            let loginParams = DtacDeviceLoginParams(ticket: ticket, token: token, language: language, DTACSegment: DTACSegment, TelType: TelType, clientVersion: strVersion)
+//            let loginParams = DtacDeviceLoginParams(uuid: token
+//                , os: "ios " + UIDevice.current.systemVersion
+//                , platform: UIDevice.current.model
+//                , macAddress: UIDevice.current.identifierForVendor!.uuidString
+//                , deviceNotiEnable: false
+//                , clientVersion: strVersion
+//                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment == "" ? "9999" : DTACSegment)
             
             BuzzebeesAuth().loginDtac(loginParams: loginParams, successCallback: { (user,dict) in
                 self.isCallingLogin = false
@@ -438,10 +439,37 @@ enum DtacUserLevel {
     }
 }
 
+public enum DTACTelType {
+    case prepaid
+    case postpaid
+    
+    var rawValue :Int {
+        switch self {
+            case .prepaid : return 32
+            case .postpaid : return 64
+        }
+    }
+    
+    var configRecommendAll :String {
+        switch self {
+        case .prepaid : return "dtac_category_prepaid_all"
+        case .postpaid : return "dtac_category_postpaid_all"
+        }
+    }
+    
+    var configRecommend :String {
+        switch self {
+        case .prepaid : return "dtac_category_prepaid"
+        case .postpaid : return "dtac_category_postpaid"
+        }
+    }
+}
+
 extension BzbsUser
 {
     var dtacLevel : DtacUserLevel {
-        switch userLevel {
+        
+        switch userLevel & 15 {
         case 0 :
             return .no_level
         case 2:
@@ -454,22 +482,42 @@ extension BzbsUser
             return .customer
         }
     }
+    
+    var telType : DTACTelType {
+        if userLevel & 64 == 64 {
+            return .postpaid
+        }
+        return .prepaid
+    }
 }
 
-class DtacDeviceLoginParams : DeviceLoginParams {
+class DtacDeviceLoginParams: NSObject {
+    var clientVersion: String!
+    var ticket:String!
+    var token:String
+    var language: String?
     var DTACSegment:String!
+    var TelType:String!
+//    init(uuid: String, os: String, platform: String, macAddress: String, deviceNotiEnable: Bool, clientVersion: String, deviceToken: String?, customInfo: String?, language: String?, DTACSegment:String?) {
+//        super.init(uuid: uuid,
+//                   os: os,
+//                   platform: platform,
+//                   macAddress: macAddress,
+//                   deviceNotiEnable: deviceNotiEnable,
+//                   clientVersion: clientVersion,
+//                   deviceToken: deviceToken,
+//                   customInfo:customInfo,
+//                   language:language)
+//
+//        self.DTACSegment = DTACSegment
+//    }
     
-    init(uuid: String, os: String, platform: String, macAddress: String, deviceNotiEnable: Bool, clientVersion: String, deviceToken: String?, customInfo: String?, language: String?, DTACSegment:String?) {
-        super.init(uuid: uuid,
-                   os: os,
-                   platform: platform,
-                   macAddress: macAddress,
-                   deviceNotiEnable: deviceNotiEnable,
-                   clientVersion: clientVersion,
-                   deviceToken: deviceToken,
-                   customInfo:customInfo,
-                   language:language)
-        
+    init(ticket:String, token:String, language:String, DTACSegment:String, TelType:String, clientVersion: String) {
+        self.ticket = ticket
+        self.token = token
+        self.language = language
         self.DTACSegment = DTACSegment
+        self.TelType = TelType
+        self.clientVersion = clientVersion
     }
 }

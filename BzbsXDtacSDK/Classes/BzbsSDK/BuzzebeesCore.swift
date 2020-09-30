@@ -53,6 +53,9 @@ public class BuzzebeesCore: NSObject {
     let appName = "dtac"
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
+    static var catIdCoin : Int! = 9442854 // default as Dev env.
+    static var catIdVoiceNet : Int! = 9439718 // default as stgDessert.
+    static var catIdLineSticker : Int! = 9441868 // default as stgDessert.
     
     public override init() {
         configuration = URLSessionConfiguration.default
@@ -144,6 +147,30 @@ public class BuzzebeesCore: NSObject {
                             self.cacheTimeQuota = cacheDateQuota
                         }
                     }
+
+                    
+                    
+                    if let languageUrl = dictJSON["language"] as? Dictionary<String,AnyObject>
+                    {
+                        getLanguage(languageUrl, successCallback: successCallback, failCallback: failCallback)
+                        isCallingSetEndpoint = false
+                    } else {
+                        failCallback()
+                        isSetEndpoint = true
+                        isCallingSetEndpoint = false
+                    }
+                    
+                    if let catIdCoin = BuzzebeesConvert.IntFromObject(dictJSON["category_coin"]) {
+                        BuzzebeesCore.catIdCoin = catIdCoin
+                    }
+                    
+                    if let catIdVoiceNet = BuzzebeesConvert.IntFromObject(dictJSON["sub_category_voice_net"]){
+                        BuzzebeesCore.catIdVoiceNet = catIdVoiceNet
+                    }
+                    
+                    if let catIdLineSticker = BuzzebeesConvert.IntFromObject(dictJSON["sub_category_line_sticker"]){
+                        BuzzebeesCore.catIdLineSticker = catIdLineSticker
+                    }
                     
                     if let blobUrl = dictJSON["url_blob"] as? String ,
                         let baseUrl = dictJSON["url_base"] as? String ,
@@ -183,16 +210,6 @@ public class BuzzebeesCore: NSObject {
                             BuzzebeesCore.redeemBaseUrl.removeLast()
                         }
                         
-                        
-                        if let languageUrl = dictJSON["language"] as? Dictionary<String,AnyObject>
-                        {
-                            getLanguage(languageUrl, successCallback: successCallback, failCallback: failCallback)
-                            isCallingSetEndpoint = false
-                        } else {
-                            failCallback()
-                            isSetEndpoint = true
-                            isCallingSetEndpoint = false
-                        }
                     } else {
                         failCallback()
                     }

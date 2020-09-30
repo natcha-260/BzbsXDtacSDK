@@ -67,6 +67,14 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
+    class func subscriptionPopup(onView target:UIViewController!, purchase:BzbsHistory)
+    {
+        let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "popup_subscription") as! PopupSubscriptionViewController
+        vc.history = purchase
+        present(view: vc, on: target)
+    }
+    
     private class func present(view vc:UIViewController,on target:UIViewController)
     {
 //        Bzbs.shared.delay(0.66) {
@@ -92,3 +100,5 @@ class PopupManager :NSObject
 //        targetView.bringSubviewToFront(vc.view)
     }
 }
+
+

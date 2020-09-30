@@ -54,8 +54,8 @@ public class BzbsCategory {
         tags = BuzzebeesConvert.StringFromObject(dict["tags"])
         
         // Api "/api/reservation/" + strLocationId + "/category" ใช้ตัวใหญ่
-        let intId = BuzzebeesConvert.IntFromObject(dict["CategoryId"])
-        if(intId != 0) {
+        if let intId = BuzzebeesConvert.IntFromObject(dict["CategoryId"])
+        {
             id = intId
         }
         

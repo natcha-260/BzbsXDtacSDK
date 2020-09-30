@@ -259,10 +259,10 @@ public class BzbsCampaign {
 
         caption = BuzzebeesConvert.StringFromObject(dict["Caption"])
         categoryDashboardSize = BuzzebeesConvert.StringFromObject(dict["CategoryDashboardSize"])
-        categoryID = BuzzebeesConvert.IntFromObject(dict["CategoryID"])
-        if(categoryID == 0)
+        categoryID = BuzzebeesConvert.IntFromObject(dict["CategoryId"])
+        if let catId = BuzzebeesConvert.IntFromObject(dict["CategoryID"])
         {
-            categoryID = BuzzebeesConvert.IntFromObject(dict["CategoryId"])
+            categoryID = catId
         }
         categoryName = BuzzebeesConvert.StringFromObject(dict["CategoryName"])
         categorySequence = BuzzebeesConvert.IntFromObject(dict["CategorySequence"])

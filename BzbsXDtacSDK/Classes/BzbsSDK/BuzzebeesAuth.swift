@@ -499,27 +499,36 @@ extension BuzzebeesAuth {
                 locale = 1054
             }
         }
+        //            let loginParams = DtacDeviceLoginParams(uuid: token
+        //                , os: "ios " + UIDevice.current.systemVersion
+        //                , platform: UIDevice.current.model
+        //                , macAddress: UIDevice.current.identifierForVendor!.uuidString
+        //                , deviceNotiEnable: false
+        //                , clientVersion: strVersion
+        //                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment == "" ? "9999" : DTACSegment)
         
-        var params = [
-            "uuid": loginParams.uuid as Any,
+        let info = "{\"ticket\": \"\(loginParams.ticket!)\", \"segment\": \"\(loginParams.DTACSegment!)\", \"teltype\": \"\(loginParams.TelType!)\"}"
+        
+        let params = [
+            "uuid": loginParams.token as Any,
             "app_id": self.appId as Any,
-            "os": loginParams.os as Any,
-            "platform": loginParams.platform as Any,
-            "mac_address": loginParams.mac_address as Any,
-            "device_noti_enable": String(loginParams.device_noti_enable),
-            "client_version": loginParams.client_version as Any,
-            "info": loginParams.customInfo as Any,
+            "os": ("ios " + UIDevice.current.systemVersion) as Any,
+            "platform": UIDevice.current.model as Any,
+            "mac_address": (UIDevice.current.identifierForVendor?.uuidString ?? "") as Any,
+            "device_noti_enable": String(false),
+            "client_version": loginParams.clientVersion as Any,
+            "info": info as Any,
             "locale": locale as Any,
             "device_locale": locale as Any
             ] as [String : Any]
-        
-        if let strDeviceToken = loginParams.device_token {
-            params["device_token"] = strDeviceToken
-        }
-        
-        if let DTACSegment = loginParams.DTACSegment {
-            params["carrier"] = DTACSegment == "" ? "9999" : DTACSegment
-        }
+//
+//        if let strDeviceToken = loginParams.device_token {
+//            params["device_token"] = strDeviceToken
+//        }
+//
+//        if let DTACSegment = loginParams.DTACSegment {
+//            params["carrier"] = DTACSegment == "" ? "9999" : DTACSegment
+//        }
         
         requestAlamofire(HTTPMethod.post
             , strURL: BuzzebeesCore.apiUrl + "/api/auth/device_login"

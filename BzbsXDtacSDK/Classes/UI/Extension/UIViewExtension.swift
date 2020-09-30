@@ -66,3 +66,51 @@ class SectionLineView : UIView{
         layer.addSublayer(shadowLayer)
     }
 }
+
+class DashedVerticalView :UIView{
+
+    let shapeLayer = CAShapeLayer()
+    override func awakeFromNib() {
+        shapeLayer.strokeColor = UIColor.lightGray.cgColor
+        shapeLayer.lineWidth = 2
+        shapeLayer.lineDashPattern = [10, 10] // 7 is the length of dash, 3 is length of the gap.
+        let p0 = CGPoint(x:0 ,y:0)
+        let p1 = CGPoint(x:0 ,y:frame.size.height)
+        let path = CGMutablePath()
+        path.addLines(between: [p0, p1])
+        shapeLayer.path = path
+        self.layer.addSublayer(shapeLayer)
+    }
+}
+
+class DashedHorizontalView :UIView{
+    
+    var shapeLayer :CAShapeLayer!
+    override func awakeFromNib() {
+        shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = UIColor.black.cgColor
+        shapeLayer.lineWidth = 2
+        shapeLayer.lineDashPattern = [5, 5] // 7 is the length of dash, 3 is length of the gap.
+        let p0 = CGPoint(x:0 ,y:0)
+        let p1 = CGPoint(x:frame.size.width, y: 0)
+        let path = CGMutablePath()
+        path.addLines(between: [p0, p1])
+        shapeLayer.path = path
+        self.layer.addSublayer(shapeLayer)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        shapeLayer.removeFromSuperlayer()
+        shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = UIColor.black.cgColor
+        shapeLayer.lineWidth = 1.5
+        shapeLayer.lineDashPattern = [5, 7] // 7 is the length of dash, 3 is length of the gap.
+        let p0 = CGPoint(x:0 ,y:0)
+        let p1 = CGPoint(x:frame.size.width, y: 0)
+        let path = CGMutablePath()
+        path.addLines(between: [p0, p1])
+        shapeLayer.path = path
+        self.layer.addSublayer(shapeLayer)
+    }
+}

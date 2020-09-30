@@ -52,7 +52,14 @@ class CampaignCVCell: UICollectionViewCell {
     }
     
     func setupWith(_ item:BzbsCampaign, isShowDistance:Bool = false){
-
+        // wordaround odd collection list count
+        if item.ID == -1 {
+            self.isHidden = true
+            return
+        }
+        self.isHidden = false
+        //------
+        
         if let strUrl = item.fullImageUrl {
             imv.bzbsSetImage(withURL: strUrl)
         }
@@ -96,7 +103,14 @@ class CampaignCVCell: UICollectionViewCell {
     
     
     func setupWith(_ item:BzbsDashboard, isShowDistance:Bool = false){
-
+        // wordaround odd collection list count
+        if item.id == "-1" {
+            self.isHidden = true
+            return
+        }
+        self.isHidden = false
+        //----
+        
         if let strUrl = item.imageUrl {
             imv.bzbsSetImage(withURL: strUrl)
         }

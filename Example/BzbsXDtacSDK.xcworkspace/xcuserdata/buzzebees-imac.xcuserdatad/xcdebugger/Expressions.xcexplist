@@ -3,51 +3,74 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "CampaignByCatViewController.collectionView(_:layout:sizeForItemAt:):CampaignByCatViewController.swift">
+         contextName = "BzbsHistory.init(dict:):BzbsHistory.swift">
          <PersistentStrings>
             <PersistentString
-               value = "currentCat.subCat">
+               value = "BuzzebeesConvert.StringFromObject(dict[&quot;RedeemKey&quot;])">
+            </PersistentString>
+            <PersistentString
+               value = "dict[&quot;AgencyLocation&quot;]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in static BuzzebeesCore.apiSetupPrefix(successCallback:failCallback:):BuzzebeesCore.swift">
+         contextName = "Bzbs.getUrlFAQ():BzbsShared.swift">
          <PersistentStrings>
             <PersistentString
-               value = "BuzzebeesCore.blobUrl">
-            </PersistentString>
-            <PersistentString
-               value = "response.data">
+               value = "webUrl + pathUrlFAQ + &quot;?locale=\(LocaleCore.shared.getUserLocale())&quot;">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PointHistoryViewController.isEarnEnd.getter:PointHistoryViewController.swift">
+         contextName = "MapsViewController.generateClusterItems():MapsViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "dateFormatter.date(from: strEarnDate)">
+               value = "places">
             </PersistentString>
             <PersistentString
-               value = "endDate &lt; date">
+               value = "campaigns">
             </PersistentString>
             <PersistentString
-               value = "strEarnDate">
+               value = "campaign.places">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PopupSerialViewController.apiUse():PopupSerialViewController.swift">
+         contextName = "closure #1 in CampaignByCatViewController.getApi():CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = " purchase!.redeemKey">
+               value = "tmpList.count &lt; self._intTop">
+            </PersistentString>
+            <PersistentString
+               value = " self._intTop">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignRotateCell.collectionView(_:cellForItemAt:):BzbsMainViewController.swift">
+         contextName = "static CampaignRotateCVCell.filterDashboardWithTelType(dashboard:):CampaignRotateCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "cell.viewWithTag(10)">
+               value = "userLevel &amp; dashboardLevel ">
+            </PersistentString>
+            <PersistentString
+               value = "userLevel &amp; dashboardLevel == userLevel">
+            </PersistentString>
+            <PersistentString
+               value = "userTeltype &amp; dashboardLevel == userTeltype">
+            </PersistentString>
+            <PersistentString
+               value = "Bzbs.shared.userLogin?.telType">
+            </PersistentString>
+            <PersistentString
+               value = "userTeltype &amp; dashboardLevel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in ScanQRViewController.qrScanningSucceededWithCode(_:):ScanQRViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.delegate">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -60,72 +83,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "SectionLineView.drawShadow():UIViewExtension.swift">
+         contextName = "CampaignRotateCell.collectionView(_:cellForItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "self.bounds.size">
+               value = "cell.viewWithTag(10)">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsMainViewController.filterDashboard(dashboard:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "userLevel &amp; dashboardLevel">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignCVCell.setupWith(_:isShowDistance:):CampaignCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "lblTitle.numberOfVisibleLines">
-            </PersistentString>
-            <PersistentString
-               value = "imv.contentMode">
-            </PersistentString>
-            <PersistentString
-               value = "!(isShowDistance &amp;&amp; LocationManager.shared.authorizationStatus == .authorizedWhenInUse)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsHistory.init(dict:):BzbsHistory.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "BuzzebeesConvert.StringFromObject(dict[&quot;RedeemKey&quot;])">
-            </PersistentString>
-            <PersistentString
-               value = "dict[&quot;AgencyLocation&quot;]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsCampaign.init(dict:):BzbsCampaign.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "fullImageUrl">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignRotateCVCell.collectionView(_:numberOfItemsInSection:):CampaignRotateCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "dashboardItems">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in MapsViewController.showInfoView():MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.vwOverlay.bounds.size.height">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in SearchViewController.apiAutoComplete(_:):SearchViewController.swift">
       </ContextState>
       <ContextState
          contextName = "LocaleCore.getUserLocale():LocaleCore.swift">
@@ -136,75 +99,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignDetailViewController.viewDidLayoutSubviews():CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "navigationController?.navigationBar.subviews">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "SubCatCVCell.isActive.didset:SubCatCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "isActive">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ScanQRViewController.viewDidLayoutSubviews():ScanQRViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "vwCamera.bounds">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CategoryCollectionViewCell.setActive(_:):CategoryCollectionViewCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "cat.imageUrl + (isActive ? &quot;_active&quot; : &quot;_inactive&quot;)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in SearchResultListController.getApi():SearchResultListController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "tmpList.count &lt; self._intTop">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.collectionView.didset:MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.view.frame.size.width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "closure #1 in CampaignDetailViewController.apiRedeem():CampaignDetailViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "ScanQRViewController.viewDidLoad():ScanQRViewController.swift">
+         contextName = "UIImageView.bzbsSetImage(withURL:):BuzzebeesExtension.swift">
          <PersistentStrings>
             <PersistentString
-               value = "getOrientation()">
+               value = "url.absoluteString">
             </PersistentString>
             <PersistentString
-               value = "vwCamera.bounds">
-            </PersistentString>
-            <PersistentString
-               value = "connection.videoOrientation">
+               value = "url.convertCDNAddTime()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in BuzzebeesCore.apiSetupPrefix():BuzzebeesCore.swift">
+         contextName = "MapsViewController.clickRight(_:):MapsViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "dict[&quot;url_blob&quot;] as? String">
+               value = "currentIndex">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -223,297 +135,32 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PopupSerialViewController.clickClose(_:):PopupSerialViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "delegate">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignCVCell.awakeFromNib():CampaignCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "imv.contentMode">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "static Animation.named(_:bundle:subdirectory:animationCache:):AnimationPublic.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "bundle.url(forResource: name, withExtension: &quot;json&quot;)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "RecommendListViewController.viewDidLoad():RecommendListViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.navigationController">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.clickImage(_:):MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentIndex">
-            </PersistentString>
-            <PersistentString
-               value = "campaign.name">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.clickDirection(_:):MapsViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CampaignRotateCVCell.frameSize.getter:CampaignRotateCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "collectionView.frame.size">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsMainViewController.numberOfSections(in:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "listSection.count">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.viewDidLoad():CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.campaign.type">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.isCategoryAll():CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentCat.id != Bzbs.shared.blueCategory?.id">
-            </PersistentString>
-            <PersistentString
-               value = "currentCat.subCat.first?.nameEn.lowercased()">
-            </PersistentString>
-            <PersistentString
-               value = "currentSubCat.nameEn.lowercased() ">
-            </PersistentString>
-            <PersistentString
-               value = "currentSubCat.nameEn.lowercased() == ((currentCat.subCat.first?.nameEn) ?? &quot;&quot;)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignRotateCVCell.dashboardItems.didset:CampaignRotateCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "frameSize">
-            </PersistentString>
-            <PersistentString
-               value = "pageControl.numberOfPages &gt; 1">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.updateDetail(_:position:):MapsViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "String.localized():StringExtension.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "LocaleCore.shared.wordingDict">
-            </PersistentString>
-            <PersistentString
-               value = "">
-            </PersistentString>
-            <PersistentString
-               value = "bundle.localizations">
-            </PersistentString>
-            <PersistentString
-               value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "Bzbs.shared.currentBundle.localizations">
-            </PersistentString>
-            <PersistentString
-               value = "NSLocalizedString(self, bundle: bundle, comment: &quot;my_comment&quot;)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsXDtacBaseViewController.isDeepLinkPrefix(_:):BzbsXDtacBaseViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "url.host">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BBLocale.getPathLanguage(_:):LocaleCore.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "bundle.path(forResource: &quot;th&quot;, ofType: &quot;lproj&quot;)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in CampaignDetailViewController.apiRedeem():CampaignDetailViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "BzbsXDtacBaseViewController.openDeepLinkURL(_:):BzbsXDtacBaseViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "url.pathComponents.last">
-            </PersistentString>
-            <PersistentString
-               value = "url.absoluteString">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsMainViewController.viewDidLoad():BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "imvScan">
-            </PersistentString>
-            <PersistentString
-               value = "bzbsBundle">
-            </PersistentString>
-            <PersistentString
-               value = "UIImage(named: &quot;imgt_icon_scan&quot;, in: bzbsBundle, compatibleWith: nil)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "SearchViewController.tableView(_:cellForRowAt:):SearchViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "strSearch">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.updateUI():CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "campaign.isFavourite">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsMainViewController.didScanWithResult(result:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "url.absoluteString">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.manageFooter():CampaignDetailViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.initImage():CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "listImageCampaign">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in CampaignDetailViewController.getApiCampaignStatus():CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "campaignStatus">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.collectionView(_:viewForSupplementaryElementOfKind:at:):CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "dashboardItems">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "GreetingModel.init(dict:):DashboardModel.swift">
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #1 in BzbsMainViewController.getApiGreeting():BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.collectionView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in NearbyListViewController.getApi():NearbyListViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self._arrDataShow">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignGroupListViewController.getApi():CampaignGroupListViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "customConfig">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "RecommendCVCell.setupWith(_:):RecommendCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "item.distance">
-            </PersistentString>
-            <PersistentString
                value = "Double(round(100 * distance) / 100)">
             </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "PopupSerialViewController.updateTimer():PopupSerialViewController.swift">
-         <PersistentStrings>
             <PersistentString
-               value = "purchase">
-            </PersistentString>
-            <PersistentString
-               value = "expireIn">
+               value = "item.distance">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignDetailViewController.getApiBranch():CampaignDetailViewController.swift">
+         contextName = "MapsViewController.collectionView(_:layout:sizeForItemAt:):MapsViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "campaign.locationAgencyId">
-            </PersistentString>
-            <PersistentString
-               value = "campaign.agencyID">
+               value = "CGSize(width: width, height: width * 2 / 3)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Bzbs.delegate.didset:BzbsShared.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "delegate">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "RecommendListViewController.collectionView(_:cellForItemAt:):RecommendListViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "CampaignStatus.init(dict:):CampaignModel.swift">
+         contextName = "CampaignByCatViewController.generateCellDashboardRotate(_:collectionView:indexPath:):CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "BuzzebeesConvert.DoubleFromObject(dict[&quot;quantity&quot;])">
+               value = "item.imageUrl">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -529,6 +176,71 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "BBLocale.loadLanguageString():LocaleCore.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BuzzebeesAuth.login(loginParams:successCallback:failCallback:):BuzzebeesAuth.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BuzzebeesCore.apiUrl + &quot;/api/auth/device_login&quot;">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PopupPointHistoryDetailViewController.setupUI():PopupPointHistoryDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "pointLog">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.collectionView(_:didSelectItemAt:):BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPath.row">
+            </PersistentString>
+            <PersistentString
+               value = "arrCampaign.count">
+            </PersistentString>
+            <PersistentString
+               value = "indexPath.row - 1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.collectionView(_:layout:sizeForItemAt:):CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentCat.subCat">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.filterDashboard(dashboard:):BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "userLevel &amp; dashboardLevel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in MapsViewController.showInfoView():MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.vwOverlay.bounds.size.height">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AnalyticDebugViewController.printLog(_:):AnalyticDebugViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "txtView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "BzbsMainViewController.webView(_:decidePolicyFor:decisionHandler:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -537,32 +249,67 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsUser.dtacLevel.getter:BzbsShared.swift">
+         contextName = "SubCatCVCell.isActive.didset:SubCatCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "userLevel">
+               value = "isActive">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Bzbs.actionDeeplink(url:):BzbsShared.swift">
+         contextName = "MapsViewController.clickDirection(_:):MapsViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.updateDetail(_:position:):MapsViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in closure #2 in Bzbs.hideLoader():BzbsShared.swift">
          <PersistentStrings>
             <PersistentString
-               value = "url.pathComponents">
-            </PersistentString>
-            <PersistentString
-               value = "url.host">
+               value = "LoadingViewController.shared.view.superview?.superview">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AppDelegate.application(_:open:options:):AppDelegate.swift">
+         contextName = "closure #1 in BuzzebeesCore.apiSetupPrefix():BuzzebeesCore.swift">
          <PersistentStrings>
             <PersistentString
-               value = "url.scheme">
+               value = "dict[&quot;url_blob&quot;] as? String">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.setupMapPin():MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "places">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SearchViewController.textField(_:shouldChangeCharactersIn:replacementString:):SearchViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Range(range, in: text)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GreetingCVCell.setupWithModel(_:):GreetingCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Bzbs.shared.userLogin">
             </PersistentString>
             <PersistentString
-               value = "url.query">
+               value = "item?.greetingText">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignStatus.init(dict:):CampaignModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BuzzebeesConvert.DoubleFromObject(dict[&quot;quantity&quot;])">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -578,35 +325,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignByCatViewController.clickCat():CampaignByCatViewController.swift">
+         contextName = "CampaignByCatViewController.sendGATouchEvent(_:):CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "CGFloat(arrCategory.count) / 4.0">
+               value = "currentSubCat?.nameEn?.lowercased()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in CampaignByCatViewController.getDashboard():CampaignByCatViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "HistoryViewController.tableView(_:didSelectRowAt:):HistoryViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CampaignRotateCell.collectionView.didset:BzbsMainViewController.swift">
+         contextName = "BzbsMainViewController.getApiCoinRecommend():BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "(nib as! UICollectionViewCell)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "UIImageView.bzbsSetImage(withURL:isUsePlaceholder:):BuzzebeesExtension.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "url.convertCDNAddTime().absoluteString">
+               value = "coinCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -619,7 +349,51 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignByCatViewController.collectionView(_:didSelectItemAt:):CampaignByCatViewController.swift">
+         contextName = "CampaignByCatViewController.collectionView(_:numberOfItemsInSection:):CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "arrCategory">
+            </PersistentString>
+            <PersistentString
+               value = "dashboardItems">
+            </PersistentString>
+            <PersistentString
+               value = "currentSubCat.name.lowercased()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.collectionView(_:cellForItemAt:):CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dashboardItems">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PointHistoryViewController.isEarnEnd.getter:PointHistoryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "endDate &lt; date">
+            </PersistentString>
+            <PersistentString
+               value = "strEarnDate">
+            </PersistentString>
+            <PersistentString
+               value = "dateFormatter.date(from: strEarnDate)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GreetingCVCell.setupWithModel(_:target:levelSelector:):GreetingCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "userLogin.dtacLevel">
+            </PersistentString>
+            <PersistentString
+               value = "BuzzebeesCore.urlSegmentImageBlue">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "BBLocale.generateExtraWordingString(_:):LocaleCore.swift">
@@ -630,18 +404,29 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BBLocale.loadLanguageString():LocaleCore.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.clickLeft(_:):CampaignDetailViewController.swift">
+         contextName = "ScanQRViewController.viewDidLoad():ScanQRViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "campaign">
+               value = "getOrientation()">
+            </PersistentString>
+            <PersistentString
+               value = "vwCamera.bounds">
+            </PersistentString>
+            <PersistentString
+               value = "connection.videoOrientation">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #2 in CampaignDetailViewController.getApiCampaignStatus():CampaignDetailViewController.swift">
+         contextName = "closure #2 in BzbsMainViewController.apiLogin(_:):BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in CampaignByCatViewController.getAllDashboard():CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dashboardAllItems">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "NearbyListViewController.clickMaps():NearbyListViewController.swift">
@@ -655,13 +440,145 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "GreetingCVCell.setupWithModel(_:target:levelSelector:):GreetingCVCell.swift">
+         contextName = "String.localized():StringExtension.swift">
          <PersistentStrings>
             <PersistentString
-               value = "userLogin.dtacLevel">
+               value = "LocaleCore.shared.wordingDict">
             </PersistentString>
             <PersistentString
-               value = "BuzzebeesCore.urlSegmentImageBlue">
+               value = "">
+            </PersistentString>
+            <PersistentString
+               value = "NSLocalizedString(self, bundle: bundle, comment: &quot;my_comment&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "Bzbs.shared.currentBundle.localizations">
+            </PersistentString>
+            <PersistentString
+               value = "bundle.localizations">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignRotateCell.collectionView(_:numberOfItemsInSection:):BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dashboardItems.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignRotateCVCell.frameSize.getter:CampaignRotateCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "collectionView.frame.size">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TokenSelectViewController.clickBlueMember(_:):TokenSelectViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "language">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.collectionView(_:cellForItemAt:):MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "places">
+            </PersistentString>
+            <PersistentString
+               value = "listCurrentPlace">
+            </PersistentString>
+            <PersistentString
+               value = "currentPlace">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GreetingModel.init(dict:):DashboardModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.numberOfSections(in:):BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "listSection.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SectionLineView.drawShadow():UIViewExtension.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.bounds.size">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in CampaignDetailViewController.getApiCampaignStatus():CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.clickImage(_:):MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentIndex">
+            </PersistentString>
+            <PersistentString
+               value = "campaign.name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.collectionView.didset:MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.view.frame.size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.getApiBranch():CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "campaign.locationAgencyId">
+            </PersistentString>
+            <PersistentString
+               value = "campaign.agencyID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static GotoPage.gotoScanQR(_:target:):GotoPage.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "target as? ScanQRViewControllerDelegate">
+            </PersistentString>
+            <PersistentString
+               value = "qrScanner.delegate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static Animation.named(_:bundle:subdirectory:animationCache:):AnimationPublic.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "bundle.url(forResource: name, withExtension: &quot;json&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "RecommendListViewController.viewDidLoad():RecommendListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.navigationController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -683,200 +600,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         contextName = "CampaignByCatViewController.clickCat():CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "vc.presentingViewController">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CategoryTableViewCell.collectionView(_:layout:sizeForItemAt:):CategoryTableViewCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "collectionView.frame.size.width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Bzbs.getUrlFAQ():BzbsShared.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "webUrl + pathUrlFAQ + &quot;?locale=\(LocaleCore.shared.getUserLocale())&quot;">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.tableView(_:cellForRowAt:):CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "txvText.attributedText">
-            </PersistentString>
-            <PersistentString
-               value = "lblText.attributedText">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in CampaignByCatViewController.getAllDashboard():CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "dashboardAllItems">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.rewardLeft.getter:CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "campaignStatus">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "PopupSerialViewController.setupUI():PopupSerialViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "purchase">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "UIImageView.bzbsSetImage(withURL:):BuzzebeesExtension.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "url.absoluteString">
-            </PersistentString>
-            <PersistentString
-               value = "url.convertCDNAddTime()">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsMainViewController.didSelectedItem(index:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "arrCategory">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #1 in closure #2 in Bzbs.hideLoader():BzbsShared.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "LoadingViewController.shared.view.superview?.superview">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignRotateCVCell.showDashboardItems.didset:CampaignRotateCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "url.absoluteString">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "PopupSerialViewController.viewWillAppear(_:):PopupSerialViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = " itemCampaign?.expireIn">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsMainViewController.collectionView(_:didSelectItemAt:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "indexPath.row - 1">
-            </PersistentString>
-            <PersistentString
-               value = "indexPath.row">
-            </PersistentString>
-            <PersistentString
-               value = "arrCampaign.count">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.clickRight(_:):MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentIndex">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in BuzzebeesCore.requestAlamofire(_:strURL:params:headers:successCallback:failCallback:):BuzzebeesCore.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "resultError.localizedDescription">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in BzbsMainViewController.getApiCategory():BzbsMainViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.clusterManager(_:didTap:):MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "mapView.camera.zoom">
-            </PersistentString>
-            <PersistentString
-               value = "listCurrentPlace">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "LoadingViewController.viewDidLoad():LoadingViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "animationView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "SearchViewController.textField(_:shouldChangeCharactersIn:replacementString:):SearchViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Range(range, in: text)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in BzbsMainViewController.apiLogin(_:):BzbsMainViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CampaignRotateCell.collectionView(_:numberOfItemsInSection:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "dashboardItems.count">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.collectionView(_:numberOfItemsInSection:):CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentSubCat.name.lowercased()">
-            </PersistentString>
-            <PersistentString
-               value = "dashboardItems">
-            </PersistentString>
-            <PersistentString
-               value = "arrCategory">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in CampaignByCatViewController.clickCat():CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "vwCategory">
+               value = "CGFloat(arrCategory.count) / 4.0">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -889,17 +616,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsMainViewController.sendImpressionBanner():BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "impressionBanner.subCampaignDetails">
-            </PersistentString>
-            <PersistentString
-               value = "dashboardItems">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "RecommendListViewController.getConfig():RecommendListViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -908,87 +624,295 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MapsViewController.updateInfoView():MapsViewController.swift">
+         contextName = "CampaignDetailViewController.viewDidLayoutSubviews():CampaignDetailViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "currentIndex">
-            </PersistentString>
-            <PersistentString
-               value = "listCurrentPlace">
-            </PersistentString>
-            <PersistentString
-               value = "place.distance ">
+               value = "navigationController?.navigationBar.subviews">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MapsViewController.collectionView(_:layout:sizeForItemAt:):MapsViewController.swift">
+         contextName = "CampaignGroupListViewController.getApi():CampaignGroupListViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "CGSize(width: width, height: width * 2 / 3)">
+               value = "customConfig">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in CampaignByCatViewController.getApi():CampaignByCatViewController.swift">
+         contextName = "closure #1 in BzbsMainViewController.getApi():BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BzbsDashboard.init(dict:):BzbsDashboard.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "item[&quot;level&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "level">
+            </PersistentString>
+            <PersistentString
+               value = "BuzzebeesConvert.IntFromObjectNull(item[&quot;level&quot;])">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.delegate.didset:BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "delegate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "campaignConfig">
+            </PersistentString>
+            <PersistentString
+               value = "_isCallApi">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.viewDidLayoutSubviews():MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "mapView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "RecommendListViewController.loadMore(_:):RecommendListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "_arrDataShow.count + 2">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.initImage():CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "listImageCampaign">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PointHistoryViewController.getApi():PointHistoryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "_isCallApi">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignRotateCVCell.collectionView(_:numberOfItemsInSection:):CampaignRotateCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dashboardItems">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignCVCell.setupWith(_:isShowDistance:):CampaignCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "!(isShowDistance &amp;&amp; LocationManager.shared.authorizationStatus == .authorizedWhenInUse)">
+            </PersistentString>
+            <PersistentString
+               value = "imv.contentMode">
+            </PersistentString>
+            <PersistentString
+               value = "lblTitle.numberOfVisibleLines">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HistoryViewController.tableView(_:didSelectRowAt:):HistoryViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "LoadingViewController.viewDidLoad():LoadingViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "animationView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.getApi():CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "vwCampaignList">
+            </PersistentString>
+            <PersistentString
+               value = "currentSubCat">
+            </PersistentString>
+            <PersistentString
+               value = "campaignList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsXDtacBaseViewController.analyticsSetEvent(event:category:action:label:):BzbsXDtacBaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Bzbs.shared.delegate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PopupSerialViewController.updateTimer():PopupSerialViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "purchase">
+            </PersistentString>
+            <PersistentString
+               value = "expireIn">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.viewDidLoad():CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentCat">
+            </PersistentString>
+            <PersistentString
+               value = "currentSubCat.name.lowercased()">
+            </PersistentString>
+            <PersistentString
+               value = "arrCategory">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignRotateCell.collectionView.didset:BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "(nib as! UICollectionViewCell)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in CampaignDetailViewController.getApiCampaignStatus():CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "campaignStatus">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignGroupListViewController.collectionView(_:cellForItemAt:):CampaignGroupListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "width * 2 / 3">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "UIImageView.bzbsSetImage(withURL:isUsePlaceholder:):BuzzebeesExtension.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "url.convertCDNAddTime().absoluteString">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.viewDidLoad():CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.campaign.type">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PopupSerialViewController.apiUse():PopupSerialViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = " purchase!.redeemKey">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BBLocale.getPathLanguage(_:):LocaleCore.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "bundle.path(forResource: &quot;th&quot;, ofType: &quot;lproj&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in BzbsMainViewController.getApiGreeting():BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.collectionView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PopupSerialViewController.viewWillAppear(_:):PopupSerialViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = " itemCampaign?.expireIn">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AppDelegate.application(_:open:options:):AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "url.scheme">
+            </PersistentString>
+            <PersistentString
+               value = "url.query">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsXDtacBaseViewController.analyticsSetScreen(screenName:):BzbsXDtacBaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Bzbs.shared.delegate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.manageFooter():CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BzbsUser.dtacLevel.getter:BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "userLevel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in SearchResultListController.getApi():SearchResultListController.swift">
          <PersistentStrings>
             <PersistentString
                value = "tmpList.count &lt; self._intTop">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         <PersistentStrings>
             <PersistentString
-               value = " self._intTop">
+               value = "vc.presentingViewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignByCatViewController.generateCellDashboardRotate(_:collectionView:indexPath:):CampaignByCatViewController.swift">
+         contextName = "RecommedCell.collectionView(_:layout:sizeForItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "item.imageUrl">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ViewController.analyticsScreen(screenName:):ViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "tabbar.viewControllers">
-            </PersistentString>
-            <PersistentString
-               value = "tabbar.viewControllers?[1].navigationController?.viewControllers.first">
-            </PersistentString>
-            <PersistentString
-               value = "tabbar.viewControllers?[1].navigationController">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in MapsViewController.getBranch():MapsViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.clickSeeMoreDetail(_:):CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "campaign.places">
-            </PersistentString>
-            <PersistentString
-               value = "arrBranch">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignDetailViewController.viewWillAppear(_:):CampaignDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "navigationController?.navigationBar.bounds">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in BzbsMainViewController.getApiCategory():BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "userLogin.dtacLevel">
+               value = "16 + height + 8 + lbl.bounds.size.height + 16">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1004,60 +928,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PointHistoryViewController.getApi():PointHistoryViewController.swift">
+         contextName = "BzbsMainViewController.webView(_:didStartProvisionalNavigation:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "_isCallApi">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.viewDidLoad():CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentCat">
+               value = "navigationAction.request.url?.absoluteString">
             </PersistentString>
             <PersistentString
-               value = "arrCategory">
-            </PersistentString>
-            <PersistentString
-               value = "currentSubCat.name.lowercased()">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.collectionView(_:cellForItemAt:):CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "dashboardItems">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.getApi():CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "campaignList">
-            </PersistentString>
-            <PersistentString
-               value = "currentSubCat">
-            </PersistentString>
-            <PersistentString
-               value = "vwCampaignList">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in PopupSerialViewController.apiUse():PopupSerialViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "static GotoPage.gotoScanQR(_:target:):GotoPage.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "target as? ScanQRViewControllerDelegate">
-            </PersistentString>
-            <PersistentString
-               value = "qrScanner.delegate">
+               value = "webView.url?.absoluteString">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1073,105 +950,46 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignGroupListViewController.collectionView(_:cellForItemAt:):CampaignGroupListViewController.swift">
+         contextName = "BzbsMainViewController.sendImpressionBanner():BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "width * 2 / 3">
+               value = "impressionBanner.subCampaignDetails">
+            </PersistentString>
+            <PersistentString
+               value = "dashboardItems">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "RecommendListViewController.collectionView(_:cellForItemAt:):RecommendListViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "BuzzebeesAuth.login(loginParams:successCallback:failCallback:):BuzzebeesAuth.swift">
+         contextName = "CampaignDetailViewController.clickSeeMoreDetail(_:):CampaignDetailViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "BuzzebeesCore.apiUrl + &quot;/api/auth/device_login&quot;">
+               value = "campaign.places">
+            </PersistentString>
+            <PersistentString
+               value = "arrBranch">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PopupPointHistoryDetailViewController.setupUI():PopupPointHistoryDetailViewController.swift">
+         contextName = "closure #2 in BzbsMainViewController.getApiCategory():BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.viewWillAppear(_:):CampaignDetailViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "pointLog">
+               value = "navigationController?.navigationBar.bounds">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "TokenSelectViewController.clickBlueMember(_:):TokenSelectViewController.swift">
+         contextName = "closure #2 in CampaignDetailViewController.apiRedeem():CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "SearchViewController.tableView(_:cellForRowAt:):SearchViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "language">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BzbsXDtacBaseViewController.analyticsSetEvent(event:category:action:label:):BzbsXDtacBaseViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Bzbs.shared.delegate">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.collectionView(_:cellForItemAt:):MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "places">
-            </PersistentString>
-            <PersistentString
-               value = "listCurrentPlace">
-            </PersistentString>
-            <PersistentString
-               value = "currentPlace">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CampaignByCatViewController.sendGATouchEvent(_:):CampaignByCatViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentSubCat?.nameEn?.lowercased()">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MapsViewController.viewDidLayoutSubviews():MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "mapView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in HistoryViewController.tableView(_:didSelectRowAt:):HistoryViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "BzbsHistory(dict: dict)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in BzbsMainViewController.getApi():BzbsMainViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ViewController.analyticsEvent(event:category:action:label:):ViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Bzbs.shared.delegate">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in CampaignDetailViewController.getApiCampaignDetail():CampaignDetailViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "RecommedCell.collectionView(_:layout:sizeForItemAt:):BzbsMainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "16 + height + 8 + lbl.bounds.size.height + 16">
+               value = "strSearch">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1184,60 +1002,32 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CampaignRotateCVCell.collectionView.didset:CampaignRotateCVCell.swift">
+         contextName = "CampaignDetailViewController.clickLeft(_:):CampaignDetailViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "collectionView.collectionViewLayout as? UICollectionViewFlowLayout">
-            </PersistentString>
-            <PersistentString
-               value = "collectionView.frame.size.width">
-            </PersistentString>
-            <PersistentString
-               value = "collectionView">
+               value = "campaign">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsMainViewController.webView(_:didStartProvisionalNavigation:):BzbsMainViewController.swift">
+         contextName = "closure #2 in SearchViewController.apiAutoComplete(_:):SearchViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.collectionView(_:viewForSupplementaryElementOfKind:at:):CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "navigationAction.request.url?.absoluteString">
-            </PersistentString>
-            <PersistentString
-               value = "webView.url?.absoluteString">
+               value = "dashboardItems">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MapsViewController.setupMapPin():MapsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "places">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "closure #2 in MapsViewController.getBranch():MapsViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "MapsViewController.generateClusterItems():MapsViewController.swift">
+         contextName = "PopupSerialViewController.clickClose(_:):PopupSerialViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "places">
-            </PersistentString>
-            <PersistentString
-               value = "campaigns">
-            </PersistentString>
-            <PersistentString
-               value = "campaign.places">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "GreetingCVCell.setupWithModel(_:):GreetingCVCell.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Bzbs.shared.userLogin">
-            </PersistentString>
-            <PersistentString
-               value = "item?.greetingText">
+               value = "delegate">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1245,7 +1035,7 @@
          contextName = "BzbsMainViewController.collectionView(_:cellForItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrCampaign.count + 1">
+               value = "arrCampaign">
             </PersistentString>
             <PersistentString
                value = "dashboardItems">
@@ -1254,31 +1044,116 @@
                value = "self.arrCategory">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign">
+               value = "arrCampaign.count + 1">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AnalyticDebugViewController.printLog(_:):AnalyticDebugViewController.swift">
+         contextName = "ScanQRViewController.viewDidLayoutSubviews():ScanQRViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "txtView">
+               value = "vwCamera.bounds">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "RecommendListViewController.loadMore(_:):RecommendListViewController.swift">
+         contextName = "Bzbs.actionDeeplink(url:):BzbsShared.swift">
          <PersistentStrings>
             <PersistentString
-               value = "_arrDataShow.count + 2">
+               value = "url.pathComponents">
+            </PersistentString>
+            <PersistentString
+               value = "url.host">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in closure #1 in ScanQRViewController.qrScanningSucceededWithCode(_:):ScanQRViewController.swift">
+         contextName = "MapsViewController.clusterManager(_:didTap:):MapsViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "self.delegate">
+               value = "mapView.camera.zoom">
+            </PersistentString>
+            <PersistentString
+               value = "listCurrentPlace">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in CampaignByCatViewController.clickCat():CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "vwCategory">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsXDtacBaseViewController.openDeepLinkURL(_:):BzbsXDtacBaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "url.pathComponents.last">
+            </PersistentString>
+            <PersistentString
+               value = "url.absoluteString">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.isCategoryAll():CampaignByCatViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentCat.id != Bzbs.shared.blueCategory?.id">
+            </PersistentString>
+            <PersistentString
+               value = "currentCat.subCat.first?.nameEn.lowercased()">
+            </PersistentString>
+            <PersistentString
+               value = "currentSubCat.nameEn.lowercased() ">
+            </PersistentString>
+            <PersistentString
+               value = "currentSubCat.nameEn.lowercased() == ((currentCat.subCat.first?.nameEn) ?? &quot;&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.didScanWithResult(result:):BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "url.absoluteString">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.rewardLeft.getter:CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "campaignStatus">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BzbsMainViewController.getApiCategory():BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.coinCategory">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsXDtacBaseViewController.isDeepLinkPrefix(_:):BzbsXDtacBaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "url.host">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.tableView(_:cellForRowAt:):CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "txvText.attributedText">
+            </PersistentString>
+            <PersistentString
+               value = "lblText.attributedText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1300,6 +1175,50 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "CampaignRotateCVCell.dashboardItems.didset:CampaignRotateCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "pageControl.numberOfPages &gt; 1">
+            </PersistentString>
+            <PersistentString
+               value = "frameSize">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in NearbyListViewController.getApi():NearbyListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self._arrDataShow">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.viewDidLoad():BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "imvScan">
+            </PersistentString>
+            <PersistentString
+               value = "bzbsBundle">
+            </PersistentString>
+            <PersistentString
+               value = "UIImage(named: &quot;imgt_icon_scan&quot;, in: bzbsBundle, compatibleWith: nil)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in CampaignByCatViewController.getDashboard():CampaignByCatViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CampaignRotateCVCell.showDashboardItems.didset:CampaignRotateCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "url.absoluteString">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "CampaignRotateCVCell.awakeFromNib():CampaignRotateCVCell.swift">
          <PersistentStrings>
             <PersistentString
@@ -1308,21 +1227,89 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsDashboard.init(dict:):BzbsDashboard.swift">
+         contextName = "closure #2 in CampaignDetailViewController.getApiCampaignDetail():CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.didSelectedItem(index:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "item[&quot;level&quot;]">
-            </PersistentString>
-            <PersistentString
-               value = "level">
-            </PersistentString>
-            <PersistentString
-               value = "BuzzebeesConvert.IntFromObjectNull(item[&quot;level&quot;])">
+               value = "arrCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsXDtacBaseViewController.analyticsSetScreen(screenName:):BzbsXDtacBaseViewController.swift">
+         contextName = "CampaignCVCell.awakeFromNib():CampaignCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "imv.contentMode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.updateUI():CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "campaign.isFavourite">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapsViewController.updateInfoView():MapsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentIndex">
+            </PersistentString>
+            <PersistentString
+               value = "listCurrentPlace">
+            </PersistentString>
+            <PersistentString
+               value = "place.distance ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in HistoryViewController.tableView(_:didSelectRowAt:):HistoryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BzbsHistory(dict: dict)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignRotateCVCell.collectionView.didset:CampaignRotateCVCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "collectionView.collectionViewLayout as? UICollectionViewFlowLayout">
+            </PersistentString>
+            <PersistentString
+               value = "collectionView.frame.size.width">
+            </PersistentString>
+            <PersistentString
+               value = "collectionView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in static BuzzebeesCore.apiSetupPrefix(successCallback:failCallback:):BuzzebeesCore.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BuzzebeesCore.blobUrl">
+            </PersistentString>
+            <PersistentString
+               value = "response.data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CategoryTableViewCell.collectionView(_:layout:sizeForItemAt:):CategoryTableViewCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "collectionView.frame.size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ViewController.analyticsEvent(event:category:action:label:):ViewController.swift">
          <PersistentStrings>
             <PersistentString
                value = "Bzbs.shared.delegate">
@@ -1330,15 +1317,64 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+         contextName = "BzbsCampaign.init(dict:):BzbsCampaign.swift">
          <PersistentStrings>
             <PersistentString
-               value = "campaignConfig">
-            </PersistentString>
-            <PersistentString
-               value = "_isCallApi">
+               value = "fullImageUrl">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PopupSerialViewController.setupUI():PopupSerialViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "purchase">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CategoryCollectionViewCell.setActive(_:):CategoryCollectionViewCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cat.imageUrl + (isActive ? &quot;_active&quot; : &quot;_inactive&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BuzzebeesCore.requestAlamofire(_:strURL:params:headers:successCallback:failCallback:):BuzzebeesCore.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "resultError.localizedDescription">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PopupPointHistoryDetailViewController.tableView(_:cellForRowAt:):PopupPointHistoryDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "pointLog">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ViewController.analyticsScreen(screenName:):ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tabbar.viewControllers">
+            </PersistentString>
+            <PersistentString
+               value = "tabbar.viewControllers?[1].navigationController?.viewControllers.first">
+            </PersistentString>
+            <PersistentString
+               value = "tabbar.viewControllers?[1].navigationController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CampaignByCatViewController.collectionView(_:didSelectItemAt:):CampaignByCatViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in PopupSerialViewController.apiUse():PopupSerialViewController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -25,8 +25,6 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     @IBOutlet weak var imgBarcode: UIImageView!
     @IBOutlet weak var lblCode: UILabel!
     @IBOutlet weak var vwTimer: UIView!
-    @IBOutlet weak var lblTime: UILabel!
-    @IBOutlet weak var lblTimeValue: UILabel!
     @IBOutlet weak var imvExpireOverlay: UIImageView!
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var vwCopy: UIView!
@@ -49,6 +47,18 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     @IBOutlet weak var cstBtnBottom: NSLayoutConstraint!
     @IBOutlet weak var vwNotiCopy: UIView!
     @IBOutlet weak var lblNotiCopy: UILabel!
+    
+    @IBOutlet weak var lblDay: UILabel!
+    @IBOutlet weak var lblHours: UILabel!
+    @IBOutlet weak var lblMinute: UILabel!
+    @IBOutlet weak var lblSecond: UILabel!
+    @IBOutlet var lblTimeCountdown: [UILabel]!{
+        didSet{
+            lblTimeCountdown.sort { (lbl1, lbl2) -> Bool in
+                lbl1.tag < lbl2.tag
+            }
+        }
+    }
     
     var delegate :PopupSerialDelegate?
     
@@ -123,8 +133,6 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         imvExpireOverlay.alpha = 0
         lblCopy.font = UIFont.mainFont()
         lblBtnUse.font = UIFont.mainFont()
-        lblTimeValue.font = UIFont.mainFont()
-        lblTime.font = UIFont.mainFont(.xxsmall)
         lblCode.font = UIFont.mainFont()
         lblName.font = UIFont.mainFont()
         lblNotiCopy.font = UIFont.mainFont()
@@ -134,10 +142,27 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         }
         lblAgency.font = UIFont.mainFont(.xsmall)
         
+        for lbl in lblTimeCountdown {
+            lbl.font = UIFont.mainFont(.big, style: .bold)
+            lbl.text = "-"
+        }
+        lblDay.font = UIFont.mainFont()
+        lblHours.font = UIFont.mainFont()
+        lblMinute.font = UIFont.mainFont()
+        lblSecond.font = UIFont.mainFont()
+        
+        lblDay.text = "popup_time_days".localized()
+        lblHours.text = "popup_time_hours".localized()
+        lblMinute.text = "popup_time_minutes".localized()
+        lblSecond.text = "popup_time_seconds".localized()
+        
+        lblDay.textColor = .mainGray
+        lblHours.textColor = .mainGray
+        lblMinute.textColor = .mainGray
+        lblSecond.textColor = .mainGray
+        
         lblCopy.textColor = .mainGray
         lblBtnUse.textColor = .white
-        lblTimeValue.textColor = .mainBlue
-        lblTime.textColor = .mainGray
         lblCode.textColor = .mainBlue
         lblName.textColor = .white
         lblAgency.textColor = .white
@@ -216,7 +241,7 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     override func updateUI() {
         super.updateUI()
         lblCopy.text = "popup_serial_copy".localized()
-        lblTime.text = "popup_serial_time_out".localized()
+//        lblTime.text = "popup_serial_time_out".localized()
         lblBtnUse.text = "popup_serial_staff_use".localized()
         lblNotiCopy.text = "popup_seiral_code_copied".localized()
     }
@@ -250,7 +275,11 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
             updateTimer()
             startTimer()
         } else {
-            vwTimer.isHidden = true
+            self.expireIn = 0
+            updateTimer()
+//            if vwTimer != nil {
+//                vwTimer.removeFromSuperview()
+//            }
         }
     }
     
@@ -275,10 +304,37 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         }
         countDown += 1
         let sec = remain % 60
-        let min = remain / 60
-        let str = String(format: "%02d : %02d", min,sec)
+        let min = (remain / 60) % 60
+        let hour = ((remain / 60) / 60) % 24
+        let day = ((remain / 60) / 60) / 24
+        let str = String(format: "%02d : %02d : %02d : %02d",day ,hour, min,sec)
         print(str)
-        lblTimeValue.text = str
+        
+        lblTimeCountdown[0].text = "\(day / 10)"
+        lblTimeCountdown[1].text = "\(day % 10)"
+        lblTimeCountdown[2].text = "\(hour / 10)"
+        lblTimeCountdown[3].text = "\(hour % 10)"
+        lblTimeCountdown[4].text = "\(min / 10)"
+        lblTimeCountdown[5].text = "\(min % 10)"
+        lblTimeCountdown[6].text = "\(sec / 10)"
+        lblTimeCountdown[7].text = "\(sec % 10)"
+        
+        if day == 0 {
+            lblTimeCountdown[0].text = "-"
+            lblTimeCountdown[1].text = "-"
+            if hour == 0 {
+                lblTimeCountdown[2].text = "-"
+                lblTimeCountdown[3].text = "-"
+                if min == 0 {
+                    lblTimeCountdown[4].text = "-"
+                    lblTimeCountdown[5].text = "-"
+                    if sec == 0 {
+                        lblTimeCountdown[6].text = "-"
+                        lblTimeCountdown[7].text = "-"
+                    }
+                }
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -298,10 +354,11 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
                 imageName = "img_icon_redeem_sucessed_thai"
             }
             imvExpireOverlay.image = UIImage(named: imageName, in: Bzbs.shared.currentBundle, compatibleWith: nil)
-            lblTime.textColor = .red
+//            lblTime.textColor = .red
             lblCode.textColor = .red
             vwBtnUse.isHidden = true
-            vwTimer.isHidden = true
+//            vwTimer?.isHidden = true
+            setTimeZero()
             vwCopy.isHidden = true
             UIPasteboard.general.string = ""
             cstBtnBottom.constant = (vwBtnUse.frame.size.height + 8) * -1
@@ -314,10 +371,11 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
                 imageName = "img_icon_redeem_expired_thai"
             }
             imvExpireOverlay.image = UIImage(named: imageName, in: Bzbs.shared.currentBundle, compatibleWith: nil)
-            lblTime.textColor = .red
+//            lblTime.textColor = .red
             lblCode.textColor = .red
             vwBtnUse.isHidden = true
-            vwTimer.isHidden = true
+//            vwTimer?.isHidden = true
+            setTimeZero()
             vwCopy.isHidden = true
             UIPasteboard.general.string = ""
             cstBtnBottom.constant = (vwBtnUse.frame.size.height + 8) * -1
@@ -340,6 +398,18 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         UIView.animate(withDuration: 0.33) {
             self.vwContent.layoutIfNeeded()
         }
+    }
+    
+    func setTimeZero() {
+        
+        lblTimeCountdown[0].text = "-"
+        lblTimeCountdown[1].text = "-"
+        lblTimeCountdown[2].text = "-"
+        lblTimeCountdown[3].text = "-"
+        lblTimeCountdown[4].text = "-"
+        lblTimeCountdown[5].text = "-"
+        lblTimeCountdown[6].text = "-"
+        lblTimeCountdown[7].text = "-"
     }
     
     // MARK:- Api

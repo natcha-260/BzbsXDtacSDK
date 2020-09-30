@@ -64,7 +64,7 @@
     "search_map" : "แผนที่",
     
     "popup_confirm_redeem_prefix" : "คุณยืนยันที่จะรับสิทธิ์",
-    "popup_confirm_redeem_minute_afteruse" : "คุณจะมีเวลา %@ นาทีในการรับสิทธิ์",
+    "popup_confirm_redeem_minute_afteruse" : "คุณจะมีเวลา %@ ในการรับสิทธิ์",
     "popup_serial_copy" : "คัดลอก",
     "popup_serial_time_out" : "หมดเวลา",
     "popup_serial_staff_use" : "กดเพื่อยืนยันรับสิทธิ์ (สำหรับพนักงานร้านค้าเท่านั้น)",
@@ -115,4 +115,34 @@
     "coin_adjust_add" : "เพิ่ม",
     "coin_adjust_deduct" : "ลด",
     "coin_adjust_date" : "วันที่ปรับปรุง",
+    
+    "coin_jaidee_service" : "บริการใจดี",
+    "coin_usage_date" : "วันที่ใช้งาน",
+    
+    "coin_transfer" : "โอนย้ายเหรียญ coins",
+    "coin_transfer_from" : "โอนย้ายจาก",
+    "coin_transfer_date" : "วันที่โอนย้าย",
+    
+    "time_seconds" : "วินาที",
+    "time_minutes" : "นาที",
+    "time_hours" : "ชั่วโมง",
+    "time_days" : "วัน",
+       
+    "popup_time_seconds" : "วินาที",
+    "popup_time_minutes" : "นาที",
+    "popup_time_hours" : "ชั่วโมง",
+    "popup_time_days" : "วัน",
+    
+    "recommend_coin_title" : "รางวัลสำหรับแลกเหรียญ reward coins ",
+    "coin_use" : "เหรียญ coins ที่ใช้",
+    "coin_not_enough" : "เหรียญ coins ไม่พอ",
+    
+    "popup_confirm_redeem_coin" : "ใช้ %@ เหรียญ coins ในการรับสิทธิ์",
+    "popup_done" : "ปิด",
+    
+    "popup_voice_net_thank_you" : "ขอบคุณ",
+    "popup_voice_net_detail" : "สมัครแพ็กเกจ",
+    
+    "coin_history_available" : "ดู Code",
+    "coin_history_expired" : "หมดอายุแล้ว",
 }

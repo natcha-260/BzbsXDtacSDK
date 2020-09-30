@@ -65,7 +65,7 @@
     "search_map" : "Map",
     
     "popup_confirm_redeem_prefix" : "You confirm to redeem",
-    "popup_confirm_redeem_minute_afteruse" : "You will have %@ minutes to redeem.",
+    "popup_confirm_redeem_minute_afteruse" : "You will have %@ to redeem.",
     "popup_serial_copy" : "Copy",
     "popup_serial_time_out" : "Time Out",
     "popup_serial_staff_use" : "Press to confirm redemption (For shop staff only)",
@@ -116,4 +116,35 @@
     "coin_adjust_add" : "Added",
     "coin_adjust_deduct" : "Deducted",
     "coin_adjust_date" : "Adjustment date",
+    
+    "coin_jaidee_service" : "Jaidee service",
+    "coin_usage_date" : "Usage date",
+    
+    "coin_transfer" : "Reward Coin Transfer",
+    "coin_transfer_from" : "Transferred from",
+    "coin_transfer_date" : "Transferred date",
+    
+    "time_seconds" : "seconds",
+    "time_minutes" : "minutes",
+    "time_hours" : "hours",
+    "time_days" : "days",
+       
+    "popup_time_seconds" : "Sec",
+    "popup_time_minutes" : "Min",
+    "popup_time_hours" : "Hour",
+    "popup_time_days" : "Day",
+    
+    "recommend_coin_title" : "Recommended Coin Rewards",
+    "coin_use" : "Coins used",
+    "coin_not_enough" : "Not Enough Coins",
+    
+    "popup_confirm_redeem_coin" : "Use %@ coins to redeem",
+    "popup_done" : "Done",
+    
+    "popup_voice_net_thank_you" : "THANK YOU!",
+    "popup_voice_net_detail" : "Package Subscription",
+    
+    "coin_history_available" : "Avaliable",
+    "coin_history_expired" : "Expired",
 }
+

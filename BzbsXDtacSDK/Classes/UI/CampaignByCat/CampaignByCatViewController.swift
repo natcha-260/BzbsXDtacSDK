@@ -62,6 +62,7 @@ class CampaignByCatViewController: BaseListController {
             campaignCV.dataSource = self
             campaignCV.register(CampaignRotateCVCell.getNib(), forCellWithReuseIdentifier: "dashboardHeaderCell")
             campaignCV.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "campaignCell")
+            campaignCV.register(CampaignCoinCVCell.getNib(), forCellWithReuseIdentifier: "campaignCoinCell")
             campaignCV.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
             campaignCV.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCVCell")
             campaignCV.contentInset = UIEdgeInsets(top: 0, left: 2, bottom: 8, right: 2)
@@ -349,7 +350,7 @@ class CampaignByCatViewController: BaseListController {
             self.dashboardItems = [dashboard]
             self.self.campaignCV.reloadData()
         } else {
-            BuzzebeesDashboard().sub(dashboardName: "dtac_category_\(currentCat.id!)",
+            BuzzebeesDashboard().sub(dashboardName: getBannerDashboardConfig(),
                                      deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                      successCallback: { (dashboard) in
                                         self.dashboardItems.removeAll()
@@ -369,6 +370,17 @@ class CampaignByCatViewController: BaseListController {
     
     func getAllDashboardConfig() -> String {
         let config = "dtac_category_\(currentCat.id!)_all"
+        if currentCat.id == BuzzebeesCore.catIdCoin {
+            return Bzbs.shared.userLogin?.telType.configRecommendAll ?? DTACTelType.postpaid.configRecommendAll
+        }
+        return config
+    }
+    
+    func getBannerDashboardConfig() -> String {
+        let config = "dtac_category_\(currentCat.id!)"
+        if currentCat.id == BuzzebeesCore.catIdCoin {
+            return Bzbs.shared.userLogin?.telType.configRecommend ?? config
+        }
         return config
     }
     
@@ -379,7 +391,11 @@ class CampaignByCatViewController: BaseListController {
         BuzzebeesDashboard().sub(dashboardName: getAllDashboardConfig(),
                                  deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                  successCallback: { (dashboard) in
-                                    self.dashboardAllItems = dashboard.filter(CampaignRotateCVCell.filterDashboard(dashboard:))
+                                    if self.currentCat.id == BuzzebeesCore.catIdCoin {
+                                        self.dashboardAllItems = dashboard.filter(CampaignRotateCVCell.filterDashboardWithTelType(dashboard:))
+                                    } else {
+                                        self.dashboardAllItems = dashboard.filter(CampaignRotateCVCell.filterDashboard(dashboard:))
+                                    }
                                     self.sendImpressionItems()
                                     self.loadedData()
         },
@@ -662,10 +678,16 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     return cell
                 }
                 let item = dashboardAllItems[indexPath.row]
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
-                cell.setupWith(item)
-                sendImpressionItem(item.subCampaignDetails)
-                return cell
+                if currentCat.id == BuzzebeesCore.catIdCoin {
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCoinCell", for: indexPath) as! CampaignCoinCVCell
+                    cell.setupWith(item)
+                    return cell
+                } else {
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
+                    cell.setupWith(item)
+                    sendImpressionItem(item.subCampaignDetails)
+                    return cell
+                }
             }
             
             if self._arrDataShow.count == 0
@@ -680,9 +702,15 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 return cell
             }
             let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
-            cell.setupWith(item)
-            return cell
+            if item.categoryID == BuzzebeesCore.catIdCoin {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCoinCell", for: indexPath) as! CampaignCoinCVCell
+                cell.setupWith(item)
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
+                cell.setupWith(item)
+                return cell
+            }
         }
         
         let item = arrCategory[indexPath.row]
@@ -729,7 +757,12 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 }
                 return CGSize(width: width, height: height)
             }
-            return CampaignCVCell.getSize(collectionView)
+            let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+            if item.categoryID == BuzzebeesCore.catIdCoin {
+                return CampaignCoinCVCell.getSize(collectionView)
+            } else {
+                return CampaignCVCell.getSize(collectionView)
+            }
         }
         
         let width = collectionView.frame.size.width / 4.5

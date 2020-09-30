@@ -75,12 +75,21 @@ class CampaignRotateCVCell: UICollectionViewCell {
     class func filterDashboard(dashboard:BzbsDashboard) -> Bool{
         if let dashboardLevel = dashboard.level
         {
-            let userLevel = Bzbs.shared.userLogin?.userLevel ?? 1 // Default as customer level === 1
-            return userLevel & dashboardLevel != 0
+            let userLevel = (Bzbs.shared.userLogin?.userLevel ?? 1) & 15 // Default as customer level === 1
+            return userLevel & dashboardLevel == userLevel
         }
         return true
     }
     
+    class func filterDashboardWithTelType(dashboard:BzbsDashboard) -> Bool{
+        if let dashboardLevel = dashboard.level
+        {
+            let userLevel = (Bzbs.shared.userLogin?.userLevel ?? 1) & 15 // Default as customer level === 1
+            let userTeltype = Bzbs.shared.userLogin?.telType.rawValue ?? 64
+            return (userLevel & dashboardLevel == userLevel) && (userTeltype & dashboardLevel == userTeltype)
+        }
+        return true
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

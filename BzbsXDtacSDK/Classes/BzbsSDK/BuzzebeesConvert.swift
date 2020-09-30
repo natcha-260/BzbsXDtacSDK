@@ -118,9 +118,9 @@ class BuzzebeesConvert {
         return nil
     }
     
-    class func IntFromObject(_ ao: AnyObject?) -> Int {
+    class func IntFromObject(_ ao: AnyObject?) -> Int? {
         if(ao == nil) {
-            return 0
+            return nil
         }
         
         if let itemInt = ao as? Int {
@@ -135,7 +135,7 @@ class BuzzebeesConvert {
             return Int(str) ?? 0
         }
         
-        return 0
+        return nil
     }
     
     class func IntFromObjectNull(_ ao: AnyObject?) -> Int? {

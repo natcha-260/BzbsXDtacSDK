@@ -33,6 +33,8 @@ import WebKit
             collectionView.register(LoadMoreCVCell.getNib(), forCellWithReuseIdentifier: "loadMoreCell")
             collectionView.register(FooterCVCell.getNib(), forCellWithReuseIdentifier: "footerCVCell")
             collectionView.register(RecommendHeaderCVCell.getNib(), forCellWithReuseIdentifier: "recommendHeaderCVCell")
+            collectionView.register(CampaignCoinCVCell.getNib(), forCellWithReuseIdentifier: "recommendCoinCell")
+            
         }
     }
     @IBOutlet weak var txtSearch: UITextField!
@@ -72,12 +74,19 @@ import WebKit
             Bzbs.shared.arrCategory = arrCategory
         }
     }
+    var coinCategory: BzbsCategory?
     var arrCampaign = [BzbsCampaign]()
     var currentCenter = LocationManager.shared.getCurrentCoorndate()
     
     var isSendImpressionItems = false
     var isSendImpressionBanner = false
     var impressionItems = [BzbsCampaign]()
+    
+    var arrCoinCampaign = [BzbsDashboard]()
+    var _intSkipCoin = 0
+    var _isCallApiCoin = false
+    var _isEndCoin = false
+    var _isLoadDataCoin = false
     
     var webView : WKWebView?
     var isCallingExpiringPoint = false
@@ -92,10 +101,13 @@ import WebKit
             self.currentCenter = LocationManager.shared.getCurrentCoorndate()
             self._intSkip = 0
             self._isEnd = false
+            self._intSkipCoin = 0
+            self._isEndCoin = false
             self.getExpiringPoint()
             self.getApiGreeting()
             self.getApiCategory()
             self.getApiRecommend()
+            self.getApiCoinRecommend()
             self.getApi()
         }
         
@@ -193,11 +205,13 @@ import WebKit
             if Bzbs.shared.userLogin != nil {
                 getApiCategory()
                 getApiRecommend()
+                getApiCoinRecommend()
                 getApi()
             }
         } else {
             getApiCategory()
             getApiRecommend()
+            getApiCoinRecommend()
             getApi()
         }
         updateNavigationBar()
@@ -244,10 +258,12 @@ import WebKit
         {
             currentCenter = LocationManager.shared.getCurrentCoorndate()
             _intSkip = 0
+            _intSkipCoin = 0
             _isEnd = false
             getApiGreeting()
             getApiCategory()
             getApiRecommend()
+            getApiCoinRecommend()
             getApi()
         }
     }
@@ -386,13 +402,13 @@ import WebKit
     }
     
     func getApiCategory() {
-        BuzzebeesCategory().list(config: "menu_dtac",
+        BuzzebeesCategory().list(config: "menu_dtac_coins",
                                  token: Bzbs.shared.userLogin?.token,
                                  successCallback: { (listCategory) in
                                     self.arrCategory = listCategory
                                     // first cat is always Blue
                                     Bzbs.shared.blueCategory = listCategory.first
-                                    
+                                    self.coinCategory = listCategory.last
                                     for cat in self.arrCategory{
                                         let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
                                         allCat.nameEn = "Recommend"
@@ -410,9 +426,19 @@ import WebKit
                                                 return cat.id == Bzbs.shared.blueCategory?.id
                                             }
                                         }
+                                        
+                                        if userLogin.telType == .postpaid {
+                                            self.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                                return cat.id == BuzzebeesCore.catIdVoiceNet
+                                            }
+                                        }
                                     } else {
                                         self.arrCategory.removeAll { (cat) -> Bool in
                                             return cat.id == Bzbs.shared.blueCategory?.id
+                                        }
+                                        
+                                        self.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                            return cat.id == BuzzebeesCore.catIdVoiceNet
                                         }
                                     }
                                     self.loadedData()
@@ -443,29 +469,121 @@ import WebKit
                                         self._isEnd = true
                                     }
 
-                                    if self._intSkip == 0 {
+//                                    if self._intSkip == 0 {
                                         self.arrCampaign = listCampaign
-                                    } else {
-                                        self.arrCampaign.append(contentsOf: listCampaign)
-                                    }
+//                                    } else {
+//                                        self.arrCampaign.append(contentsOf: listCampaign)
+//                                    }
                                     
-                                    self._intSkip += 6
+                                    // wordaround odd collection list count
+                                    if self.arrCampaign.count % 2 != 0 {
+                                        let dummyCampaign = BzbsCampaign()
+                                        dummyCampaign.ID = -1
+                                        self.arrCampaign.append(dummyCampaign)
+                                    }
+                                    //------
+                                    
+//                                    self._intSkip += 6
+                                    self._isCallApi = false
                                     self.loadedData()
         },
                                  failCallback: { (error) in
                                     if error.id == "-9999"
                                     {
+                                        self._isCallApi = false
                                         self.loadedData()
                                         return
                                     }
                                     self._isEnd = true
+                                    self._isCallApi = false
                                     self.loadedData()
                                     if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
         })
     }
     
+//    func getApiCoinRecommend() {
+//        if _isCallApiCoin || _isEndCoin {
+//            return
+//        }
+//        _isCallApiCoin = true
+//        self.showLoader()
+//
+//        BuzzebeesCampaign().list(config: campaignConfig,
+//                                 top: 6,
+//                                 skip: _intSkipCoin,
+//                                 search: "",
+//                                 catId: nil,
+//                                 token: Bzbs.shared.userLogin?.token,
+//                                 center: currentCenter,
+//                                 successCallback: { (listCampaign) in
+//
+//                                    if listCampaign.count < 4 {
+//                                        self._isEndCoin = true
+//                                    }
+//
+//                                    if self._intSkipCoin == 0 {
+//                                        self.arrCoinCampaign = listCampaign
+//                                    } else {
+//                                        self.arrCoinCampaign.append(contentsOf: listCampaign)
+//                                    }
+//
+//                                    self._intSkipCoin += 6
+//                                    self._isCallApiCoin = false
+//                                    self.loadedData()
+//        },
+//                                 failCallback: { (error) in
+//                                    if error.id == "-9999"
+//                                    {
+//                                        self._isCallApiCoin = false
+//                                        self.loadedData()
+//                                        return
+//                                    }
+//                                    self._isEndCoin = true
+//                                    self._isCallApiCoin = false
+//                                    self.loadedData()
+//                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+//        })
+//    }
+    
+    
+    // api get Dashboard for cat All
+    func getApiCoinRecommend()
+    {
+        
+        if coinCategory == nil {
+            if self.arrCategory.count == 0 {
+                delay(0.33) {
+                    self.getApiCoinRecommend()
+                }
+            }
+            return
+        }
+        showLoader()
+        BuzzebeesDashboard().sub(dashboardName: Bzbs.shared.userLogin?.telType.configRecommendAll ?? DTACTelType.postpaid.configRecommendAll,
+                                 deviceLocale: String(LocaleCore.shared.getUserLocale()),
+                                 successCallback: { (dashboard) in
+                                    self.arrCoinCampaign = dashboard.filter(CampaignRotateCVCell.filterDashboard(dashboard:))
+                                    
+                                        // wordaround odd collection list count
+                                    if self.arrCoinCampaign.count % 2 != 0 {
+                                        let dummyCampaign = BzbsDashboard()
+                                        dummyCampaign.id = "-1"
+                                        self.arrCoinCampaign.append(dummyCampaign)
+                                    }
+                                    // -------
+                                    
+                                    self.sendImpressionItems()
+                                    self.loadedData()
+        },
+                                 failCallback: { (error) in
+                                 self.arrCoinCampaign.removeAll()
+                                 self.loadedData()
+                                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+        })
+    }
+    
     override func loadedData() {
-        self._isCallApi = false
+        
         collectionView.es.stopPullToRefresh()
         DispatchQueue.main.async(execute: {
             self.collectionView.reloadData()
@@ -475,10 +593,12 @@ import WebKit
     
     override func refreshApi() {
         _intSkip = 0
+        _intSkipCoin = 0
         _isEnd = false
         getApiGreeting()
         getApiCategory()
         getApiRecommend()
+        getApiCoinRecommend()
         getApi()
     }
     
@@ -492,7 +612,9 @@ import WebKit
         }
         _isEnd = false
         _intSkip = 0
+        _intSkipCoin = 0
         getApiRecommend()
+        getApiCoinRecommend()
     }
     
     // MARK:- Action
@@ -502,6 +624,14 @@ import WebKit
         
         if let nav = self.navigationController {
             nav.pushViewController(RecommendListViewController.getViewController(), animated: true)
+        }
+    }
+    
+    @IBAction func clickViewAllCoinRecommend(_ sender: Any) {
+        self.view.endEditing(true)
+        
+        if let nav = self.navigationController {
+            nav.pushViewController(RecommendCoinListViewController.getViewController(), animated: true)
         }
     }
     
@@ -798,7 +928,7 @@ extension BzbsMainViewController: UITextFieldDelegate
 extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 6
+        return 7
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -812,8 +942,10 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         case 3 :
             return 1
         case 4 :
-            return 1 + arrCampaign.count// + (_isEnd ? 0 : 1)
+            return 1 + arrCampaign.count + 1// + (_isEnd ? 0 : 1)
         case 5 :
+            return 1 + arrCoinCampaign.count + 1// + (_isEnd ? 0 : 1)
+        case 6 :
             return 1
         default:
             return 0
@@ -851,17 +983,19 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         if section == 4 {
             if row == 0 {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendHeaderCVCell", for: indexPath) as! RecommendHeaderCVCell
-                cell.setupWith(target: self, selector: #selector(clickViewAllCampaign(_:)))
+                cell.setupWith(title: "recommend_title".localized() ,target: self, selector: #selector(clickViewAllCampaign(_:)))
                 return cell
             }
             if row == arrCampaign.count + 1 {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "loadMoreCell", for: indexPath) as! LoadMoreCVCell
-                cell.setLoadMore()
-                if !isSendImpressionItems
-                {
-                    sendImpressionItems()
-                }
-                return cell
+                // Workaround bug apple : https://stackoverflow.com/questions/36716834/ios-uicollectionview-layout-last-row
+                return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "loadMoreCell", for: indexPath) as! LoadMoreCVCell
+//                cell.setLoadMore()
+//                if !isSendImpressionItems
+//                {
+//                    sendImpressionItems()
+//                }
+//                return cell
             }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
             let item = arrCampaign[row - 1]
@@ -872,6 +1006,28 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             return cell
         }
         if section == 5 {
+            if row == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendHeaderCVCell", for: indexPath) as! RecommendHeaderCVCell
+                cell.setupWith(title: "recommend_coin_title".localized() ,target: self, selector: #selector(clickViewAllCoinRecommend(_:)))
+                return cell
+            }
+            if row == arrCoinCampaign.count + 1 {
+                // Workaround bug apple : https://stackoverflow.com/questions/36716834/ios-uicollectionview-layout-last-row
+                return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "loadMoreCell", for: indexPath) as! LoadMoreCVCell
+//                cell.setLoadMore()
+//                if !isSendImpressionItems
+//                {
+//                    sendImpressionItems()
+//                }
+//                return cell
+            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
+            let item = arrCoinCampaign[row - 1]
+            cell.setupWith(item, isShowDistance: true)
+            return cell
+        }
+        if section == 6 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "footerCVCell", for: indexPath) as! FooterCVCell
             cell.setupWith(target: self
                 , favSelector: #selector(clickFavorite(_:))
@@ -894,9 +1050,24 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             } else {
                 if arrCampaign.count < indexPath.row - 1 || indexPath.row == 0 { return }
                 let item = arrCampaign[indexPath.row - 1]
+                if item.ID == -1 { return }
                 sendGATouchEvent(item,indexPath: indexPath)
                 if let nav = self.navigationController {
                     GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)
+                }
+            }
+        }else if indexPath.section == 5 {
+            if (indexPath.row - 1) == arrCoinCampaign.count{
+                getApiCoinRecommend()
+            } else {
+                if arrCoinCampaign.count < indexPath.row - 1 || indexPath.row == 0 { return }
+                let item = arrCoinCampaign[indexPath.row - 1]
+                if item.id == "-1" { return }
+//                sendGATouchEvent(item,indexPath: indexPath)
+                if let nav = self.navigationController {
+                    let campaign = BzbsCampaign()
+                    campaign.ID = Int(item.id)
+                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
                 }
             }
         }
@@ -952,12 +1123,24 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
                 return CGSize(width: (width - 8 - 8), height: 30)
             }
             if indexPath.row == arrCampaign.count + 1 {
-                return CGSize(width: width - 8 - 8, height: 40)
+                return CGSize(width: width, height: 0)
+//                return CGSize(width: width - 8 - 8, height: 40)
             }
             
             return CampaignCVCell.getSize(collectionView)
         }
         if section == 5 {
+            if indexPath.row == 0 {
+                return CGSize(width: (width - 8 - 8), height: 30)
+            }
+            if indexPath.row == arrCoinCampaign.count + 1 {
+                return CGSize(width: width, height: 0)
+//                return CGSize(width: width - 8 - 8, height: 40)
+            }
+            
+            return CampaignCoinCVCell.getSize(collectionView)
+        }
+        if section == 6 {
             let str = "main_footer_msg".localized()
             let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width - 16 - 16, height: CGFloat.leastNonzeroMagnitude))
             lbl.font = UIFont.mainFont(style: .normal)
@@ -972,14 +1155,14 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if section == 4 {
+        if section == 4 || section == 5 {
             return UIEdgeInsets(top: 8, left: 4, bottom: 0, right: 4)
         }
         return UIEdgeInsets.zero
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.1
+        return UIEdgeInsets(top: 8, left: 4, bottom: 0, right: 4).left
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

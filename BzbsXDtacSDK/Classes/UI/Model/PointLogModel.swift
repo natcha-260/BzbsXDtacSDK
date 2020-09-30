@@ -110,7 +110,10 @@ open class PointLog {
                 responseMessage  = dict["ResponseMessage"] as? String
                 userType = dict["UserType"] as? String
                 buCode = dict["BuCode"] as? String
-                type = dict["type"] as? String
+                if let detailType = dict["type"] as? String
+                {
+                    type = detailType
+                }
                 productName = dict["ProductName"] as? String
                 productType = dict["ProductType"] as? String
                 if let strDate = dict["StartDate"] as? String

@@ -59,3 +59,23 @@ extension String {
         return htmlToAttributedString?.string ?? ""
     }
 }
+
+extension TimeInterval {
+    func toTimeString() -> String {
+        let remainingTime = Int(self)
+        
+        let min = remainingTime % 60
+        let hour = (remainingTime / 60) % 24
+        let day = (remainingTime / 60) / 24
+        
+        if day > 0 {
+            return "\(Int(day)) " + "time_days".localized()
+        }
+        
+        if hour > 0 {
+            return "\(Int(hour)) " + "time_hours".localized()
+        }
+        
+        return "\(Int(min)) " + "time_minutes".localized()
+    }
+}

@@ -60,7 +60,15 @@ class PopupPointHistoryDetailViewController: UIViewController {
             }
             imv.bzbsSetImage(withURL: strUrl)
             listCell = ["adjust_date"]
-        } else {
+        }
+        else if pointLog.type == "transfer"
+        {
+            let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/transfer.jpg"
+            lblPoint.text = "coin_transfer".localized() + ": \(pointLog.points.withCommas())"
+            imv.bzbsSetImage(withURL: strUrl)
+            listCell = ["transfer_from", "transfer_date"]
+        }
+        else {
             lblPoint.text = "coin_earn_detail".localized() + ": " + pointLog.points.withCommas()
             let productID = pointLog.productId ?? "0"
             let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
@@ -84,6 +92,21 @@ class PopupPointHistoryDetailViewController: UIViewController {
                 break
             case "6":
                 listCell = ["checkin_date"]
+                break
+            case "7":
+                listCell = ["jaidee_service","usage_date"]
+                break
+            case "8":
+                listCell = ["jaidee_service","usage_date"]
+                break
+            case "9":
+                listCell = ["jaidee_service","usage_date"]
+                break
+            case "10":
+                listCell = ["jaidee_service","usage_date"]
+                break
+            case "11":
+                listCell = ["jaidee_service","usage_date"]
                 break
             default:
                 break
@@ -124,6 +147,10 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
         if cellIdent == "package_sub" {
             cell.title = "coin_package_sub".localized() + ": "
             cell.detail = pointLog.historyDetail
+        }
+        else if cellIdent == "jaidee_service" {
+            cell.title = "coin_jaidee_service".localized() + ": "
+            cell.detail = pointLog.title
         }
         else if cellIdent.contains("date") {
             
@@ -189,6 +216,24 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 } else {
                     cell.detail = "-"
                 }
+            } else if cellIdent == "usage_date"
+            {
+                cell.title = "coin_usage_date".localized() + ": "
+
+                if let activityDate = pointLog.period {
+                    cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
+                } else {
+                    cell.detail = "-"
+                }
+            } else if cellIdent == "transfer_date"
+            {
+                cell.title = "coin_transfer_date".localized() + ": "
+
+                if let activityDate = pointLog.timestamp {
+                    cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
+                } else {
+                    cell.detail = "-"
+                }
             }
             
         }
@@ -206,6 +251,10 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             } else {
                 cell.detail = "-"
             }
+        }
+        else if cellIdent == "transfer_from" {
+            cell.title = "coin_transfer_from".localized() + ": "
+            cell.detail = pointLog.title
         }
         
         return cell
