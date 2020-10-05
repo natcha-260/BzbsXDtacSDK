@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.10
+- fix bugs
+- update wording
 ## 2.0.9
 - Handle new point type in history
 - Check TelType

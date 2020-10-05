@@ -18,9 +18,14 @@ class PopupSubscriptionViewController: UIViewController {
     @IBOutlet weak var lblClose: UILabel!
     
     var history : BzbsHistory!
+    let formatter = DateFormatter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "HH:mm, dd MMM yyyy"
         lblThankyou.font = UIFont.mainFont(.big, style: .bold)
         lblProduct.font = UIFont.mainFont(style: .bold)
         lblDate.font = UIFont.mainFont(style: .bold)
@@ -34,33 +39,18 @@ class PopupSubscriptionViewController: UIViewController {
         vwClose.backgroundColor = .dtacBlue
         vwClose.cornerRadius()
         
-        lblThankyou.text = "popup_voice_net_thank_you".localized()
-        lblProduct.text = "popup_voice_net_detail".localized()
-        
-        let formatter = DateFormatter()
-        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
-        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
-        formatter.dateFormat = "HH:mm, dd MMM yyyy"
-        let timeInterval = TimeInterval(history.redeemDate)
-        lblDate.text = formatter.string(from: Date(timeIntervalSince1970: timeInterval))
-        lblProductName.text = history.name
-        lblClose.text = "popup_done".localized()
         setupUI()
-        
     }
     
     func setupUI() {
-        lblThankyou.text = "Thank you!"
-        lblProduct.text = "Package Subscription"
+        
+        lblThankyou.text = "popup_voice_net_thank_you".localized()
+        lblProduct.text = "popup_voice_net_detail".localized()
         var date = Date()
         if let period = history.redeemDate
         {
             date = Date(timeIntervalSince1970: period)
         }
-        
-        let formatter = DateFormatter()
-        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
-        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
         formatter.dateFormat = "HH:mm, d MMM yyyy"
         
         lblDate.text = formatter.string(from: date)

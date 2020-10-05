@@ -22,6 +22,7 @@ class TokenSelectViewController: UIViewController {
     @IBOutlet weak var btnGold: UIButton!
     @IBOutlet weak var btnBlue: UIButton!
     @IBOutlet weak var txtCampaignId: UITextField!
+    @IBOutlet weak var txtCatName: UITextField!
     @IBOutlet weak var cstBottom: NSLayoutConstraint!
     @IBOutlet weak var segmentTelType: UISegmentedControl!
     @IBOutlet weak var segmentVersion: UISegmentedControl! {
@@ -89,9 +90,6 @@ class TokenSelectViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK:- Keyboard
@@ -176,6 +174,30 @@ class TokenSelectViewController: UIViewController {
                 DispatchQueue.main.async {
                     Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
                     nav.pushViewController(PointHistoryViewController.getView(), animated: true)
+                }
+            }
+        }
+    }
+    
+    @IBAction func clickGotoCategory(_ sender: Any) {
+        if let tmpCat = txtCatName.text {
+            let rawCat = tmpCat.split(separator: ",")
+            let catName = String(rawCat.first ?? "")
+            var subCatName:String?
+            if rawCat.count > 1 {
+                subCatName = String(rawCat[1])
+            }
+            
+            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+            Bzbs.shared.logout()
+            if let nav = self.navigationController
+            {
+                delay(0.5) {
+                    DispatchQueue.main.async {
+                        Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                        nav.pushViewController(CampaignByCatViewController.getView(category: catName, subCategory: subCatName), animated: true)
+                    }
                 }
             }
         }

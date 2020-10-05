@@ -71,7 +71,7 @@ class PointHistoryCell: UITableViewCell {
         let formatter = DateFormatter()
         formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
         formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.timeZone = TimeZone(secondsFromGMT: -1 * (7 * 60 * 60))
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
         lblDate.text = "coin_earn_on".localized() + " " + formatter.string(from: date)
         

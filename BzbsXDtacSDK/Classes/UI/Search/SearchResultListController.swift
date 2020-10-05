@@ -38,6 +38,7 @@ class SearchResultListController: BaseListController {
     override func loadView() {
         super.loadView()
         collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
+        collectionView.register(CampaignCoinCVCell.getNib(), forCellWithReuseIdentifier: "recommendCoinCell")
         collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
         collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
         collectionView.alwaysBounceVertical = true
@@ -103,6 +104,9 @@ class SearchResultListController: BaseListController {
                 } else {
                     self._arrDataShow.append(contentsOf: tmpList)
                 }
+                
+                
+                (self._arrDataShow[Int.random(in: 0..<self._arrDataShow.count)] as! BzbsCampaign).categoryID = BuzzebeesCore.catIdCoin
 
                 self._intSkip += self._intTop
                 self._isEnd = tmpList.count < self._intTop
@@ -144,8 +148,13 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
             cell.lbl.text = "major_empty".localized()
             return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        if item.parentCategoryID == BuzzebeesCore.catIdCoin {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
+            cell.setupWith(item, isShowDistance: false)
+            return cell
+        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
         cell.setupWith(item, isShowDistance: false)
         return cell
     }
@@ -157,7 +166,24 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
             let height = collectionView.frame.size.height * 0.9
             return CGSize(width: width, height: height)
         }
-
+        let row = indexPath.row
+        let item = _arrDataShow[row] as! BzbsCampaign
+        var sideItem : BzbsCampaign?
+        var sideRow = row
+        
+        if row % 2 == 0 {
+            sideRow = row + 1
+        } else {
+            sideRow = row - 1
+        }
+        
+        if !(sideRow > (_arrDataShow.count - 1) || sideRow < 0) {
+            sideItem = _arrDataShow[sideRow] as? BzbsCampaign
+        }
+        
+        if item.parentCategoryID == BuzzebeesCore.catIdCoin || (sideItem != nil && sideItem?.parentCategoryID == BuzzebeesCore.catIdCoin) {
+            return CampaignCoinCVCell.getSize(collectionView)
+        }
         return CampaignCVCell.getSize(collectionView)
     }
     

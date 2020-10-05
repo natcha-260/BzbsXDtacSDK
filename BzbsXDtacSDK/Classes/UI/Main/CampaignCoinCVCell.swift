@@ -57,7 +57,7 @@ class CampaignCoinCVCell: CampaignCVCell {
         }
         
         lblAgency.text = item.agencyName
-        lblCoinTitle.text = "coin_use".localized()
+        lblCoinTitle.text = "coin_campaign_use".localized()
         
         let pointPerUnit = item.pointPerUnit ?? 0
         lblDistance.text = pointPerUnit.withCommas()
@@ -107,7 +107,7 @@ class CampaignCoinCVCell: CampaignCVCell {
         }
         lblAgency.text = agencyName
         
-        lblCoinTitle.text = "coin_use".localized()
+        lblCoinTitle.text = "coin_campaign_use".localized()
         let dict = item.dict
         if let pointPerUnit = Convert.IntFromObject(dict?["pointperunit"]) {
             lblDistance.text = pointPerUnit.withCommas()

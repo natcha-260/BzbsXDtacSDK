@@ -12,7 +12,7 @@ import AVFoundation
 import FirebaseAnalytics
 import WebKit
 
-class CampaignByCatViewController: BaseListController {
+open class CampaignByCatViewController: BaseListController {
     
     // MARK:- Properties
     // MARK:- Outlet
@@ -51,7 +51,7 @@ class CampaignByCatViewController: BaseListController {
             categoryCV.register(UIView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "none")
         }
     }
-
+    
     @IBOutlet weak var campaignCV: UICollectionView! {
         didSet{
             if let layout = campaignCV.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -84,7 +84,13 @@ class CampaignByCatViewController: BaseListController {
     // MARK:- Variable
     var dashboardItems = [BzbsDashboard]()
     var dashboardAllItems = [BzbsDashboard]()
-    var arrCategory :[BzbsCategory]!
+    var arrCategory = [BzbsCategory]()
+    {
+        didSet{
+            Bzbs.shared.arrCategory = arrCategory
+        }
+    }
+    
     var currentCat :BzbsCategory! {
         didSet{
             
@@ -98,13 +104,13 @@ class CampaignByCatViewController: BaseListController {
             
             if let first = currentCat?.subCat.first
             {
-//                let name = first.nameEn.lowercased()
-//                if let blueCat = Bzbs.shared.blueCategory, blueCat.id == currentCat.id {
-//                    analyticsSetScreen(screenName: "dtac_reward_blue")
-//                } else {
-//                    let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-//                    analyticsSetScreen(screenName: screenName)
-//                }
+                //                let name = first.nameEn.lowercased()
+                //                if let blueCat = Bzbs.shared.blueCategory, blueCat.id == currentCat.id {
+                //                    analyticsSetScreen(screenName: "dtac_reward_blue")
+                //                } else {
+                //                    let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
+                //                    analyticsSetScreen(screenName: screenName)
+                //                }
                 currentSubCat = first
                 sendGATouchEvent(currentCat, subCat: currentSubCat)
                 self.subCategoryCV?.reloadData()
@@ -112,16 +118,16 @@ class CampaignByCatViewController: BaseListController {
                 self._isEnd = false
                 self._intSkip = 0
                 generateSubCatView()
-//                if campaignCV != nil {
-//                    delay(0.33) {
-//                        if self.isCategoryAll()  {
-//                            self.getAllDashboard()
-//                        } else {
-//                            self.getApi()
-//                        }
-//                        self.getDashboard()
-//                    }
-//                }
+                //                if campaignCV != nil {
+                //                    delay(0.33) {
+                //                        if self.isCategoryAll()  {
+                //                            self.getAllDashboard()
+                //                        } else {
+                //                            self.getApi()
+                //                        }
+                //                        self.getDashboard()
+                //                    }
+                //                }
             }
         }
     }
@@ -144,46 +150,79 @@ class CampaignByCatViewController: BaseListController {
         }
     }
     var campaignConfig = "campaign_dtac_customer_level"
-//    var campaignList = RecommendListViewController.getViewController()
+    //    var campaignList = RecommendListViewController.getViewController()
     var isShowCat = false
-    
     var isSendImpressionItems = false
     var impressionItems = [BzbsCampaign]()
-    
     var webView : WKWebView?
-
+    
+    var strCategory:String?
+    var strSubCategory:String?
+    
+    // MARK:- Class function
+    // MARK:-
+    @objc public class func getView(category: String?, subCategory:String?) -> CampaignByCatViewController
+    {
+        
+        let storyboard = UIStoryboard(name: "Category", bundle: Bzbs.shared.currentBundle)
+        let controller = storyboard.instantiateViewController(withIdentifier: "campaign_by_category_view") as! CampaignByCatViewController
+        controller.strCategory = category
+        controller.strSubCategory = subCategory
+        controller.view.translatesAutoresizingMaskIntoConstraints = true
+        return controller
+    }
+    
+    @objc public class func getViewWithNavigationBar(category: String, subCategory:String?, isHideNavigationBar:Bool = true) -> UINavigationController
+    {
+        let nav = UINavigationController(rootViewController: getView(category: category, subCategory:subCategory))
+        nav.isNavigationBarHidden = isHideNavigationBar
+        nav.navigationBar.backgroundColor = .white
+        nav.navigationBar.tintColor = .mainBlue
+        nav.navigationBar.barTintColor = .white
+        return nav
+    }
+    
     // MARK:- View life cycle
     // MARK:-
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         viewSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
         viewScan.cornerRadius()
-        initNav()
-        getApi()
-        if isCategoryAll() {
-            getAllDashboard()
+        if let arrCategory = Bzbs.shared.arrCategory{
+            if currentCat == nil {
+                self.arrCategory = arrCategory
+                categoryLoaded()
+            }
+            initNav()
+            getApi()
+            if isCategoryAll() {
+                getAllDashboard()
+            }
+            getDashboard()
+        } else {
+            showLoader()
+            getApiCategory()
         }
-        getDashboard()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         self.vwCategory.alpha = 0
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(viewWillAppear(_:)), name: NSNotification.Name.BzbsViewDidBecomeActive, object: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsViewDidBecomeActive, object: nil)
     }
     
-    override func updateUI() {
+    open override func updateUI() {
         super.updateUI()
         lblScan.text = "scan_title".localized()
         txtSearch.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])
@@ -264,32 +303,32 @@ class CampaignByCatViewController: BaseListController {
             return
         }
         AVCaptureDevice.requestAccess(for: .video) { success in
-          if success { // if request is granted (success is true)
-            DispatchQueue.main.async {
-                if let nav = self.navigationController
-                {
-                    GotoPage.gotoScanQR(nav,target: self)
+            if success { // if request is granted (success is true)
+                DispatchQueue.main.async {
+                    if let nav = self.navigationController
+                    {
+                        GotoPage.gotoScanQR(nav,target: self)
+                    }
+                }
+            } else { // if request is denied (success is false)
+                DispatchQueue.main.async {
+                    PopupManager.confirmPopup(self, message: "popup_scan_not_allow".localized(), strConfirm: "popup_setting".localized(), confirm: {
+                        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                            return
+                        }
+                        
+                        if UIApplication.shared.canOpenURL(settingsUrl) {
+                            if #available(iOS 10.0, *) {
+                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                    print("Settings opened: \(success)") // Prints true
+                                })
+                            } else {
+                                UIApplication.shared.openURL(settingsUrl)
+                            }
+                        }
+                    }, cancel: nil)
                 }
             }
-          } else { // if request is denied (success is false)
-            DispatchQueue.main.async {
-                PopupManager.confirmPopup(self, message: "popup_scan_not_allow".localized(), strConfirm: "popup_setting".localized(), confirm: {
-                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                        return
-                    }
-
-                    if UIApplication.shared.canOpenURL(settingsUrl) {
-                        if #available(iOS 10.0, *) {
-                            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                                print("Settings opened: \(success)") // Prints true
-                            })
-                        } else {
-                            UIApplication.shared.openURL(settingsUrl)
-                        }
-                    }
-                }, cancel: nil)
-            }
-          }
         }
     }
     @IBAction func clickCatDismiss(_ sender: Any) {
@@ -305,26 +344,28 @@ class CampaignByCatViewController: BaseListController {
         _isCallApi = true
         showLoader()
         controller.list(config: currentSubCat.listConfig
-            , top : _intTop
-            , skip: _intSkip
-            , search: ""
-            , catId: currentSubCat.id
-            , token: Bzbs.shared.userLogin?.token
-            , center : LocationManager.shared.getCurrentCoorndate()
-            , successCallback: { (tmpList) in
+                        , top : _intTop
+                        , skip: _intSkip
+                        , search: ""
+                        , catId: currentSubCat.id
+                        , token: Bzbs.shared.userLogin?.token
+                        , center : LocationManager.shared.getCurrentCoorndate()
+                        , successCallback: { (tmpList) in
                             
-                if self._intSkip == 0 {
-                    self._arrDataShow = tmpList
-                    if !self.isSendImpressionItems {
-                        self.sendImpressionItem(tmpList)
-                    }
-                } else {
-                    self._arrDataShow.append(contentsOf: tmpList)
-                }
-                self._isEnd = tmpList.count < self._intTop
-                self._intSkip += self._intTop
-                self.loadedData()
-        }) { (error) in
+                            if self._intSkip == 0 {
+                                self._arrDataShow = tmpList
+                                if self.currentCat.id == BuzzebeesCore.catIdCoin {
+                                    self.sendCoinImpressionItem(tmpList)
+                                } else if !self.isSendImpressionItems {
+                                    self.sendImpressionItem(tmpList)
+                                }
+                            } else {
+                                self._arrDataShow.append(contentsOf: tmpList)
+                            }
+                            self._isEnd = tmpList.count < self._intTop
+                            self._intSkip += self._intTop
+                            self.loadedData()
+                        }) { (error) in
             self._arrDataShow.removeAll()
             self._isEnd = true
             self.loadedData()
@@ -348,7 +389,7 @@ class CampaignByCatViewController: BaseListController {
             dashboard.imageUrl = imageUrl
             dashboard.type = "none"
             self.dashboardItems = [dashboard]
-            self.self.campaignCV.reloadData()
+            self.campaignCV.reloadData()
         } else {
             BuzzebeesDashboard().sub(dashboardName: getBannerDashboardConfig(),
                                      deviceLocale: String(LocaleCore.shared.getUserLocale()),
@@ -356,15 +397,19 @@ class CampaignByCatViewController: BaseListController {
                                         self.dashboardItems.removeAll()
                                         if let first = dashboard.first {
                                             self.dashboardItems = first.subCampaignDetails
-                                            self.sendImpressionBanner(self.dashboardItems)
+                                            if self.currentCat.id == BuzzebeesCore.catIdCoin {
+                                                self.sendCoinImpressionBanner(self.dashboardItems)
+                                            } else {
+                                                self.sendImpressionBanner(self.dashboardItems)
+                                            }
                                         }
                                         self.campaignCV.reloadData()
-            },
+                                     },
                                      failCallback: { (error) in
                                         self.dashboardItems.removeAll()
                                         self.campaignCV.reloadData()
                                         if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-            })
+                                     })
         }
     }
     
@@ -392,23 +437,132 @@ class CampaignByCatViewController: BaseListController {
                                  deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                  successCallback: { (dashboard) in
                                     if self.currentCat.id == BuzzebeesCore.catIdCoin {
-                                        self.dashboardAllItems = dashboard.filter(CampaignRotateCVCell.filterDashboardWithTelType(dashboard:))
+                                        self.dashboardAllItems = dashboard.filter(BzbsDashboard.filterDashboardWithTelType(dashboard:))
                                     } else {
-                                        self.dashboardAllItems = dashboard.filter(CampaignRotateCVCell.filterDashboard(dashboard:))
+                                        self.dashboardAllItems = dashboard.filter(BzbsDashboard.filterDashboard(dashboard:))
                                     }
                                     self.sendImpressionItems()
                                     self.loadedData()
-        },
+                                 },
                                  failCallback: { (error) in
-                                 self.dashboardAllItems.removeAll()
-                                 self.loadedData()
-                                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-        })
+                                    self.dashboardAllItems.removeAll()
+                                    self.loadedData()
+                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                 })
+    }
+    
+    var isCallingCategory = false
+    func getApiCategory() {
+        if Bzbs.shared.userLogin?.token == nil {
+            delay(1) {
+                self.getApiCategory()
+            }
+            return
+        }
+        if isCallingCategory { return }
+        isCallingCategory = true
+        
+        BuzzebeesCategory().list(config: "menu_dtac_coins",
+                                 token: Bzbs.shared.userLogin?.token,
+                                 successCallback: { (listCategory) in
+                                    self.arrCategory = listCategory
+                                    // first cat is always Blue
+                                    Bzbs.shared.blueCategory = listCategory.first
+                                    Bzbs.shared.coinCategory = listCategory.last
+                                    for cat in self.arrCategory{
+                                        let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
+                                        allCat.nameEn = "Recommend"
+                                        allCat.nameTh = "แนะนำ"
+                                        allCat.listConfig = cat.listConfig
+                                        allCat.id = cat.id
+                                        cat.subCat.insert(allCat, at: 0)
+                                    }
+                                    
+                                    if let userLogin = Bzbs.shared.userLogin
+                                    {
+                                        if userLogin.dtacLevel != .blue
+                                        {
+                                            self.arrCategory.removeAll { (cat) -> Bool in
+                                                return cat.id == Bzbs.shared.blueCategory?.id
+                                            }
+                                        }
+                                        
+                                        if userLogin.telType == .postpaid {
+                                            Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                                return cat.id == BuzzebeesCore.catIdVoiceNet
+                                            }
+                                        }
+                                    } else {
+                                        self.arrCategory.removeAll { (cat) -> Bool in
+                                            return cat.id == Bzbs.shared.blueCategory?.id
+                                        }
+                                        
+                                        Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                            return cat.id == BuzzebeesCore.catIdVoiceNet
+                                        }
+                                    }
+                                    self.categoryLoaded()
+                                    self.loadedData()
+                                    self.getDashboard()
+                                    self.isCallingCategory = false
+                                 },
+                                 failCallback: { (error) in
+                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                    self.loadedData()
+                                    self.isCallingCategory = false
+                                 })
+    }
+    
+    func categoryLoaded(){
+        let catName = strCategory?.removingPercentEncoding?.lowercased()
+        let subCatName = strSubCategory?.removingPercentEncoding?.lowercased()
+        print("goto \(catName ?? ""), \(subCatName ?? "")")
+        
+        var cat :BzbsCategory?
+        var subCat : BzbsCategory?
+        if let catName = catName , catName != ""{
+            if let _cat = arrCategory.first(where: { (tmpCat) -> Bool in
+                                                return tmpCat.nameEn.lowercased() == catName })
+            {
+                cat = _cat
+                if let subCatName = subCatName, subCatName != ""
+                {
+                    if let _subCat = _cat.subCat.first(where: { (tmpSubCat) -> Bool in
+                                                        return tmpSubCat.nameEn.lowercased() == subCatName })
+                    {
+                        subCat = _subCat
+                    } 
+                }
+            } else if let first = arrCategory.first {
+                cat = first
+            }
+        } else {
+            if let first = arrCategory.first {
+                cat = first
+            }
+        }
+        
+        if cat == nil { return }
+        self.currentCat = cat
+        if let _ = subCat
+        {
+            self.currentSubCat = subCat
+        } else {
+            self.currentSubCat = currentCat.subCat.first
+        }
+        
+        if let index = currentCat.subCat.firstIndex(where: { (cat) -> Bool in
+            return cat.id == currentSubCat.id
+        }) {
+            subCategoryCV.scrollToItem(at: IndexPath(row: index, section: 0), at: UICollectionView.ScrollPosition.right, animated: false)
+        }
     }
     
     override func refreshApi() {
         _intSkip = 0
         _isEnd = false
+        if Bzbs.shared.arrCategory == nil { return }
+        getApiCategory()
         getApi()
         getDashboard()
     }
@@ -443,7 +597,7 @@ class CampaignByCatViewController: BaseListController {
         
         let name = currentCat.nameEn.lowercased()
         let screenName = "dtac_reward_" + name.replace(" ", replacement: "_") + "_banner"
-         
+        
         let ecommerce  : [String:AnyObject] = [
             "items" : items as AnyObject,
             AnalyticsParameterItemList : screenName as AnyObject
@@ -471,15 +625,15 @@ class CampaignByCatViewController: BaseListController {
             i += 1
             items.append(reward)
         }
-         
-          let name = currentCat.nameEn.lowercased()
-          let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-         let ecommerce  : [String:AnyObject] = [
-             "items" : items as AnyObject,
-             AnalyticsParameterItemList : screenName as AnyObject
-         ]
-         
-         analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
+        
+        let name = currentCat.nameEn.lowercased()
+        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
+        let ecommerce  : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            AnalyticsParameterItemList : screenName as AnyObject
+        ]
+        
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
     }
     
     // MARK:- Top banner
@@ -494,18 +648,18 @@ class CampaignByCatViewController: BaseListController {
             var rewardType = ""
             let type = item.type
             switch type {
-            case "hashtag" :
-                rewardType = "group"
-            case "link" :
-                rewardType = "none"
-            case "cat" :
-                rewardType = "category"
-            case "none" :
-                rewardType = "none"
-            case "campaign" :
-                rewardType = "campaign"
-            default:
-                break
+                case "hashtag" :
+                    rewardType = "group"
+                case "link" :
+                    rewardType = "none"
+                case "cat" :
+                    rewardType = "category"
+                case "none" :
+                    rewardType = "none"
+                case "campaign" :
+                    rewardType = "campaign"
+                default:
+                    break
             }
             
             let reward : [String:AnyObject] = [
@@ -518,18 +672,47 @@ class CampaignByCatViewController: BaseListController {
             i += 1
             items.append(reward)
         }
-
-         let name = currentCat.nameEn.lowercased()
-         let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
+        
+        let name = currentCat.nameEn.lowercased()
+        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
         let ecommerce  : [String:AnyObject] = [
             "items" : items as AnyObject,
             AnalyticsParameterItemList : screenName as AnyObject
         ]
         
         analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
+    }
+    
+    // MARK:- Top banner
+    func sendCoinImpressionItem(_ campaigns:[BzbsCampaign])
+    {
+        if campaigns.count == 0 { return }
         
+        var items = [[String:AnyObject]]()
+        var i = 0
+        for item in campaigns
+        {
+            var reward = [String:AnyObject]()
+            reward[AnalyticsParameterItemID] = (item.ID ?? -1) as AnyObject
+            reward[AnalyticsParameterItemName] = (item.name ?? "") as AnyObject
+            reward[AnalyticsParameterItemCategory] = "coin_reward/\(currentSubCat.name ?? "")" as AnyObject
+            reward[AnalyticsParameterItemBrand] = "{reward_brand}" as NSString
+            reward[AnalyticsParameterIndex] = i as AnyObject
+            reward[AnalyticsParameterItemVariant] = (item.expireIn?.toTimeString() ?? "") as NSString
+            reward["metric1"] = item.pointPerUnit as NSNumber
+            
+            i += 1
+            items.append(reward)
+        }
+         
+        var ecommerce = [String:AnyObject]()
+        ecommerce["items"] = items as AnyObject
+        ecommerce["eventCategory"] = "reward" as NSString
+        ecommerce["eventAction" ] = " impression_list" as NSString
+        ecommerce["eventLabel"] = "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")" as NSString
+        ecommerce[AnalyticsParameterItemListName] = "dtac_coin_reward_{reward_filter}" as NSString
         
-        
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     // MARK:- item list cat all
@@ -543,18 +726,18 @@ class CampaignByCatViewController: BaseListController {
             var rewardType = ""
             let type = item.type
             switch type {
-            case "hashtag" :
-                rewardType = "group"
-            case "link" :
-                rewardType = "none"
-            case "cat" :
-                rewardType = "category"
-            case "none" :
-                rewardType = "none"
-            case "campaign" :
-                rewardType = "campaign"
-            default:
-                break
+                case "hashtag" :
+                    rewardType = "group"
+                case "link" :
+                    rewardType = "none"
+                case "cat" :
+                    rewardType = "category"
+                case "none" :
+                    rewardType = "none"
+                case "campaign" :
+                    rewardType = "campaign"
+                default:
+                    break
             }
             
             let reward : [String:AnyObject] = [
@@ -577,8 +760,95 @@ class CampaignByCatViewController: BaseListController {
         analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
     }
     
+    func sendCoinImpressionBanner(_ impressionBanner:[BzbsDashboard])
+    {
+        // Prepare ecommerce dictionary.
+        var i = 1
+        var items = [Any]()
+        for item in impressionBanner
+        {
+            if item.id == "-1" {
+                return
+            }
+            var name = item.line1
+            if LocaleCore.shared.getUserLocale() == 1033
+            {
+                name = item.line2
+            }
+            
+            if name == nil {
+                name = item.line1 ?? item.line2 ?? "-"
+            }
+            
+            
+            var agencyName = item.line3
+            if LocaleCore.shared.getUserLocale() == 1033
+            {
+                agencyName = item.line4
+            }
+            if agencyName == nil {
+                agencyName = item.line3 ?? item.line4 ?? "-"
+            }
+            
+            var intPointPerUnit = 0
+            if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
+                intPointPerUnit = pointPerUnit
+            }
+            
+            var reward = [String:AnyObject]()
+            reward[AnalyticsParameterItemID] = item.id! as AnyObject
+            reward[AnalyticsParameterItemName] = name as AnyObject
+            reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+            reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
+            reward[AnalyticsParameterIndex] = i as AnyObject
+            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+            reward["metric1"] = intPointPerUnit as AnyObject
+            
+            items.append(reward)
+            i += 1
+        }
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_list" as NSString,
+            "eventLabel" : "hero_reward | coins | \(currentSubCat.nameEn ?? "") | {position_number} | {reward_id} | {coins}" as NSString,
+            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+        ]
+
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+    }
+    
     func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
     {
+        if currentCat.id == BuzzebeesCore.catIdCoin {
+            var reward = [String:Any]()
+            reward[AnalyticsParameterItemID] = campaign.ID
+            reward[AnalyticsParameterItemName] = campaign.name as NSString
+            reward[AnalyticsParameterItemCategory] = "reward/coins/\(currentSubCat.nameEn ?? "")" as NSString
+            reward[AnalyticsParameterItemBrand] = campaign.agencyName
+            reward[AnalyticsParameterIndex] = indexPath.row + 1
+            reward[AnalyticsParameterItemVariant] = campaign.expireIn?.toTimeString()
+            reward["metric1"] = campaign.pointPerUnit ?? 0
+            
+            // Prepare ecommerce dictionary.
+            let items : [Any] = [reward]
+            
+            let ecommerce : [String:AnyObject] = [
+                "items" : items as AnyObject,
+                "eventCategory" : "reward" as NSString,
+                "eventAction" : " touch_list" as NSString,
+                "eventLabel" : "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(indexPath.row + 1) | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)" as NSString,
+                AnalyticsParameterItemListName: "dtac_coin_reward_\(currentSubCat.nameEn ?? "")" as NSString
+            ]
+            
+            // Log select_content event with ecommerce dictionary.
+            analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
+            return
+        }
+        
         let name = currentCat.nameEn.lowercased()
         let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
         let reward1 : [String : AnyObject] = [
@@ -593,7 +863,7 @@ class CampaignByCatViewController: BaseListController {
             AnalyticsParameterItemList : screenName as AnyObject
         ]
         analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
-
+        
         let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
         analyticsSetEvent(event: "track_event", category: "reward", action: screenName, label: gaLabel)
     }
@@ -615,11 +885,12 @@ class CampaignByCatViewController: BaseListController {
 // MARK:- UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    open func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collectionView == campaignCV ? 2 : 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if Bzbs.shared.arrCategory == nil { return 0}
         if collectionView == subCategoryCV {
             return currentCat.subCat.count
         }
@@ -627,7 +898,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             return arrCategory.count
         }
         if collectionView == campaignCV {
-            if section == 0 {
+            if section == 0{
                 return 1
             }
             if isCategoryAll() {
@@ -638,7 +909,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == subCategoryCV {
             let item = currentCat.subCat[indexPath.row]
             return generateCellSubcat(item, collectionView:collectionView, indexPath: indexPath)
@@ -702,9 +973,10 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 return cell
             }
             let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-            if item.categoryID == BuzzebeesCore.catIdCoin {
+            if item.parentCategoryID == BuzzebeesCore.catIdCoin {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCoinCell", for: indexPath) as! CampaignCoinCVCell
                 cell.setupWith(item)
+                analyticsSetEvent(event: AnalyticsEventViewItemList,category: "reward", action: "impression_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")")
                 return cell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
@@ -717,7 +989,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
         return generateCellCategory(item, collectionView:collectionView, indexPath: indexPath)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == subCategoryCV {
             let item = currentCat.subCat[indexPath.row]
             let name = item.name
@@ -744,7 +1016,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 let width = collectionView.frame.size.width
                 let height = collectionView.frame.size.height
                 if currentCat.subCat.count > 0 {
-
+                    
                     let width = collectionView.frame.size.width
                     if self.currentCat.id == Bzbs.shared.blueCategory?.id {
                         let height = width / 2
@@ -757,12 +1029,27 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 }
                 return CGSize(width: width, height: height)
             }
-            let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-            if item.categoryID == BuzzebeesCore.catIdCoin {
-                return CampaignCoinCVCell.getSize(collectionView)
+            
+            let row = indexPath.row
+            let item = _arrDataShow[row] as! BzbsCampaign
+            var sideItem : BzbsCampaign?
+            var sideRow = row
+            
+            if row % 2 == 0 {
+                sideRow = row + 1
             } else {
-                return CampaignCVCell.getSize(collectionView)
+                sideRow = row - 1
             }
+            
+            if !(sideRow > (_arrDataShow.count - 1) || sideRow < 0) {
+                sideItem = _arrDataShow[sideRow] as? BzbsCampaign
+            }
+            
+            if item.parentCategoryID == BuzzebeesCore.catIdCoin || (sideItem != nil && sideItem?.parentCategoryID == BuzzebeesCore.catIdCoin) {
+                return CampaignCoinCVCell.getSize(collectionView)
+            }
+            return CampaignCVCell.getSize(collectionView)
+                
         }
         
         let width = collectionView.frame.size.width / 4.5
@@ -776,7 +1063,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
         return CGSize(width: width, height:  height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !isConnectedToInternet() {
             showPopupInternet()
             return
@@ -830,7 +1117,11 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             }
             if _arrDataShow.count == 0 || indexPath.section == 0 { return }
             let campaign = _arrDataShow[indexPath.row] as! BzbsCampaign
-            sendGATouchEvent(campaign, indexPath: indexPath)
+            if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
+                analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")")
+            } else {
+                sendGATouchEvent(campaign, indexPath: indexPath)
+            }
             if let nav = self.navigationController
             {
                 GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
@@ -838,12 +1129,12 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             return
         }
         clickCat()
-        let item = arrCategory![indexPath.row]
+        let item = arrCategory[indexPath.row]
         if item.mode == "near_by"
         {
             if let nav = self.navigationController
             {
-
+                
                 GotoPage.gotoNearby(nav)
             }
             return
@@ -854,7 +1145,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
         getDashboard()
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if collectionView == campaignCV {
             if section == 0 {
                 return UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
@@ -864,22 +1155,22 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
         return UIEdgeInsets.zero
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.1
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.1
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView == campaignCV {
             if indexPath.section == 1 {
                 loadMore(indexPath)
             }
         }
     }
-            
+    
     func loadMore(_ indexPath:IndexPath? = nil)
     {
         if _isCallApi || _isEnd { return }
@@ -925,16 +1216,16 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
 // MARK:- UITextFieldDelegate
 extension CampaignByCatViewController: UITextFieldDelegate
 {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    open func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         if !isLoggedIn()
         {
             PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
-                , strConfirm: "popup_retry_login_fail".localized()
-                , strClose: "popup_cancel".localized()
-                , confirm: {
-                Bzbs.shared.delegate?.reTokenTicket()
-            }, cancel: nil)
+                                      , strConfirm: "popup_retry_login_fail".localized()
+                                      , strClose: "popup_cancel".localized()
+                                      , confirm: {
+                                        Bzbs.shared.delegate?.reTokenTicket()
+                                      }, cancel: nil)
             return false
         }
         
@@ -954,63 +1245,97 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
         {
             var eventLabel = ""
             switch type {
-            case "hashtag" :
-                if let nav = self.navigationController {
-                    let vc = MajorCampaignListViewController.getViewController()
-                    vc.dashboard = item
-                    eventLabel = "\(item.hashtag ?? "")|\(item.line1 ?? "")"
-                    nav.pushViewController(vc, animated: true)
-                }
-            case "link" :
-                if let strUrl = item.url, let url = URL(string: strUrl)
-                {
-                    if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    } else {
-                        UIApplication.shared.openURL(url)
+                case "hashtag" :
+                    if let nav = self.navigationController {
+                        let vc = MajorCampaignListViewController.getViewController()
+                        vc.dashboard = item
+                        eventLabel = "\(item.hashtag ?? "")|\(item.line1 ?? "")"
+                        nav.pushViewController(vc, animated: true)
                     }
-                    eventLabel = strUrl
-                }
-            case "cat" :
-                if let _ = self.navigationController {
-                    if let catId = item.cat
+                case "link" :
+                    if let strUrl = item.url, let url = URL(string: strUrl)
                     {
-                        print("click cat:\(catId)")
-                        if let arrCat = Bzbs.shared.arrCategory,
-                            let nav = self.navigationController
-                        {
-                            if let first = arrCat.first(where: { (tmpCat) -> Bool in
-                                return tmpCat.id == Int(catId)!
-                            }){
-                                GotoPage.gotoCategory(nav, cat: first, arrCategory: arrCat)
-                            } else {
-                                GotoPage.gotoCategory(nav, cat: arrCat.first!, arrCategory: arrCat)
-                            }
+                        if #available(iOS 10.0, *) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        } else {
+                            UIApplication.shared.openURL(url)
                         }
-                        let name = item.name ?? ""
-                        eventLabel = "\(catId)|\(name)"
+                        eventLabel = strUrl
                     }
-                }
-            case "none" :
-                eventLabel = "\(item.imageUrl ?? "")"
-                break
-            case "campaign" :
-                if let nav = self.navigationController {
-                    if let id = item.id {
-                        let campaign = BzbsCampaign()
-                        campaign.ID = Int(id)!
-                        GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
-                        // ไม่มี name/agency ส่งมา เดาๆไป
-                        eventLabel = "\(id)|\(item.name ?? "")|\(item.line1 ?? "")"
+                case "cat" :
+                    if let _ = self.navigationController {
+                        if let catId = item.cat
+                        {
+                            print("click cat:\(catId)")
+                            if let arrCat = Bzbs.shared.arrCategory,
+                               let nav = self.navigationController
+                            {
+                                if let first = arrCat.first(where: { (tmpCat) -> Bool in
+                                    return tmpCat.id == Int(catId)!
+                                }){
+                                    GotoPage.gotoCategory(nav, cat: first, arrCategory: arrCat)
+                                } else {
+                                    GotoPage.gotoCategory(nav, cat: arrCat.first!, arrCategory: arrCat)
+                                }
+                            }
+                            let name = item.name ?? ""
+                            eventLabel = "\(catId)|\(name)"
+                        }
                     }
-                }
-            default:
-                break
+                case "none" :
+                    eventLabel = "\(item.imageUrl ?? "")"
+                    break
+                case "campaign" :
+                    if let nav = self.navigationController {
+                        if let id = item.id {
+                            let campaign = BzbsCampaign()
+                            campaign.ID = Int(id)!
+                            GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
+                            // ไม่มี name/agency ส่งมา เดาๆไป
+                            eventLabel = "\(id)|\(item.name ?? "")|\(item.line1 ?? "")"
+                        }
+                    }
+                default:
+                    break
             }
-
+            
             let index = dashboardItems.firstIndex { (dashboard) -> Bool in
                 return dashboard.dict?.description == item.dict?.description
             }
+            
+            if currentCat.id == BuzzebeesCore.catIdCoin
+            {
+                let dict = item.dict
+                let pointPerUnit = Convert.IntFromObject(dict?["pointperunit"]) ?? 0
+                let reward1 : [String:Any] = [
+                    AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
+                    AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
+                    AnalyticsParameterItemCategory: "reward/coins/{reward_filter}" as NSString,
+                    AnalyticsParameterItemBrand: (item.line1 ?? "") as AnyObject,
+                    AnalyticsParameterIndex: "\((index ?? -1) + 1)" as AnyObject,
+                    AnalyticsParameterItemVariant: "{code_duration}" as NSString,
+                    "metric1" : pointPerUnit as NSNumber
+                ]
+                
+                // Prepare ecommerce dictionary.
+                let items : [Any] = [reward1]
+                
+                let ecommerce : [String:AnyObject] = [
+                    "items" : items as AnyObject,
+                    "eventCategory" : "reward" as NSString,
+                    "eventAction" : " touch_banner" as NSString,
+                    "eventLabel" : "hero_reward | coins | \(currentSubCat.name ?? "") | \((index ?? -1) + 1) | \(item.id ?? "-1") | \(pointPerUnit)" as NSString,
+                    AnalyticsParameterItemListName: "dtac_coin_reward_{reward_filter}_banner" as NSString
+                ]
+                
+                // Log select_content event with ecommerce dictionary.
+                analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
+                
+                analyticsSetEvent(event: AnalyticsEventSelectItem, category: "reward", action: "touch_banner", label: "hero_reward | coins | \(currentSubCat.name ?? "") | \((index ?? -1) + 1) | \(item.id ?? "-1") | \(pointPerUnit)")
+                
+                return
+            }
+            
             let name = currentCat.nameEn.lowercased()
             let screenName = "dtac_reward_" + name.replace(" ", replacement: "_") + "_banner"
             analyticsSetEvent(category: "reward", action: screenName, label: eventLabel)
@@ -1063,14 +1388,14 @@ extension CampaignByCatViewController: ScanQRViewControllerDelegate{
                                                             GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self)
                                                         }
                                                         self.hideLoader()
-                    },
+                                                    },
                                                     failCallback: { (error) in
                                                         self.hideLoader()
                                                         if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
                                                         DispatchQueue.main.async {
                                                             PopupManager.scanQrFailPopup(self, close: nil)
                                                         }
-                    })
+                                                    })
                     
                 }
             } else {
@@ -1135,7 +1460,7 @@ extension CampaignByCatViewController : WKNavigationDelegate, WKScriptMessageHan
             let strUrl = url.absoluteString
             print("navigationResponse URL Open : \(strUrl)")
         }
-
+        
         decisionHandler(.allow)
     }
     

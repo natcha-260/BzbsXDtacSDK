@@ -65,7 +65,7 @@
     "search_map" : "Map",
     
     "popup_confirm_redeem_prefix" : "You confirm to redeem",
-    "popup_confirm_redeem_minute_afteruse" : "You will have %@ to redeem.",
+    "popup_confirm_redeem_minute_afteruse" : "You have %@ to redeem.",
     "popup_serial_copy" : "Copy",
     "popup_serial_time_out" : "Time Out",
     "popup_serial_staff_use" : "Press to confirm redemption (For shop staff only)",
@@ -135,7 +135,8 @@
     "popup_time_days" : "Day",
     
     "recommend_coin_title" : "Recommended Coin Rewards",
-    "coin_use" : "Coins used",
+    "coin_use" : "Used",
+    "coin_campaign_use" : "Coins used",
     "coin_not_enough" : "Not Enough Coins",
     
     "popup_confirm_redeem_coin" : "Use %@ coins to redeem",

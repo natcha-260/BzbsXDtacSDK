@@ -147,18 +147,6 @@ public class BuzzebeesCore: NSObject {
                             self.cacheTimeQuota = cacheDateQuota
                         }
                     }
-
-                    
-                    
-                    if let languageUrl = dictJSON["language"] as? Dictionary<String,AnyObject>
-                    {
-                        getLanguage(languageUrl, successCallback: successCallback, failCallback: failCallback)
-                        isCallingSetEndpoint = false
-                    } else {
-                        failCallback()
-                        isSetEndpoint = true
-                        isCallingSetEndpoint = false
-                    }
                     
                     if let catIdCoin = BuzzebeesConvert.IntFromObject(dictJSON["category_coin"]) {
                         BuzzebeesCore.catIdCoin = catIdCoin
@@ -208,6 +196,16 @@ public class BuzzebeesCore: NSObject {
                         
                         if BuzzebeesCore.redeemBaseUrl.last == "/" {
                             BuzzebeesCore.redeemBaseUrl.removeLast()
+                        }
+                        
+                        if let languageUrl = dictJSON["language"] as? Dictionary<String,AnyObject>
+                        {
+                            getLanguage(languageUrl, successCallback: successCallback, failCallback: failCallback)
+                            isCallingSetEndpoint = false
+                        } else {
+                            failCallback()
+                            isSetEndpoint = true
+                            isCallingSetEndpoint = false
                         }
                         
                     } else {

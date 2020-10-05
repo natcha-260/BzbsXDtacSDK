@@ -320,6 +320,8 @@ open class PointHistoryViewController: BaseListController {
     
     @IBAction func clickGotoMission(_ sender: Any) {
         analyticsSetEvent(isNeedProcess: false, event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
+        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
+        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
         if let url = BuzzebeesCore.urlDeeplinkHistory {
             UIApplication.shared.openURL(url)
         }
@@ -453,30 +455,20 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
             }
             
             let item = arrPointLogEarn[indexPath.row]
-
-            let date = Date(timeIntervalSince1970: item.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
-            let formatter = DateFormatter()
-            formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
-            formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.dateFormat = "dd/MM/yyyy HH:mm"
-            analyticsSetEvent(isNeedProcess: false,event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(item.title ?? "") | \(formatter.string(from: date)) | \(item.points ?? 0)")
-
+            sendGAViewEarn(item)
             PopupManager.pointHistoryPopup(onView: self, pointlog: item)
     
         } else {
             if  arrPointLogBurn.count == 0 {
                 return
             }
-            clickBurn(item: arrPointLogBurn[indexPath.row])
-        }
-    }
-    
-    func clickBurn(item:BzbsHistory) {
-        if item.categoryID == BuzzebeesCore.catIdVoiceNet {
-            PopupManager.subscriptionPopup(onView: self, purchase: item)
-        } else {
-            PopupManager.serialPopup(onView: self, purchase: item)
+            let item = arrPointLogBurn[indexPath.row]
+            sendGAViewBurn(item)
+            if item.categoryID == BuzzebeesCore.catIdVoiceNet {
+                PopupManager.subscriptionPopup(onView: self, purchase: item)
+            } else {
+                PopupManager.serialPopup(onView: self, purchase: item)
+            }
         }
     }
     
@@ -490,5 +482,53 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
                 getApiPurchase()
             }
         }
+    }
+}
+
+
+extension PointHistoryViewController: PopupSerialDelegate
+{
+    func didClosePopup() {
+        self._intSkip = 0
+        self.arrPointLogBurn.removeAll()
+        self.apiGetimagefooter()
+        self.getApiPurchase()
+        self.getExpiringPoint()
+    }
+}
+
+extension PointHistoryViewController {
+    
+    func sendGAViewBurn(_ purchase:BzbsHistory){
+        var status = "available"
+        if purchase.serial == "XXXXXXX" || purchase.arrangedDate != nil{
+            status = "expire"
+        }
+        let date = Date(timeIntervalSince1970: purchase.redeemDate ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
+        let formatter = DateFormatter()
+        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let gaLabel = "redeemed_list | {reward_filter} | \(status) | \(formatter.string(from: date)) | \(purchase.pointPerUnit ?? 0)"
+        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_list", label: gaLabel)
+    }
+    
+    func sendGAViewEarn(_ purchase:PointLog){
+        
+        let date = Date(timeIntervalSince1970: purchase.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
+        let formatter = DateFormatter()
+        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        analyticsSetEvent(isNeedProcess: false,event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(purchase.title ?? "") | \(formatter.string(from: date)) | \(purchase.points ?? 0)")
+        
+        let status = "earned"
+        let gaLabel = "redeemed_list | {reward_filter} | \(status) | \(formatter.string(from: date)) | \(purchase.points ?? 0)"
+        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_list", label: gaLabel)
+        
+        let ga2Label = "mission_list | \(purchase.productType ?? "") | \(formatter.string(from: date)) | \(purchase.points ?? 0)"
+        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_list", label: ga2Label)
     }
 }

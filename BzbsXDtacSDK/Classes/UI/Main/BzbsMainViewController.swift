@@ -80,7 +80,6 @@ import WebKit
     
     var isSendImpressionItems = false
     var isSendImpressionBanner = false
-    var impressionItems = [BzbsCampaign]()
     
     var arrCoinCampaign = [BzbsDashboard]()
     var _intSkipCoin = 0
@@ -408,7 +407,7 @@ import WebKit
                                     self.arrCategory = listCategory
                                     // first cat is always Blue
                                     Bzbs.shared.blueCategory = listCategory.first
-                                    self.coinCategory = listCategory.last
+                                    Bzbs.shared.coinCategory = listCategory.last
                                     for cat in self.arrCategory{
                                         let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
                                         allCat.nameEn = "Recommend"
@@ -428,7 +427,7 @@ import WebKit
                                         }
                                         
                                         if userLogin.telType == .postpaid {
-                                            self.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                            Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
                                                 return cat.id == BuzzebeesCore.catIdVoiceNet
                                             }
                                         }
@@ -437,7 +436,7 @@ import WebKit
                                             return cat.id == Bzbs.shared.blueCategory?.id
                                         }
                                         
-                                        self.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                        Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
                                             return cat.id == BuzzebeesCore.catIdVoiceNet
                                         }
                                     }
@@ -475,6 +474,7 @@ import WebKit
 //                                        self.arrCampaign.append(contentsOf: listCampaign)
 //                                    }
                                     
+                                    self.sendImpressionItems(impressionItems: self.arrCampaign)
                                     // wordaround odd collection list count
                                     if self.arrCampaign.count % 2 != 0 {
                                         let dummyCampaign = BzbsCampaign()
@@ -482,7 +482,6 @@ import WebKit
                                         self.arrCampaign.append(dummyCampaign)
                                     }
                                     //------
-                                    
 //                                    self._intSkip += 6
                                     self._isCallApi = false
                                     self.loadedData()
@@ -501,78 +500,26 @@ import WebKit
         })
     }
     
-//    func getApiCoinRecommend() {
-//        if _isCallApiCoin || _isEndCoin {
-//            return
-//        }
-//        _isCallApiCoin = true
-//        self.showLoader()
-//
-//        BuzzebeesCampaign().list(config: campaignConfig,
-//                                 top: 6,
-//                                 skip: _intSkipCoin,
-//                                 search: "",
-//                                 catId: nil,
-//                                 token: Bzbs.shared.userLogin?.token,
-//                                 center: currentCenter,
-//                                 successCallback: { (listCampaign) in
-//
-//                                    if listCampaign.count < 4 {
-//                                        self._isEndCoin = true
-//                                    }
-//
-//                                    if self._intSkipCoin == 0 {
-//                                        self.arrCoinCampaign = listCampaign
-//                                    } else {
-//                                        self.arrCoinCampaign.append(contentsOf: listCampaign)
-//                                    }
-//
-//                                    self._intSkipCoin += 6
-//                                    self._isCallApiCoin = false
-//                                    self.loadedData()
-//        },
-//                                 failCallback: { (error) in
-//                                    if error.id == "-9999"
-//                                    {
-//                                        self._isCallApiCoin = false
-//                                        self.loadedData()
-//                                        return
-//                                    }
-//                                    self._isEndCoin = true
-//                                    self._isCallApiCoin = false
-//                                    self.loadedData()
-//                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-//        })
-//    }
-    
-    
     // api get Dashboard for cat All
     func getApiCoinRecommend()
     {
         
-        if coinCategory == nil {
-            if self.arrCategory.count == 0 {
-                delay(0.33) {
-                    self.getApiCoinRecommend()
-                }
-            }
-            return
-        }
         showLoader()
         BuzzebeesDashboard().sub(dashboardName: Bzbs.shared.userLogin?.telType.configRecommendAll ?? DTACTelType.postpaid.configRecommendAll,
                                  deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                  successCallback: { (dashboard) in
-                                    self.arrCoinCampaign = dashboard.filter(CampaignRotateCVCell.filterDashboard(dashboard:))
-                                    
+                                    self.arrCoinCampaign = dashboard.filter(BzbsDashboard.filterDashboardWithTelType(dashboard:))
                                         // wordaround odd collection list count
                                     if self.arrCoinCampaign.count % 2 != 0 {
                                         let dummyCampaign = BzbsDashboard()
                                         dummyCampaign.id = "-1"
                                         self.arrCoinCampaign.append(dummyCampaign)
                                     }
+                                    if self.arrCoinCampaign.count > 4 {
+                                        self.arrCoinCampaign.removeSubrange(4..<self.arrCoinCampaign.count)
+                                    }
+                                    self.sendImpressionCoinItems(impressionItems: self.arrCoinCampaign)
                                     // -------
-                                    
-                                    self.sendImpressionItems()
                                     self.loadedData()
         },
                                  failCallback: { (error) in
@@ -629,7 +576,7 @@ import WebKit
     
     @IBAction func clickViewAllCoinRecommend(_ sender: Any) {
         self.view.endEditing(true)
-        
+        analyticsSetEvent(category: "reward", action: "touch_button", label: "recommend_coin_reward | view_all")
         if let nav = self.navigationController {
             nav.pushViewController(RecommendCoinListViewController.getViewController(), animated: true)
         }
@@ -805,6 +752,8 @@ import WebKit
     }
     
     @objc func clickCoin() {
+        
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "your_coin")
         if let nav = self.navigationController {
             GotoPage.gotoCoinHistory(nav)
         }
@@ -823,7 +772,7 @@ import WebKit
     // MARK:- Analytic Impression
     // MARK:-
     
-    func sendImpressionItems()
+    func sendImpressionItems(impressionItems:[BzbsCampaign])
     {
         if isSendImpressionItems { return }
         isSendImpressionItems = true
@@ -848,6 +797,65 @@ import WebKit
         ]
         
         analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
+    }
+    
+    func sendImpressionCoinItems(impressionItems:[BzbsDashboard])
+    {
+        var items = [[String:AnyObject]]()
+        var i = 1
+        for item in impressionItems
+        {
+            if item.id == "-1" {
+                continue
+            }
+            var name = item.line1
+            if LocaleCore.shared.getUserLocale() == 1033
+            {
+                name = item.line2
+            }
+    
+            if name == nil {
+                name = item.line1 ?? item.line2 ?? "-"
+            }
+            
+            
+            var agencyName = item.line3
+            if LocaleCore.shared.getUserLocale() == 1033
+            {
+                agencyName = item.line4
+            }
+            if agencyName == nil {
+                agencyName = item.line3 ?? item.line4 ?? "-"
+            }
+            
+            var intPointPerUnit = 0
+            if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
+                intPointPerUnit = pointPerUnit
+            }
+            
+            var reward = [String:AnyObject]()
+            reward[AnalyticsParameterItemID] = item.id! as AnyObject
+            reward[AnalyticsParameterItemName] = name as AnyObject
+            reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+            reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
+            reward[AnalyticsParameterIndex] = i as AnyObject
+            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+            reward["metric1"] = intPointPerUnit as AnyObject
+            
+            i += 1
+            items.append(reward)
+        }
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " impression_list" as NSString,
+            "eventLabel" : "recommend_coin_reward" as NSString,
+            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     func sendImpressionBanner()
@@ -894,6 +902,83 @@ import WebKit
         
         analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
     }
+    
+    func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
+    {
+        let reward1 : [String : AnyObject] = [
+            AnalyticsParameterItemID : campaign.ID as AnyObject,
+            AnalyticsParameterItemName : campaign.name as AnyObject,
+            AnalyticsParameterItemCategory: "dtac_reward" as AnyObject,
+            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
+            AnalyticsParameterIndex: "\(indexPath.row - 1)" as AnyObject
+        ]
+        let ecommerce : [String:AnyObject] = [
+            "items" : reward1  as AnyObject,
+            AnalyticsParameterItemList : "dtac_reward" as AnyObject
+        ]
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
+        
+        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
+        analyticsSetEvent(event: "track_event", category: "reward", action: "dtac_reward", label: gaLabel)
+    }
+    
+    func sendCoinGATouchEvent(_ item:BzbsDashboard, indexPath:IndexPath)
+    {
+        if item.id == "-1" {
+            return
+        }
+        var name = item.line1
+        if LocaleCore.shared.getUserLocale() == 1033
+        {
+            name = item.line2
+        }
+        
+        if name == nil {
+            name = item.line1 ?? item.line2 ?? "-"
+        }
+        
+        
+        var agencyName = item.line3
+        if LocaleCore.shared.getUserLocale() == 1033
+        {
+            agencyName = item.line4
+        }
+        if agencyName == nil {
+            agencyName = item.line3 ?? item.line4 ?? "-"
+        }
+        
+        var intPointPerUnit = 0
+        if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
+            intPointPerUnit = pointPerUnit
+        }
+        let index = indexPath.row
+        
+        var reward = [String:AnyObject]()
+        reward[AnalyticsParameterItemID] = item.id! as AnyObject
+        reward[AnalyticsParameterItemName] = name as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+        reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
+        reward[AnalyticsParameterIndex] = index as AnyObject
+        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+        reward["metric1"] = intPointPerUnit as AnyObject
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_list" as NSString,
+            "eventLabel" : "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)" as NSString,
+            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
+        
+        analyticsSetEvent(event: AnalyticsEventSelectItem, category: "reward", action: "touch_list", label: "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)")
+    }
+    
 }
 
 // MARK:- Extension
@@ -999,9 +1084,6 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
             let item = arrCampaign[row - 1]
-            if !isSendImpressionItems{
-                impressionItems.append(item)
-            }
             cell.setupWith(item, isShowDistance: true)
             return cell
         }
@@ -1025,6 +1107,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
             let item = arrCoinCampaign[row - 1]
             cell.setupWith(item, isShowDistance: true)
+            analyticsSetEvent(event: AnalyticsEventViewItemList, category: "reward", action: "impression_list", label: "recommend_coin_reward")
             return cell
         }
         if section == 6 {
@@ -1063,7 +1146,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
                 if arrCoinCampaign.count < indexPath.row - 1 || indexPath.row == 0 { return }
                 let item = arrCoinCampaign[indexPath.row - 1]
                 if item.id == "-1" { return }
-//                sendGATouchEvent(item,indexPath: indexPath)
+                sendCoinGATouchEvent(item,indexPath: indexPath)
                 if let nav = self.navigationController {
                     let campaign = BzbsCampaign()
                     campaign.ID = Int(item.id)
@@ -1071,25 +1154,6 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
                 }
             }
         }
-    }
-    
-    func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
-    {
-        let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : campaign.ID as AnyObject,
-            AnalyticsParameterItemName : campaign.name as AnyObject,
-            AnalyticsParameterItemCategory: "dtac_reward" as AnyObject,
-            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
-            AnalyticsParameterIndex: "\(indexPath.row - 1)" as AnyObject
-        ]
-        let ecommerce : [String:AnyObject] = [
-            "items" : reward1  as AnyObject,
-            AnalyticsParameterItemList : "dtac_reward" as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
-        
-        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: "dtac_reward", label: gaLabel)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -1101,7 +1165,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         if section == 1 {
             if let first = dashboardItems.first
             {
-                if first.subCampaignDetails.filter(CampaignRotateCVCell.filterDashboard(dashboard:)).count > 0
+                if first.subCampaignDetails.filter(BzbsDashboard.filterDashboard(dashboard:)).count > 0
                 {
                     return CGSize(width: width, height: width * 2 / 3)
                 }

@@ -28,7 +28,7 @@
     "campaign_detail_detail" : "รายละเอียด",
     "campaign_detail_term" : "เงื่อนไข",
     "campaign_detail_branch" : "สาขา",
-    "campaign_detail_status_redeem" : "รับสิทธิ์",
+    "campaign_detail_status_redeem" : "แลกสิทธิ์",
     "campaign_detail_status_use_at_shop" : "ใช้ที่ร้านค้าเท่านั้น",
     "campaign_detail_status_not_eligible" : "ไม่เข้าเงื่อนไข",
     "campaign_detail_status_redeemed" : "ได้รับสิทธิ์แล้ว",
@@ -64,7 +64,7 @@
     "search_map" : "แผนที่",
     
     "popup_confirm_redeem_prefix" : "คุณยืนยันที่จะรับสิทธิ์",
-    "popup_confirm_redeem_minute_afteruse" : "คุณจะมีเวลา %@ ในการรับสิทธิ์",
+    "popup_confirm_redeem_minute_afteruse" : "คุณมีเวลา %@ ในการรับสิทธิ์",
     "popup_serial_copy" : "คัดลอก",
     "popup_serial_time_out" : "หมดเวลา",
     "popup_serial_staff_use" : "กดเพื่อยืนยันรับสิทธิ์ (สำหรับพนักงานร้านค้าเท่านั้น)",
@@ -134,7 +134,8 @@
     "popup_time_days" : "วัน",
     
     "recommend_coin_title" : "รางวัลสำหรับแลกเหรียญ reward coins ",
-    "coin_use" : "เหรียญ coins ที่ใช้",
+    "coin_use" : "ใช้แล้ว",
+    "coin_campaign_use" : "เหรียญ coins ที่ใช้",
     "coin_not_enough" : "เหรียญ coins ไม่พอ",
     
     "popup_confirm_redeem_coin" : "ใช้ %@ เหรียญ coins ในการรับสิทธิ์",

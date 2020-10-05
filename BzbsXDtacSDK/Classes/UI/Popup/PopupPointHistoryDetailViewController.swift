@@ -63,8 +63,9 @@ class PopupPointHistoryDetailViewController: UIViewController {
         }
         else if pointLog.type == "transfer"
         {
+            lblTitle.text = "coin_transfer".localized()
             let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/transfer.jpg"
-            lblPoint.text = "coin_transfer".localized() + ": \(pointLog.points.withCommas())"
+            lblPoint.text = "coin_earn_detail".localized() + ": \(pointLog.points.withCommas())"
             imv.bzbsSetImage(withURL: strUrl)
             listCell = ["transfer_from", "transfer_date"]
         }

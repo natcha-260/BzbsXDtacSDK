@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 class RecommendCoinListViewController: RecommendListViewController {
-
+    
     override func loadView() {
         super.loadView()
         
@@ -43,8 +44,9 @@ class RecommendCoinListViewController: RecommendListViewController {
         BuzzebeesDashboard().sub(dashboardName: Bzbs.shared.userLogin?.telType.configRecommendAll ?? DTACTelType.postpaid.configRecommendAll,
                                  deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                  successCallback: { (dashboard) in
-                                    self._arrDataShow = dashboard.filter(CampaignRotateCVCell.filterDashboard(dashboard:))
-                                    
+                                    let tmpDashboard = dashboard.filter(BzbsDashboard.filterDashboardWithTelType(dashboard:))
+                                    self._arrDataShow = tmpDashboard
+                                    self.sendImpressionCoinItems(impressionItems: tmpDashboard)
                                         // wordaround odd collection list count
                                     if self._arrDataShow.count % 2 != 0 {
                                         let dummyCampaign = BzbsDashboard()
@@ -52,7 +54,6 @@ class RecommendCoinListViewController: RecommendListViewController {
                                         self._arrDataShow.append(dummyCampaign as AnyObject)
                                     }
                                     // -------
-                                    
                                     self.loadedData()
         },
                                  failCallback: { (error) in
@@ -89,4 +90,121 @@ class RecommendCoinListViewController: RecommendListViewController {
         return CampaignCoinCVCell.getSize(collectionView)
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = _arrDataShow[indexPath.row] as! BzbsDashboard
+        sendCoinGATouchEvent(item, indexPath: indexPath)
+        super.collectionView(collectionView, didSelectItemAt: indexPath)
+    }
+    
+    func sendImpressionCoinItems(impressionItems:[BzbsDashboard])
+    {
+        var items = [[String:AnyObject]]()
+        var i = 1
+        for item in impressionItems
+        {
+            var name = item.line1
+            if LocaleCore.shared.getUserLocale() == 1033
+            {
+                name = item.line2
+            }
+    
+            if name == nil {
+                name = item.line1 ?? item.line2 ?? "-"
+            }
+            
+            
+            var agencyName = item.line3
+            if LocaleCore.shared.getUserLocale() == 1033
+            {
+                agencyName = item.line4
+            }
+            if agencyName == nil {
+                agencyName = item.line3 ?? item.line4 ?? "-"
+            }
+            
+            var intPointPerUnit = 0
+            if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
+                intPointPerUnit = pointPerUnit
+            }
+            
+            var reward = [String:AnyObject]()
+            reward[AnalyticsParameterItemID] = item.id! as AnyObject
+            reward[AnalyticsParameterItemName] = name as AnyObject
+            reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+            reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
+            reward[AnalyticsParameterIndex] = i as AnyObject
+            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+            reward["metric1"] = intPointPerUnit as AnyObject
+            
+            i += 1
+            items.append(reward)
+        }
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " impression_list" as NSString,
+            "eventLabel" : "recommend_coin_reward" as NSString,
+            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+    }
+    
+    
+    func sendCoinGATouchEvent(_ item:BzbsDashboard, indexPath:IndexPath)
+    {
+        if item.id == "-1" {
+            return
+        }
+        var name = item.line1
+        if LocaleCore.shared.getUserLocale() == 1033
+        {
+            name = item.line2
+        }
+        
+        if name == nil {
+            name = item.line1 ?? item.line2 ?? "-"
+        }
+        
+        
+        var agencyName = item.line3
+        if LocaleCore.shared.getUserLocale() == 1033
+        {
+            agencyName = item.line4
+        }
+        if agencyName == nil {
+            agencyName = item.line3 ?? item.line4 ?? "-"
+        }
+        
+        var intPointPerUnit = 0
+        if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
+            intPointPerUnit = pointPerUnit
+        }
+        let index = indexPath.row
+        
+        var reward = [String:AnyObject]()
+        reward[AnalyticsParameterItemID] = item.id! as AnyObject
+        reward[AnalyticsParameterItemName] = name as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+        reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
+        reward[AnalyticsParameterIndex] = index as AnyObject
+        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+        reward["metric1"] = intPointPerUnit as AnyObject
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward]
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_list" as NSString,
+            "eventLabel" : "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)" as NSString,
+            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+    }
 }

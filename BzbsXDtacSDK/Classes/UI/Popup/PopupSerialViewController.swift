@@ -478,7 +478,9 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     @IBAction func clickCopy(_ sender: Any) {
         UIPasteboard.general.string = purchase?.privilegeMessage ?? purchase?.serial ?? ""
         showCopylabel()
-//        PopupManager.informationPopup(self, title: nil, message: "Serial copied", close: nil)
+        
+        let gaLabel = "copy_transaction_id | \(purchase?.redeemKey ?? "")"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
     }
     
     var isShowingCopy = false
@@ -507,6 +509,11 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
                 return
             }
         }
+        
+        
+        let gaLabel = "confirm_redemption | \(purchase?.redeemKey ?? "")"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
+        
         PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: purchase?.name ?? "-", confirm: {
             self.apiStaffUse()
         }) {

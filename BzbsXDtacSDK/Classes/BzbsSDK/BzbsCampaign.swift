@@ -341,13 +341,14 @@ public class BzbsCampaign {
         otherPointPerUnit = BuzzebeesConvert.IntFromObject(dict["OtherPointPerUnit"])
 
         parentCampaignId = BuzzebeesConvert.IntFromObject(dict["ParentCampaignId"])
-        if(parentCampaignId == 0) {
-            parentCampaignId = BuzzebeesConvert.IntFromObject(dict["ParentCampaignID"])
+        if let ParentCampaignID = BuzzebeesConvert.IntFromObject(dict["ParentCampaignID"]){
+            parentCampaignId = ParentCampaignID
         }
 
         parentCategoryID = BuzzebeesConvert.IntFromObject(dict["ParentCategoryID"])
-        if(parentCategoryID == 0) {
-            parentCategoryID = BuzzebeesConvert.IntFromObject(dict["ParentCategoryId"])
+        
+        if let ParentCategoryId = BuzzebeesConvert.IntFromObject(dict["ParentCategoryId"]){
+            parentCategoryID = ParentCategoryId
         }
 
         peopleDislike = BuzzebeesConvert.IntFromObject(dict["PeopleDislike"])

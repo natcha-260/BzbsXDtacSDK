@@ -50,7 +50,7 @@ extension MainViewController : BzbsDelegate
     }
     
     func analyticsScreen(screenName: String) {
-//        printLog("Screen -> Name : \(screenName)")
+        printLog("[BzbsAnalytics]\nScreen -> Name : \(screenName)")
         if screenName.contains("log") {
             self.log(screenName)
             return
@@ -59,13 +59,18 @@ extension MainViewController : BzbsDelegate
     }
     
     func analyticsEventEcommerce(eventName: String, params: [String : AnyObject]) {
-//        printLog("EventEcommerce -> event : \(eventName) ,\n\tparams:\(params)")
+        printLog("[BzbsAnalytics]\nEventEcommerce -> event : \(eventName) ,\n\tparams:\(params)")
         Analytics.logEvent(eventName, parameters: params)
     }
     
     func analyticsEvent(event: String, category: String, action: String, label: String) {
-//        printLog("Event -> event : \(event) ,\n\tcategory:\(category), \n\tevent:\(action), \n\tlabel:\(label)")
+        printLog("[BzbsAnalytics]\nEvent -> event : \(event) ,\n\tcategory:\(category), \n\tevent:\(action), \n\tlabel:\(label)")
         Analytics.logEvent(event, parameters: ["category": category, "action":action, "label":label])
+    }
+    
+    func analyticsSetUserProperty(propertyName: String, value: String) {
+        printLog("[BzbsAnalytics]\nsetUserProperty : \n\tlabel:\(propertyName)")
+        Analytics.setUserProperty(value, forName: propertyName)
     }
     
     func log(_ strlog:String) {

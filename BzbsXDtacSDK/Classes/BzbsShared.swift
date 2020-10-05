@@ -28,6 +28,7 @@ struct DtacLoginParams {
     func analyticsScreen(screenName: String)
     func analyticsEvent(event: String, category: String, action: String, label: String)
     func analyticsEventEcommerce(eventName:String, params:[String:AnyObject])
+    func analyticsSetUserProperty(propertyName:String, value:String)
 }
 
 @objc public class Bzbs: NSObject {
@@ -60,6 +61,7 @@ struct DtacLoginParams {
     var userLogin: BzbsUser?
     var arrCategory :[BzbsCategory]?
     var blueCategory : BzbsCategory?
+    var coinCategory : BzbsCategory?
     var deepLinkUrl : URL?
     var isRetriedGetSegment = false
     
@@ -280,7 +282,7 @@ struct DtacLoginParams {
     var isShowLoading = false
     private var timer : Timer?
     private var showLoaderDate : TimeInterval = 0
-    public var defaultLoadingTime : TimeInterval = 30
+    public var defaultLoadingTime : TimeInterval = 20
     
     @objc public func showLoader(on vc:UIViewController)
     {

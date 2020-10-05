@@ -284,6 +284,10 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     {
         Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: eventName, params: params)
     }
+    
+    func analyticsSetUserProperty(propertyName: String, value: String) {
+        Bzbs.shared.delegate?.analyticsSetUserProperty(propertyName: propertyName, value: value)
+    }
 }
 
 // MARK:- Extension
