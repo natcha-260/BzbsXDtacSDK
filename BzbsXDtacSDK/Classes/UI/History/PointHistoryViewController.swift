@@ -123,6 +123,11 @@ open class PointHistoryViewController: BaseListController {
         }
     }
     
+    open override func updateUI() {
+        super.updateUI()
+        initNav()
+    }
+    
     func registerCell() {
         
         tableView.register(PointHistoryCell.getNib(), forCellReuseIdentifier: "pointHistoryCell")

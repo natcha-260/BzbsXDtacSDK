@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.11
+- fix bugs
+- Add Banner for sub category in Coins
 ## 2.0.10
 - fix bugs
 - update wording

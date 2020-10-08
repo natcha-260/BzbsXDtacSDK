@@ -110,13 +110,37 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoHistoryPopupExpired(_ nav: UINavigationController, item: BzbsHistory) {
-//        let storboard = UIStoryboard(name: "History", bundle: currentBundle)
-//        let vc = storboard.instantiateViewController(withIdentifier: "scene_popup_history_expired") as! HistoryViewPopupExpiredController
-//        vc.itemHistory = item
-////        let nav = UINavigationController(rootViewController: vc)
-////        nav.isNavigationBarHidden = true
-////        nav.modalPresentationStyle = UIModalPresentationStyle.custom
-//        nav.pushViewController(vc, animated: true)
+    class func gotoLineDetail(_ target: UIViewController, campaignId : String, packageId: String, bzbsCampaign:BzbsCampaign) {
+        let storboard = UIStoryboard(name: "Campaign", bundle: currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "scene_campaign_line_detail") as! LineStickerDetailViewController
+        vc.hidesBottomBarWhenPushed = true
+        vc.campaignId = campaignId
+        vc.packageId = packageId
+        vc.bzbsCampaign = bzbsCampaign
+        let nav = UINavigationController(rootViewController: vc)
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        lblTitle.font = UIFont.mainFont(.big, style: .bold)
+        lblTitle.textColor = .white
+        lblTitle.numberOfLines = 0
+        lblTitle.text = "line_detail_title".localized()
+        lblTitle.sizeToFit()
+        nav.navigationItem.titleView = lblTitle
+        nav.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(GotoPage.blankSelector), isWhiteIcon: true)
+        nav.navigationBar.tintColor = .lineNav
+        nav.navigationBar.backgroundColor = .lineNav
+        nav.navigationBar.barTintColor = .lineNav
+        target.present(nav, animated: true, completion: nil)
+    }
+    
+    @objc class func blankSelector() { }
+    
+    class func gotoLineRedeem(_ nav: UINavigationController, campaignId : String, packageId: String, campaign:LineStickerCampaign) {
+        let storboard = UIStoryboard(name: "Campaign", bundle: currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "scene_campaign_line_redeem") as! LineStickerRedeemViewController
+        vc.hidesBottomBarWhenPushed = true
+        vc.campaign = campaign
+        vc.campaignId = campaignId
+        vc.packageId = packageId
+        nav.pushViewController(vc, animated: true)
     }
 }

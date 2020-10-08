@@ -430,6 +430,121 @@ public class BuzzebeesCore: NSObject {
         }
     }
     
+    
+    
+    func requestSkipHeaderAlamofire(_ method: HTTPMethod
+        , strURL: String
+        , params: [String: AnyObject]?
+        , headers:[String: String]? = nil
+        , successCallback: @escaping (AnyObject) -> Void
+        , failCallback: @escaping (_ error: BzbsError) -> Void) {
+        
+        // Add appId all api
+        let startTime = Date()
+        var itemParams = params
+        if(itemParams == nil) {
+            itemParams = [String: String]() as [String : AnyObject]?
+        }
+//        itemParams!["app_id"] = self.appId as AnyObject?
+//        itemParams!["device_app_id"] = self.appId as AnyObject?
+        if let dtacId = Bzbs.shared.userLogin?.uuid
+        {
+            itemParams!["dtac_id"] = dtacId as AnyObject
+        }
+        
+        // Add Ocp-Apim-Subscription-Key
+        var itemHeaders = headers ?? HTTPHeaders()
+        
+        if self.isDebugMode {
+            var stringLog = ""
+            stringLog = stringLog + "\r\n//\(startTime.toString()) =============================="
+            stringLog = stringLog + "\nMethod:= \(method.rawValue)"
+            stringLog = stringLog + "\nURL:= " + strURL
+            stringLog = stringLog + "\nParams:= "
+            
+            if let paramsTemp = itemParams {
+                for item in paramsTemp {
+                    if let value = item.value as? String {
+                        stringLog = stringLog + "\n" + item.key + ":" + value
+                    } else {
+                        stringLog = stringLog + "\n" + item.key + ":" + String(describing: item.value)
+                    }
+                }
+            }
+            
+            stringLog = stringLog + "\n"
+            stringLog = stringLog + "\nHeader:= "
+            for headersTemp in itemHeaders {
+                stringLog = stringLog + "\n" + headersTemp.key + ":" + (headersTemp.value)
+                print()
+            }
+            stringLog = stringLog + "\n//==============================\r\n"
+            print(stringLog)
+            Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + stringLog)
+        }
+        
+        sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination:.methodDependent), headers: itemHeaders)
+           .responseJSON { response in
+                do{
+                    let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+
+                    if self.isDebugMode {
+                        let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                        Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
+                        print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
+                    }
+                    if let dictJSON = json as? Dictionary<String, AnyObject>  {
+                        // Check error azure portal
+                        if let statusCode = dictJSON["statusCode"] as? Int {
+                            if let statusMessage = dictJSON["message"] as? String {
+                                let error = BzbsError(strId: "-9999", strCode: String(statusCode), strType: "framework send", strMessage: statusMessage)
+                                failCallback(error)
+                                return
+                            }
+                        }
+                        
+                        if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
+                            successCallback(json as AnyObject)
+                        }
+                    } else if let arrJson = json as? [Dictionary<String, AnyObject>]  {
+                        successCallback(arrJson as AnyObject)
+                    } else{
+                        successCallback(json as AnyObject)
+                    }
+                } catch _ as NSError {
+                    // work around support server success than not return data, use check status code
+                    if let statusCode = response.response?.statusCode {
+                        // 200: Success, 204: No content
+                        if statusCode == 200 || statusCode == 204 {
+                            if self.isDebugMode {
+                                let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                                Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
+                                print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
+                            }
+                            successCallback("Success" as AnyObject)
+                            return
+                        }
+                    }
+                    
+                    var statusCode = "-9999"
+                    var message = "json serialization error"
+                    if let resultError = response.result.error as? NSError
+                    {
+                        statusCode = "\(resultError.code)"
+                        message = resultError.localizedDescription
+                    }
+                    
+                    if self.isDebugMode {
+                        let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
+                        Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
+                        print("**response time =====\(strURL) ===  : \(String(format:"%.2f sec",resposeTime))")
+                    }
+                    let error = BzbsError(strId: "-9999", strCode: statusCode, strType: "framework send", strMessage: message)
+                    failCallback(error)
+                }
+        }
+    }
+    
 }
 
 extension String: ParameterEncoding {

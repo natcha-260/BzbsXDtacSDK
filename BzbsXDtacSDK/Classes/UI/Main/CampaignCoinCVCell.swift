@@ -10,6 +10,8 @@ import UIKit
 class CampaignCoinCVCell: CampaignCVCell {
     
     @IBOutlet weak var lblCoinTitle: UILabel!
+    @IBOutlet weak var vwDiscount: UIView!
+    @IBOutlet weak var lblDiscount: UILabel!
     
     override class func getNib() -> UINib {
         return UINib(nibName: "CampaignCoinCVCell", bundle: Bzbs.shared.currentBundle)
@@ -20,6 +22,8 @@ class CampaignCoinCVCell: CampaignCVCell {
         lblCoinTitle.textColor = .orange
         lblDistance.textColor = .orange
         lblCoinTitle.font = UIFont.mainFont()
+        lblDiscount.font = lblDistance.font
+        vwDiscount.isHidden = true
     }
     
     override class func getSize(_ collectionView: UICollectionView) -> CGSize {
@@ -45,6 +49,7 @@ class CampaignCoinCVCell: CampaignCVCell {
             return
         }
         self.isHidden = false
+        vwDiscount.isHidden = true
         //---
         
         if let strUrl = item.fullImageUrl {
@@ -63,10 +68,8 @@ class CampaignCoinCVCell: CampaignCVCell {
         lblDistance.text = pointPerUnit.withCommas()
         
         if let originalPrice = item.originalPrice, originalPrice > 0 {
-            let font = lblDistance.font ?? UIFont.mainFont()
-            let attrString = NSMutableAttributedString(string: Int(originalPrice).withCommas(), attributes: [NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.strikethroughStyle: 1])
-            attrString.append(NSAttributedString(string: " " + pointPerUnit.withCommas(), attributes: [NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor: UIColor.orange]))
-            lblDistance.attributedText = attrString
+            vwDiscount.isHidden = false
+            lblDiscount.text = Int(originalPrice).withCommas()
         }
     }
     
@@ -77,6 +80,7 @@ class CampaignCoinCVCell: CampaignCVCell {
             return
         }
         self.isHidden = false
+        vwDiscount.isHidden = true
         // ----
         
         if let strUrl = item.imageUrl {
@@ -112,10 +116,8 @@ class CampaignCoinCVCell: CampaignCVCell {
         if let pointPerUnit = Convert.IntFromObject(dict?["pointperunit"]) {
             lblDistance.text = pointPerUnit.withCommas()
             if let originalPrice = Convert.IntFromObject(dict?["originalprice"]) , originalPrice > 0{
-                let font = lblDistance.font ?? UIFont.mainFont()
-                let attrString = NSMutableAttributedString(string: originalPrice.withCommas(), attributes: [NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.strikethroughStyle: 1])
-                attrString.append(NSAttributedString(string: " " + pointPerUnit.withCommas(), attributes: [NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor: UIColor.orange]))
-                lblDistance.attributedText = attrString
+                vwDiscount.isHidden = false
+                lblDiscount.text = Int(originalPrice).withCommas()
             }
         } else {
             let pointPerUnit = 0

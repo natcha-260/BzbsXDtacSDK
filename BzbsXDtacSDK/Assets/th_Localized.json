@@ -139,11 +139,31 @@
     "coin_not_enough" : "เหรียญ coins ไม่พอ",
     
     "popup_confirm_redeem_coin" : "ใช้ %@ เหรียญ coins ในการรับสิทธิ์",
-    "popup_done" : "ปิด",
+    "popup_done" : "สำเร็จ",
     
     "popup_voice_net_thank_you" : "ขอบคุณ",
     "popup_voice_net_detail" : "สมัครแพ็กเกจ",
     
     "coin_history_available" : "ดู Code",
     "coin_history_expired" : "หมดอายุแล้ว",
+    
+    "line_detail_title" : "Sticker Set Info",
+    "line_detail_no_expire_date" : "ไม่มีวันหมดอายุ",
+    "line_detail_coin_format" : "ใช้่ : %@ dtac Coins",
+    "line_detail_your_coin_format" : "คุณมี : %@ Coins",
+    "line_detail_choose" : "เลือก",
+    "line_detail_preview" : "กดที่สติกเกอร์เพื่อแสดง",
+    
+    "line_redeem_you_choose" : "คุณเลือก :",
+    "line_redeem_point_use" : "ใช้ :",
+    "line_redeem_mobile_title" : "เบอร์มือถือ :",
+    "line_redeem_mobile_info" : "กรุณากรอกเบอร์มือถือที่ลงทะเบียนด้วยบัญชีไลน์",
+    "line_redeem_term" : "ยอมรับเงื่อนไขการใช้คะแนนและใบเสร็จรับเงินเพื่อดาวน์โหลดสติกเกอร์ผ่านการเพิ่มเพื่อนในประกาศ LINE STICKER",
+    "line_redeem_continue" : "ดำเนินการต่อ",
+    
+    "line_popup_back" : "กลับ",
+    "line_error_msg_not_found" : "This number that was registered for LINE accoun cannot be found",
+    "line_error_msg_not_found_info" : "Please try again with a different number",
+    "line_popup_use_point_format" : "Use %@ dtac Coins to redeem %@",
+    "line_popup_info_contact_format" : "Sticker will be sent to Line account registered with mobile number %@",
 }

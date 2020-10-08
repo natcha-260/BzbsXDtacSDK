@@ -1,6 +1,6 @@
 {
   "name": "BzbsXDtacSDK",
-  "version": "2.0.6",
+  "version": "2.0.10",
   "summary": "Buzzebees SDK For Dtac Rewards",
   "description": "Buzzebees SDK For Dtac Rewards",
   "homepage": "https://buzzebees.com/Views/BzbsForBusiness/OurService.aspx",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/natcha-260/BzbsXDtacSDK.git",
-    "tag": "2.0.6"
+    "tag": "2.0.10"
   },
   "platforms": {
     "ios": "9.0"
@@ -30,6 +30,12 @@
       "BzbsXDtacSDK/Assets/*.lproj/*.strings",
       "BzbsXDtacSDK/Assets/*.json"
     ]
+  },
+  "pod_target_xcconfig": {
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+  },
+  "user_target_xcconfig": {
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
   },
   "frameworks": "AVFoundation",
   "static_framework": true,

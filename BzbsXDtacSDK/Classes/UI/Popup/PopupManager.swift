@@ -75,6 +75,24 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
+    class func lineErrorPopup(onView target:UIViewController!, strMessage:String, strInfo:String)
+    {
+        let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "popup_line_error") as! PopupLineErrorViewController
+        vc.strMessage = strMessage
+        vc.strInfo = strInfo
+        present(view: vc, on: target)
+    }
+    
+    class func lineConfirmPopup(onView target:UIViewController!, strContactNumber:String, campaign:LineStickerCampaign ,confirm: @escaping (() -> Void),cancel:  (() -> Void)?)
+    {
+        let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "popup_line_confirm") as! PopupLineConfirmViewController
+        vc.strContactNumber = strContactNumber
+        vc.campaign = campaign
+        present(view: vc, on: target)
+    }
+    
     private class func present(view vc:UIViewController,on target:UIViewController)
     {
 //        Bzbs.shared.delay(0.66) {

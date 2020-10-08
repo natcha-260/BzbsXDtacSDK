@@ -104,13 +104,6 @@ open class CampaignByCatViewController: BaseListController {
             
             if let first = currentCat?.subCat.first
             {
-                //                let name = first.nameEn.lowercased()
-                //                if let blueCat = Bzbs.shared.blueCategory, blueCat.id == currentCat.id {
-                //                    analyticsSetScreen(screenName: "dtac_reward_blue")
-                //                } else {
-                //                    let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-                //                    analyticsSetScreen(screenName: screenName)
-                //                }
                 currentSubCat = first
                 sendGATouchEvent(currentCat, subCat: currentSubCat)
                 self.subCategoryCV?.reloadData()
@@ -118,16 +111,6 @@ open class CampaignByCatViewController: BaseListController {
                 self._isEnd = false
                 self._intSkip = 0
                 generateSubCatView()
-                //                if campaignCV != nil {
-                //                    delay(0.33) {
-                //                        if self.isCategoryAll()  {
-                //                            self.getAllDashboard()
-                //                        } else {
-                //                            self.getApi()
-                //                        }
-                //                        self.getDashboard()
-                //                    }
-                //                }
             }
         }
     }
@@ -391,26 +374,30 @@ open class CampaignByCatViewController: BaseListController {
             self.dashboardItems = [dashboard]
             self.campaignCV.reloadData()
         } else {
-            BuzzebeesDashboard().sub(dashboardName: getBannerDashboardConfig(),
-                                     deviceLocale: String(LocaleCore.shared.getUserLocale()),
-                                     successCallback: { (dashboard) in
-                                        self.dashboardItems.removeAll()
-                                        if let first = dashboard.first {
-                                            self.dashboardItems = first.subCampaignDetails
-                                            if self.currentCat.id == BuzzebeesCore.catIdCoin {
-                                                self.sendCoinImpressionBanner(self.dashboardItems)
-                                            } else {
-                                                self.sendImpressionBanner(self.dashboardItems)
-                                            }
-                                        }
-                                        self.campaignCV.reloadData()
-                                     },
-                                     failCallback: { (error) in
-                                        self.dashboardItems.removeAll()
-                                        self.campaignCV.reloadData()
-                                        if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                                     })
+            apiGetSubDashboard(getBannerDashboardConfig())
         }
+    }
+    
+    func apiGetSubDashboard(_ dashboardName:String) {
+        BuzzebeesDashboard().sub(dashboardName: dashboardName,
+                                 deviceLocale: String(LocaleCore.shared.getUserLocale()),
+                                 successCallback: { (dashboard) in
+                                    self.dashboardItems.removeAll()
+                                    if let first = dashboard.first {
+                                        self.dashboardItems = first.subCampaignDetails
+                                        if self.currentCat.id == BuzzebeesCore.catIdCoin {
+                                            self.sendCoinImpressionBanner(self.dashboardItems)
+                                        } else {
+                                            self.sendImpressionBanner(self.dashboardItems)
+                                        }
+                                    }
+                                    self.campaignCV.reloadData()
+                                 },
+                                 failCallback: { (error) in
+                                    self.dashboardItems.removeAll()
+                                    self.campaignCV.reloadData()
+                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                 })
     }
     
     func getAllDashboardConfig() -> String {
@@ -1031,6 +1018,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             }
             
             let row = indexPath.row
+            if _arrDataShow.count - 1  < row { return CampaignCVCell.getSize(collectionView) }
             let item = _arrDataShow[row] as! BzbsCampaign
             var sideItem : BzbsCampaign?
             var sideRow = row
@@ -1094,6 +1082,14 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     dashboard.type = "none"
                     self.dashboardItems = [dashboard]
                     self.campaignCV.reloadData()
+                }
+                if self.currentCat.id == BuzzebeesCore.catIdCoin {
+                    if currentSubCat.id == currentCat.subCat.first?.id {
+                        apiGetSubDashboard(getBannerDashboardConfig())
+                    } else {
+                        let dashboardName = "dtac_category_\(currentSubCat.id!)"
+                        apiGetSubDashboard(dashboardName)
+                    }
                 }
                 collectionView.reloadData()
             }

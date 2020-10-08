@@ -30,6 +30,10 @@ extension UIColor {
     class var historyStatusAvailable: UIColor { return UIColor(hexString: "#87E6BF") }
     class var historyStatusExpired: UIColor { return UIColor(hexString: "#C7C7C7") }
     
+    class var lineGreen: UIColor { return UIColor(hexString: "#1CAE40") }
+    class var lineBG: UIColor { return UIColor(hexString: "#F8F8F8") }
+    class var lineNav: UIColor { return UIColor(hexString: "#263146") }
+    
     convenience init(hexString: String) {
         var cString: String = hexString.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         

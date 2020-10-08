@@ -601,6 +601,10 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     sendGARedeem()
                     
                     PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
+                        if self.campaign.categoryID == BuzzebeesCore.catIdLineSticker {
+                            GotoPage.gotoLineDetail(self, campaignId: "546674", packageId: "17805", bzbsCampaign: self.campaign)
+                            return
+                        }
                         self.sendGABeginCheckout()
                         self.apiRedeem()
                     }) {
@@ -895,7 +899,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             }
             else if type == 9 {
                 lblRight.text = "campaign_detail_status_use_at_shop".localized()
-                cstCoinHeight.constant = 0
+                cstCoinHeight.constant = isRedeemCoinCampaign() ? 25 : 0
                 setButton(isEnable: false)
             }
         }

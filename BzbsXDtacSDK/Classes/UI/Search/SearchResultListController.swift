@@ -104,9 +104,6 @@ class SearchResultListController: BaseListController {
                 } else {
                     self._arrDataShow.append(contentsOf: tmpList)
                 }
-                
-                
-                (self._arrDataShow[Int.random(in: 0..<self._arrDataShow.count)] as! BzbsCampaign).categoryID = BuzzebeesCore.catIdCoin
 
                 self._intSkip += self._intTop
                 self._isEnd = tmpList.count < self._intTop

@@ -147,5 +147,25 @@
     
     "coin_history_available" : "Avaliable",
     "coin_history_expired" : "Expired",
+    
+    "line_detail_title" : "Sticker Set Info",
+    "line_detail_no_expire_date" : "No expire date",
+    "line_detail_coin_format" : "Use : %@ dtac Coins",
+    "line_detail_your_coin_format" : "You have : %@ Coins",
+    "line_detail_choose" : "Choose",
+    "line_detail_preview" : "Tap a sticker to preview it.",
+    
+    "line_redeem_you_choose" : "You choose :",
+    "line_redeem_point_use" : "Point use :",
+    "line_redeem_mobile_title" : "Mobile phone :",
+    "line_redeem_mobile_info" : "Please fill in mobile number that registered with Line account",
+    "line_redeem_term" : "Accept terms of used points and the receipt of the sticker to download stickers via adding friends on LINE STICKER Notice",
+    "line_redeem_continue" : "Continue",
+    
+    "line_popup_back" : "Back",
+    "line_error_msg_not_found" : "This number that was registered for LINE accoun cannot be found",
+    "line_error_msg_not_found_info" : "Please try again with a different number",
+    "line_popup_use_point_format" : "Use %@ dtac Coins to redeem %@",
+    "line_popup_info_contact_format" : "Sticker will be sent to Line account registered with mobile number %@",
 }
 

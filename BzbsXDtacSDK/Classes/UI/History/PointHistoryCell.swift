@@ -29,6 +29,10 @@ class PointHistoryCell: UITableViewCell {
     
     func setupUI(_ item:PointLog) {
         var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/"
+        
+        lblTitle.text = item.title ?? ""
+        lblEarn.text = "coin_earn".localized() + ": \(item.points.withCommas())"
+        
         if item.type == "adjust" {
             if item.points > 0 {
                 strUrl = strUrl + "add.jpg"
@@ -40,16 +44,13 @@ class PointHistoryCell: UITableViewCell {
         }
         else if item.type == "transfer" {
             strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/transfer.jpg"
-            lblEarn.text = "coin_transfer".localized() + ": \(item.points.withCommas())"
+            lblTitle.text = "coin_transfer".localized()
         }
         else {
             let productID = item.productId ?? "0"
             strUrl = strUrl + "product\(productID).jpg"
-            lblEarn.text = "coin_earn".localized() + ": \(item.points.withCommas())"
         }
         imv.bzbsSetImage(withURL: strUrl)
-        
-        lblTitle.text = item.title ?? ""
         
         let date = Date(timeIntervalSince1970: item.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
         let formatter = DateFormatter()
