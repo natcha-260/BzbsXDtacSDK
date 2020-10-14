@@ -114,10 +114,11 @@ class MapsViewController: BzbsXDtacBaseViewController ,UIScrollViewDelegate{
         }
         
         let strTitle = customHeader ?? currentPlace?.name ?? "nearby_map_title".localized()
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = strTitle
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
 //        self.title = strTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
@@ -220,10 +221,11 @@ class MapsViewController: BzbsXDtacBaseViewController ,UIScrollViewDelegate{
     override func updateUI() {
         lblDirection.text = "nearby_direction".localized()
         let strTitle = customHeader ?? currentPlace?.name ?? "nearby_map_title".localized()
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = strTitle
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
 //        self.title = strTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
@@ -270,10 +272,11 @@ class MapsViewController: BzbsXDtacBaseViewController ,UIScrollViewDelegate{
         }
         
         let strTitle = customHeader ?? currentPlace?.name ?? "nearby_map_title".localized()
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = strTitle
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
 //        self.title = strTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))

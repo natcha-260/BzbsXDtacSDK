@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Kingfisher
 
 public extension String {
     var length: Int { return self.count; }
@@ -103,10 +104,22 @@ extension Double {
 }
 
 extension UIImageView {
-    func bzbsSetImage(withURL strUrl:String, isUsePlaceholder:Bool = true) {
+    func bzbsSetImage(withURL strUrl:String, isUsePlaceholder:Bool = true, completionHandler:(() -> Void)? = nil) {
         if let url = URL(string: strUrl) {
             let placeholderImage = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
-            af_setImage(withURL: url.convertCDNAddTime(),placeholderImage: isUsePlaceholder ?  placeholderImage : nil)
+            if strUrl.lowercased().contains(".gif") {
+                self.kf.setImage(with: url, placeholder: isUsePlaceholder ?  placeholderImage : nil, options: nil, progressBlock: nil)
+                { (image, error, cacheType, url) in
+                    completionHandler?()
+                }
+                
+            } else {
+                af_setImage(withURL: url.convertCDNAddTime(),placeholderImage: isUsePlaceholder ?  placeholderImage : nil)
+                af_setImage(withURL: url.convertCDNAddTime(), placeholderImage: isUsePlaceholder ?  placeholderImage : nil, completion:
+                                { (image) in
+                                    completionHandler?()
+                })
+            }
         } else {
             self.image = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         }

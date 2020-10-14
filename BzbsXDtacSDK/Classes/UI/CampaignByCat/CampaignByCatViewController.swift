@@ -1113,6 +1113,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             }
             if _arrDataShow.count == 0 || indexPath.section == 0 { return }
             let campaign = _arrDataShow[indexPath.row] as! BzbsCampaign
+            if campaign.ID == -1 { return }
             if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
                 analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")")
             } else {

@@ -103,9 +103,10 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoCoinHistory(_ nav:UINavigationController) {
+    class func gotoCoinHistory(_ nav:UINavigationController, defaultTabEarn:Bool = true) {
         let storboard = UIStoryboard(name: "History", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_point_history") as! PointHistoryViewController
+        vc.defaultTabEarn = defaultTabEarn
         vc.hidesBottomBarWhenPushed = true
         nav.pushViewController(vc, animated: true)
     }
@@ -134,13 +135,23 @@ class GotoPage: NSObject
     
     @objc class func blankSelector() { }
     
-    class func gotoLineRedeem(_ nav: UINavigationController, campaignId : String, packageId: String, campaign:LineStickerCampaign) {
+    class func gotoLineRedeem(_ nav: UINavigationController, campaignId : String, packageId: String, bzbsCampaign:BzbsCampaign, lineCampaign:LineStickerCampaign) {
         let storboard = UIStoryboard(name: "Campaign", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_campaign_line_redeem") as! LineStickerRedeemViewController
         vc.hidesBottomBarWhenPushed = true
-        vc.campaign = campaign
+        vc.bzbsCampaign = bzbsCampaign
+        vc.lineCampaign = lineCampaign
         vc.campaignId = campaignId
         vc.packageId = packageId
+        nav.pushViewController(vc, animated: true)
+    }
+    
+    class func gotoLineHistory(_ nav: UINavigationController, campaign:LineStickerCampaign, backSelector:(() -> Void)? = nil) {
+        let storboard = UIStoryboard(name: "History", bundle: currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "scene_line_history") as! LineHistoryViewController
+        vc.hidesBottomBarWhenPushed = true
+        vc.campaign = campaign
+        vc.backSelector = backSelector
         nav.pushViewController(vc, animated: true)
     }
 }

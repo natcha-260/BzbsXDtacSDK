@@ -1,0 +1,84 @@
+//
+//  LineHistoryViewController.swift
+//  BzbsXDtacSDK
+//
+//  Created by Buzzebees iMac on 14/10/2563 BE.
+//
+
+import UIKit
+
+class LineHistoryViewController: BzbsXDtacBaseViewController {
+
+    // MARK:- Properties
+    // MARK:- Outlet
+    @IBOutlet weak var lblTitle: UILabel!
+    @IBOutlet weak var lblInfo: UILabel!
+    @IBOutlet weak var imv: UIImageView!
+    @IBOutlet weak var lblLineName: UILabel!
+    @IBOutlet weak var vwBtnDownload: UIView!
+    @IBOutlet weak var lblBtnDownload: UILabel!
+    @IBOutlet weak var lblBack: UILabel!
+    
+    // MARK:- Variable
+    var campaign:LineStickerCampaign!
+    var isNavHidden = false
+    var backSelector:(() -> Void)?
+    
+    // MARK:- View Life cycle
+    // MARK:-
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .lineBG
+        lblTitle.font = UIFont.mainFont(.big)
+        lblInfo.font = UIFont.mainFont(.big)
+        lblLineName.font = UIFont.mainFont()
+        lblBtnDownload.font = UIFont.mainFont(style:.bold)
+        lblBack.font = UIFont.mainFont(style:.bold)
+        
+        lblTitle.textColor = .lineGreen
+        lblLineName.textColor = .gray
+        lblBtnDownload.textColor = .white
+        lblBack.textColor = .lineGreen
+        
+        vwBtnDownload.backgroundColor = .lineGreen
+        
+        lblTitle.text = "line_history_redeem_success".localized()
+        lblInfo.text = String(format: "line_history_info_format".localized(), "081-152-1200")
+        lblLineName.text = campaign.stickerTitle
+        lblBtnDownload.text = "line_history_download_now".localized()
+        lblBack.text = "line_history_back".localized()
+        
+        isNavHidden = self.navigationController?.navigationBar.isHidden ?? false
+        self.navigationController?.navigationBar.isHidden = true
+        
+        imv.bzbsSetImage(withURL: campaign.logoUrl ?? "")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = isNavHidden
+    }
+    
+    override func updateUI() {
+        super.updateUI()
+        lblTitle.text = "line_history_redeem_success".localized()
+        lblInfo.text = String(format: "line_history_info_format".localized(), "081-152-1200")
+        lblLineName.text = campaign.stickerTitle
+        lblBtnDownload.text = "line_history_download_now".localized()
+        lblBack.text = "line_history_back".localized()
+    }
+    
+    // MARK:- Event
+    // MARK:- Click
+    @IBAction func clickDownload(_ sender: Any) {
+        
+    }
+    
+    @IBAction func clickBack(_ sender: Any) {
+        if backSelector != nil {
+            backSelector?()
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+}

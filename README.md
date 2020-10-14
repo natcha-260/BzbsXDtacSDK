@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.12
+- fix bugs
+- add kingfisher pod
 ## 2.0.11
 - fix bugs
 - Add Banner for sub category in Coins

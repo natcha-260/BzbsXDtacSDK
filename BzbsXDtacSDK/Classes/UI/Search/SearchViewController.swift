@@ -61,10 +61,11 @@ class SearchViewController: BaseListController {
 
         viewSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
         
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = "search_title".localized()
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
 //        //self.title = "search_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
@@ -83,10 +84,11 @@ class SearchViewController: BaseListController {
         
         txtSearch.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])
         
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = "search_title".localized()
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         //        //self.title = "search_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))

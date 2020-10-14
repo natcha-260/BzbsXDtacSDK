@@ -79,9 +79,11 @@ class TokenSelectViewController: UIViewController {
         didChangeVersion(segmentVersion)
         lblEnv.textColor = .black
 
-        if let campaignId = UserDefaults.standard.value(forKey: "campaignId") as? String
+        if let campaignId = UserDefaults.standard.value(forKey: "campaignId") as? String, campaignId != ""
         {
             txtCampaignId.text = campaignId
+        } else {
+            txtCampaignId.text = "573114"
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)

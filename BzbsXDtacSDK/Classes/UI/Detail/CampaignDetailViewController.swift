@@ -55,7 +55,13 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     var viewImageSlideshow: ImageSlideshow!
     var isShowTab = DetailTab.detail
     var rewardLeft:CGFloat{
-//        if campaign.type == 9 { return 1 }
+        if campaign.categoryID == BuzzebeesCore.catIdLineSticker {
+            if let qty = campaign.qty ,
+               let soldQty = campaign.itemCountSold {
+                return 1.0 - (CGFloat(soldQty) / CGFloat(qty))
+            }
+            return 0.0
+        }
         if let quantity = campaignStatus?.quantity {
             if quantity == -1 { return 1 }
             if quantity >= 51 || quantity <= -1 {
@@ -71,8 +77,34 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             
         }
         return 0.0
+    }
+    var rewardQuantity:Double? {
+        if campaign.categoryID == BuzzebeesCore.catIdLineSticker {
+            return Double(campaign.qty)
+        }
+        if let quantity = campaignStatus?.quantity {
+            return quantity
+        }
+        return nil
+    }
+    
+    func getProgressColor() -> UIColor {
+        guard let quantity = rewardQuantity else {
+            return .mainLightGray
+        }
         
+        if quantity >= 51 || quantity <= -1 {
+            return .mainGreen
+        } else if quantity >= 21 && quantity < 51 {
+            return .mainYellow
+        } else if quantity < 21 {
+            if quantity == 0 {
+                return .mainLightGray
+            }
+            return .mainRed
+        }
         
+        return .mainLightGray
     }
     
     var isCallingApiRedeem = false
@@ -97,6 +129,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         }
         manageFooter()
         initialUI()
+        setupNav()
         
         lblLike.font = UIFont.mainFont(.xsmall)
         lblHistory.font = UIFont.mainFont(.xsmall)
@@ -195,9 +228,9 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     func setupNav()
     {
-        imvLike.image = UIImage(named: self.campaign.isFavourite ? "img_navbar_icon_fav_active" : "img_navbar_icon_fav_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+        imvLike.image = UIImage(named: (self.campaign.isFavourite ?? false) ? "img_navbar_icon_fav_active" : "img_navbar_icon_fav_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         
-        if campaign.type! == 16 || isRedeemCoinCampaign() {
+        if (campaign.type ?? 16) == 16 || isRedeemCoinCampaign() {
             vwLike.isHidden = true
         } else {
             vwLike.isHidden = false
@@ -270,6 +303,12 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     var isLoadedStatus = false
     
     func getCacheStatus(){
+        if  campaign.type == 16 || campaign.categoryID == BuzzebeesCore.catIdLineSticker {
+            self.manageFooter()
+            self.tableView.reloadData()
+            self.hideLoader()
+            return
+        }
         CacheCore.shared.loadCacheData(key: BBCache.keys.statusCampaign, customKey: "\(campaign.ID!)", successCallback: { (ao) in
             if let dict = ao as? Dictionary<String, AnyObject> {
                 self.campaignStatus = CampaignStatus(dict: dict)
@@ -284,7 +323,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         }
     }
     func getApiCampaignStatus() {
-        if campaign.type == 16 {
+        if campaign.type == 16 || campaign.categoryID == BuzzebeesCore.catIdLineSticker {
             self.manageFooter()
             self.tableView.reloadData()
             self.hideLoader()
@@ -543,7 +582,11 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     @IBAction func clickHistory(_ sender: Any) {
         guard let nav = self.navigationController else {return}
-        GotoPage.gotoHistory(nav)
+        if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
+            GotoPage.gotoCoinHistory(nav, defaultTabEarn: false)
+        } else {
+            GotoPage.gotoHistory(nav)
+        }
     }
     
     @IBAction func clickLeft(_ sender: Any) {
@@ -602,7 +645,9 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     
                     PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
                         if self.campaign.categoryID == BuzzebeesCore.catIdLineSticker {
-                            GotoPage.gotoLineDetail(self, campaignId: "546674", packageId: "17805", bzbsCampaign: self.campaign)
+                            if let campaignID = self.campaign.ID, let packageId = self.campaign.referenceCode {
+                                GotoPage.gotoLineDetail(self, campaignId: "\(campaignID)", packageId: packageId, bzbsCampaign: self.campaign)
+                            }
                             return
                         }
                         self.sendGABeginCheckout()
@@ -794,6 +839,23 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     }
                 }
                 vcRight.backgroundColor = UIColor.dtacBlue
+                if campaign.categoryID == BuzzebeesCore.catIdLineSticker {
+                    lblRight.text = "campaign_detail_status_redeem".localized()
+                    if isRedeemCoinCampaign() {
+                        if let pointPerUnit = campaign.pointPerUnit {
+                            if pointPerUnit <= (Bzbs.shared.userLogin?.bzbsPoints ?? -1) {
+                                lblRight.text!  = "campaign_detail_status_redeem".localized() + " \(campaign.pointPerUnit.withCommas())"
+                                setButton(isEnable: (rewardQuantity ?? 0.0) > 0)
+                            } else {
+                                setButton(isEnable: false)
+                                lblRight.text! = "coin_not_enough".localized()
+                                lblRight.textColor = .gray
+                                cstCoinHeight.constant = 0
+                            }
+                        }
+                    }
+                    return
+                }
                 
                 if let _campaignStatus = campaignStatus {
                     
@@ -915,25 +977,6 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         vcRight.backgroundColor = isEnable ? UIColor.dtacBlue : UIColor.mainLightGray
     }
     
-    func getProgressColor() -> UIColor {
-//        if  campaign.type == 9 {
-//            return .mainGreen
-//        }
-        guard let _campaingStatus = campaignStatus else { return .mainLightGray }
-        
-        if _campaingStatus.quantity >= 51 || _campaingStatus.quantity <= -1 {
-            return .mainGreen
-        } else if _campaingStatus.quantity >= 21 && _campaingStatus.quantity < 51 {
-            return .mainYellow
-        } else if _campaingStatus.quantity < 21 {
-            if _campaingStatus.quantity == 0 {
-                return .mainLightGray
-            }
-            return .mainRed
-        }
-        
-        return .mainLightGray
-    }
     
 }
 
@@ -1014,7 +1057,8 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
                 lblRewardFull.text = "campaign_detail_reward_full".localized()
                 lblRewardFull.font = UIFont.mainFont(FontSize.xsmall, style: FontStyle.bold)
                 lblRewardFull.isHidden = true
-                if let quantity = self.campaignStatus?.quantity
+                
+                if let quantity = rewardQuantity
                 {
                     if quantity <= 0 && quantity != -1{
                         lblRewardFull.isHidden = false
@@ -1079,7 +1123,8 @@ extension CampaignDetailViewController : UITableViewDelegate, UITableViewDataSou
                 lblRewardFull.text = "campaign_detail_reward_full".localized()
                 lblRewardFull.font = UIFont.mainFont(FontSize.xsmall, style: FontStyle.bold)
                 lblRewardFull.isHidden = true
-                if let quantity = self.campaignStatus?.quantity
+                if let quantity = rewardQuantity
+                
                 {
                     if quantity <= 0 && quantity != -1{
                         lblRewardFull.isHidden = false

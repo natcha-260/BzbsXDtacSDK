@@ -24,7 +24,8 @@ class MajorCampaignListViewController: BaseListController {
         didSet{
             collectionView.delegate = self
             collectionView.dataSource = self
-            collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
+            collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "campaignCell")
+            collectionView.register(CampaignCoinCVCell.getNib(), forCellWithReuseIdentifier: "campaignCoinCell")
             collectionView.register(CampaignRotateCVCell.getNib(), forCellWithReuseIdentifier: "campaignRotateCell")
             collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
             collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
@@ -95,6 +96,14 @@ class MajorCampaignListViewController: BaseListController {
                 } else {
                     self._arrDataShow.append(contentsOf: tmpList)
                 }
+                
+                // wordaround odd collection list count
+                if self._arrDataShow.count % 2 != 0 {
+                    let dummyCampaign = BzbsCampaign()
+                    dummyCampaign.ID = -1
+                    self._arrDataShow.append(dummyCampaign)
+                }
+                //------
                 self._isEnd = tmpList.count < self._intTop
                 self._intSkip += self._intTop
                 self.loadedData()
@@ -175,10 +184,17 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
             cell.lbl.text = "major_empty".localized()
             return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
+        
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-        cell.setupWith(item)
-        return cell
+        if item.parentCategoryID == BuzzebeesCore.catIdCoin {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCoinCell", for: indexPath) as! CampaignCoinCVCell
+            cell.setupWith(item)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
+            cell.setupWith(item)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -192,6 +208,25 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
             return CGSize(width: width, height: (collectionView.frame.size.height * 0.9) - (width * 2 / 3))
         }
         
+        let row = indexPath.row
+        if _arrDataShow.count - 1  < row { return CampaignCVCell.getSize(collectionView) }
+        let item = _arrDataShow[row] as! BzbsCampaign
+        var sideItem : BzbsCampaign?
+        var sideRow = row
+        
+        if row % 2 == 0 {
+            sideRow = row + 1
+        } else {
+            sideRow = row - 1
+        }
+        
+        if !(sideRow > (_arrDataShow.count - 1) || sideRow < 0) {
+            sideItem = _arrDataShow[sideRow] as? BzbsCampaign
+        }
+        
+        if item.parentCategoryID == BuzzebeesCore.catIdCoin || (sideItem != nil && sideItem?.parentCategoryID == BuzzebeesCore.catIdCoin) {
+            return CampaignCoinCVCell.getSize(collectionView)
+        }
         return CampaignCVCell.getSize(collectionView)
     }
     
@@ -213,6 +248,7 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 0 || _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        if item.ID == -1 { return }
         if let nav = self.navigationController
         {
             GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)

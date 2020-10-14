@@ -29,7 +29,8 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
     //MARK:- Variable
     var campaignId : String!
     var packageId : String!
-    var campaign : LineStickerCampaign!
+    var lineCampaign : LineStickerCampaign!
+    var bzbsCampaign : BzbsCampaign!
     var isCheckTerm = false
     
     //MARK:- View life cycle
@@ -52,15 +53,15 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         
         lblYouChoose.text = "line_redeem_you_choose".localized()
         lblAgency.text = "Agency"
-        lblName.text = campaign.stickerTitle
+        lblName.text = lineCampaign.stickerTitle
         lblPointUse.text = "line_redeem_point_use".localized()
-        lblPoints.text = campaign.points!.withCommas() + " Coins"
+        lblPoints.text = bzbsCampaign.pointPerUnit!.withCommas() + " Coins"
         lblMobileTitle.text = "line_redeem_mobile_title".localized()
         txtMobile.placeholder = "08X-XXX-XXXX"
         lblMobileInfo.text = "line_redeem_mobile_info".localized()
         lblTerm.text = "line_redeem_term".localized()
         lblContinue.text = "line_redeem_continue".localized()
-        imvSticker.bzbsSetImage(withURL: campaign.logoUrl ?? "")
+        imvSticker.bzbsSetImage(withURL: lineCampaign.logoUrl ?? "")
         
         imvTerm.tintColor = .lineGreen
         self.view.backgroundColor = .lineBG
@@ -161,7 +162,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         BzbsCoreApi().getValidateLineSticker(token: token, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (dict) in
             self.hideLoader()
             if let refId = dict["refID"] as? String {
-                PopupManager.lineConfirmPopup(onView: self, strContactNumber: contactNumber, campaign: self.campaign) {
+                PopupManager.lineConfirmPopup(onView: self, strContactNumber: contactNumber, campaign: self.lineCampaign) {
                     self.apiRedeemLineSticker(refId)
                 } cancel: {
                     
@@ -184,7 +185,9 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         showLoader()
         BzbsCoreApi().getRedeemLineSticker(token: token, refId: refID, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (_) in
             self.hideLoader()
-
+            GotoPage.gotoLineHistory(self.navigationController!, campaign: self.lineCampaign) {
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }
         } failCallback: { (error) in
             self.hideLoader()
             print(error.description())

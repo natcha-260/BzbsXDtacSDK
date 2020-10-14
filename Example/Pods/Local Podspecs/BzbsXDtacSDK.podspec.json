@@ -1,6 +1,6 @@
 {
   "name": "BzbsXDtacSDK",
-  "version": "2.0.10",
+  "version": "2.0.12",
   "summary": "Buzzebees SDK For Dtac Rewards",
   "description": "Buzzebees SDK For Dtac Rewards",
   "homepage": "https://buzzebees.com/Views/BzbsForBusiness/OurService.aspx",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/natcha-260/BzbsXDtacSDK.git",
-    "tag": "2.0.10"
+    "tag": "2.0.12"
   },
   "platforms": {
     "ios": "9.0"
@@ -65,6 +65,9 @@
 
     ],
     "Firebase/Analytics": [
+
+    ],
+    "Kingfisher": [
 
     ]
   },

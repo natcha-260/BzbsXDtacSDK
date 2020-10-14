@@ -12,6 +12,7 @@ open class PointHistoryViewController: BaseListController {
     // MARK:- Properties
     // MARK:- Outlet
     @IBOutlet weak var lblPoint: UILabel!
+    @IBOutlet weak var imvCoin: UIImageView!
     @IBOutlet weak var lblExpireDate: UILabel!
     @IBOutlet weak var lblEarn: UILabel!
     @IBOutlet weak var vwEarnLine: UIView!
@@ -42,6 +43,7 @@ open class PointHistoryViewController: BaseListController {
     
     var isBurnEnd = false
     var _isCallBurnApi = false
+    var defaultTabEarn = true
     
     let dateFormatter : DateFormatter = {
         let formatter = DateFormatter()
@@ -90,9 +92,17 @@ open class PointHistoryViewController: BaseListController {
         lblEarn.font = UIFont.mainFont()
         lblRedeemed.font = UIFont.mainFont()
         lblPoint.text = ""
+        imvCoin.isHidden = true
         lblExpireDate.text = ""
         initNav()
         clickEarn(self)
+        delay{
+            if self.defaultTabEarn {
+                self.clickEarn(self)
+            } else {
+                self.clickRedeemed(self)
+            }
+        }
         
         tableView.es.addPullToRefresh {
             self.arrPointLogEarn.removeAll()
@@ -104,6 +114,7 @@ open class PointHistoryViewController: BaseListController {
         
         burnTableView.es.addPullToRefresh {
             self._intSkip = 0
+            self.isBurnEnd = false
             self.arrPointLogBurn.removeAll()
             self.apiGetimagefooter()
             self.getApiPurchase()
@@ -220,10 +231,11 @@ open class PointHistoryViewController: BaseListController {
     override func initNav() {
         super.initNav()
         
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont(.big, style: .bold)
         lblTitle.textColor = .black
         lblTitle.numberOfLines = 0
+        lblTitle.sizeToFit()
         lblTitle.text = "coin_balance_title".localized()
         self.navigationItem.titleView = lblTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
@@ -239,6 +251,7 @@ open class PointHistoryViewController: BaseListController {
     {
         guard let token = Bzbs.shared.userLogin?.token else {
             lblPoint.text = ""
+            imvCoin.isHidden = true
             lblExpireDate.text = ""
             return
         }
@@ -249,6 +262,7 @@ open class PointHistoryViewController: BaseListController {
             {
                 if let expiringPoint = first["points"] as? Int {
                     self.lblPoint.text = expiringPoint.withCommas()
+                    self.imvCoin.isHidden = false
                 }
                 if let time = first["time"] as? TimeInterval
                 {
@@ -270,7 +284,7 @@ open class PointHistoryViewController: BaseListController {
     // MARK:- Util
     // MARK:-
     func getDate() -> String {
-        var strDate = isEarn ? strEarnDate : strBurnDate
+        var strDate = strEarnDate
         if strDate == "" {
             strDate = dateFormatter.string(from: Date())
         } else {
@@ -280,11 +294,7 @@ open class PointHistoryViewController: BaseListController {
             }
         }
         
-        if isEarn {
-            strEarnDate = strDate
-        } else {
-            strBurnDate = strDate
-        }
+        strEarnDate = strDate
         return strDate
     }
     
@@ -315,7 +325,6 @@ open class PointHistoryViewController: BaseListController {
         if !isEarn { return }
         isEarn = false
         resetButton()
-        lblRedeemed.font = UIFont.mainFont(style:.bold)
         lblRedeemed.textColor = .black
         vwRedeemedLine.isHidden = false
         
@@ -471,10 +480,32 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
             sendGAViewBurn(item)
             if item.categoryID == BuzzebeesCore.catIdVoiceNet {
                 PopupManager.subscriptionPopup(onView: self, purchase: item)
+            } else if item.categoryID == BuzzebeesCore.catIdLineSticker {
+                gotoLineHistory(item)
             } else {
                 PopupManager.serialPopup(onView: self, purchase: item)
             }
         }
+    }
+    
+    func gotoLineHistory(_ item:BzbsHistory) {
+        guard let nav = self.navigationController
+              , let token = Bzbs.shared.userLogin?.token
+              , let packageId = item.redeemKey
+        else {
+            return
+        }
+        showLoader()
+//        let token = ".NbJc5KA8JVnsUDYgmav4FeAlaSXGIwosUgdJmwiRwe3WnDdE6OtVbYzCTyx_4Z0FaZDT7X8-ElCu_Vy3rEEHOlVMXZqmOowzXw7_auPTgwQfQ23J38WdqCSLKueBfGAKvipGirWzxmRf7gkINZ5OokxUgu51Vpq6jX0NuKFhanOUeSr7mL_zTOttOSYt0YXX"
+//        let packageId = "17805"
+//        let campaignId = "546674"
+        BzbsCoreApi().getLineDetail(token: token, campaignId: String(item.ID!), packageId: packageId) { (lineCampaign) in
+            self.hideLoader()
+            GotoPage.gotoLineHistory(nav, campaign: lineCampaign)
+        } failCallback: { (error) in
+            self.hideLoader()
+        }
+
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -494,8 +525,8 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
 extension PointHistoryViewController: PopupSerialDelegate
 {
     func didClosePopup() {
-        self._intSkip = 0
-        self.arrPointLogBurn.removeAll()
+        _intSkip = 0
+        isBurnEnd = false
         self.apiGetimagefooter()
         self.getApiPurchase()
         self.getExpiringPoint()

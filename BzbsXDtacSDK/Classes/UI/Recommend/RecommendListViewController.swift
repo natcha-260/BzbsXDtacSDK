@@ -55,10 +55,11 @@ class RecommendListViewController: BaseListController {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = isHideNav
         
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = "recommend_title".localized()
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         //self.title = "recommend_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
@@ -68,10 +69,11 @@ class RecommendListViewController: BaseListController {
     override func updateUI() {
         super.updateUI()
         
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = "recommend_title".localized()
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         //self.title = "recommend_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))

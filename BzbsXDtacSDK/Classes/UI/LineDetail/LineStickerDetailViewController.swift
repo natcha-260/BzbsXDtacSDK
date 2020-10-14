@@ -39,6 +39,8 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     var lineCampaign : LineStickerCampaign?
     var lineImageList = [LineStickerImage]()
     let bzbsCoreApi = BzbsCoreApi()
+    var selectedImage : LineStickerImage?
+    var resetCellTimer : Timer?
     
     // MARK:- View life cycle
     // MARK:-
@@ -96,8 +98,15 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- API
     // MARK:-
     func apiGetCampaignDetail() {
+        guard let token = Bzbs.shared.userLogin?.token else {
+            PopupManager.informationPopup(self, message: "Login before use") {
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+            return
+        }
         showLoader()
-        let token = ".NbJc5KA8JVnsUDYgmav4FeAlaSXGIwosUgdJmwiRwe3WnDdE6OtVbYzCTyx_4Z0FaZDT7X8-ElCu_Vy3rEEHOlVMXZqmOowzXw7_auPTgwQfQ23J38WdqCSLKueBfGAKvipGirWzxmRf7gkINZ5OokxUgu51Vpq6jX0NuKFhanOUeSr7mL_zTOttOSYt0YXX"
         bzbsCoreApi.getLineDetail(token: token
                                   , campaignId: campaignId
                                   , packageId: packageId)
@@ -107,31 +116,44 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
             self.apiGetPreview()
         } failCallback: { (error) in
             self.hideLoader()
+            PopupManager.informationPopup(self, message: error.message) {
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
         }
         
     }
     
     func apiGetPreview() {
-        let token = ".NbJc5KA8JVnsUDYgmav4FeAlaSXGIwosUgdJmwiRwe3WnDdE6OtVbYzCTyx_4Z0FaZDT7X8-ElCu_Vy3rEEHOlVMXZqmOowzXw7_auPTgwQfQ23J38WdqCSLKueBfGAKvipGirWzxmRf7gkINZ5OokxUgu51Vpq6jX0NuKFhanOUeSr7mL_zTOttOSYt0YXX"
+//        let token = ".NbJc5KA8JVnsUDYgmav4FeAlaSXGIwosUgdJmwiRwe3WnDdE6OtVbYzCTyx_4Z0FaZDT7X8-ElCu_Vy3rEEHOlVMXZqmOowzXw7_auPTgwQfQ23J38WdqCSLKueBfGAKvipGirWzxmRf7gkINZ5OokxUgu51Vpq6jX0NuKFhanOUeSr7mL_zTOttOSYt0YXX"
+        guard let token = Bzbs.shared.userLogin?.token else {
+            PopupManager.informationPopup(self, message: "Login before use") {
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+            return
+        }
         bzbsCoreApi.getLineImageList(token: token, campaignId: campaignId, packageId: packageId) { (tmpImageList) in
             self.lineImageList = tmpImageList
             self.collectionView.reloadData()
             self.hideLoader()
         } failCallback: { (error) in
             self.hideLoader()
+            self.collectionView.reloadData()
         }
     }
     
     func setupUI() {
         imvLogo.bzbsSetImage(withURL: lineCampaign?.logoUrl ?? "")
         lblName.text = lineCampaign?.stickerTitle
-        lblCoins.text = String(format: "line_detail_coin_format".localized(), (lineCampaign?.points ?? 0).withCommas())
+//        lblCoins.text = String(format: "line_detail_coin_format".localized(), (lineCampaign?.points ?? 0).withCommas())
         lblDescription.text = lineCampaign?.stickerDescription
-        let collectionHeight = collectionView.bounds.height
-        UIView.animate(withDuration: 0.1, delay: 0.33, options: UIView.AnimationOptions.curveEaseIn) {
-            self.cstCollectionHeight.constant = collectionHeight
+        UIView.animate(withDuration: 0.33, delay: 0.33, options: UIView.AnimationOptions.curveEaseIn) {
+            self.cstCollectionHeight.constant = self.collectionView.bounds.height
         } completion: { (_) in
-            
+            self.cstCollectionHeight.constant = self.collectionView.bounds.height
         }
     }
     
@@ -139,7 +161,7 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     // MARK:-
     @IBAction func clickChoose(_ sender: Any) {
         
-        GotoPage.gotoLineRedeem(self.navigationController!, campaignId : campaignId, packageId: packageId, campaign: lineCampaign!)
+        GotoPage.gotoLineRedeem(self.navigationController!, campaignId : campaignId, packageId: packageId, bzbsCampaign: bzbsCampaign, lineCampaign: lineCampaign!)
     }
 }
 
@@ -173,7 +195,33 @@ extension LineStickerDetailViewController : UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = lineImageList[indexPath.row]
+        selectedImage = lineImageList[indexPath.row]
+        if let selectedCell = collectionView.cellForItem(at: indexPath) as? LineStickerCollectionViewCell {
+            selectedCell.setAction(.selected)
+            for cell in collectionView.visibleCells
+            {
+                if cell == selectedCell { continue }
+                (cell as! LineStickerCollectionViewCell).setAction(.deselected)
+            }
+        }
+        setTimer()
+    }
+    
+    func setTimer() {
+        if resetCellTimer == nil {
+            resetCellTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(resetCell), userInfo: nil, repeats: false)
+        } else {
+            resetCellTimer?.invalidate()
+            resetCellTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(resetCell), userInfo: nil, repeats: false)
+        }
+    }
+    
+    @objc func resetCell(){
+        resetCellTimer?.invalidate()
+        for cell in collectionView.visibleCells
+        {
+            (cell as! LineStickerCollectionViewCell).setAction(.unselected)
+        }
     }
     
 }

@@ -282,12 +282,17 @@ public class BzbsCoreApi: BuzzebeesCore {
     // line sticker
     public func getLineDetail(token: String
                                  , campaignId: String
-                                 , packageId: String
+                                 , packageId tmpPackageId: String
                                  , successCallback: @escaping (_ result: LineStickerCampaign) -> Void
                                  , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
         var headers = HTTPHeaders()
         headers["Authorization"] = "token \(token)"
+        
+        var packageId = tmpPackageId
+        if packageId.contains("BZBS_") {
+            packageId = packageId.replace("BZBS_", replacement: "")
+        }
         
         let params : [String : AnyObject] = [
             "campaignId": campaignId as AnyObject ,
@@ -311,12 +316,17 @@ public class BzbsCoreApi: BuzzebeesCore {
     
     public func getLineImageList(token: String
                                  , campaignId: String
-                                 , packageId: String
+                                 , packageId tmpPackageId: String
                                  , successCallback: @escaping (_ result: [LineStickerImage]) -> Void
                                  , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
         var headers = HTTPHeaders()
         headers["Authorization"] = "token \(token)"
+        
+        var packageId = tmpPackageId
+        if packageId.contains("BZBS_") {
+            packageId = packageId.replace("BZBS_", replacement: "")
+        }
         
         let params : [String : AnyObject] = [
             "campaignId": campaignId as AnyObject,
@@ -345,12 +355,17 @@ public class BzbsCoreApi: BuzzebeesCore {
     
     public func getValidateLineSticker(token: String
                                        , campaignId: String
-                                       , packageId: String
+                                       , packageId tmpPackageId: String
                                        , contactNumber:String
                                        , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
                                        , failCallback: @escaping (_ error: BzbsError) -> Void) {
         var headers = HTTPHeaders()
         headers["Authorization"] = "token \(token)"
+        
+        var packageId = tmpPackageId
+        if packageId.contains("BZBS_") {
+            packageId = packageId.replace("BZBS_", replacement: "")
+        }
         
         let params : [String : AnyObject] = [
             "campaignId": campaignId as AnyObject,
@@ -378,12 +393,17 @@ public class BzbsCoreApi: BuzzebeesCore {
     public func getRedeemLineSticker(token: String
                                      , refId :String
                                        , campaignId: String
-                                       , packageId: String
+                                       , packageId tmpPackageId: String
                                        , contactNumber:String
-                                       , successCallback: @escaping (_ result: [LineStickerImage]) -> Void
+                                       , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
                                        , failCallback: @escaping (_ error: BzbsError) -> Void) {
         var headers = HTTPHeaders()
         headers["Authorization"] = "token \(token)"
+        
+        var packageId = tmpPackageId
+        if packageId.contains("BZBS_") {
+            packageId = packageId.replace("BZBS_", replacement: "")
+        }
         
         let params : [String : AnyObject] = [
             "refId": refId as AnyObject,
@@ -398,7 +418,8 @@ public class BzbsCoreApi: BuzzebeesCore {
                          , headers: headers
                          , successCallback: { (ao) in
                             if let dict = ao as? Dictionary<String, AnyObject>{
-                                
+                                successCallback(dict)
+                                return 
                             }
                             
                             self.serverSendDataWrongFormat(failCallback: failCallback)

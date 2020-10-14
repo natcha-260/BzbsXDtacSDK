@@ -47,11 +47,12 @@ class SearchResultListController: BaseListController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+        
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = "search_title".localized()
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         //self.title = "search_title".localized()
         lblSearchResults.font = UIFont.mainFont()
@@ -66,11 +67,12 @@ class SearchResultListController: BaseListController {
     
     override func updateUI() {
         super.updateUI()
-//        
-        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.leastNormalMagnitude, height: 44))
+//
+        let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         lblTitle.font = UIFont.mainFont()
         lblTitle.textColor = .black
         lblTitle.text = "search_title".localized()
+        lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         //self.title = "search_title".localized()
         self._isEnd = false

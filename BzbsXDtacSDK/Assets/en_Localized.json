@@ -167,5 +167,10 @@
     "line_error_msg_not_found_info" : "Please try again with a different number",
     "line_popup_use_point_format" : "Use %@ dtac Coins to redeem %@",
     "line_popup_info_contact_format" : "Sticker will be sent to Line account registered with mobile number %@",
+    
+    "line_history_redeem_success" : "Successfully Redeemed",
+    "line_history_info_format" : "Sticker has been sent to\n%@",
+    "line_history_download_now" : "Download Now",
+    "line_history_back" : "Back to Campaign",
 }
 
