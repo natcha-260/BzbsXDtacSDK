@@ -21,6 +21,8 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     
     // MARK:- Variable
     var campaign:LineStickerCampaign!
+    var contactNumber:String!
+    var packageId:String!
     var isNavHidden = false
     var backSelector:(() -> Void)?
     
@@ -43,7 +45,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
         vwBtnDownload.backgroundColor = .lineGreen
         
         lblTitle.text = "line_history_redeem_success".localized()
-        lblInfo.text = String(format: "line_history_info_format".localized(), "081-152-1200")
+        lblInfo.text = String(format: "line_history_info_format".localized(), contactNumber.getContactFormat())
         lblLineName.text = campaign.stickerTitle
         lblBtnDownload.text = "line_history_download_now".localized()
         lblBack.text = "line_history_back".localized()
@@ -62,7 +64,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     override func updateUI() {
         super.updateUI()
         lblTitle.text = "line_history_redeem_success".localized()
-        lblInfo.text = String(format: "line_history_info_format".localized(), "081-152-1200")
+        lblInfo.text = String(format: "line_history_info_format".localized(), contactNumber.getContactFormat())
         lblLineName.text = campaign.stickerTitle
         lblBtnDownload.text = "line_history_download_now".localized()
         lblBack.text = "line_history_back".localized()
@@ -71,7 +73,13 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     // MARK:- Event
     // MARK:- Click
     @IBAction func clickDownload(_ sender: Any) {
-        
+        let strUrl = "https://line.me/R/shop/sticker/detail/\(packageId!)"
+        guard let url = URL(string: strUrl) else { return }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
     }
     
     @IBAction func clickBack(_ sender: Any) {

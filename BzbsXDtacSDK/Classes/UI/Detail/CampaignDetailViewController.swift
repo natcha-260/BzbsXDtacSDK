@@ -80,7 +80,10 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     }
     var rewardQuantity:Double? {
         if campaign.categoryID == BuzzebeesCore.catIdLineSticker {
-            return Double(campaign.qty)
+            if let qty = campaign.qty ,
+               let soldQty = campaign.itemCountSold {
+                return Double(1.0 - (CGFloat(soldQty) / CGFloat(qty))) * 100
+            }
         }
         if let quantity = campaignStatus?.quantity {
             return quantity
@@ -739,7 +742,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     func initImage() {
         if viewImageSlideshow != nil {
-            viewImageSlideshow.contentScaleMode = .scaleAspectFill
+            viewImageSlideshow.contentScaleMode = .scaleAspectFit
             viewImageSlideshow.backgroundColor = UIColor.clear
             viewImageSlideshow.setImageInputs(listImageCampaign)
             viewImageSlideshow.slideshowInterval = 5.0
@@ -1365,7 +1368,7 @@ extension CampaignDetailViewController {
             let ecommerce : [String:AnyObject] = [
                 "items" : items as AnyObject,
                 "eventCategory" : "reward" as NSString,
-                "eventAction" : " seen_text" as NSString,
+                "eventAction" : "seen_text" as NSString,
                 "eventLabel" : "reward_detail | \(campaign.ID ?? -1)" as NSString,
                 AnalyticsParameterItemListName: "dtac_coin_reward_\(campaign.categoryName ?? "")" as NSString
             ]
@@ -1515,7 +1518,7 @@ extension CampaignDetailViewController {
         let ecommerce : [String:AnyObject] = [
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " seen_text" as NSString,
+            "eventAction" : "seen_text" as NSString,
             "eventLabel" : "redeem_complete | \(campaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: "dtac_coin_reward_{reward_filter}" as NSString,
             AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString,

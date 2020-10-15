@@ -52,10 +52,10 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         lblMobileInfo.textColor = .gray
         
         lblYouChoose.text = "line_redeem_you_choose".localized()
-        lblAgency.text = "Agency"
+        lblAgency.text = bzbsCampaign.agencyName
         lblName.text = lineCampaign.stickerTitle
         lblPointUse.text = "line_redeem_point_use".localized()
-        lblPoints.text = bzbsCampaign.pointPerUnit!.withCommas() + " Coins"
+        lblPoints.text = bzbsCampaign.pointPerUnit!.withCommas() + " dtac Coins"
         lblMobileTitle.text = "line_redeem_mobile_title".localized()
         txtMobile.placeholder = "08X-XXX-XXXX"
         lblMobileInfo.text = "line_redeem_mobile_info".localized()
@@ -154,15 +154,15 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
     
     func apiValidateLineSticker() {
         guard let token = Bzbs.shared.userLogin?.token,
-              let contactNumber = txtMobile.text
+              let contactNumber = txtMobile.text?.removeContactFormat()
               else {
             return
         }
         showLoader()
         BzbsCoreApi().getValidateLineSticker(token: token, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (dict) in
             self.hideLoader()
-            if let refId = dict["refID"] as? String {
-                PopupManager.lineConfirmPopup(onView: self, strContactNumber: contactNumber, campaign: self.lineCampaign) {
+            if let refId = dict["refId"] as? String {
+                PopupManager.lineConfirmPopup(onView: self, strContactNumber: contactNumber, campaign: self.lineCampaign, pointPerUnit: self.bzbsCampaign.pointPerUnit ?? 0) {
                     self.apiRedeemLineSticker(refId)
                 } cancel: {
                     
@@ -171,21 +171,27 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
             }
         } failCallback: { (error) in
             self.hideLoader()
-            print(error.description())
-            PopupManager.lineErrorPopup(onView: self, strMessage: "line_error_msg_not_found".localized(), strInfo: "line_error_msg_not_found_info".localized())
+            var message = "line_error_msg_not_found".localized()
+            let info = "line_error_msg_info".localized()
+            if error.message == "1001" {
+                message = "line_error_msg_not_found".localized()
+            } else if error.message == "1003" {
+                message = "line_error_msg_redeemed".localized()
+            }
+            PopupManager.lineErrorPopup(onView: self, strMessage: message, strInfo: info)
         }
     }
     
     func apiRedeemLineSticker(_ refID:String){
         guard let token = Bzbs.shared.userLogin?.token,
-              let contactNumber = txtMobile.text
+              let contactNumber = txtMobile.text?.removeContactFormat()
               else {
             return
         }
         showLoader()
         BzbsCoreApi().getRedeemLineSticker(token: token, refId: refID, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (_) in
             self.hideLoader()
-            GotoPage.gotoLineHistory(self.navigationController!, campaign: self.lineCampaign) {
+            GotoPage.gotoLineHistory(self.navigationController!, campaign: self.lineCampaign, contactNumber: contactNumber, packageId:self.packageId) {
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }
         } failCallback: { (error) in
@@ -199,12 +205,12 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         if !isCheckTerm { return false}
         guard let mobile = txtMobile.text else { return false }
         if let first = mobile.first, first != "0" { return false}
-        if mobile.count < 10 { return false }
+        if mobile.removeContactFormat().count < 10 { return false }
         return true
     }
 
     func updateButton() {
-        vwBtn.backgroundColor = validate() ? .lineGreen : .gray
+        vwBtn.backgroundColor = validate() ? .lineGreen : .lineDisable
     }
     
 }
@@ -218,6 +224,15 @@ extension LineStickerRedeemViewController : UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateButton()
+        if textField == txtMobile {
+            txtMobile.text = txtMobile.text!.getContactFormat()
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == txtMobile {
+            txtMobile.text = txtMobile.text!.removeContactFormat()
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -243,5 +258,21 @@ extension LineStickerRedeemViewController : UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+extension String {
+    func getContactFormat() -> String {
+        if self.count != 10 { return self }
+        var encript = self.substringWithRange(0, end: 3)
+        encript += "-"
+        encript += self.substringWithRange(3, end: 6)
+        encript += "-"
+        encript += self.substringWithRange(6, end: 10)
+        return encript
+    }
+
+    func removeContactFormat() -> String {
+        return self.replace("-", replacement: "")
     }
 }

@@ -146,11 +146,13 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoLineHistory(_ nav: UINavigationController, campaign:LineStickerCampaign, backSelector:(() -> Void)? = nil) {
+    class func gotoLineHistory(_ nav: UINavigationController, campaign:LineStickerCampaign, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
         let storboard = UIStoryboard(name: "History", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_line_history") as! LineHistoryViewController
         vc.hidesBottomBarWhenPushed = true
         vc.campaign = campaign
+        vc.contactNumber = contactNumber
+        vc.packageId = packageId
         vc.backSelector = backSelector
         nav.pushViewController(vc, animated: true)
     }

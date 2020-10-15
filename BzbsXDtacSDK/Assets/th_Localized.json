@@ -150,7 +150,7 @@
     "line_detail_title" : "Sticker Set Info",
     "line_detail_no_expire_date" : "ไม่มีวันหมดอายุ",
     "line_detail_coin_format" : "ใช้่ : %@ dtac Coins",
-    "line_detail_your_coin_format" : "คุณมี : %@ Coins",
+    "line_detail_your_coin_format" : "คุณมี : %@",
     "line_detail_choose" : "เลือก",
     "line_detail_preview" : "กดที่สติกเกอร์เพื่อแสดง",
     
@@ -163,6 +163,7 @@
     
     "line_popup_back" : "กลับ",
     "line_error_msg_not_found" : "This number that was registered for LINE accoun cannot be found",
+    "line_error_msg_redeemed" : "This number has already bought this sticker",
     "line_error_msg_not_found_info" : "Please try again with a different number",
     "line_popup_use_point_format" : "Use %@ dtac Coins to redeem %@",
     "line_popup_info_contact_format" : "Sticker will be sent to Line account registered with mobile number %@",

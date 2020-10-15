@@ -79,6 +79,10 @@ public class BzbsHistory {
     public var installIsOpenApp: Bool!
     public var approveSurvey: Bool!
     
+    public var info1:String?
+    public var info2:String?
+    public var info3:String?
+    
     init(){
         
     }
@@ -175,5 +179,9 @@ public class BzbsHistory {
         refPaymentTranId = BuzzebeesConvert.StringFromObject(dict["RefPaymentTranId"])
         installIsOpenApp = BuzzebeesConvert.BoolFromObject(dict["InstallIsOpenApp"])
         approveSurvey = BuzzebeesConvert.BoolFromObject(dict["ApproveSurvey"])
+        
+        info1 = BuzzebeesConvert.StringFromObject(dict["Info1"])
+        info2 = BuzzebeesConvert.StringFromObject(dict["Info2"])
+        info3 = BuzzebeesConvert.StringFromObject(dict["Info3"])
     }
 }

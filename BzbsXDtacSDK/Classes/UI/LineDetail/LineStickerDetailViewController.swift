@@ -98,31 +98,37 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- API
     // MARK:-
     func apiGetCampaignDetail() {
-        guard let token = Bzbs.shared.userLogin?.token else {
-            PopupManager.informationPopup(self, message: "Login before use") {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
+        if let strDictLineDetail = bzbsCampaign.deliveryJson {
+            do {
+                if let data = strDictLineDetail.data(using: String.Encoding.utf8) ,
+                    let dictJson = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String, AnyObject>
+                {
+                    if let detailDict = dictJson["detail"] as? Dictionary<String, AnyObject>{
+                        self.lineCampaign = LineStickerCampaign(dict: detailDict)
+                    }
+                    
+                    if let arrLineImage = dictJson["image"] as? [Dictionary<String, AnyObject>] {
+                        self.lineImageList = [LineStickerImage]()
+                        for item in arrLineImage {
+                            self.lineImageList.append(LineStickerImage(item))
+                        }
+                    }
+                    self.setupUI()
+                } else {
+                    PopupManager.informationPopup(self, message: "Please try again") {
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                }
+            } catch _ {
+                PopupManager.informationPopup(self, message: "Please try again") {
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true, completion: nil)
+                    }
                 }
             }
-            return
         }
-        showLoader()
-        bzbsCoreApi.getLineDetail(token: token
-                                  , campaignId: campaignId
-                                  , packageId: packageId)
-        { (objLine) in
-            self.lineCampaign = objLine
-            self.setupUI()
-            self.apiGetPreview()
-        } failCallback: { (error) in
-            self.hideLoader()
-            PopupManager.informationPopup(self, message: error.message) {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-        
     }
     
     func apiGetPreview() {
@@ -146,14 +152,15 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     }
     
     func setupUI() {
+        self.collectionView.reloadData()
         imvLogo.bzbsSetImage(withURL: lineCampaign?.logoUrl ?? "")
         lblName.text = lineCampaign?.stickerTitle
 //        lblCoins.text = String(format: "line_detail_coin_format".localized(), (lineCampaign?.points ?? 0).withCommas())
         lblDescription.text = lineCampaign?.stickerDescription
         UIView.animate(withDuration: 0.33, delay: 0.33, options: UIView.AnimationOptions.curveEaseIn) {
-            self.cstCollectionHeight.constant = self.collectionView.bounds.height
+            self.cstCollectionHeight.constant = self.collectionView.contentSize.height
         } completion: { (_) in
-            self.cstCollectionHeight.constant = self.collectionView.bounds.height
+            self.cstCollectionHeight.constant = self.collectionView.contentSize.height
         }
     }
     

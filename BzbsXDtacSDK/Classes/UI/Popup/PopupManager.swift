@@ -84,12 +84,15 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
-    class func lineConfirmPopup(onView target:UIViewController!, strContactNumber:String, campaign:LineStickerCampaign ,confirm: @escaping (() -> Void),cancel:  (() -> Void)?)
+    class func lineConfirmPopup(onView target:UIViewController!, strContactNumber:String, campaign:LineStickerCampaign, pointPerUnit: Int ,confirm: @escaping (() -> Void),cancel:  (() -> Void)?)
     {
         let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "popup_line_confirm") as! PopupLineConfirmViewController
         vc.strContactNumber = strContactNumber
+        vc.pointPerUnit = pointPerUnit
         vc.campaign = campaign
+        vc.confirm = confirm
+        vc.cancel = cancel
         present(view: vc, on: target)
     }
     

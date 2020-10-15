@@ -17,6 +17,7 @@ class PopupLineConfirmViewController: UIViewController {
     @IBOutlet weak var vwConfirm: UIView!
     
     var campaign:LineStickerCampaign!
+    var pointPerUnit:Int!
     var strContactNumber = ""
     var confirm: (() -> Void)?
     var cancel:  (() -> Void)?
@@ -34,7 +35,7 @@ class PopupLineConfirmViewController: UIViewController {
         vwBack.backgroundColor = .lightGray
         vwConfirm.backgroundColor = .lineGreen
         
-        lblMessage.text = String(format: "line_popup_use_point_format".localized(), campaign.points?.withCommas() ?? "0", campaign.stickerTitle ?? "-")
+        lblMessage.text = String(format: "line_popup_use_point_format".localized(), pointPerUnit.withCommas() ?? "0", campaign.stickerTitle ?? "-")
         lblInfo.text = String(format: "line_popup_info_contact_format".localized(), strContactNumber)
         lblBack.text = "line_popup_back".localized()
     }

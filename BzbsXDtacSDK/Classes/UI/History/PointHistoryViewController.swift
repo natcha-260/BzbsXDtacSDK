@@ -491,17 +491,15 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
     func gotoLineHistory(_ item:BzbsHistory) {
         guard let nav = self.navigationController
               , let token = Bzbs.shared.userLogin?.token
-              , let packageId = item.redeemKey
+              , let packageId = item.info2
+              , let contactNumber = item.info3
         else {
             return
         }
         showLoader()
-//        let token = ".NbJc5KA8JVnsUDYgmav4FeAlaSXGIwosUgdJmwiRwe3WnDdE6OtVbYzCTyx_4Z0FaZDT7X8-ElCu_Vy3rEEHOlVMXZqmOowzXw7_auPTgwQfQ23J38WdqCSLKueBfGAKvipGirWzxmRf7gkINZ5OokxUgu51Vpq6jX0NuKFhanOUeSr7mL_zTOttOSYt0YXX"
-//        let packageId = "17805"
-//        let campaignId = "546674"
         BzbsCoreApi().getLineDetail(token: token, campaignId: String(item.ID!), packageId: packageId) { (lineCampaign) in
             self.hideLoader()
-            GotoPage.gotoLineHistory(nav, campaign: lineCampaign)
+            GotoPage.gotoLineHistory(nav, campaign: lineCampaign,contactNumber: contactNumber, packageId:packageId)
         } failCallback: { (error) in
             self.hideLoader()
         }

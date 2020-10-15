@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.13
+- add flow redeem line sticker
 ## 2.0.12
 - fix bugs
 - add kingfisher pod

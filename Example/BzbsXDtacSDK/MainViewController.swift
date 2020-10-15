@@ -55,7 +55,7 @@ extension MainViewController : BzbsDelegate
             self.log(screenName)
             return
         }
-        Analytics.setScreenName(screenName, screenClass: screenName)
+        Analytics.logEvent(screenName, parameters: [AnalyticsEventScreenView : screenName])
     }
     
     func analyticsEventEcommerce(eventName: String, params: [String : AnyObject]) {

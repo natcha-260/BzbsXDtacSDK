@@ -33,6 +33,7 @@ extension UIColor {
     class var lineGreen: UIColor { return UIColor(hexString: "#1CAE40") }
     class var lineBG: UIColor { return UIColor(hexString: "#F8F8F8") }
     class var lineNav: UIColor { return UIColor(hexString: "#263146") }
+    class var lineDisable: UIColor { return UIColor(hexString: "#CFCCCF") }
     
     convenience init(hexString: String) {
         var cString: String = hexString.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
