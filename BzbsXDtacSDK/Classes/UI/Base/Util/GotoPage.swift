@@ -130,6 +130,7 @@ class GotoPage: NSObject
         nav.navigationBar.tintColor = .lineNav
         nav.navigationBar.backgroundColor = .lineNav
         nav.navigationBar.barTintColor = .lineNav
+        nav.modalPresentationStyle = .fullScreen
         target.present(nav, animated: true, completion: nil)
     }
     
@@ -146,7 +147,7 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoLineHistory(_ nav: UINavigationController, campaign:LineStickerCampaign, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
+    class func gotoLineHistory(_ nav: UINavigationController, isFromHistory:Bool = false, campaign:LineStickerCampaign, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
         let storboard = UIStoryboard(name: "History", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_line_history") as! LineHistoryViewController
         vc.hidesBottomBarWhenPushed = true
@@ -154,6 +155,7 @@ class GotoPage: NSObject
         vc.contactNumber = contactNumber
         vc.packageId = packageId
         vc.backSelector = backSelector
+        vc.isFromHistory = isFromHistory
         nav.pushViewController(vc, animated: true)
     }
 }

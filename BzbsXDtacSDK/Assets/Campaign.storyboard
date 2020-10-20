@@ -1146,12 +1146,19 @@
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMG-jj-wtP">
                                                                 <rect key="frame" x="142" y="0.0" width="240" height="126.5"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SANRIO/Hello Kitty &gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UfI-Qv-AO4">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="16"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SANRIO/Hello Kitty" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UfI-Qv-AO4">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="114.5" height="16"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="246" verticalCompressionResistancePriority="245" image="img_navbar_icon_fwd" translatesAutoresizingMaskIntoConstraints="NO" id="uJB-nr-0Ok">
+                                                                        <rect key="frame" x="114.5" y="3" width="8" height="8"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="8" id="ci3-qW-roT"/>
+                                                                            <constraint firstAttribute="width" secondItem="uJB-nr-0Ok" secondAttribute="height" id="fUf-F9-y3b"/>
+                                                                        </constraints>
+                                                                    </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello Kitty Small Stickers" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P9m-w4-iYj">
                                                                         <rect key="frame" x="0.0" y="16" width="240" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1189,13 +1196,15 @@
                                                                     <constraint firstAttribute="trailing" secondItem="P9m-w4-iYj" secondAttribute="trailing" id="0xO-S6-KGw"/>
                                                                     <constraint firstItem="P9m-w4-iYj" firstAttribute="leading" secondItem="pMG-jj-wtP" secondAttribute="leading" id="4fa-RF-Bxa"/>
                                                                     <constraint firstAttribute="trailing" secondItem="112-KC-Tko" secondAttribute="trailing" id="Gtt-xp-TPE"/>
+                                                                    <constraint firstItem="uJB-nr-0Ok" firstAttribute="centerY" secondItem="UfI-Qv-AO4" secondAttribute="centerY" constant="-1" id="IZ6-gX-mbZ"/>
                                                                     <constraint firstItem="UfI-Qv-AO4" firstAttribute="leading" secondItem="pMG-jj-wtP" secondAttribute="leading" id="LoX-iu-vcD"/>
                                                                     <constraint firstItem="P9m-w4-iYj" firstAttribute="top" secondItem="UfI-Qv-AO4" secondAttribute="bottom" id="MWO-1T-EoO"/>
                                                                     <constraint firstItem="rm2-wH-VTB" firstAttribute="top" secondItem="4zk-KS-yVh" secondAttribute="bottom" constant="16" id="P04-M3-SY9"/>
                                                                     <constraint firstAttribute="trailing" secondItem="4zk-KS-yVh" secondAttribute="trailing" id="PRG-Tk-QFW"/>
+                                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uJB-nr-0Ok" secondAttribute="trailing" id="QOI-ly-Ves"/>
+                                                                    <constraint firstItem="uJB-nr-0Ok" firstAttribute="leading" secondItem="UfI-Qv-AO4" secondAttribute="trailing" id="Vod-Ur-v51"/>
                                                                     <constraint firstItem="hoI-rv-ElM" firstAttribute="leading" secondItem="pMG-jj-wtP" secondAttribute="leading" id="Yxx-Tg-3hy"/>
                                                                     <constraint firstItem="4zk-KS-yVh" firstAttribute="top" secondItem="112-KC-Tko" secondAttribute="bottom" constant="16" id="Yzt-Ol-xob"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="UfI-Qv-AO4" secondAttribute="trailing" id="cK9-Sb-pmC"/>
                                                                     <constraint firstItem="4zk-KS-yVh" firstAttribute="leading" secondItem="pMG-jj-wtP" secondAttribute="leading" id="cV1-Fa-DBm"/>
                                                                     <constraint firstItem="UfI-Qv-AO4" firstAttribute="top" secondItem="pMG-jj-wtP" secondAttribute="top" id="dca-QR-8vK"/>
                                                                     <constraint firstAttribute="trailing" secondItem="hoI-rv-ElM" secondAttribute="trailing" id="dhM-CD-Ilf"/>
@@ -1712,6 +1721,7 @@
         <image name="img_icon_history" width="18.5" height="18"/>
         <image name="img_navbar_icon_backwhite" width="33.5" height="34"/>
         <image name="img_navbar_icon_fav_unactive" width="33.5" height="34"/>
+        <image name="img_navbar_icon_fwd" width="13" height="25.5"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

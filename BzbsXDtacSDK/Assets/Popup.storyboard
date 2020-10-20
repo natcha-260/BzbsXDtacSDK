@@ -933,7 +933,7 @@
                                             <constraint firstAttribute="height" constant="2" id="yTu-eD-S3k"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYk-ph-ejy">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CYk-ph-ejy">
                                         <rect key="frame" x="20" y="91" width="142" height="36.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xGu-xf-Gin">
@@ -975,7 +975,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nQ6-Q0-GnZ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="61" height="36.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="36.5"/>
                                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                         <connections>
                                                             <action selector="clickConfirm:" destination="Fha-66-EPn" eventType="touchUpInside" id="NN4-uY-3Rn"/>
@@ -1134,7 +1134,7 @@
         <scene sceneID="21h-ba-FAa">
             <objects>
                 <viewController storyboardIdentifier="popup_confirm_image" id="gLA-BO-iY1" customClass="PopupConfirmViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="ADD-j9-tbN">
+                    <view key="view" contentMode="scaleToFill" id="ADD-j9-tbN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1142,7 +1142,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="0.0" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8rL-lk-9IM">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8rL-lk-9IM">
                                 <rect key="frame" x="207" y="356" width="0.0" height="194.5"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_sorry" translatesAutoresizingMaskIntoConstraints="NO" id="frp-Lz-dzq">

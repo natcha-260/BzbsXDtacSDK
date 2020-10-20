@@ -333,9 +333,8 @@ open class PointHistoryViewController: BaseListController {
     }
     
     @IBAction func clickGotoMission(_ sender: Any) {
-        analyticsSetEvent(isNeedProcess: false, event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
-        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
         analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
+        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
         if let url = BuzzebeesCore.urlDeeplinkHistory {
             UIApplication.shared.openURL(url)
         }
@@ -450,7 +449,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
             }
             
             let item = arrPointLogBurn[indexPath.row]
-            if item.categoryID == BuzzebeesCore.catIdVoiceNet {
+            if item.categoryID == BuzzebeesCore.catIdVoiceNet || item.categoryID == BuzzebeesCore.catIdLineSticker{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "pointHistoryCell", for: indexPath) as! PointHistoryCell
                 cell.setupUI(item)
                 return cell
@@ -499,7 +498,7 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         showLoader()
         BzbsCoreApi().getLineDetail(token: token, campaignId: String(item.ID!), packageId: packageId) { (lineCampaign) in
             self.hideLoader()
-            GotoPage.gotoLineHistory(nav, campaign: lineCampaign,contactNumber: contactNumber, packageId:packageId)
+            GotoPage.gotoLineHistory(nav, isFromHistory: true , campaign: lineCampaign,contactNumber: contactNumber, packageId:packageId)
         } failCallback: { (error) in
             self.hideLoader()
         }
@@ -556,7 +555,7 @@ extension PointHistoryViewController {
         formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        analyticsSetEvent(isNeedProcess: false,event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(purchase.title ?? "") | \(formatter.string(from: date)) | \(purchase.points ?? 0)")
+        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_list", label: "mission_list | \(purchase.title ?? "") | \(formatter.string(from: date)) | \(purchase.points ?? 0)")
         
         let status = "earned"
         let gaLabel = "redeemed_list | {reward_filter} | \(status) | \(formatter.string(from: date)) | \(purchase.points ?? 0)"

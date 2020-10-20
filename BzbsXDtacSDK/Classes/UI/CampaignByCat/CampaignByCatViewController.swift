@@ -93,12 +93,11 @@ open class CampaignByCatViewController: BaseListController {
     
     var currentCat :BzbsCategory! {
         didSet{
-            
             let name = currentCat.nameEn.lowercased()
             if let blueCat = Bzbs.shared.blueCategory, blueCat.id == currentCat.id {
-                analyticsSetScreen(screenName: "dtac_reward_blue")
+                analyticsSetScreen(screenName: "reward_blue")
             } else {
-                let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
+                let screenName = "reward_" + name.replace(" ", replacement: "_")
                 analyticsSetScreen(screenName: screenName)
             }
             
@@ -1106,7 +1105,16 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     campaign.name = item.line2
                     campaign.fullImageUrl = item.imageUrl
                     campaign.agencyName = item.line4
-                    sendGATouchEvent(campaign, indexPath: indexPath)
+                    campaign.pointPerUnit = 0
+                    if let dict = item.dict,  let pointPerUnit = Convert.IntFromObject(dict["pointperunit"]) {
+                        campaign.pointPerUnit = pointPerUnit
+                    }
+                    
+                    if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
+                        analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(indexPath.row) | \(campaign.ID!) | \(campaign.pointPerUnit ?? 0)")
+                    } else {
+                        sendGATouchEvent(campaign, indexPath: indexPath)
+                    }
                     GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
                 }
                 return
@@ -1115,7 +1123,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             let campaign = _arrDataShow[indexPath.row] as! BzbsCampaign
             if campaign.ID == -1 { return }
             if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
-                analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")")
+                analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(indexPath.row) | \(campaign.ID!) | \(campaign.pointPerUnit ?? 0)")
             } else {
                 sendGATouchEvent(campaign, indexPath: indexPath)
             }
@@ -1335,7 +1343,7 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
             
             let name = currentCat.nameEn.lowercased()
             let screenName = "dtac_reward_" + name.replace(" ", replacement: "_") + "_banner"
-            analyticsSetEvent(category: "reward", action: screenName, label: eventLabel)
+            analyticsSetEvent(event:"track_event", category: "reward", action: screenName, label: eventLabel)
             
             let reward1 : [String : AnyObject] = [
                 AnalyticsParameterItemID : (item.id ?? "") as AnyObject,

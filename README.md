@@ -1,4 +1,8 @@
 # BzbsXDtacSDK
+## 2.0.14
+- Update wording
+- Fix Line Sticker Campaign detail
+- Fix GA
 ## 2.0.13
 - add flow redeem line sticker
 ## 2.0.12

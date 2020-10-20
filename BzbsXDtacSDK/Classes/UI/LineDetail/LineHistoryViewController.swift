@@ -20,6 +20,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     @IBOutlet weak var lblBack: UILabel!
     
     // MARK:- Variable
+    var isFromHistory:Bool!
     var campaign:LineStickerCampaign!
     var contactNumber:String!
     var packageId:String!
@@ -48,7 +49,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
         lblInfo.text = String(format: "line_history_info_format".localized(), contactNumber.getContactFormat())
         lblLineName.text = campaign.stickerTitle
         lblBtnDownload.text = "line_history_download_now".localized()
-        lblBack.text = "line_history_back".localized()
+        lblBack.text = isFromHistory ? "line_history_back".localized() : "line_history_back_to_campaign".localized()
         
         isNavHidden = self.navigationController?.navigationBar.isHidden ?? false
         self.navigationController?.navigationBar.isHidden = true

@@ -271,13 +271,9 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
         Bzbs.shared.delegate?.analyticsScreen(screenName: screenName)
     }
     
-    func analyticsSetEvent(isNeedProcess:Bool = true ,event: String = "track_event", category: String, action: String, label: String)
+    func analyticsSetEvent(event: String, category: String, action: String, label: String)
     {
-        var processedLabel = label.lowercased()
-        if isNeedProcess {
-            processedLabel = processedLabel.replace(" ", replacement: "_")
-        }
-        Bzbs.shared.delegate?.analyticsEvent(event: event, category: category, action: action, label: processedLabel)
+        Bzbs.shared.delegate?.analyticsEvent(event: event, category: category, action: action, label: label)
     }
     
     func analyticsSetEventEcommerce(eventName:String, params: [String:AnyObject])

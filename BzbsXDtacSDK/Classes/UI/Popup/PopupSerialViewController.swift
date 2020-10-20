@@ -197,12 +197,12 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
             cstQRWidth.constant = 25
         }
         sendGABeginEvent()
-        analyticsSetScreen(screenName: "dtac_reward_redeem")
+        analyticsSetScreen(screenName: "reward_detail")
     }
     
     func sendGABeginEvent()
     {
-        let screenName = "dtac_reward"
+        let screenName = "reward"
         let reward1 : [String : AnyObject] = [
             AnalyticsParameterItemID : (purchase?.ID ?? -1) as AnyObject,
             AnalyticsParameterItemName : (purchase?.name ?? "") as AnyObject,
@@ -221,7 +221,7 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     
     func sendGAUseEvent()
     {
-        let screenName = "dtac_reward"
+        let screenName = "reward"
         let reward1 : [String : AnyObject] = [
             AnalyticsParameterItemID : (purchase?.ID ?? -1) as AnyObject,
             AnalyticsParameterItemName : (purchase?.name ?? "") as AnyObject,

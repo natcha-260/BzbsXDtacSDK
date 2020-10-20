@@ -56,9 +56,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     var isShowTab = DetailTab.detail
     var rewardLeft:CGFloat{
         if campaign.categoryID == BuzzebeesCore.catIdLineSticker {
-            if let qty = campaign.qty ,
-               let soldQty = campaign.itemCountSold {
-                return 1.0 - (CGFloat(soldQty) / CGFloat(qty))
+            if let qty = campaign.qty {
+                return qty > 0 ? 1.0 : 0.0
             }
             return 0.0
         }
@@ -80,9 +79,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     }
     var rewardQuantity:Double? {
         if campaign.categoryID == BuzzebeesCore.catIdLineSticker {
-            if let qty = campaign.qty ,
-               let soldQty = campaign.itemCountSold {
-                return Double(1.0 - (CGFloat(soldQty) / CGFloat(qty))) * 100
+            if let qty = campaign.qty {
+                return qty > 0 ? 100 : 0
             }
         }
         if let quantity = campaignStatus?.quantity {
@@ -128,7 +126,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             analyticsSetScreen(screenName: "dtac_reward_blue_detail")
             isShowTab = .condition
         } else {
-            analyticsSetScreen(screenName: "dtac_reward_detail")
+            analyticsSetScreen(screenName: "reward_detail")
         }
         manageFooter()
         initialUI()
@@ -857,6 +855,20 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                             }
                         }
                     }
+                    
+                    if campaign.isConditionPass == false {
+                        setButton(isEnable: false)
+                        lblRight.text = "coin_not_enough".localized()
+                        lblRight.textColor = .gray
+                        cstCoinHeight.constant = 0
+                        if let conditionAlertId = campaign.conditionAlertId {
+                            if conditionAlertId == 2 {
+                                lblRight.text = "alert_button_redeem_s2002".errorLocalized()
+                            } else if conditionAlertId == 1 {
+                                lblRight.text = "alert_button_redeem_s2006".errorLocalized()
+                            }
+                        }
+                    }
                     return
                 }
                 
@@ -1470,7 +1482,7 @@ extension CampaignDetailViewController {
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
@@ -1487,7 +1499,7 @@ extension CampaignDetailViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "confirm_reward | {reward_id}" as NSString,
+            "eventLabel" : "confirm_reward | \(campaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: "dtac_coin_reward_{reward_filter}" as NSString,
         ]
         
@@ -1499,11 +1511,11 @@ extension CampaignDetailViewController {
     }
     
     func sendGAThankyouPage(_ redeemKey:String?) {
-            
+        
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
@@ -1520,32 +1532,33 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "seen_text" as NSString,
             "eventLabel" : "redeem_complete | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: "dtac_coin_reward_{reward_filter}" as NSString,
-            AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString,
+            AnalyticsParameterItemListName: "reward_detail" as NSString,
+            AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
+
         ]
         
         // Log select_content event with ecommerce dictionary.
         analyticsSetEventEcommerce(eventName: AnalyticsEventPurchase, params: ecommerce)
         
-        Analytics.logEvent(AnalyticsEventSpendVirtualCurrency, parameters: [
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
              AnalyticsParameterItemName : "\(campaign.ID ?? -1) | \(campaign.name ?? "")" as NSString,
              AnalyticsParameterItemVariant : campaign.agencyName as NSString,
              AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
              AnalyticsParameterValue: (campaign.pointPerUnit ?? 0) as NSNumber,
              AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
          ])
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: ecommerce)
 
+        
+        let gaLabel = "redeem_complete | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)"
+        analyticsSetEvent(event: AnalyticsEventPurchase, category: "reward", action: "seen_text", label: gaLabel)
+        analyticsSetEvent(event: AnalyticsEventSpendVirtualCurrency, category: "reward", action: "seen_text", label: gaLabel)
+        
         //Push to Front-End Team
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd"
         analyticsSetUserProperty(propertyName: "last_redeem_coin", value: "\(formatter.string(from: Date()))")
         analyticsSetUserProperty(propertyName: "remaining_coin", value: "\((Bzbs.shared.userLogin?.bzbsPoints ?? 0) - campaign.pointPerUnit)")
         
-        
-        let gaLabel = "redeem_complete | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)"
-        analyticsSetEvent(event: AnalyticsEventPurchase, category: "reward", action: "seen_text", label: gaLabel)
-        analyticsSetEvent(event: AnalyticsEventSpendVirtualCurrency, category: "reward", action: "seen_text", label: gaLabel)
 
     }
     

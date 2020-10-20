@@ -52,21 +52,21 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        lblAgency.font = UIFont.mainFont()
-        lblName.font = UIFont.mainFont(.big, style: .bold)
-        lblExpireDate.font = UIFont.mainFont()
-        lblCoins.font = UIFont.mainFont()
-        lblMyCoin.font = UIFont.mainFont()
+        lblAgency.font = UIFont.mainFont(.small)
+        lblName.font = UIFont.mainFont(.big)
+        lblExpireDate.font = UIFont.mainFont(.small)
+        lblCoins.font = UIFont.mainFont(.small)
+        lblMyCoin.font = UIFont.mainFont(.small)
         lblChoose.font = UIFont.mainFont(style:.bold)
-        lblDescription.font = UIFont.mainFont()
-        lblInfo.font = UIFont.mainFont()
+        lblDescription.font = UIFont.mainFont(.small)
+        lblInfo.font = UIFont.mainFont(.small)
         
         lblExpireDate.textColor = .gray
         lblMyCoin.textColor = .gray
         lblDescription.textColor = .gray
         lblInfo.textColor = .gray
         
-        lblAgency.text = bzbsCampaign.agencyName ?? " "
+        lblAgency.text = (bzbsCampaign.agencyName ?? " ")
         lblName.text = bzbsCampaign.name ?? " "
         lblExpireDate.text = "line_detail_no_expire_date".localized()
         lblCoins.text = String(format: "line_detail_coin_format".localized(), (bzbsCampaign.pointPerUnit ?? 0).withCommas())
@@ -83,7 +83,7 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
         super.initNav()
         
         let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
-        lblTitle.font = UIFont.mainFont(.big)
+        lblTitle.font = UIFont.mainFont(.big, style: .bold)
         lblTitle.textColor = .white
         lblTitle.numberOfLines = 0
         lblTitle.text = "line_detail_title".localized()
@@ -132,7 +132,6 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     }
     
     func apiGetPreview() {
-//        let token = ".NbJc5KA8JVnsUDYgmav4FeAlaSXGIwosUgdJmwiRwe3WnDdE6OtVbYzCTyx_4Z0FaZDT7X8-ElCu_Vy3rEEHOlVMXZqmOowzXw7_auPTgwQfQ23J38WdqCSLKueBfGAKvipGirWzxmRf7gkINZ5OokxUgu51Vpq6jX0NuKFhanOUeSr7mL_zTOttOSYt0YXX"
         guard let token = Bzbs.shared.userLogin?.token else {
             PopupManager.informationPopup(self, message: "Login before use") {
                 DispatchQueue.main.async {

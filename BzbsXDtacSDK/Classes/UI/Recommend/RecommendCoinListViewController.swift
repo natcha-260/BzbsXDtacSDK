@@ -38,6 +38,8 @@ class RecommendCoinListViewController: RecommendListViewController {
         self.navigationItem.titleView = lblTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
         getApi()
+        
+        analyticsSetScreen(screenName: "reward")
     }
     
     override func getApi() {

@@ -16,6 +16,7 @@ class PopupLineConfirmViewController: UIViewController {
     @IBOutlet weak var lblConfirm: UILabel!
     @IBOutlet weak var vwConfirm: UIView!
     
+    var isFromHistory:Bool = false
     var campaign:LineStickerCampaign!
     var pointPerUnit:Int!
     var strContactNumber = ""
@@ -28,6 +29,7 @@ class PopupLineConfirmViewController: UIViewController {
         lblMessage.font = UIFont.mainFont()
         lblInfo.font = UIFont.mainFont()
         lblBack.font = UIFont.mainFont()
+        lblConfirm.font = UIFont.mainFont()
         
         lblMessage.textColor = .lineGreen
         lblBack.textColor = .white
@@ -35,9 +37,10 @@ class PopupLineConfirmViewController: UIViewController {
         vwBack.backgroundColor = .lightGray
         vwConfirm.backgroundColor = .lineGreen
         
-        lblMessage.text = String(format: "line_popup_use_point_format".localized(), pointPerUnit.withCommas() ?? "0", campaign.stickerTitle ?? "-")
-        lblInfo.text = String(format: "line_popup_info_contact_format".localized(), strContactNumber)
+        lblMessage.text = String(format: "line_popup_use_point_format".localized(), pointPerUnit.withCommas() , campaign.stickerTitle ?? "-")
+        lblInfo.text = String(format: "line_popup_info_contact_format".localized(), strContactNumber.getContactFormat())
         lblBack.text = "line_popup_back".localized()
+        lblConfirm.text = "line_popup_confirm".localized()
     }
     
 

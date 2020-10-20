@@ -55,7 +55,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         lblAgency.text = bzbsCampaign.agencyName
         lblName.text = lineCampaign.stickerTitle
         lblPointUse.text = "line_redeem_point_use".localized()
-        lblPoints.text = bzbsCampaign.pointPerUnit!.withCommas() + " dtac Coins"
+        lblPoints.text = bzbsCampaign.pointPerUnit!.withCommas() + " " + "line_redeem_coin".localized()
         lblMobileTitle.text = "line_redeem_mobile_title".localized()
         txtMobile.placeholder = "08X-XXX-XXXX"
         lblMobileInfo.text = "line_redeem_mobile_info".localized()
@@ -172,11 +172,13 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         } failCallback: { (error) in
             self.hideLoader()
             var message = "line_error_msg_not_found".localized()
-            let info = "line_error_msg_info".localized()
+            var info = "line_error_msg_not_found_info".localized()
             if error.message == "1001" {
                 message = "line_error_msg_not_found".localized()
+                info = "line_error_msg_not_found_info".localized()
             } else if error.message == "1003" {
                 message = "line_error_msg_redeemed".localized()
+                info = "line_error_msg_redeemed_info".localized()
             }
             PopupManager.lineErrorPopup(onView: self, strMessage: message, strInfo: info)
         }

@@ -39,6 +39,7 @@ class PopupSubscriptionViewController: UIViewController {
         vwClose.backgroundColor = .dtacBlue
         vwClose.cornerRadius()
         
+        Bzbs.shared.delegate?.analyticsScreen(screenName: "reward_detail")
         setupUI()
     }
     

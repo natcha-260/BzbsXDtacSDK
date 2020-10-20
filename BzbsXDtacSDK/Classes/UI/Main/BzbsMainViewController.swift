@@ -138,7 +138,7 @@ import WebKit
         super.viewDidAppear(animated)
         updateNavigationBar()
         
-        analyticsSetScreen(screenName: "dtac_reward")
+        analyticsSetScreen(screenName: "reward")
         self.getExpiringPoint()
         
         navigationController?.navigationBar.backgroundColor = .white
@@ -576,7 +576,7 @@ import WebKit
     
     @IBAction func clickViewAllCoinRecommend(_ sender: Any) {
         self.view.endEditing(true)
-        analyticsSetEvent(category: "reward", action: "touch_button", label: "recommend_coin_reward | view_all")
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "recommend_coin_reward | view_all")
         if let nav = self.navigationController {
             nav.pushViewController(RecommendCoinListViewController.getViewController(), animated: true)
         }
@@ -599,7 +599,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(category: "reward", action: "scan", label: "screen_name")
+        analyticsSetEvent(event: "track_event", category: "reward", action: "scan", label: "screen_name")
         AVCaptureDevice.requestAccess(for: .video) { success in
           if success { // if request is granted (success is true)
             DispatchQueue.main.async {
@@ -649,7 +649,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(category: "reward", action: "touch", label: "favorite")
+        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "favorite")
         if let nav = self.navigationController {
             GotoPage.gotoFavorite(nav)
         }
@@ -674,7 +674,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(category: "reward", action: "touch", label: "history")
+        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "history")
         if let nav = self.navigationController {
             GotoPage.gotoHistory(nav)
         }
@@ -688,7 +688,7 @@ import WebKit
             return
         }
         
-        analyticsSetEvent(category: "reward", action: "touch", label: "faq")
+        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "faq")
         if let nav = self.navigationController {
             GotoPage.gotoWebSite(nav, strUrl: Bzbs.shared.getUrlFAQ(), strTitle: "main_footer_faq".localized())
         }
@@ -700,7 +700,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(category: "reward", action: "touch", label: "about")
+        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "about")
         if let nav = self.navigationController {
             GotoPage.gotoWebSite(nav, strUrl: Bzbs.shared.getUrlAbout(), strTitle: "main_footer_about".localized())
         }
@@ -726,23 +726,23 @@ import WebKit
             case .blue :
                 strUrl = Bzbs.shared.getUrlBlueMember()
                 strTitle = BuzzebeesCore.levelNameBlue
-                analyticsSetEvent(category: "reward", action: "touch", label: "blue")
+                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "blue")
             case .gold :
                 strUrl = Bzbs.shared.getUrlGoldMember()
                 strTitle = BuzzebeesCore.levelNameGold
-                analyticsSetEvent(category: "reward", action: "touch", label: "gold")
+                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "gold")
             case .silver :
                 strUrl = Bzbs.shared.getUrlSilverMember()
                 strTitle = BuzzebeesCore.levelNameSilver
-                analyticsSetEvent(category: "reward", action: "touch", label: "silver")
+                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "silver")
             case .customer:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
-                analyticsSetEvent(category: "reward", action: "touch", label: "reward")
+                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
             case .no_level:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
-                analyticsSetEvent(category: "reward", action: "touch", label: "reward")
+                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
             }
             
             if let nav = self.navigationController {
@@ -1259,7 +1259,7 @@ extension BzbsMainViewController : CategoryCVCellDelegate
         if let nav = self.navigationController
         {
             let name = item.nameEn ?? ""
-            analyticsSetEvent(category: "reward", action: "touch", label: name)
+            analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: name)
             if item.mode == "near_by"
             {
                 if LocationManager.shared.authorizationStatus == .denied  {
@@ -1349,7 +1349,7 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
                 break
             }
             
-            analyticsSetEvent(category: "reward", action: "dtac_reward_banner", label: eventLabel)
+            analyticsSetEvent(event:"track_event", category: "reward", action: "dtac_reward_banner", label: eventLabel)
         }
     }
 }
