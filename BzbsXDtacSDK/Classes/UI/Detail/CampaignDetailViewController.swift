@@ -898,7 +898,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                     case "s2008":
                         msgBtn = "alert_button_redeem_s2008".errorLocalized()
                         break
-                    case "s2009":
+                    case "s2009": // Suspend
+                        lblRight.textColor = .white
                         setButton(isEnable: true)
                         msgBtn = "alert_button_redeem_s2009".errorLocalized()
                         break

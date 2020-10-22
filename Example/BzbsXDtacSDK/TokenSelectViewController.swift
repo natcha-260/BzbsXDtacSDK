@@ -138,7 +138,7 @@ class TokenSelectViewController: UIViewController {
         strLabel = strLabel + strVersion
         lblEnv.text = strLabel
         Bzbs.shared.versionString = strVersion
-        Bzbs.shared.isDebugMode = !isPrd
+        Bzbs.shared.isDebugMode = true// !isPrd
     }
     
     @IBAction func didChangeTelType(_ sender: Any) {
@@ -318,6 +318,11 @@ class TokenSelectViewController: UIViewController {
         }
         
         if isPrd {
+//                เบอร์ Production -------- dtacId : cd0e30fc90eea2856055d1119c4e9511 -------
+//                token = "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1XGZbE0djiOprnHSuLRltgsdEi05NIY8iU="
+//                ticket = "rABKI6lBkV+auzNXGrCACkH97R8ZMAAnd6ie2fUoknM+A8g+ZAXLJvbWQ2E="
+            // -----------------------------------------------------------------------------
+            
             token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
             ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
             segment = "1000"

@@ -194,6 +194,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         BzbsCoreApi().getRedeemLineSticker(token: token, refId: refID, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (_) in
             self.hideLoader()
             GotoPage.gotoLineHistory(self.navigationController!, campaign: self.lineCampaign, contactNumber: contactNumber, packageId:self.packageId) {
+                NotificationCenter.default.post(name: NSNotification.Name.BzbsApiReset, object: nil)
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }
         } failCallback: { (error) in

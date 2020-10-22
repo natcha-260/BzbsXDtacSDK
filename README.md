@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.15
+- update spec
+- update minimum ios 10.0, swift5.3
 ## 2.0.14
 - Update wording
 - Fix Line Sticker Campaign detail
