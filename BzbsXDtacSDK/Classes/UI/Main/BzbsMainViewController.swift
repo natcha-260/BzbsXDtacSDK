@@ -365,7 +365,9 @@ import WebKit
                     Bzbs.shared.userLogin?.bzbsPoints = expiringPoint
                 }
             }
-            self.collectionView.reloadSections(IndexSet([0]))
+            if self.collectionView.numberOfSections > 1 {
+                self.collectionView.reloadData()
+            }
             self.isCallingExpiringPoint = false
             self.hideLoader()
         }) { (error) in

@@ -57,7 +57,7 @@ struct DtacLoginParams {
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
     
-    @objc public var isDebugMode = false
+    @objc public var isDebugLog = false
     var userLogin: BzbsUser?
     var arrCategory :[BzbsCategory]?
     var blueCategory : BzbsCategory?
@@ -95,7 +95,7 @@ struct DtacLoginParams {
     }
     
     @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String, TelType: String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
-        if isDebugMode {
+        if isDebugLog {
             BuzzebeesCore.apiSetupPrefix(successCallback: {
                 
             }) {

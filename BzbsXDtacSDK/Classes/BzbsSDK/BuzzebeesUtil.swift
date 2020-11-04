@@ -23,7 +23,7 @@ public class BuzzebeesUtil: BuzzebeesCore {
             "access_token": fbToken,
         ]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(String(describing: token))"
         
         requestAlamofire(HTTPMethod.post

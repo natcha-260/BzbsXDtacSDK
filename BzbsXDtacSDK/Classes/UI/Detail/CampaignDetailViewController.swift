@@ -277,7 +277,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.isCallingCampaignDetail = false
             if error.id == "-9999"
             {
-                if Bzbs.shared.isDebugMode
+                if Bzbs.shared.isDebugLog
                 {
                     print(error.code ?? "-", error.message ?? "-")
                 }
@@ -333,7 +333,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         
         if let token = Bzbs.shared.userLogin?.token
         {
-            if Bzbs.shared.isDebugMode
+            if Bzbs.shared.isDebugLog
             {
                 let strUrl = BuzzebeesCore.inquiryBaseUrl + "/modules/dtac/campaign/\(campaign.ID ?? 0)"
                 let lbl = UILabel(frame: self.view.bounds)
@@ -451,7 +451,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         isCallingApiRedeem = true
         manageFooter()
         showLoader()
-        if Bzbs.shared.isDebugMode
+        if Bzbs.shared.isDebugLog
         {
             let strUrl = BuzzebeesCore.redeemBaseUrl + "/api/campaign/\(campaign.ID ?? 0)/redeem"
             let lbl = UILabel(frame: self.view.bounds)
@@ -478,7 +478,10 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 }
             }
         }
-        BuzzebeesCampaign().redeem(token:token , campaignId: campaign.ID, successCallback: { (dict) in
+        BuzzebeesCampaign().redeem(token:token
+                                   , campaignId: campaign.ID
+                                   , redeemType: campaign.parentCategoryID == BuzzebeesCore.catIdCoin ? "coin" : nil
+                                   , successCallback: { (dict) in
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)
             self.sendGAThankyouPage(purchase.redeemKey)

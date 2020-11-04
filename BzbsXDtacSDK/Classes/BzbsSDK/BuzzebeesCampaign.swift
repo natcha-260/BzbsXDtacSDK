@@ -58,9 +58,9 @@ public class BuzzebeesCampaign: BuzzebeesCore {
             params["tags"] = str
         }
         
-        var headers: HTTPHeaders?
+        var headers: [String:String]?
         if let bzbToken = token {
-            headers = HTTPHeaders()
+            headers = [String:String]()
             headers!["Authorization"] = "token \(bzbToken)"
         }
         
@@ -118,9 +118,9 @@ public class BuzzebeesCampaign: BuzzebeesCore {
             params["center"] = str
         }
         
-        var headers: HTTPHeaders?
+        var headers: [String:String]?
         if let bzbToken = token {
-            headers = HTTPHeaders()
+            headers = [String:String]()
             headers!["Authorization"] = "token \(bzbToken)"
         }
         
@@ -147,7 +147,7 @@ public class BuzzebeesCampaign: BuzzebeesCore {
         , successCallback: @escaping (_ result: String) -> Void
         , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         var method: HTTPMethod = HTTPMethod.get
         if isFav
@@ -167,16 +167,24 @@ public class BuzzebeesCampaign: BuzzebeesCore {
     }
     
     public func redeem(token: String
-        , campaignId: Int
-        , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
-        , failCallback: @escaping (_ error: BzbsError) -> Void) {
+                       , campaignId: Int
+                       , redeemType tmpRedeemType:String? = nil
+                       , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
+                       , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
+        
+        var params: [String : AnyObject]?
+        if let redeemType = tmpRedeemType
+        {
+            params  = [String : AnyObject]()
+            params!["typeredeem"] = redeemType as AnyObject
+        }
         
         requestAlamofire(HTTPMethod.post
             , strURL: BuzzebeesCore.redeemBaseUrl + "/api/campaign/" + String(campaignId) + "/redeem"
-            , params: nil
+            , params: params
             , headers: headers
             , successCallback: { (ao) in
                 if let dictJSON = ao as? Dictionary<String, AnyObject> {
@@ -212,9 +220,9 @@ public class BuzzebeesCampaign: BuzzebeesCore {
             params["locale"] = "\(str)"
         }
         
-        var headers: HTTPHeaders?
+        var headers: [String:String]?
         if let bzbToken = token {
-            headers = HTTPHeaders()
+            headers = [String:String]()
             headers!["Authorization"] = "token \(bzbToken)"
         }
         

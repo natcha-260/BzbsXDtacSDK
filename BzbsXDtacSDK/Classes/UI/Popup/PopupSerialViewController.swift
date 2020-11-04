@@ -514,7 +514,7 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         let gaLabel = "confirm_redemption | \(purchase?.redeemKey ?? "")"
         analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
         
-        PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: purchase?.name ?? "-", confirm: {
+        PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: "popup_confirm_redeem_prefix".localized() + "\n" + (purchase?.name ?? "-"), confirm: {
             self.apiStaffUse()
         }) {
             

@@ -12,7 +12,7 @@ class TokenSelectViewController: UIViewController {
     
     // MARK:- Properties
     // MARK:- Outlet
-
+    
     @IBOutlet weak var segmentLang: UISegmentedControl!
     @IBOutlet weak var lblEnv: UILabel!
     
@@ -60,13 +60,15 @@ class TokenSelectViewController: UIViewController {
         segmentVersion.titleForSegment(at: segmentVersion.selectedSegmentIndex) ?? versionList.first!
     }
     
+    var isChangeUser = false
+    
     var TelType = "T" // T = Postpaid , P = Prepaid
     
     var ticket :String?
     var token :String?
     var langauge :String?
     var segment :String?
-
+    
     // MARK:- View life cycle
     // MARK:-
     
@@ -78,7 +80,7 @@ class TokenSelectViewController: UIViewController {
         segmentVersion.selectedSegmentIndex = 3
         didChangeVersion(segmentVersion)
         lblEnv.textColor = .black
-
+        
         if let campaignId = UserDefaults.standard.value(forKey: "campaignId") as? String, campaignId != ""
         {
             txtCampaignId.text = campaignId
@@ -138,20 +140,25 @@ class TokenSelectViewController: UIViewController {
         strLabel = strLabel + strVersion
         lblEnv.text = strLabel
         Bzbs.shared.versionString = strVersion
-        Bzbs.shared.isDebugMode = true// !isPrd
+        Bzbs.shared.isDebugLog = true
+        isChangeUser = true
     }
     
     @IBAction func didChangeTelType(_ sender: Any) {
         TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+        isChangeUser = true
     }
     
     @IBAction func clickShowCampaignDetail(_ sender: Any) {
         self.view.endEditing(true)
-        guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
-        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
-        Bzbs.shared.logout()
-        if let txtId = txtCampaignId.text, txtId != ""
-        {
+        guard  let nav = self.navigationController else { return }
+        guard let txtId = txtCampaignId.text, txtId != "" else { return }
+        
+        if isChangeUser {
+            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+            Bzbs.shared.logout()
+            isChangeUser = false
             UserDefaults.standard.set(txtId, forKey: "campaignId")
             if let nav = self.navigationController
             {
@@ -162,26 +169,34 @@ class TokenSelectViewController: UIViewController {
                     }
                 }
             }
+        } else {
+            nav.pushViewController(CampaignDetailViewController.getView(campaignId: txtId), animated: true)
         }
     }
     
     @IBAction func clickShowPointHistory(_ sender: Any) {
         self.view.endEditing(true)
-        guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
-        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
-        Bzbs.shared.logout()
-        if let nav = self.navigationController
-        {
+        guard  let nav = self.navigationController else { return }
+        
+        if isChangeUser {
+            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+            Bzbs.shared.logout()
+            isChangeUser = false
             delay(0.5) {
                 DispatchQueue.main.async {
                     Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
                     nav.pushViewController(PointHistoryViewController.getView(), animated: true)
                 }
             }
+        } else {
+            nav.pushViewController(PointHistoryViewController.getView(), animated: true)
         }
     }
     
     @IBAction func clickGotoCategory(_ sender: Any) {
+        guard  let nav = self.navigationController else { return }
+        
         if let tmpCat = txtCatName.text {
             let rawCat = tmpCat.split(separator: ",")
             let catName = String(rawCat.first ?? "")
@@ -189,17 +204,20 @@ class TokenSelectViewController: UIViewController {
             if rawCat.count > 1 {
                 subCatName = String(rawCat[1])
             }
-            
-            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
-            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
-            Bzbs.shared.logout()
-            if let nav = self.navigationController
-            {
+            if isChangeUser {
+                guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+                TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+                Bzbs.shared.logout()
+                isChangeUser = false
                 delay(0.5) {
                     DispatchQueue.main.async {
                         Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
                         nav.pushViewController(CampaignByCatViewController.getView(category: catName, subCategory: subCatName), animated: true)
                     }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    nav.pushViewController(CampaignByCatViewController.getView(category: catName, subCategory: subCatName), animated: true)
                 }
             }
         }
@@ -207,20 +225,26 @@ class TokenSelectViewController: UIViewController {
     
     @IBAction func clickGoToMain(_ sender: Any) {
         view.endEditing(true)
-        guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
-        TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
-        Bzbs.shared.logout()
-        delay(0.5) {
-            DispatchQueue.main.async {
-                Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
-                self.gotoMain()
+        if isChangeUser {
+            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+            Bzbs.shared.logout()
+            isChangeUser = false
+            delay(0.5) {
+                DispatchQueue.main.async {
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                    self.gotoMain()
+                }
             }
+        } else {
+            self.gotoMain()
         }
     }
     
     @IBAction func clickLogout(_ sender: Any) {
         resetBtn()
         Bzbs.shared.logout()
+        isChangeUser = true
     }
     
     @IBAction func clickLogin(_ sender: Any) {
@@ -243,6 +267,7 @@ class TokenSelectViewController: UIViewController {
             ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
             segment = "0000"
         }
+        isChangeUser = true
     }
     
     @IBAction func clickCustomer(_ sender: Any) {
@@ -267,7 +292,8 @@ class TokenSelectViewController: UIViewController {
             ticket = "AgN3VXKvpl2a9BVRZgx8SpkaLjWQuKc7h/nMZAJdoGaE4MKLPAvJPPVMU5c="
             segment = "4000"
         }
-//        gotoMain()
+        isChangeUser = true
+        //        gotoMain()
     }
     
     @IBAction func clickSilver(_ sender: Any) {
@@ -286,6 +312,7 @@ class TokenSelectViewController: UIViewController {
             ticket = "zABxi7c6310ZoxU8etbjI84fOsNBp3tCku3aNKb8TdryP93K54b0jLVCghw="
             segment = "3000"
         }
+        isChangeUser = true
     }
     
     @IBAction func clickGold(_ sender: Any) {
@@ -304,6 +331,7 @@ class TokenSelectViewController: UIViewController {
             ticket = "IQEcGD5nrV1bwWvTVzaoYAEnRbw0aPwTVLzIZQ3jZlTiZ6qxDfojfAw0RNs="
             segment = "2000"
         }
+        isChangeUser = true
     }
     
     @IBAction func clickBlueMember(_ sender: Any) {
@@ -318,15 +346,17 @@ class TokenSelectViewController: UIViewController {
         }
         
         if isPrd {
-//                เบอร์ Production -------- dtacId : cd0e30fc90eea2856055d1119c4e9511 -------
-//                token = "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1XGZbE0djiOprnHSuLRltgsdEi05NIY8iU="
-//                ticket = "rABKI6lBkV+auzNXGrCACkH97R8ZMAAnd6ie2fUoknM+A8g+ZAXLJvbWQ2E="
-            // -----------------------------------------------------------------------------
             
             token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
             ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
             segment = "1000"
+            
+            //เบอร์ Production -------- dtacId : cd0e30fc90eea2856055d1119c4e9511 -----------
+            token = "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1XGZbE0djiOprnHSuLRltgsdEi05NIY8iU="
+            ticket = "rABKI6lBkV+auzNXGrCACkH97R8ZMAAnd6ie2fUoknM+A8g+ZAXLJvbWQ2E="
+            // -----------------------------------------------------------------------------
         }
+        isChangeUser = true
         
     }
     

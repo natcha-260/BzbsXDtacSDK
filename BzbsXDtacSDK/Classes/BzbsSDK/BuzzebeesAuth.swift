@@ -181,7 +181,7 @@ public class BuzzebeesAuth: BuzzebeesCore {
             params["access_token"] = accessToken
         }
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.post
@@ -215,7 +215,7 @@ public class BuzzebeesAuth: BuzzebeesCore {
             "uuid": changeMobileParams.uuid,
             ]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(String(describing: changeMobileParams.token))"
         
         requestAlamofire(HTTPMethod.post
@@ -294,7 +294,7 @@ public class BuzzebeesAuth: BuzzebeesCore {
             "refcode": refcode,
             ] as [String : Any]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.post
@@ -385,7 +385,7 @@ public class BuzzebeesAuth: BuzzebeesCore {
             params["device_token"] = strDeviceToken;
         }
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(String(describing: updateDeviceParams.token!))";
         
         requestAlamofire(HTTPMethod.post
@@ -432,7 +432,7 @@ public class BuzzebeesAuth: BuzzebeesCore {
             params["device_token"] = strDeviceToken;
         }
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(String(describing: updateDeviceParams.token!))";
         
         requestAlamofire(HTTPMethod.post

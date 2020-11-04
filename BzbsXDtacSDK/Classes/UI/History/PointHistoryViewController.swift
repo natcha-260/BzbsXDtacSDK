@@ -158,70 +158,13 @@ open class PointHistoryViewController: BaseListController {
         apiGetimagefooter()
     }
     
-    func apiGetimagefooter() {
-        if let url = URL(string: strUrlFooter) {
-            BzbsCoreApi().getImage(imageUrl: url) { (image) in
-                DispatchQueue.main.async {
-                    self.setImagefooter(image: image)
-                }
-            }
-        }
-    }
-    
-    func setImagefooter(image:UIImage?)
-    {
-        imvFooter.image = image
-        imvFooter.contentMode = .scaleAspectFit
-        imvFooter.alpha = 0
-        if image == nil {
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0) {
-                    self.cstFooterHeight.constant = 0
-                    self.view.layoutIfNeeded()
-                }
-            }
-        } else {
-            let width = self.tableView.bounds.size.width
-            let height = (width / 827) * 192
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.33, animations: {
-                    self.cstFooterHeight.constant = height
-                    self.view.layoutIfNeeded()
-                }) { (_) in
-                    UIView.animate(withDuration: 0.33) {
-                        self.imvFooter.alpha = 1
-                    }
-                }
-            }
-        }
-    }
-    
-//    func checkAPI() {
-//        if Bzbs.shared.isCallingLogin {
-//            Bzbs.shared.delay(0.5) {
-//                self.checkAPI()
-//            }
-//        } else {
-//            if Bzbs.shared.isLoggedIn() {
-//                resetList()
-//            } else {
-//                Bzbs.shared.relogin(completionHandler: {
-//                    self.resetList()
-//                }) { (_) in
-//                    self.loadedData()
-//                }
-//            }
-//        }
-//    }
-    
     @objc override func resetList() {
-        if self.isEarn {
-            self.arrPointLogEarn.removeAll()
-            self.strEarnDate = ""
-        } else {
-            self.arrPointLogBurn.removeAll()
-            self.strBurnDate = ""
-        }
+        self.arrPointLogBurn.removeAll()
+        self.strBurnDate = ""
+        self.arrPointLogEarn.removeAll()
+        self.strEarnDate = ""
+        self._intSkip = 0
+        isBurnEnd = false
         apiGetimagefooter()
         getApi()
         getApiPurchase()
@@ -244,42 +187,6 @@ open class PointHistoryViewController: BaseListController {
         lblRedeemed.text = "coin_burn_title".localized()
     }
     
-    
-    // MARK:- API
-    // MARK:-
-    func getExpiringPoint()
-    {
-        guard let token = Bzbs.shared.userLogin?.token else {
-            lblPoint.text = ""
-            imvCoin.isHidden = true
-            lblExpireDate.text = ""
-            return
-        }
-        showLoader()
-        BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
-            if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
-                let first = arr.first
-            {
-                if let expiringPoint = first["points"] as? Int {
-                    self.lblPoint.text = expiringPoint.withCommas()
-                    self.imvCoin.isHidden = false
-                }
-                if let time = first["time"] as? TimeInterval
-                {
-                    let expireDate = Date(timeIntervalSince1970: time)
-                    let formatter = DateFormatter()
-                    formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
-                    formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
-                    formatter.timeZone = TimeZone(secondsFromGMT: 0)
-                    formatter.dateFormat = "dd MMM yyyy"
-                    self.lblExpireDate.text = "valid_till".localized() + " " + formatter.string(from: expireDate)
-                }
-            }
-            self.hideLoader()
-        }) { (error) in
-            self.hideLoader()
-        }
-    }
     
     // MARK:- Util
     // MARK:-
@@ -336,8 +243,26 @@ open class PointHistoryViewController: BaseListController {
         analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
         analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
         if let url = BuzzebeesCore.urlDeeplinkHistory {
-            UIApplication.shared.openURL(url)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+    }
+    
+    func gotoLineHistory(_ item:BzbsHistory) {
+        guard let nav = self.navigationController
+              , let token = Bzbs.shared.userLogin?.token
+              , let packageId = item.info2
+              , let contactNumber = item.info3
+        else {
+            return
+        }
+        showLoader()
+        BzbsCoreApi().getLineDetail(token: token, campaignId: String(item.ID!), packageId: packageId) { (lineCampaign) in
+            self.hideLoader()
+            GotoPage.gotoLineHistory(nav, isFromHistory: true , campaign: lineCampaign,contactNumber: contactNumber, packageId:packageId)
+        } failCallback: { (error) in
+            self.hideLoader()
+        }
+
     }
     
     // MARK:- Api
@@ -399,6 +324,79 @@ open class PointHistoryViewController: BaseListController {
             self.burnTableView.es.stopPullToRefresh()
             self._isCallBurnApi = false
             print(error.description())
+        }
+    }
+    
+    func getExpiringPoint()
+    {
+        guard let token = Bzbs.shared.userLogin?.token else {
+            lblPoint.text = ""
+            imvCoin.isHidden = true
+            lblExpireDate.text = ""
+            return
+        }
+        showLoader()
+        BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
+            if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
+                let first = arr.first
+            {
+                if let expiringPoint = first["points"] as? Int {
+                    self.lblPoint.text = expiringPoint.withCommas()
+                    self.imvCoin.isHidden = false
+                }
+                if let time = first["time"] as? TimeInterval
+                {
+                    let expireDate = Date(timeIntervalSince1970: time)
+                    let formatter = DateFormatter()
+                    formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+                    formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+                    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                    formatter.dateFormat = "dd MMM yyyy"
+                    self.lblExpireDate.text = "valid_till".localized() + " " + formatter.string(from: expireDate)
+                }
+            }
+            self.hideLoader()
+        }) { (error) in
+            self.hideLoader()
+        }
+    }
+    
+    
+    func apiGetimagefooter() {
+        if let url = URL(string: strUrlFooter) {
+            BzbsCoreApi().getImage(imageUrl: url) { (image) in
+                DispatchQueue.main.async {
+                    self.setImagefooter(image: image)
+                }
+            }
+        }
+    }
+    
+    func setImagefooter(image:UIImage?)
+    {
+        imvFooter.image = image
+        imvFooter.contentMode = .scaleAspectFit
+        imvFooter.alpha = 0
+        if image == nil {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0) {
+                    self.cstFooterHeight.constant = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else {
+            let width = self.tableView.bounds.size.width
+            let height = (width / 827) * 192
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.33, animations: {
+                    self.cstFooterHeight.constant = height
+                    self.view.layoutIfNeeded()
+                }) { (_) in
+                    UIView.animate(withDuration: 0.33) {
+                        self.imvFooter.alpha = 1
+                    }
+                }
+            }
         }
     }
 }
@@ -487,31 +485,13 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    func gotoLineHistory(_ item:BzbsHistory) {
-        guard let nav = self.navigationController
-              , let token = Bzbs.shared.userLogin?.token
-              , let packageId = item.info2
-              , let contactNumber = item.info3
-        else {
-            return
-        }
-        showLoader()
-        BzbsCoreApi().getLineDetail(token: token, campaignId: String(item.ID!), packageId: packageId) { (lineCampaign) in
-            self.hideLoader()
-            GotoPage.gotoLineHistory(nav, isFromHistory: true , campaign: lineCampaign,contactNumber: contactNumber, packageId:packageId)
-        } failCallback: { (error) in
-            self.hideLoader()
-        }
-
-    }
-    
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView == self.tableView {
-            if indexPath.row > arrPointLogEarn.count - 3 {
+            if arrPointLogEarn.count > 0 && indexPath.row > arrPointLogEarn.count - 3 {
                 getApi()
             }
         } else {
-            if indexPath.row == arrPointLogBurn.count - 2 {
+            if arrPointLogBurn.count > 0 && indexPath.row == arrPointLogBurn.count - 2 {
                 getApiPurchase()
             }
         }

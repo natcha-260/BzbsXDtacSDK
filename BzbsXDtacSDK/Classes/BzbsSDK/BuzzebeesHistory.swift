@@ -22,7 +22,7 @@ public class BuzzebeesHistory: BuzzebeesCore {
             "skip": skip,
             ] as [String : Any]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.get
@@ -51,7 +51,7 @@ public class BuzzebeesHistory: BuzzebeesCore {
         , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
         , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.post
@@ -81,7 +81,7 @@ public class BuzzebeesHistory: BuzzebeesCore {
             "top": top,
             ] as [String : Any]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.get
@@ -102,7 +102,7 @@ public class BuzzebeesHistory: BuzzebeesCore {
         , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
         , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.get

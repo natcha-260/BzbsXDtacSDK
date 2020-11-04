@@ -1,6 +1,0 @@
-framework module Pods_BzbsXDtacSDK_Example {
-  umbrella header "Pods-BzbsXDtacSDK_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}
