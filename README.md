@@ -1,4 +1,5 @@
 # BzbsXDtacSDK
+## 2.0.16
 ## 2.0.15
 - update minimum ios to 10.0, swift5.3	
 - Improve Performance
