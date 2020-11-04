@@ -1,4 +1,9 @@
 # BzbsXDtacSDK
+## 2.0.15
+- update minimum ios to 10.0, swift5.3	
+- Improve Performance
+- Update wording
+- Fix duplicate transactions in history
 ## 2.0.14
 - Update wording
 - Fix Line Sticker Campaign detail

@@ -15,7 +15,7 @@ public class BzbsCoreApi: BuzzebeesCore {
     public func getGreetingText(_ strBzbsToken:String? ,successCallback: @escaping (_ result: GreetingModel) -> Void,
                                 failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         if let bzbsToken = strBzbsToken
         {
             headers["Authorization"] = "token \(bzbsToken)"
@@ -79,7 +79,7 @@ public class BzbsCoreApi: BuzzebeesCore {
             params["distance"] = distance
         }
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         if let bzbsToken = strBzbsToken
         {
             headers["Authorization"] = "token \(bzbsToken)"
@@ -113,7 +113,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                             , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
                             , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.post
@@ -137,7 +137,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                             failCallback: @escaping (_ error: BzbsError) -> Void) {
         
         let strURL = BuzzebeesCore.apiUrl + "/api/redeem/" + keyId + "/arrange"
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         if let bzbsToken = token
         {
             headers["Authorization"] = "token \(bzbsToken)"
@@ -162,7 +162,7 @@ public class BzbsCoreApi: BuzzebeesCore {
     public func searchAutoComplete(_ token :String?, keyword:String, config:String = "campaign_dtac_callcenter", successCallback: @escaping ([String]) -> Void,
                                    failCallback: @escaping (_ error: BzbsError) -> Void) {
         let strURL = BuzzebeesCore.apiUrl + "/api/autocomplete/campaign"
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         if let bzbsToken = token
         {
             headers["Authorization"] = "token \(bzbsToken)"
@@ -199,9 +199,9 @@ public class BzbsCoreApi: BuzzebeesCore {
             params["center"] = str
         }
         
-        var headers: HTTPHeaders?
+        var headers: [String:String]?
         if let bzbToken = token {
-            headers = HTTPHeaders()
+            headers = [String:String]()
             headers!["Authorization"] = "token \(bzbToken)"
         }
         
@@ -269,7 +269,10 @@ public class BzbsCoreApi: BuzzebeesCore {
     
     public func getImage(imageUrl:URL, successCallback: @escaping ((UIImage?) -> Void))
     {
-        request(imageUrl).responseImage { (response) in
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30
+        let sessionManager = BuzzebeesCore.sessionManager
+        sessionManager!.request(imageUrl).responseImage { (response) in
             if let data = response.data
             {
                 successCallback(UIImage(data: data))
@@ -286,7 +289,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                                  , successCallback: @escaping (_ result: LineStickerCampaign) -> Void
                                  , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         var packageId = tmpPackageId
@@ -299,7 +302,7 @@ public class BzbsCoreApi: BuzzebeesCore {
             "packageId" : packageId as AnyObject
         ]
         
-        requestSkipHeaderAlamofire(HTTPMethod.get
+        requestAlamofire(HTTPMethod.get
                          , strURL: BuzzebeesCore.apiUrl + "/modules/linestore/sticker/detail"
                          , params: params
                          , headers: headers
@@ -320,7 +323,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                                  , successCallback: @escaping (_ result: [LineStickerImage]) -> Void
                                  , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         var packageId = tmpPackageId
@@ -359,7 +362,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                                        , contactNumber:String
                                        , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
                                        , failCallback: @escaping (_ error: BzbsError) -> Void) {
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         var packageId = tmpPackageId
@@ -397,7 +400,7 @@ public class BzbsCoreApi: BuzzebeesCore {
                                        , contactNumber:String
                                        , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
                                        , failCallback: @escaping (_ error: BzbsError) -> Void) {
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         var packageId = tmpPackageId

@@ -26,9 +26,9 @@ public class BuzzebeesCategory: BuzzebeesCore {
         
         params["top"] = String(top)
         
-        var headers: HTTPHeaders?
+        var headers: [String:String]?
         if let bzbsToken = token {
-            headers = HTTPHeaders()
+            headers = [String:String]()
             headers!["Authorization"] = "token \(bzbsToken)"
         }
         
@@ -67,7 +67,7 @@ public class BuzzebeesCategory: BuzzebeesCore {
             "sponsor": true,
             ]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.get
@@ -132,7 +132,7 @@ public class BuzzebeesCategory: BuzzebeesCore {
             "sponsor": true,
             ] as [String : Any]
         
-        var headers = HTTPHeaders()
+        var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
         requestAlamofire(HTTPMethod.post

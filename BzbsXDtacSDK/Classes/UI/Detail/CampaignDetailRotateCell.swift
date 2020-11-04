@@ -65,12 +65,7 @@ class CampaignDetailRotateCell: UICollectionViewCell , UICollectionViewDataSourc
         
         let cellIdentifier = "campaignBigRotateCVCell"
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath as IndexPath) as! CampaignBigRotateCVCell
-        
-        Alamofire.request(item.fullImageUrl).responseImage { (response) in
-            if let image = response.result.value {
-                cell.imvCampaign.image = image
-            }
-        }
+        cell.imvCampaign.bzbsSetImage(withURL: item.fullImageUrl, isUsePlaceholder: true, completionHandler: nil)
         
         return cell
     }

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BzbsXDtacSDK'
-  s.version          = '2.0.14'
+  s.version          = '2.0.15'
   s.summary          = 'Buzzebees SDK For Dtac Rewards'
 
 # This description is used to generate tags and improve search results.
@@ -28,8 +28,8 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/natcha-260/BzbsXDtacSDK.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
-  s.swift_version = '5.0'
+  s.ios.deployment_target = '10.0'
+  s.swift_version = '5.3'
 
   s.source_files = 'BzbsXDtacSDK/Classes/**/*.{swift,h,m}'
   

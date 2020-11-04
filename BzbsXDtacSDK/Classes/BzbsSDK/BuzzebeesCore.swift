@@ -15,17 +15,20 @@ import Alamofire
 public class BuzzebeesCore: NSObject {
     public var isDebugMode: Bool! {
         get {
-            return Bzbs.shared.isDebugMode
+            return Bzbs.shared.isDebugLog
         }
         set {
-            Bzbs.shared.isDebugMode = newValue
+            Bzbs.shared.isDebugLog = newValue
         }
     }
     public var appId = "353144231924127"
     public var strSubscriptionKey: String?
     
-    var configuration :URLSessionConfiguration!
-    var sessionManager :SessionManager!
+    public static let sessionManager :Session! = {
+        let configuration :URLSessionConfiguration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30
+        return Alamofire.Session(configuration: configuration)
+    }()
     
     static var isSetEndpoint = false
     static var isCallingSetEndpoint = false
@@ -58,9 +61,6 @@ public class BuzzebeesCore: NSObject {
     static var catIdLineSticker : Int! = 9441868 // default as stgDessert.
     
     public override init() {
-        configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 30
-        sessionManager = Alamofire.SessionManager(configuration: configuration)
         super.init()
     }
     
@@ -80,14 +80,18 @@ public class BuzzebeesCore: NSObject {
         }
         
         let urlRequest = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
-        request(urlRequest).responseJSON { response in
+        BuzzebeesCore.sessionManager.request(urlRequest).responseJSON { response in
             do{
                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                if Bzbs.shared.isDebugMode {
+                if Bzbs.shared.isDebugLog {
                     Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
                     print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
                 }
-                let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                guard let rawData = response.data else {
+                    failCallback()
+                    return
+                }
+                let json = try JSONSerialization.jsonObject(with: rawData, options: JSONSerialization.ReadingOptions.mutableContainers)
                 if let dictJSON = json as? Dictionary<String, AnyObject>  {
 
                     if let dtacLevel = dictJSON["dtac_label"] as? String
@@ -217,7 +221,7 @@ public class BuzzebeesCore: NSObject {
             } catch _ as NSError {
                 isCallingSetEndpoint = false
                 let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                if Bzbs.shared.isDebugMode {
+                if Bzbs.shared.isDebugLog {
                     Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
                     print("**response time =====\(endpointUrl) === : \(String(format:"%.2f sec",resposeTime))")
                 }
@@ -242,10 +246,10 @@ public class BuzzebeesCore: NSObject {
                 {
                     let startTime = Date()
                     let urlRequest = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
-                    request(urlRequest).responseJSON { (response) in
+                    BuzzebeesCore.sessionManager.request(urlRequest).responseJSON { (response) in
                         do {
                             let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                            if Bzbs.shared.isDebugMode {
+                            if Bzbs.shared.isDebugLog {
                                 Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
                                 print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
                             }
@@ -261,7 +265,7 @@ public class BuzzebeesCore: NSObject {
                             }
                         } catch _ as NSError {
                             let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                            if Bzbs.shared.isDebugMode {
+                            if Bzbs.shared.isDebugLog {
                                 Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
                                 print("**response time =====\(strUrl) === : \(String(format:"%.2f sec",resposeTime))")
                             }
@@ -332,7 +336,7 @@ public class BuzzebeesCore: NSObject {
         }
         
         // Add Ocp-Apim-Subscription-Key
-        var itemHeaders = headers ?? HTTPHeaders()
+        var itemHeaders :HTTPHeaders = HTTPHeaders(headers ?? [String:String]())
         itemHeaders["App-id"] = self.appId
         
         if let subKey = strSubscriptionKey
@@ -360,7 +364,7 @@ public class BuzzebeesCore: NSObject {
             stringLog = stringLog + "\n"
             stringLog = stringLog + "\nHeader:= "
             for headersTemp in itemHeaders {
-                stringLog = stringLog + "\n" + headersTemp.key + ":" + (headersTemp.value)
+                stringLog = stringLog + "\n" + headersTemp.name + ":" + (headersTemp.value)
                 print()
             }
             stringLog = stringLog + "\n//==============================\r\n"
@@ -368,10 +372,14 @@ public class BuzzebeesCore: NSObject {
             Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + stringLog)
         }
         
-        sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination:.methodDependent), headers: itemHeaders)
+        BuzzebeesCore.sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination:.methodDependent), headers: itemHeaders)
            .responseJSON { response in
                 do{
-                    let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                    guard let rawData = response.data else {
+                        self.serverSendDataWrongFormat(failCallback: failCallback)
+                        return
+                    }
+                    let json = try JSONSerialization.jsonObject(with: rawData, options: JSONSerialization.ReadingOptions.mutableContainers)
 
                     if self.isDebugMode {
                         let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
@@ -413,125 +421,13 @@ public class BuzzebeesCore: NSObject {
                     
                     var statusCode = "-9999"
                     var message = "json serialization error"
-                    if let resultError = response.result.error as? NSError
-                    {
-                        statusCode = "\(resultError.code)"
-                        message = resultError.localizedDescription
-                    }
                     
-                    if self.isDebugMode {
-                        let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                        Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                        print("**response time =====\(strURL) ===  : \(String(format:"%.2f sec",resposeTime))")
-                    }
-                    let error = BzbsError(strId: "-9999", strCode: statusCode, strType: "framework send", strMessage: message)
-                    failCallback(error)
-                }
-        }
-    }
-    
-    
-    
-    func requestSkipHeaderAlamofire(_ method: HTTPMethod
-        , strURL: String
-        , params: [String: AnyObject]?
-        , headers:[String: String]? = nil
-        , successCallback: @escaping (AnyObject) -> Void
-        , failCallback: @escaping (_ error: BzbsError) -> Void) {
-        
-        // Add appId all api
-        let startTime = Date()
-        var itemParams = params
-        if(itemParams == nil) {
-            itemParams = [String: String]() as [String : AnyObject]?
-        }
-//        itemParams!["app_id"] = self.appId as AnyObject?
-//        itemParams!["device_app_id"] = self.appId as AnyObject?
-        if let dtacId = Bzbs.shared.userLogin?.uuid
-        {
-            itemParams!["dtac_id"] = dtacId as AnyObject
-        }
-        
-        // Add Ocp-Apim-Subscription-Key
-        var itemHeaders = headers ?? HTTPHeaders()
-        
-        if self.isDebugMode {
-            var stringLog = ""
-            stringLog = stringLog + "\r\n//\(startTime.toString()) =============================="
-            stringLog = stringLog + "\nMethod:= \(method.rawValue)"
-            stringLog = stringLog + "\nURL:= " + strURL
-            stringLog = stringLog + "\nParams:= "
-            
-            if let paramsTemp = itemParams {
-                for item in paramsTemp {
-                    if let value = item.value as? String {
-                        stringLog = stringLog + "\n" + item.key + ":" + value
-                    } else {
-                        stringLog = stringLog + "\n" + item.key + ":" + String(describing: item.value)
-                    }
-                }
-            }
-            
-            stringLog = stringLog + "\n"
-            stringLog = stringLog + "\nHeader:= "
-            for headersTemp in itemHeaders {
-                stringLog = stringLog + "\n" + headersTemp.key + ":" + (headersTemp.value)
-                print()
-            }
-            stringLog = stringLog + "\n//==============================\r\n"
-            print(stringLog)
-            Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + stringLog)
-        }
-        
-        sessionManager.request(strURL, method: method, parameters: itemParams, encoding: URLEncoding(destination:.methodDependent), headers: itemHeaders)
-           .responseJSON { response in
-                do{
-                    let json = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-
-                    if self.isDebugMode {
-                        let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                        Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                        print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                    }
-                    if let dictJSON = json as? Dictionary<String, AnyObject>  {
-                        // Check error azure portal
-                        if let statusCode = dictJSON["statusCode"] as? Int {
-                            if let statusMessage = dictJSON["message"] as? String {
-                                let error = BzbsError(strId: "-9999", strCode: String(statusCode), strType: "framework send", strMessage: statusMessage)
-                                failCallback(error)
-                                return
-                            }
-                        }
-                        
-                        if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
-                            successCallback(json as AnyObject)
-                        }
-                    } else if let arrJson = json as? [Dictionary<String, AnyObject>]  {
-                        successCallback(arrJson as AnyObject)
-                    } else{
-                        successCallback(json as AnyObject)
-                    }
-                } catch _ as NSError {
-                    // work around support server success than not return data, use check status code
-                    if let statusCode = response.response?.statusCode {
-                        // 200: Success, 204: No content
-                        if statusCode == 200 || statusCode == 204 {
-                            if self.isDebugMode {
-                                let resposeTime = Date().timeIntervalSince1970 - startTime.timeIntervalSince1970
-                                Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                                print("**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
-                            }
-                            successCallback("Success" as AnyObject)
-                            return
-                        }
-                    }
-                    
-                    var statusCode = "-9999"
-                    var message = "json serialization error"
-                    if let resultError = response.result.error as? NSError
+                    if let resultError = response.error,
+                       let responseCode = resultError.responseCode,
+                       let errorDescription = resultError.errorDescription
                     {
-                        statusCode = "\(resultError.code)"
-                        message = resultError.localizedDescription
+                        statusCode = "\(responseCode)"
+                        message = errorDescription
                     }
                     
                     if self.isDebugMode {
