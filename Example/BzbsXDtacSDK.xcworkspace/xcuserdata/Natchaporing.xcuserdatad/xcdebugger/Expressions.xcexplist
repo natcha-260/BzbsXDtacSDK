@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "_isCallApi">
+            </PersistentString>
+            <PersistentString
+               value = "_isEnd">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static BarItem.generate_message(_:isHasNewMessage:messageSelector:):BarItem.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "inboxBadge.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in CampaignDetailViewController.getApiCampaignStatus():CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static BarItem.generate_message(_:isHasNewMessage:messageSelector:):BarItem.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "inboxBadge.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "view5.subviews">
+            </PersistentString>
+            <PersistentString
+               value = "contentViewController.view.backgroundColor == .clear">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+<<<<<<< HEAD
+         contextName = "closure #2 in BzbsMainViewController.apiLogin(_:ticket:language:):BzbsMainViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.clickSeeMoreDetail(_:):CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.manageFooter():CampaignDetailViewController.swift">
+=======
+         contextName = "CampaignDetailViewController.clickSeeMoreDetail(_:):CampaignDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BzbsXDtacBaseViewController.reLogin():BzbsXDtacBaseViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Bzbs.showLoader(on:):BzbsShared.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "contentViewController.view.backgroundColor == .clear">
+            </PersistentString>
+            <PersistentString
+               value = "view5.subviews">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BzbsMainViewController.getApiRecommend():BzbsMainViewController.swift">
+>>>>>>> 94e9d3c24411301e1b3bfc75e9f3fa6bd7cde3dc
+         <PersistentStrings>
+            <PersistentString
+               value = "campaign.ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LocationManager.locationManager(_:didUpdateLocations:):LocationManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Date().timeIntervalSince1970 - lastUpdate!.timeIntervalSince1970">
+            </PersistentString>
+            <PersistentString
+               value = "60 * 5">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BzbsXDtacBaseViewController.reLogin():BzbsXDtacBaseViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CampaignDetailViewController.getProgressColor():CampaignDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "_campaingStatus.quantity">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
