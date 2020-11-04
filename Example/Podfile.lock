@@ -1,7 +1,7 @@
 PODS:
-  - Alamofire (5.3.0)
-  - AlamofireImage (4.1.0):
-    - Alamofire (~> 5.1)
+  - Alamofire (4.9.1)
+  - AlamofireImage (3.6.0):
+    - Alamofire (~> 4.9)
   - AppCenter (3.3.4):
     - AppCenter/Analytics (= 3.3.4)
     - AppCenter/Crashes (= 3.3.4)
@@ -11,7 +11,7 @@ PODS:
   - AppCenter/Crashes (3.3.4):
     - AppCenter/Core
   - BzbsXDtacSDK (2.0.15):
-    - Alamofire
+    - Alamofire (~> 4.9.0)
     - AlamofireImage
     - ESPullToRefresh
     - Firebase/Analytics
@@ -89,12 +89,12 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.0.0):
     - GoogleUtilities/Logger
-  - ImageSlideshow (1.9.1):
-    - ImageSlideshow/Core (= 1.9.1)
-  - ImageSlideshow/Alamofire (1.9.1):
-    - AlamofireImage (~> 4.0)
+  - ImageSlideshow (1.8.3):
+    - ImageSlideshow/Core (= 1.8.3)
+  - ImageSlideshow/Alamofire (1.8.3):
+    - AlamofireImage (~> 3.0)
     - ImageSlideshow/Core
-  - ImageSlideshow/Core (1.9.1)
+  - ImageSlideshow/Core (1.8.3)
   - InfiniteCarouselCollectionView (0.1.3)
   - Kingfisher (5.15.7):
     - Kingfisher/Core (= 5.15.7)
@@ -154,10 +154,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 2c792affbdc2f18016e08fdbcacd60aebe1ba593
-  AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   AppCenter: 0487be185c038ed2ecc5ed38219af1dcd280af23
-  BzbsXDtacSDK: d71b1c8c433ddaf6ad8316074c31096863f2debe
+  BzbsXDtacSDK: 6bfaa85e6b03b43094018288faa47161c356860f
   ESPullToRefresh: 0d68daa602b343c81753a1b95e09fd0bfcddfd40
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Firebase: 50be68416f50eb4eb2ecb0e78acab9a051ef95df
@@ -169,7 +169,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 6ce8004a961db1b905740d7be106c61ba7e89c21
   GoogleMaps: b7f7fc569a9b354a3af0d9729dbec40957b7d41e
   GoogleUtilities: ffb2f4159f2c897c6e8992bd7fbcdef8a300589c
-  ImageSlideshow: 67184be896a28472bd3b906c33ce4e0734aa3d22
+  ImageSlideshow: 4694d7d699a1549582e7cc631fb392d8f91630f3
   InfiniteCarouselCollectionView: d63e9c834ff41f4d2ce99a2b58c9bb679bb14ab5
   Kingfisher: 6e1a13523fcb1c86924ce53affe4ac957e544d59
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31

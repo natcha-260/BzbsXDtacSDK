@@ -24,10 +24,10 @@ public class BuzzebeesCore: NSObject {
     public var appId = "353144231924127"
     public var strSubscriptionKey: String?
     
-    public static let sessionManager :Session! = {
+    public static let sessionManager :SessionManager! = {
         let configuration :URLSessionConfiguration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 30
-        return Alamofire.Session(configuration: configuration)
+        return Alamofire.SessionManager(configuration: configuration)
     }()
     
     static var isSetEndpoint = false
@@ -336,7 +336,7 @@ public class BuzzebeesCore: NSObject {
         }
         
         // Add Ocp-Apim-Subscription-Key
-        var itemHeaders :HTTPHeaders = HTTPHeaders(headers ?? [String:String]())
+        var itemHeaders = headers ?? [String:String]()
         itemHeaders["App-id"] = self.appId
         
         if let subKey = strSubscriptionKey
@@ -364,7 +364,7 @@ public class BuzzebeesCore: NSObject {
             stringLog = stringLog + "\n"
             stringLog = stringLog + "\nHeader:= "
             for headersTemp in itemHeaders {
-                stringLog = stringLog + "\n" + headersTemp.name + ":" + (headersTemp.value)
+                stringLog = stringLog + "\n" + headersTemp.key + ":" + (headersTemp.value)
                 print()
             }
             stringLog = stringLog + "\n//==============================\r\n"
@@ -422,12 +422,10 @@ public class BuzzebeesCore: NSObject {
                     var statusCode = "-9999"
                     var message = "json serialization error"
                     
-                    if let resultError = response.error,
-                       let responseCode = resultError.responseCode,
-                       let errorDescription = resultError.errorDescription
+                    if let resultError = response.result.error as? NSError
                     {
-                        statusCode = "\(responseCode)"
-                        message = errorDescription
+                        statusCode = "\(resultError.code)"
+                        message = resultError.localizedDescription
                     }
                     
                     if self.isDebugMode {

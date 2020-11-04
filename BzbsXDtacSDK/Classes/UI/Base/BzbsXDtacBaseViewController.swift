@@ -416,7 +416,7 @@ class ReachabilityManager: NSObject{
     var listener:((NetworkReachabilityManager.NetworkReachabilityStatus) -> Void)? {
         didSet{
             guard let manager = reachabilityManager else { return }
-            manager.startListening(onUpdatePerforming: listener!)
+            manager.listener = listener
         }
     }
     
@@ -438,9 +438,8 @@ class ReachabilityManager: NSObject{
             return
         }
         
-        if let _ = listener {
-            manager.startListening(onUpdatePerforming: listener!)
-        }
+        manager.startListening()
+        manager.listener = listener
     }
     
     func isConnectedToInternet() -> Bool {
