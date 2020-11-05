@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BzbsXDtacSDK'
-  s.version          = '2.0.14'
+  s.version          = '2.0.18'
   s.summary          = 'Buzzebees SDK For Dtac Rewards'
 
 # This description is used to generate tags and improve search results.
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'AVFoundation'
   s.static_framework = true
-  s.dependency 'Alamofire'
+  s.dependency 'Alamofire' , '~> 4.9.0'
   s.dependency 'AlamofireImage'
   s.dependency 'GoogleMaps'
   # s.dependency 'Google-Maps-iOS-Utils' // Manual added

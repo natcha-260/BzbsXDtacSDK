@@ -1,6 +1,6 @@
 {
   "name": "BzbsXDtacSDK",
-  "version": "2.0.12",
+  "version": "2.0.18",
   "summary": "Buzzebees SDK For Dtac Rewards",
   "description": "Buzzebees SDK For Dtac Rewards",
   "homepage": "https://buzzebees.com/Views/BzbsForBusiness/OurService.aspx",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/natcha-260/BzbsXDtacSDK.git",
-    "tag": "2.0.12"
+    "tag": "2.0.18"
   },
   "platforms": {
     "ios": "9.0"
@@ -41,7 +41,7 @@
   "static_framework": true,
   "dependencies": {
     "Alamofire": [
-
+      "~> 4.9.0"
     ],
     "AlamofireImage": [
 
