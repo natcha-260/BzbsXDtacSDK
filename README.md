@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.19
+- update minimum ios to 10.0, swift5.3    
 ## 2.0.18
 - revert to 2.0.14
 ## 2.0.17

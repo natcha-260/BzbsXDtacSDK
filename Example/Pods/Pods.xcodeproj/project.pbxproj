@@ -7137,38 +7137,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		091DCE222FF8D5E58BA9D4CCEB085B5B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55BCDD2F69D610387D3EDFBD987A31BB /* BzbsXDtacSDK.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK.modulemap";
-				PRODUCT_MODULE_NAME = BzbsXDtacSDK;
-				PRODUCT_NAME = BzbsXDtacSDK;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		0A971779E0BD7C4DDA129AB9D9DFB10E /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79E84491EB1099668C7665CFB3CE6A46 /* FirebaseCoreDiagnostics.release.xcconfig */;
@@ -7479,6 +7447,22 @@
 			};
 			name = Release;
 		};
+		3197A3B067BE464B475DE781B25A9437 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55BCDD2F69D610387D3EDFBD987A31BB /* BzbsXDtacSDK.release.xcconfig */;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BzbsXDtacSDK";
+				IBSC_MODULE = BzbsXDtacSDK;
+				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/ResourceBundle-BzbsXDtacSDK-BzbsXDtacSDK-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = BzbsXDtacSDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		32EC0E6F8CD8463D208205A82F5A0BD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22D9F0A3192344586B5979CDEAB61D9A /* nanopb.release.xcconfig */;
@@ -7530,37 +7514,6 @@
 				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
 				PRODUCT_MODULE_NAME = nanopb;
 				PRODUCT_NAME = nanopb;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		356FEE20499344BF180102B5BEC300B7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FE6B9D2C3B85CA50E60DDBB5C37183C /* BzbsXDtacSDK.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK.modulemap";
-				PRODUCT_MODULE_NAME = BzbsXDtacSDK;
-				PRODUCT_NAME = BzbsXDtacSDK;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -7629,6 +7582,39 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		3FA7C21A708341E0FDF5707CC99DCDC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55BCDD2F69D610387D3EDFBD987A31BB /* BzbsXDtacSDK.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK.modulemap";
+				PRODUCT_MODULE_NAME = BzbsXDtacSDK;
+				PRODUCT_NAME = BzbsXDtacSDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
 		};
 		3FBAA1C5B31C061DE7289FA3815BEC41 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -7752,22 +7738,6 @@
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		4E394AEE0BB136ADA73622619CDF3F6B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55BCDD2F69D610387D3EDFBD987A31BB /* BzbsXDtacSDK.release.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BzbsXDtacSDK";
-				IBSC_MODULE = BzbsXDtacSDK;
-				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/ResourceBundle-BzbsXDtacSDK-BzbsXDtacSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_NAME = BzbsXDtacSDK;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};
@@ -8218,6 +8188,38 @@
 			};
 			name = Release;
 		};
+		AA3A5E4EA2D609E13A099AA556494419 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FE6B9D2C3B85CA50E60DDBB5C37183C /* BzbsXDtacSDK.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/BzbsXDtacSDK/BzbsXDtacSDK.modulemap";
+				PRODUCT_MODULE_NAME = BzbsXDtacSDK;
+				PRODUCT_NAME = BzbsXDtacSDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		ADDA96550948AF95EC7E9B05E358E1E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 233C17EA73DB13B8440D4D61A528C430 /* InfiniteCarouselCollectionView.release.xcconfig */;
@@ -8310,22 +8312,6 @@
 			};
 			name = Release;
 		};
-		C4FCB68682D1892573C6B86E7B6D0F80 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FE6B9D2C3B85CA50E60DDBB5C37183C /* BzbsXDtacSDK.debug.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BzbsXDtacSDK";
-				IBSC_MODULE = BzbsXDtacSDK;
-				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/ResourceBundle-BzbsXDtacSDK-BzbsXDtacSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_NAME = BzbsXDtacSDK;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
 		C771BA0AE928C1E5A7D6ED80A24A6261 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EC8C278E1F16A454DE6CFBF23BE58496 /* Firebase.release.xcconfig */;
@@ -8401,6 +8387,22 @@
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Release;
+		};
+		D23C426D05C4D903AC31FB5A6293A0EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FE6B9D2C3B85CA50E60DDBB5C37183C /* BzbsXDtacSDK.debug.xcconfig */;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BzbsXDtacSDK";
+				IBSC_MODULE = BzbsXDtacSDK;
+				INFOPLIST_FILE = "Target Support Files/BzbsXDtacSDK/ResourceBundle-BzbsXDtacSDK-BzbsXDtacSDK-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = BzbsXDtacSDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
 		};
 		D2F15CF034CB2EE8CE63610DADF94A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -8802,8 +8804,8 @@
 		4E474CFA5D655C5EB2CDA2C5C7CAC954 /* Build configuration list for PBXNativeTarget "BzbsXDtacSDK-BzbsXDtacSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C4FCB68682D1892573C6B86E7B6D0F80 /* Debug */,
-				4E394AEE0BB136ADA73622619CDF3F6B /* Release */,
+				D23C426D05C4D903AC31FB5A6293A0EF /* Debug */,
+				3197A3B067BE464B475DE781B25A9437 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -8982,8 +8984,8 @@
 		F4A21A82346761B5172D16C914B2E02B /* Build configuration list for PBXNativeTarget "BzbsXDtacSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				356FEE20499344BF180102B5BEC300B7 /* Debug */,
-				091DCE222FF8D5E58BA9D4CCEB085B5B /* Release */,
+				AA3A5E4EA2D609E13A099AA556494419 /* Debug */,
+				3FA7C21A708341E0FDF5707CC99DCDC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
