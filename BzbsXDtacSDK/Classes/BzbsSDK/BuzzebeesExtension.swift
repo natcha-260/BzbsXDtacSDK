@@ -104,21 +104,24 @@ extension Double {
 }
 
 extension UIImageView {
-    func bzbsSetImage(withURL strUrl:String, isUsePlaceholder:Bool = true, completionHandler:(() -> Void)? = nil) {
+    func bzbsSetImage(withURL strUrl:String, isUsePlaceholder:Bool = true, completionHandler:((UIImage?) -> Void)? = nil) {
         if let url = URL(string: strUrl) {
             let placeholderImage = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)
             if strUrl.lowercased().contains(".gif") {
-                self.kf.setImage(with: url, placeholder: isUsePlaceholder ?  placeholderImage : nil, options: nil, progressBlock: nil)
-                { (image, error, cacheType, url) in
-                    completionHandler?()
+                self.kf.setImage(with: url, placeholder: isUsePlaceholder ?  placeholderImage : nil, options: nil, progressBlock: nil) { (result) in
+                    do {
+                        let retrieveImageResult = try result.get()
+                        completionHandler?(retrieveImageResult.image)
+                    } catch _ {
+                        completionHandler?(nil)
+                    }
                 }
                 
             } else {
-                af_setImage(withURL: url.convertCDNAddTime(),placeholderImage: isUsePlaceholder ?  placeholderImage : nil)
                 af_setImage(withURL: url.convertCDNAddTime(), placeholderImage: isUsePlaceholder ?  placeholderImage : nil, completion:
-                                { (image) in
-                                    completionHandler?()
-                })
+                                { (resp) in
+                                    completionHandler?(resp.result.value)
+                                })
             }
         } else {
             self.image = UIImage(named: "img_placeholder", in: Bzbs.shared.currentBundle, compatibleWith: nil)

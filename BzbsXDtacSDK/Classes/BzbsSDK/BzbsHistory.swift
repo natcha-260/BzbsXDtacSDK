@@ -82,6 +82,7 @@ public class BzbsHistory {
     public var info1:String?
     public var info2:String?
     public var info3:String?
+    public var categoryName:String?
     
     init(){
         
@@ -183,5 +184,7 @@ public class BzbsHistory {
         info1 = BuzzebeesConvert.StringFromObject(dict["Info1"])
         info2 = BuzzebeesConvert.StringFromObject(dict["Info2"])
         info3 = BuzzebeesConvert.StringFromObject(dict["Info3"])
+        
+        categoryName = BuzzebeesConvert.StringFromObject(dict["CategoryName"]) 
     }
 }

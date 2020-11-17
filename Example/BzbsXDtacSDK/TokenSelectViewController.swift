@@ -194,6 +194,26 @@ class TokenSelectViewController: UIViewController {
         }
     }
     
+    @IBAction func clickGotoFavorite(_ sender: Any) {
+        self.view.endEditing(true)
+        guard  let nav = self.navigationController else { return }
+        
+        if isChangeUser {
+            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+            Bzbs.shared.logout()
+            isChangeUser = false
+            delay(0.5) {
+                DispatchQueue.main.async {
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                    nav.pushViewController(FavoriteViewController.getViewController(), animated: true)
+                }
+            }
+        } else {
+            nav.pushViewController(FavoriteViewController.getViewController(), animated: true)
+        }
+    }
+    
     @IBAction func clickGotoCategory(_ sender: Any) {
         guard  let nav = self.navigationController else { return }
         
@@ -267,6 +287,9 @@ class TokenSelectViewController: UIViewController {
             ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
             segment = "0000"
         }
+        token = ""
+        ticket = ""
+        segment = ""
         isChangeUser = true
     }
     

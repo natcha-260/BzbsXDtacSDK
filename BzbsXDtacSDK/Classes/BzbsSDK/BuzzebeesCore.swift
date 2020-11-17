@@ -44,6 +44,8 @@ public class BuzzebeesCore: NSObject {
     static var urlSegmentImageGold : URL?
     static var urlSegmentImageBlue : URL?
     static var urlDeeplinkHistory : URL?
+    static var urlDeeplinkHistoryRedeemed : URL?
+    static var urlDeeplinkLuckyGame : URL?
     
     static var levelNameDtac = ""
     static var levelNameSilver = ""
@@ -59,6 +61,7 @@ public class BuzzebeesCore: NSObject {
     static var catIdCoin : Int! = 9442854 // default as Dev env.
     static var catIdVoiceNet : Int! = 9439718 // default as stgDessert.
     static var catIdLineSticker : Int! = 9441868 // default as stgDessert.
+    static var catIdLuckyGame : Int! = 9443347 // default as LuckyGame STG
     
     public override init() {
         super.init()
@@ -137,6 +140,10 @@ public class BuzzebeesCore: NSObject {
                     if let deeplink = dictJSON["deeplink"] as? String {
                         urlDeeplinkHistory = URL(string: deeplink)
                     }
+                    
+                    if let deeplink = dictJSON["deeplink_redeemed"] as? String {
+                        urlDeeplinkHistoryRedeemed = URL(string: deeplink)
+                    }
 
                     if let cacheConfig = dictJSON["cache"] as? Dictionary<String, AnyObject> {
                         if let cacheTimeSegment = cacheConfig["segment"] as? Int
@@ -162,6 +169,15 @@ public class BuzzebeesCore: NSObject {
                     
                     if let catIdLineSticker = BuzzebeesConvert.IntFromObject(dictJSON["sub_category_line_sticker"]){
                         BuzzebeesCore.catIdLineSticker = catIdLineSticker
+                    }
+                    
+                    if let catIdLuckyGame = BuzzebeesConvert.IntFromObject(dictJSON["sub_category_lucky_game"]){
+                        BuzzebeesCore.catIdLuckyGame = catIdLuckyGame
+                    }
+                    
+                    if let deeplinkLuckGame = dictJSON["deeplink_lucky_game"] as? String
+                    {
+                        urlDeeplinkLuckyGame = URL(string: deeplinkLuckGame)
                     }
                     
                     if let blobUrl = dictJSON["url_blob"] as? String ,

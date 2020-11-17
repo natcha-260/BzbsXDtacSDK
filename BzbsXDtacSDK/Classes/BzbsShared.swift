@@ -42,7 +42,7 @@ struct DtacLoginParams {
         }
     }
     
-    var apiPrefix:String?// = "https://dev.buzzebees.com"
+    var apiPrefix:String?
     private var webMiscUrl:String?{
         BuzzebeesCore.miscUrl
     }
@@ -95,13 +95,7 @@ struct DtacLoginParams {
     }
     
     @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String, TelType: String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
-        if isDebugLog {
-            BuzzebeesCore.apiSetupPrefix(successCallback: {
-                
-            }) {
-                
-            }
-        }
+
         var loginParams = DtacLoginParams()
         if token == "" || ticket == "" || DTACSegment == ""
         {
@@ -267,8 +261,7 @@ struct DtacLoginParams {
     {
         if let token = dtacLoginParams.token, token != ""{
             
-            let scheme = url.scheme
-            if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta" || scheme == "dtac-beta") && url.host == "reward"
+            if url.isDtacDeepLinkPrefix()
             {
                 NotificationCenter.default.post(name: NSNotification.Name.BzbsDeeplinkAction, object: nil, userInfo: ["strUrl":url.absoluteString])
             }

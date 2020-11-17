@@ -54,10 +54,17 @@ open class PointHistoryViewController: BaseListController {
     }()
     
     var strUrlFooter :String {
-        if LocaleCore.shared.getUserLocale() == 1054 {
-            return BuzzebeesCore.blobUrl + "/config/353144231924127/history/bannerth.jpg"
+        if isEarn {
+            if LocaleCore.shared.getUserLocale() == 1054 {
+                return BuzzebeesCore.blobUrl + "/config/353144231924127/history/bannerth.jpg"
+            }
+            return BuzzebeesCore.blobUrl + "/config/353144231924127/history/banneren.jpg"
+        } else {
+            if LocaleCore.shared.getUserLocale() == 1054 {
+                return BuzzebeesCore.blobUrl + "/config/353144231924127/history/bannerth_redeemed.jpg"
+            }
+            return BuzzebeesCore.blobUrl + "/config/353144231924127/history/banneren_redeemed.jpg"
         }
-        return BuzzebeesCore.blobUrl + "/config/353144231924127/history/banneren.jpg"
     }
     
     // MARK:- Class function
@@ -85,6 +92,8 @@ open class PointHistoryViewController: BaseListController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        imvFooter.contentMode = .scaleAspectFit
+        imvFooter.alpha = 0
         cstFooterHeight.constant = 0
         registerCell()
         lblPoint.font = UIFont.mainFont(.big, style: .bold)
@@ -226,6 +235,8 @@ open class PointHistoryViewController: BaseListController {
         
         tableView.isHidden = false
         burnTableView.isHidden = true
+        analyticsSetScreen(screenName: "your_coin_earn")
+        apiGetimagefooter()
     }
     
     @IBAction func clickRedeemed(_ sender: Any) {
@@ -237,13 +248,21 @@ open class PointHistoryViewController: BaseListController {
         
         tableView.isHidden = true
         burnTableView.isHidden = false
+        analyticsSetScreen(screenName: "your_coin_burn")
+        apiGetimagefooter()
     }
     
     @IBAction func clickGotoMission(_ sender: Any) {
         analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
         analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
-        if let url = BuzzebeesCore.urlDeeplinkHistory {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        var url:URL?
+        if isEarn {
+            url = BuzzebeesCore.urlDeeplinkHistory
+        } else {
+            url = BuzzebeesCore.urlDeeplinkHistoryRedeemed
+        }
+        if let _url = url {
+            UIApplication.shared.open(_url, options: [:], completionHandler: nil)
         }
     }
     
@@ -258,7 +277,7 @@ open class PointHistoryViewController: BaseListController {
         showLoader()
         BzbsCoreApi().getLineDetail(token: token, campaignId: String(item.ID!), packageId: packageId) { (lineCampaign) in
             self.hideLoader()
-            GotoPage.gotoLineHistory(nav, isFromHistory: true , campaign: lineCampaign,contactNumber: contactNumber, packageId:packageId)
+            GotoPage.gotoLineHistory(nav, isFromHistory: true , lineCampaign: lineCampaign, bzbsCampaign: BzbsCampaign(purchase: item), contactNumber: contactNumber, packageId:packageId)
         } failCallback: { (error) in
             self.hideLoader()
         }
@@ -363,37 +382,25 @@ open class PointHistoryViewController: BaseListController {
     
     
     func apiGetimagefooter() {
-        if let url = URL(string: strUrlFooter) {
-            BzbsCoreApi().getImage(imageUrl: url) { (image) in
+        imvFooter.bzbsSetImage(withURL: strUrlFooter, isUsePlaceholder: false) { (image) in
+            if image == nil {
                 DispatchQueue.main.async {
-                    self.setImagefooter(image: image)
+                    UIView.animate(withDuration: 0) {
+                        self.cstFooterHeight.constant = 0
+                        self.view.layoutIfNeeded()
+                    }
                 }
-            }
-        }
-    }
-    
-    func setImagefooter(image:UIImage?)
-    {
-        imvFooter.image = image
-        imvFooter.contentMode = .scaleAspectFit
-        imvFooter.alpha = 0
-        if image == nil {
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0) {
-                    self.cstFooterHeight.constant = 0
-                    self.view.layoutIfNeeded()
-                }
-            }
-        } else {
-            let width = self.tableView.bounds.size.width
-            let height = (width / 827) * 192
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.33, animations: {
-                    self.cstFooterHeight.constant = height
-                    self.view.layoutIfNeeded()
-                }) { (_) in
-                    UIView.animate(withDuration: 0.33) {
-                        self.imvFooter.alpha = 1
+            } else {
+                let width = self.tableView.frame.size.width
+                let height = (width / 827) * 192
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0, animations: {
+                        self.cstFooterHeight.constant = height
+                        self.view.layoutIfNeeded()
+                    }) { (_) in
+                        UIView.animate(withDuration: 0.33) {
+                            self.imvFooter.alpha = 1
+                        }
                     }
                 }
             }
@@ -447,7 +454,10 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
             }
             
             let item = arrPointLogBurn[indexPath.row]
-            if item.categoryID == BuzzebeesCore.catIdVoiceNet || item.categoryID == BuzzebeesCore.catIdLineSticker{
+            if item.categoryID == BuzzebeesCore.catIdVoiceNet
+                || item.categoryID == BuzzebeesCore.catIdLineSticker
+                || item.categoryID == BuzzebeesCore.catIdLuckyGame
+            {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "pointHistoryCell", for: indexPath) as! PointHistoryCell
                 cell.setupUI(item)
                 return cell
@@ -479,6 +489,8 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
                 PopupManager.subscriptionPopup(onView: self, purchase: item)
             } else if item.categoryID == BuzzebeesCore.catIdLineSticker {
                 gotoLineHistory(item)
+            } else if item.categoryID == BuzzebeesCore.catIdLuckyGame {
+                PopupManager.pointHistoryPopup(onView: self, purchase: item)
             } else {
                 PopupManager.serialPopup(onView: self, purchase: item)
             }
@@ -523,7 +535,7 @@ extension PointHistoryViewController {
         formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        let gaLabel = "redeemed_list | {reward_filter} | \(status) | \(formatter.string(from: date)) | \(purchase.pointPerUnit ?? 0)"
+        let gaLabel = "redeemed_list | \(purchase.categoryName ?? "") | \(status) | \(formatter.string(from: date)) | \(purchase.pointPerUnit ?? 0)"
         analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_list", label: gaLabel)
     }
     

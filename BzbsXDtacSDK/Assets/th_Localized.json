@@ -135,7 +135,7 @@
     
     "recommend_coin_title" : "รางวัลสำหรับแลกเหรียญ reward coins ",
     "coin_use" : "ใช้แล้ว",
-    "coin_campaign_use" : "coins ที่ใช้",
+    "coin_campaign_use" : "Coins",
     "coin_not_enough" : "เหรียญ coins ไม่พอ",
     
     "popup_confirm_redeem_coin" : "ใช้ %@ เหรียญ coins ในการรับสิทธิ์",
@@ -178,4 +178,6 @@
     "line_history_download_now" : "ดาวน์โหลดตอนนี้",
     "line_history_back_to_campaign" : "กลับสู่แคมเปญ",
     "line_history_back" : "กลับสู่หน้าประวัติ",
+    
+    "redeem_date" : "วันที่แลกสิทธิ์",
 }

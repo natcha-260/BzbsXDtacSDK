@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 class LineHistoryViewController: BzbsXDtacBaseViewController {
 
@@ -21,7 +22,8 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     
     // MARK:- Variable
     var isFromHistory:Bool!
-    var campaign:LineStickerCampaign!
+    var lineCampaign:LineStickerCampaign!
+    var bzbsCampaign:BzbsCampaign!
     var contactNumber:String!
     var packageId:String!
     var isNavHidden = false
@@ -31,6 +33,8 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     // MARK:-
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsSetScreen(screenName: "reward_detail")
+        
         view.backgroundColor = .lineBG
         lblTitle.font = UIFont.mainFont(.big)
         lblInfo.font = UIFont.mainFont(.big)
@@ -47,14 +51,14 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
         
         lblTitle.text = "line_history_redeem_success".localized()
         lblInfo.text = String(format: "line_history_info_format".localized(), contactNumber.getContactFormat())
-        lblLineName.text = campaign.stickerTitle
+        lblLineName.text = lineCampaign.stickerTitle
         lblBtnDownload.text = "line_history_download_now".localized()
         lblBack.text = isFromHistory ? "line_history_back".localized() : "line_history_back_to_campaign".localized()
         
         isNavHidden = self.navigationController?.navigationBar.isHidden ?? false
         self.navigationController?.navigationBar.isHidden = true
         
-        imv.bzbsSetImage(withURL: campaign.logoUrl ?? "")
+        imv.bzbsSetImage(withURL: lineCampaign.logoUrl ?? "")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,7 +70,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
         super.updateUI()
         lblTitle.text = "line_history_redeem_success".localized()
         lblInfo.text = String(format: "line_history_info_format".localized(), contactNumber.getContactFormat())
-        lblLineName.text = campaign.stickerTitle
+        lblLineName.text = lineCampaign.stickerTitle
         lblBtnDownload.text = "line_history_download_now".localized()
         lblBack.text = "line_history_back".localized()
     }
@@ -74,6 +78,8 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     // MARK:- Event
     // MARK:- Click
     @IBAction func clickDownload(_ sender: Any) {
+        Bzbs.shared.delegate?.analyticsEvent(event: "event_app", category: "reward", action: "touch_button", label: "download_line_sticker | \(bzbsCampaign.ID ?? 0) | \(bzbsCampaign.pointPerUnit ?? 0)")
+        
         let strUrl = "https://line.me/R/shop/sticker/detail/\(packageId!)"
         guard let url = URL(string: strUrl) else { return }
         if #available(iOS 10.0, *) {

@@ -133,18 +133,18 @@ class RecommendCoinListViewController: RecommendListViewController {
             var reward = [String:AnyObject]()
             reward[AnalyticsParameterItemID] = item.id! as AnyObject
             reward[AnalyticsParameterItemName] = name as AnyObject
-            reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+            reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
             reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
             reward[AnalyticsParameterIndex] = i as AnyObject
-            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+//            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
             reward["metric1"] = intPointPerUnit as AnyObject
             
             i += 1
             items.append(reward)
         }
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String: AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " impression_list" as NSString,
             "eventLabel" : "recommend_coin_reward" as NSString,
@@ -152,7 +152,7 @@ class RecommendCoinListViewController: RecommendListViewController {
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     
@@ -190,17 +190,17 @@ class RecommendCoinListViewController: RecommendListViewController {
         var reward = [String:AnyObject]()
         reward[AnalyticsParameterItemID] = item.id! as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
-        reward[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
         reward[AnalyticsParameterIndex] = index as AnyObject
-        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+//        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String: AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_list" as NSString,
             "eventLabel" : "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)" as NSString,
@@ -208,6 +208,9 @@ class RecommendCoinListViewController: RecommendListViewController {
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
+        
+        let label = "recommend_coin_reward | \(index) | \(item.id ?? "0") | \(intPointPerUnit)"
+        Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventSelectItem, category: "reward", action: "touch_list", label: label)
     }
 }

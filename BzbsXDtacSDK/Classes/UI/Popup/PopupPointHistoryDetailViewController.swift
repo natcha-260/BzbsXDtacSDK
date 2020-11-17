@@ -18,6 +18,7 @@ class PopupPointHistoryDetailViewController: UIViewController {
     @IBOutlet weak var vwClose: UIView!
     
     var pointLog : PointLog!
+    var purchase : BzbsHistory?
     var closeSelector:(() -> Void)?
     var listCell = [String]()
     
@@ -47,74 +48,79 @@ class PopupPointHistoryDetailViewController: UIViewController {
     }
     
     func setupUI() {
-        lblTitle.text = pointLog.title
-        if pointLog.type == "adjust"
-        {
-            var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/"
-            if pointLog.points > 0 {
-                strUrl = strUrl + "add.jpg"
-                lblPoint.text = "coin_adjust_add".localized() + ": \(pointLog.points.withCommas())"
-            } else {
-                strUrl = strUrl + "deduct.jpg"
-                lblPoint.text = "coin_adjust_deduct".localized() + ": \(pointLog.points.withCommas())"
+        if let _purchase = purchase {
+            imv.bzbsSetImage(withURL: purchase?.fullImageUrl ?? "")
+            lblTitle.text = _purchase.name
+            lblPoint.text = "coin_use".localized() + ": \(_purchase.pointPerUnit.withCommas())"
+            listCell = ["redeem_date"]
+        } else {
+            lblTitle.text = pointLog.title
+            if pointLog.type == "adjust"
+            {
+                var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/"
+                if pointLog.points > 0 {
+                    strUrl = strUrl + "add.jpg"
+                    lblPoint.text = "coin_adjust_add".localized() + ": \(pointLog.points.withCommas())"
+                } else {
+                    strUrl = strUrl + "deduct.jpg"
+                    lblPoint.text = "coin_adjust_deduct".localized() + ": \(pointLog.points.withCommas())"
+                }
+                imv.bzbsSetImage(withURL: strUrl)
+                listCell = ["adjust_date"]
             }
-            imv.bzbsSetImage(withURL: strUrl)
-            listCell = ["adjust_date"]
-        }
-        else if pointLog.type == "transfer"
-        {
-            lblTitle.text = "coin_transfer".localized()
-            let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/transfer.jpg"
-            lblPoint.text = "coin_earn_detail".localized() + ": \(pointLog.points.withCommas())"
-            imv.bzbsSetImage(withURL: strUrl)
-            listCell = ["transfer_from", "transfer_date"]
-        }
-        else {
-            lblPoint.text = "coin_earn_detail".localized() + ": " + pointLog.points.withCommas()
-            let productID = pointLog.productId ?? "0"
-            let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
-            imv.bzbsSetImage(withURL: strUrl)
-            
-            switch pointLog.productId {
-            case "1":
-                listCell = ["package_sub", "sub_date", "package_fee"]
-                break
-            case "2":
-                listCell = ["refill_date"]
-                break
-            case "3":
-                listCell = ["paid_amount" , "paid_date"]
-                break
-            case "4":
-                listCell = ["paid_amount" , "paid_date"]
-                break
-            case "5":
-                listCell = ["first_use_date"]
-                break
-            case "6":
-                listCell = ["checkin_date"]
-                break
-            case "7":
-                listCell = ["jaidee_service","usage_date"]
-                break
-            case "8":
-                listCell = ["jaidee_service","usage_date"]
-                break
-            case "9":
-                listCell = ["jaidee_service","usage_date"]
-                break
-            case "10":
-                listCell = ["jaidee_service","usage_date"]
-                break
-            case "11":
-                listCell = ["jaidee_service","usage_date"]
-                break
-            default:
-                break
+            else if pointLog.type == "transfer"
+            {
+                lblTitle.text = "coin_transfer".localized()
+                let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/transfer.jpg"
+                lblPoint.text = "coin_earn_detail".localized() + ": \(pointLog.points.withCommas())"
+                imv.bzbsSetImage(withURL: strUrl)
+                listCell = ["transfer_from", "transfer_date"]
+            }
+            else {
+                lblPoint.text = "coin_earn_detail".localized() + ": " + pointLog.points.withCommas()
+                let productID = pointLog.productId ?? "0"
+                let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
+                imv.bzbsSetImage(withURL: strUrl)
+                
+                switch pointLog.productId {
+                case "1":
+                    listCell = ["package_sub", "sub_date", "package_fee"]
+                    break
+                case "2":
+                    listCell = ["refill_date"]
+                    break
+                case "3":
+                    listCell = ["paid_amount" , "paid_date"]
+                    break
+                case "4":
+                    listCell = ["paid_amount" , "paid_date"]
+                    break
+                case "5":
+                    listCell = ["first_use_date"]
+                    break
+                case "6":
+                    listCell = ["checkin_date"]
+                    break
+                case "7":
+                    listCell = ["jaidee_service","usage_date"]
+                    break
+                case "8":
+                    listCell = ["jaidee_service","usage_date"]
+                    break
+                case "9":
+                    listCell = ["jaidee_service","usage_date"]
+                    break
+                case "10":
+                    listCell = ["jaidee_service","usage_date"]
+                    break
+                case "11":
+                    listCell = ["jaidee_service","usage_date"]
+                    break
+                default:
+                    break
+                }
             }
         }
-        
-        
         tableView.reloadData()
         Bzbs.shared.delay(0.33) {
             let newHeight = self.tableView.contentSize.height
@@ -235,6 +241,16 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 } else {
                     cell.detail = "-"
                 }
+            } else if cellIdent == "redeem_date" {
+                cell.title = "redeem_date".localized() + ": "
+                formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                formatter.dateFormat = "d MMM yyyy"
+                if let redeemDate = purchase?.redeemDate {
+                    cell.detail = formatter.string(from: Date(timeIntervalSince1970: redeemDate))
+                } else {
+                    cell.detail = "-"
+                }
+                
             }
             
         }

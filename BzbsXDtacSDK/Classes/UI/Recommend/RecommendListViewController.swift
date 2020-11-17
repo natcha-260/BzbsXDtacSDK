@@ -226,14 +226,7 @@ extension RecommendListViewController : UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsDashboard
-        let campaign = BzbsCampaign()
-        campaign.ID = Int(item.id)
-        campaign.name = item.line1
-        if LocaleCore.shared.getUserLocale() == 1033
-        {
-            campaign.name = item.line2
-        }
-        
+        let campaign = item.toCampaign()
         if let nav = self.navigationController
         {
             GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)

@@ -13,6 +13,24 @@ import Alamofire
 open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     static var isInitialized = false
     static var isOpeningDeeplink = false
+    var screenName = "-"
+    
+    func getPreviousScreenName() -> String {
+        if let previousVC = self.parent as? BzbsXDtacBaseViewController{
+            return previousVC.screenName
+        }
+        
+        if let nav = self.navigationController {
+            if let index = nav.viewControllers.firstIndex(of: self) {
+                if index > 0 {
+                    if let vc = nav.viewControllers[index - 1] as? BzbsXDtacBaseViewController {
+                        return vc.screenName
+                    }
+                }
+            }
+        }
+        return "-"
+    }
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -268,6 +286,7 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     
     func analyticsSetScreen(screenName:String)
     {
+        self.screenName = screenName
         Bzbs.shared.delegate?.analyticsScreen(screenName: screenName)
     }
     
@@ -510,21 +529,11 @@ extension BzbsXDtacBaseViewController {
         }
     }
     
-    func isDeepLinkPrefix(_ url:URL) -> Bool
-    {
-        Bzbs.shared.deepLinkUrl = nil
-        let scheme = url.scheme
-        if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta" || scheme == "dtac-beta") && url.host == "reward"
-        {
-            return true
-        }
-        return false
-    }
-    
     func openDeepLinkURL(_ _url:URL?)
     {
         guard let url = _url else { return }
-        if isDeepLinkPrefix(url)
+        Bzbs.shared.deepLinkUrl = nil
+        if url.isDtacDeepLinkPrefix()
         {
             var params = Dictionary<String, AnyObject>()
             if let query = url.query
@@ -568,6 +577,8 @@ extension BzbsXDtacBaseViewController {
                     if let strId = params["bzbID"] as? String,
                         let intId = Int(strId){
                         openCampaignDetail(intId)
+                    } else {
+                        print(url.absoluteString)
                     }
                     break
                 }

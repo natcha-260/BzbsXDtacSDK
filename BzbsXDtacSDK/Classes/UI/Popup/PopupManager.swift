@@ -67,6 +67,15 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
+    class func pointHistoryPopup(onView target:UIViewController!, purchase:BzbsHistory)
+    {
+        let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
+        let vc = storboard.instantiateViewController(withIdentifier: "popup_point_history_detail") as! PopupPointHistoryDetailViewController
+        vc.pointLog = PointLog()
+        vc.purchase = purchase
+        present(view: vc, on: target)
+    }
+    
     class func subscriptionPopup(onView target:UIViewController!, purchase:BzbsHistory)
     {
         let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)

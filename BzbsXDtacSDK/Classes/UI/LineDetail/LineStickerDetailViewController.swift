@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     
@@ -51,6 +52,8 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        analyticsSetScreen(screenName: "reward_detail")
         
         lblAgency.font = UIFont.mainFont(.small)
         lblName.font = UIFont.mainFont(.big)
@@ -166,8 +169,41 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Event click
     // MARK:-
     @IBAction func clickChoose(_ sender: Any) {
-        
+        sendGA()
         GotoPage.gotoLineRedeem(self.navigationController!, campaignId : campaignId, packageId: packageId, bzbsCampaign: bzbsCampaign, lineCampaign: lineCampaign!)
+    }
+    
+    func sendGA() {
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
+            AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
+            AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
+            AnalyticsParameterPrice: 0 as NSNumber,
+            AnalyticsParameterCurrency: "THB" as NSString,
+            AnalyticsParameterQuantity: 1 as NSNumber,
+            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
+            "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_button" as NSString,
+            "eventLabel" : "choose_line_sticker | \(campaignId ?? "0")" as NSString,
+            AnalyticsParameterItemListName: "reward_detail" as NSString,
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventBeginCheckout, params: ecommerce)
+        
+        Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventBeginCheckout, category: "reward", action: "touch_button", label: "choose_line_sticker | \(campaignId ?? "0") | \(bzbsCampaign.pointPerUnit ?? 0)")
+        
     }
 }
 

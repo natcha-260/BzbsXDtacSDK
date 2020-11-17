@@ -88,7 +88,7 @@
     "popup_retry_login_fail" : "Retry",
     "popup_suspend_info" : "Sorry, your mobile number is temporary suspended. Your request can not be processed.",
     
-    "recommend_title" : "Recommend for you",
+    "recommend_title" : "Recommended for you ",
     "major_empty" : "No privilege campaign found.",
     
     "your_coin" : "My Coins",
@@ -136,7 +136,7 @@
     
     "recommend_coin_title" : "Recommended Coin Rewards",
     "coin_use" : "Used",
-    "coin_campaign_use" : "Coins used",
+    "coin_campaign_use" : "Coins",
     "coin_not_enough" : "Not Enough Coins",
     
     "popup_confirm_redeem_coin" : "Use %@ coins to redeem",
@@ -179,5 +179,7 @@
     "line_history_download_now" : "Download Now",
     "line_history_back_to_campaign" : "Back to Campaign",
     "line_history_back" : "Back to History",
+    
+    "redeem_date" : "Redeem date",
 }
 

@@ -7,12 +7,11 @@
 
 import UIKit
 
-class FavoriteViewController: BaseListController {
+public class FavoriteViewController: BaseListController {
     
     
     // MARK:- Properties
     // MARK:- Outlet
-    
     
     
     // MARK:- Variable
@@ -27,7 +26,7 @@ class FavoriteViewController: BaseListController {
     }
     // MARK:- Class function
     // MARK:-
-    open class func getViewController(isHideNav:Bool = false) -> FavoriteViewController {
+    @objc public class func getViewController(isHideNav:Bool = false) -> FavoriteViewController {
         
         let storyboard = UIStoryboard(name: "Favorite", bundle: Bzbs.shared.currentBundle)
         let controller = storyboard.instantiateViewController(withIdentifier: "scene_favorite_list") as! FavoriteViewController
@@ -38,18 +37,13 @@ class FavoriteViewController: BaseListController {
     // MARK:- View Life cycle
     // MARK:-
     
-    override func loadView() {
-        super.loadView()
-       
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.resetList()
         self.getApi()
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = isHideNav
         let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
@@ -60,15 +54,21 @@ class FavoriteViewController: BaseListController {
         self.navigationItem.titleView = lblTitle
         ////self.title = "favorite_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
+        NotificationCenter.default.addObserver(self, selector: #selector(resetList), name: NSNotification.Name.BzbsApiReset, object: nil)
         initUI()
-        getApi()
+        
+        if Bzbs.shared.isLoggedIn() {
+            getApi()
+        } else {
+            showLoader()
+        }
         self.tableView.es.addPullToRefresh {
             self.resetList()
             self.getApi()
         }
     }
     
-    override func updateUI() {
+    public override func updateUI() {
         super.updateUI()
         
         let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
@@ -81,12 +81,12 @@ class FavoriteViewController: BaseListController {
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self,selector: #selector(back_1_step))
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         analyticsSetScreen(screenName: "dtac_reward_favorite")
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         //        self.navigationController?.isNavigationBarHidden = !isHideNav
     }
@@ -99,9 +99,10 @@ class FavoriteViewController: BaseListController {
         }
     }
     
-    override func resetList() {
+    @objc override func resetList() {
         _intSkip = 0
         _isEnd = false
+        getApi()
     }
     
     func initUI()
@@ -203,7 +204,7 @@ class FavoriteViewController: BaseListController {
     }
     
     // MARK:- ScrollView
-    @objc override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    @objc public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let location = scrollView.contentOffset
         if location.y > tableView.contentSize.height * 0.7
         {
@@ -217,18 +218,18 @@ class FavoriteViewController: BaseListController {
 // MARK:- UITableView DataSource, Delegate
 extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
 {
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if _arrDataShow.count == 0 { return 1 }
         
         return _arrDataShow.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         if _arrDataShow.count == 0 {
             if _isCallApi {
@@ -247,15 +248,15 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return getCellHeight(indexPath: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return getCellHeight(indexPath: indexPath)
     }
     
-    func getCellHeight(indexPath: IndexPath) -> CGFloat
+    public func getCellHeight(indexPath: IndexPath) -> CGFloat
     {
         if(_arrDataShow.count == 0 )
         {
@@ -265,7 +266,7 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
         return UITableView.automaticDimension
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
         if item.currentDate > item.expireDate { return }

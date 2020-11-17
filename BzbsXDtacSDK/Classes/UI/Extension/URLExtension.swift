@@ -16,5 +16,17 @@ extension URL {
             result[item.name] = item.value
         }
     }
+    
+    public func isDtacDeepLinkPrefix() -> Bool
+    {
+        let scheme = self.scheme
+        let host = self.host
+        if  (scheme == "dtacapp" || scheme == "dtac" || scheme == "dtacapp-beta" || scheme == "dtac-beta")
+                && (host == "reward")// || host ==  "openweb")
+        {
+            return true
+        }
+        return false
+    }
 }
 

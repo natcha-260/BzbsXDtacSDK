@@ -33,6 +33,10 @@ class GotoPage: NSObject
             ReachabilityManager.shared.showPopupInternet(target: target)
             return
         }
+        if campaign.categoryID == BuzzebeesCore.catIdLuckyGame {
+            gotoDtacLuckyGame()
+            return
+        }
         let storboard = UIStoryboard(name: "Campaign", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_campaign_detail") as! CampaignDetailViewController
         vc.hidesBottomBarWhenPushed = true
@@ -147,15 +151,23 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoLineHistory(_ nav: UINavigationController, isFromHistory:Bool = false, campaign:LineStickerCampaign, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
+    class func gotoLineHistory(_ nav: UINavigationController, isFromHistory:Bool = false, lineCampaign:LineStickerCampaign, bzbsCampaign:BzbsCampaign, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
         let storboard = UIStoryboard(name: "History", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_line_history") as! LineHistoryViewController
         vc.hidesBottomBarWhenPushed = true
-        vc.campaign = campaign
+        vc.lineCampaign = lineCampaign
+        vc.bzbsCampaign = bzbsCampaign
         vc.contactNumber = contactNumber
         vc.packageId = packageId
         vc.backSelector = backSelector
         vc.isFromHistory = isFromHistory
         nav.pushViewController(vc, animated: true)
     }
+    
+    class func gotoDtacLuckyGame(completeHandler:((Bool) -> Void)? = nil) {
+        if let url = BuzzebeesCore.urlDeeplinkLuckyGame {
+            UIApplication.shared.open(url, options: [:], completionHandler: completeHandler)
+        }
+    }
 }
+ 

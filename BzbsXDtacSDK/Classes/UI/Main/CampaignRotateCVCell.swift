@@ -11,6 +11,7 @@ import AlamofireImage
 import ImageSlideshow
 
 protocol CampaignRotateCVDelegate {
+    func didViewDashboard(_ item:BzbsDashboard, index:Int)
     func didSelectDashboard(_ item:BzbsDashboard)
 }
 
@@ -53,6 +54,10 @@ class CampaignRotateCVCell: UICollectionViewCell {
         didSet{
             if imageSlideShow != nil
             {
+                if let first = showDashboardItems.first {
+                    delegate?.didViewDashboard(first, index: 0)
+                }
+                
                 var imageList = [InputSource]()
                 for item in showDashboardItems {
                     if let imageUrl = item.imageUrl ,
@@ -65,7 +70,7 @@ class CampaignRotateCVCell: UICollectionViewCell {
                 imageSlideShow.slideshowInterval = 5
                 imageSlideShow.contentScaleMode = .scaleAspectFill
                 imageSlideShow.setImageInputs(imageList)
-//                imageSlideShow.delegate = self
+                imageSlideShow.delegate = self
                 let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didSelect))
                 imageSlideShow.addGestureRecognizer(gestureRecognizer)
             }
@@ -87,35 +92,12 @@ class CampaignRotateCVCell: UICollectionViewCell {
         let item = showDashboardItems[index]
         delegate?.didSelectDashboard(item)
     }
-//
-//    func carouselCollectionView(_ carouselCollectionView: CarouselCollectionView, didSelectItemAt index: Int) {
-//        if showDashboardItems.count == 0 {
-//            return
-//        }
-//
-//        let item = showDashboardItems[index]
-//        delegate?.didSelectDashboard(item)
-//    }
-//
-//    func carouselCollectionView(_ carouselCollectionView: CarouselCollectionView, didDisplayItemAt index: Int) {
-//       pageControl.currentPage = index
-//    }
-//
-//    func carouselCollectionView(_ carouselCollectionView: CarouselCollectionView, cellForItemAt index: Int, fakeIndexPath: IndexPath) -> UICollectionViewCell {
-//        let item = showDashboardItems[index]
-//        return generateCellRotate(item, indexPath: fakeIndexPath)
-//    }
-    
-//    // MARK:- Generate Cell
-//    func generateCellRotate(_ item:BzbsDashboard, indexPath:IndexPath) -> UICollectionViewCell {
-//
-//        let cellIdentifier = "campaignBigRotateCVCell"
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath as IndexPath) as! CampaignBigRotateCVCell
-//        if let strUrl = item.imageUrl
-//        {
-//            cell.imvCampaign.bzbsSetImage(withURL: strUrl)
-//        }
-//        return cell
-//    }
 
+}
+
+extension CampaignRotateCVCell :ImageSlideshowDelegate{
+    func imageSlideshow(_ imageSlideshow: ImageSlideshow, didChangeCurrentPageTo page: Int) {
+        let item = showDashboardItems[page]
+        delegate?.didViewDashboard(item, index: page)
+    }
 }

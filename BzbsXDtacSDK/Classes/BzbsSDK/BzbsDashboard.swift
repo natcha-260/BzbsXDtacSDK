@@ -42,6 +42,9 @@ public class BzbsDashboard {
     public var start_date: Double!
     public var end_date: Double!
     
+    public var categoryName: String?
+    public var subCategoryId = [Int]()
+    
     public var level:Int?
     
     init() {
@@ -112,6 +115,38 @@ public class BzbsDashboard {
             end_date = BuzzebeesConvert.DoubleFromObject(item["end_date"])
             
             level = BuzzebeesConvert.IntFromObjectNull(item["level"])
+            
+            categoryName = BuzzebeesConvert.StringFromObject(item["categoryName"])
+            
+            if let tmpSubCategoryId = item["subCategoryId"] as? [Int] {
+                self.subCategoryId = tmpSubCategoryId
+            }
         }
+    }
+    
+    open func toCampaign() -> BzbsCampaign {
+        let campaign = BzbsCampaign()
+        campaign.ID = Int(id)
+        campaign.name = line1
+        campaign.agencyName = line3
+        
+        campaign.categoryID = subCategoryId.last ?? 0
+        if subCategoryId.count > 1 {
+            campaign.parentCampaignId = subCategoryId.first ?? 0
+        }
+        if LocaleCore.shared.getUserLocale() == 1033
+        {
+            campaign.name = line2
+            campaign.agencyName = line4
+        }
+        
+        campaign.fullImageUrl = imageUrl
+        campaign.pointPerUnit = 0
+        if let _ = dict,  let pointPerUnit = Convert.IntFromObject(dict!["pointperunit"]) {
+            campaign.pointPerUnit = pointPerUnit
+        }
+        
+        
+        return campaign
     }
 }

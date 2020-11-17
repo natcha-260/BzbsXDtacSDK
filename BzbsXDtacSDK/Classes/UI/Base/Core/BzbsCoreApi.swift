@@ -269,10 +269,9 @@ public class BzbsCoreApi: BuzzebeesCore {
     
     public func getImage(imageUrl:URL, successCallback: @escaping ((UIImage?) -> Void))
     {
-        let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 30
         let sessionManager = BuzzebeesCore.sessionManager
-        sessionManager!.request(imageUrl).responseImage { (response) in
+        let requestUrl = URLRequest(url: imageUrl, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: 25)
+        sessionManager!.request(requestUrl).responseImage { (response) in
             if let data = response.data
             {
                 successCallback(UIImage(data: data))

@@ -1386,7 +1386,7 @@ extension CampaignDetailViewController {
                 "eventCategory" : "reward" as NSString,
                 "eventAction" : "seen_text" as NSString,
                 "eventLabel" : "reward_detail | \(campaign.ID ?? -1)" as NSString,
-                AnalyticsParameterItemListName: "dtac_coin_reward_\(campaign.categoryName ?? "")" as NSString
+                AnalyticsParameterItemListName: getPreviousScreenName() as NSString
             ]
             
             // Log select_content event with ecommerce dictionary.
@@ -1453,7 +1453,7 @@ extension CampaignDetailViewController {
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: (campaign.ID ?? -1),
             AnalyticsParameterItemName: (campaign.name ?? "") as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/{reward_filter}" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(campaign.categoryName ?? "")" as NSString,
             AnalyticsParameterItemBrand: (campaign.agencyName ?? "") as NSString,
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
@@ -1471,7 +1471,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "redeem_reward | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: "dtac_coin_reward_{reward_filiter}" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -1486,7 +1486,7 @@ extension CampaignDetailViewController {
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
@@ -1504,7 +1504,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "confirm_reward | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: "dtac_coin_reward_{reward_filter}" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -1519,7 +1519,7 @@ extension CampaignDetailViewController {
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/{reward_filter}" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
