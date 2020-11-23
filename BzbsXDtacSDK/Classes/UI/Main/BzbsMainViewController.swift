@@ -1308,8 +1308,7 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
             case "campaign" :
                 if let nav = self.navigationController {
                     if let id = item.id {
-                        let campaign = BzbsCampaign()
-                        campaign.ID = Int(id)!
+                        let campaign = item.toCampaign()
                         GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
                         // ไม่มี name/agency ส่งมา เดาๆไป
                         eventLabel = "\(id)|\(item.name ?? "")|\(item.line1 ?? "")"

@@ -14,6 +14,7 @@ class NearbyListViewController: BaseListController {
             collectionView.delegate = self
             collectionView.dataSource = self
             collectionView.register(CampaignCVCell.getNib(), forCellWithReuseIdentifier: "recommendCell")
+            collectionView.register(CampaignCoinCVCell.getNib(), forCellWithReuseIdentifier: "recommendCoinCell")
             collectionView.register(CampaignRotateCVCell.getNib(), forCellWithReuseIdentifier: "campaignRotateCell")
             collectionView.register(EmptyCVCell.getNib(), forCellWithReuseIdentifier: "emptyCell")
             collectionView.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCell")
@@ -205,9 +206,15 @@ extension NearbyListViewController : UICollectionViewDataSource, UICollectionVie
             cell.lbl.text = "nearby_empty".localized()
             return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
+        
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-        cell.setupWith(item, isShowDistance: true)
+        if item.parentCategoryID == BuzzebeesCore.catIdCoin {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
+            cell.setupWith(item, isShowDistance: false)
+            return cell
+        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
+        cell.setupWith(item, isShowDistance: false)
         return cell
     }
     
@@ -216,6 +223,24 @@ extension NearbyListViewController : UICollectionViewDataSource, UICollectionVie
             let width = collectionView.frame.size.width
             let height = collectionView.frame.size.height
             return CGSize(width: width, height: height)
+        }
+        let row = indexPath.row
+        let item = _arrDataShow[row] as! BzbsCampaign
+        var sideItem : BzbsCampaign?
+        var sideRow = row
+        
+        if row % 2 == 0 {
+            sideRow = row + 1
+        } else {
+            sideRow = row - 1
+        }
+        
+        if !(sideRow > (_arrDataShow.count - 1) || sideRow < 0) {
+            sideItem = _arrDataShow[sideRow] as? BzbsCampaign
+        }
+        
+        if item.parentCategoryID == BuzzebeesCore.catIdCoin || (sideItem != nil && sideItem?.parentCategoryID == BuzzebeesCore.catIdCoin) {
+            return CampaignCoinCVCell.getSize(collectionView)
         }
         return CampaignCVCell.getSize(collectionView)
     }

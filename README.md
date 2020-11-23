@@ -1,4 +1,8 @@
 # BzbsXDtacSDK
+## 2.0.21
+- handle lucky game on dashboard
+- Improve performance
+- handle coin campaign in nearby list
 ## 2.0.20
 - Improve performance
 - Add Favorite list

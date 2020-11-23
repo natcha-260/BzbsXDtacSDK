@@ -331,6 +331,7 @@ public class BuzzebeesCore: NSObject {
         failCallback(error)
     }
     
+    var isReloaded = false
     func requestAlamofire(_ method: HTTPMethod
         , strURL: String
         , params: [String: AnyObject]?
@@ -449,12 +450,17 @@ public class BuzzebeesCore: NSObject {
                         Bzbs.shared.delegate?.analyticsScreen(screenName: "log\n" + "**response time =====\(strURL) === : \(String(format:"%.2f sec",resposeTime))")
                         print("**response time =====\(strURL) ===  : \(String(format:"%.2f sec",resposeTime))")
                     }
-                    let error = BzbsError(strId: "-9999", strCode: statusCode, strType: "framework send", strMessage: message)
-                    failCallback(error)
+                    
+                    if statusCode == "53" && !self.isReloaded{
+                        self.isReloaded = true
+                        self.requestAlamofire(method, strURL: strURL, params: params, headers: headers, successCallback: successCallback, failCallback: failCallback)
+                    } else {
+                        let error = BzbsError(strId: "-9999", strCode: statusCode, strType: "framework send", strMessage: message)
+                        failCallback(error)
+                    }
                 }
         }
     }
-    
 }
 
 extension String: ParameterEncoding {
