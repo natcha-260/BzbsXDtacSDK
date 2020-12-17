@@ -79,45 +79,57 @@ class PopupPointHistoryDetailViewController: UIViewController {
             else {
                 lblPoint.text = "coin_earn_detail".localized() + ": " + pointLog.points.withCommas()
                 let productID = pointLog.productId ?? "0"
-                let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
+                var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
+                if productID == "12" && (pointLog.isUnlock ?? false) {
+                    strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/reach1tier.jpg"
+                }
                 imv.bzbsSetImage(withURL: strUrl)
                 
                 switch pointLog.productId {
-                case "1":
-                    listCell = ["package_sub", "sub_date", "package_fee"]
-                    break
-                case "2":
-                    listCell = ["refill_date"]
-                    break
-                case "3":
-                    listCell = ["paid_amount" , "paid_date"]
-                    break
-                case "4":
-                    listCell = ["paid_amount" , "paid_date"]
-                    break
-                case "5":
-                    listCell = ["first_use_date"]
-                    break
-                case "6":
-                    listCell = ["checkin_date"]
-                    break
-                case "7":
-                    listCell = ["jaidee_service","usage_date"]
-                    break
-                case "8":
-                    listCell = ["jaidee_service","usage_date"]
-                    break
-                case "9":
-                    listCell = ["jaidee_service","usage_date"]
-                    break
-                case "10":
-                    listCell = ["jaidee_service","usage_date"]
-                    break
-                case "11":
-                    listCell = ["jaidee_service","usage_date"]
-                    break
-                default:
-                    break
+                    case "1":
+                        listCell = ["package_sub", "sub_date", "package_fee"]
+                        break
+                    case "2":
+                        listCell = ["refill_date"]
+                        break
+                    case "3":
+                        listCell = ["paid_amount" , "paid_date"]
+                        break
+                    case "4":
+                        listCell = ["paid_amount" , "paid_date"]
+                        break
+                    case "5":
+                        listCell = ["first_use_date"]
+                        break
+                    case "6":
+                        listCell = ["checkin_date"]
+                        break
+                    case "7":
+                        listCell = ["jaidee_service","usage_date"]
+                        break
+                    case "8":
+                        listCell = ["jaidee_service","usage_date"]
+                        break
+                    case "9":
+                        listCell = ["jaidee_service","usage_date"]
+                        break
+                    case "10":
+                        listCell = ["jaidee_service","usage_date"]
+                        break
+                    case "11":
+                        listCell = ["jaidee_service","usage_date"]
+                        break
+                    case "12":
+                        listCell = ["activity" , "paid_amount", "accum_paid_amount" , "c2c_paid_date"]
+                        if (pointLog.isUnlock ?? false) {
+                            listCell = ["activity" , "accum_paid_amount" , "c2c_paid_date"]
+                        }
+                        break
+                    case "13":
+                        listCell = ["activity" , "paid_amount", "accum_paid_amount" , "c2c_paid_date"]
+                        break
+                    default:
+                        break
                 }
             }
         }
@@ -159,6 +171,33 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             cell.title = "coin_jaidee_service".localized() + ": "
             cell.detail = pointLog.title
         }
+        else if cellIdent == "package_fee" ||
+                    cellIdent == "paid_amount"
+        {
+            if cellIdent == "package_fee" {
+                cell.title = "coin_package_fee".localized() + ": "
+            } else if cellIdent == "paid_amount" {
+                cell.title = "coin_paid_amount".localized() + ": "
+            }
+            
+            if let amount = pointLog.amount {
+                cell.detail = amount.withCommas() + " " + "baht".localized()
+            } else {
+                cell.detail = "-"
+            }
+        }
+        else if cellIdent == "transfer_from" {
+            cell.title = "coin_transfer_from".localized() + ": "
+            cell.detail = pointLog.title
+        }
+        else if cellIdent == "activity" {
+            cell.title = "activity".localized() + ": "
+            cell.detail = pointLog.historyDetail
+        }
+        else if cellIdent == "accum_paid_amount" {
+            cell.title = "accum_paid_amount".localized() + ": "
+            cell.detail = Double(pointLog.totalAmount ?? 0).withCommas() + " " + "baht".localized()
+        }
         else if cellIdent.contains("date") {
             
             let formatter = DateFormatter()
@@ -174,7 +213,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 cell.title = "coin_sub_date".localized() + ": "
                 formatter.dateFormat = "dd/MM/yyyy - HH:mm"
                 if let activityDate = pointLog.activityDate {
-                    cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
+                    cell.detail = formatter.string(from:  Date(timeIntervalSince1970: activityDate))
                 } else {
                     cell.detail = "-"
                 }
@@ -226,7 +265,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             } else if cellIdent == "usage_date"
             {
                 cell.title = "coin_usage_date".localized() + ": "
-
+                
                 if let activityDate = pointLog.period {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
@@ -235,7 +274,7 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             } else if cellIdent == "transfer_date"
             {
                 cell.title = "coin_transfer_date".localized() + ": "
-
+                
                 if let activityDate = pointLog.timestamp {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
@@ -250,28 +289,20 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 } else {
                     cell.detail = "-"
                 }
+            } else if cellIdent == "c2c_paid_date" {
+                if pointLog.isUnlock ?? false {
+                    cell.title = "c2c_paid_date_unlock".localized() + ": "
+                } else {
+                    cell.title = "c2c_paid_date".localized() + ": "
+                }
                 
+                if let activityDate = pointLog.period {
+                    cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
+                } else {
+                    cell.detail = "-"
+                }
             }
             
-        }
-        else if cellIdent == "package_fee" ||
-            cellIdent == "paid_amount"
-        {
-            if cellIdent == "package_fee" {
-                cell.title = "coin_package_fee".localized() + ": "
-            } else if cellIdent == "paid_amount" {
-                cell.title = "coin_paid_amount".localized() + ": "
-            }
-            
-            if let amount = pointLog.amount {
-                cell.detail = amount.withCommas() + " " + "baht".localized()
-            } else {
-                cell.detail = "-"
-            }
-        }
-        else if cellIdent == "transfer_from" {
-            cell.title = "coin_transfer_from".localized() + ": "
-            cell.detail = pointLog.title
         }
         
         return cell

@@ -48,7 +48,12 @@ class PointHistoryCell: UITableViewCell {
         }
         else {
             let productID = item.productId ?? "0"
-            strUrl = strUrl + "product\(productID).jpg"
+            
+            if productID == "12" && (item.isUnlock ?? false) {
+                strUrl = strUrl + "reach1tier.jpg"
+            } else {
+                strUrl = strUrl + "product\(productID).jpg"   
+            }
         }
         imv.bzbsSetImage(withURL: strUrl)
         

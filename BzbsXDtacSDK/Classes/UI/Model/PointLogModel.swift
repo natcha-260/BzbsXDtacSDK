@@ -61,6 +61,8 @@ open class PointLog {
     private var para1_th : String?
     private var para1_en : String?
     open var amount : Double?
+    open var totalAmount : Double?
+    open var isUnlock : Bool?
     
     public init()
     {
@@ -157,6 +159,9 @@ open class PointLog {
                         para1_en = dictMessage["para1_en"] as? String
                     }
                 }
+                
+                totalAmount = BuzzebeesConvert.DoubleFromObject(dict["TotalAmount"])
+                isUnlock = dict["Unlock"] as? Bool ?? false
                 
             }
         } catch _ {

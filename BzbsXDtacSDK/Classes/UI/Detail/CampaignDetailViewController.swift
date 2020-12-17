@@ -561,7 +561,6 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     @IBAction func clickLike(_ sender: Any) {
         if let token = Bzbs.shared.userLogin?.token
         {
-            sendGALike()
             showLoader()
             BuzzebeesCampaign().favourite(token: token, campaignId: campaign.ID, isFav: !(campaign.isFavourite ?? false), successCallback: { (str) in
                 self.hideLoader()
@@ -573,7 +572,6 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     }
     
     @IBAction func clickShare(_ sender: Any) {
-        sendGAShare()
         let webUrl = BuzzebeesCore.shareUrl + "/dtac/landing.aspx?id=" + String(campaign.ID)
         if let url = URL(string: webUrl)
         {
@@ -606,7 +604,6 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         if let userLogin = Bzbs.shared.userLogin,
             let _ = userLogin.token
         {
-            sendGATouchRedeem()
             let dtacLevel = userLogin.dtacLevel
             if dtacLevel == .no_level {
                 PopupManager.informationPopup(self, title: nil, message: "popup_dtac_error_no_level".localized(), strClose:"popup_confirm_2".localized()) {
@@ -1369,11 +1366,11 @@ extension CampaignDetailViewController {
     {
         if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
             var reward1 = [String:AnyObject]()
-            reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
+            reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? -1)" as AnyObject
             reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-            reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
+            reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")".lowercased() as AnyObject
             reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
-            reward1[AnalyticsParameterIndex] = 1 as NSNumber
+            reward1[AnalyticsParameterIndex] = NSNumber(value: 1) as NSNumber
             reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
             reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
             
@@ -1393,72 +1390,19 @@ extension CampaignDetailViewController {
             analyticsSetEventEcommerce(eventName: AnalyticsEventViewItem, params: ecommerce)
             
             analyticsSetEvent(event: AnalyticsEventViewItem, category: "reward", action: "seen_text", label: "reward_detail | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)")
-            return
         }
-        
-        let name = (campaign.categoryName ?? "").lowercased()
-        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-        let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : (campaign.ID ?? -1) as AnyObject,
-            AnalyticsParameterItemName : campaign.name as AnyObject,
-            AnalyticsParameterItemCategory: "reward/\(name.replace(" ", replacement: "_"))" as AnyObject,
-            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
-            AnalyticsParameterIndex: "1" as AnyObject
-        ]
-        let ecommerce : [String:AnyObject] = [
-            "items" : reward1  as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItem, params: ecommerce)
-    }
-    
-    func sendGATouchRedeem()
-    {
-        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: "redeem", label: gaLabel)
-    }
-    
-    
-    func sendGALike()
-    {
-        let reward1 : [String : AnyObject] = [
-            "eventCategory": "reward" as AnyObject,
-            "eventAction": "add_to_favorite" as AnyObject,
-            "eventLabel": (campaign.agencyName ?? "") as AnyObject,
-            AnalyticsParameterItemID: (campaign.ID ?? -1) as AnyObject,
-            AnalyticsParameterContentType: (campaign.name ?? "") as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventAddToWishlist, params: reward1)
-        
-        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: "add_to_favorite", label: gaLabel)
-    }
-    
-    func sendGAShare()
-    {
-        let reward1 : [String : AnyObject] = [
-            "eventCategory": "reward" as AnyObject,
-            "eventAction": "share" as AnyObject,
-            "eventLabel": (campaign.agencyName ?? "") as AnyObject,
-            AnalyticsParameterItemID: (campaign.ID ?? -1) as AnyObject,
-            AnalyticsParameterContentType: (campaign.name ?? "") as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventShare, params: reward1)
-        
-        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: "share", label: gaLabel)
     }
     
     func sendGARedeem() {
         let reward1 : [String:Any] = [
-            AnalyticsParameterItemID: (campaign.ID ?? -1),
+            AnalyticsParameterItemID: "\(campaign.ID ?? -1)",
             AnalyticsParameterItemName: (campaign.name ?? "") as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(campaign.categoryName ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(campaign.categoryName ?? "")".lowercased() as NSString,
             AnalyticsParameterItemBrand: (campaign.agencyName ?? "") as NSString,
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: 1),
             AnalyticsParameterItemVariant: campaign.expireIn?.toTimeString() ?? "" as NSString,
             "metric1" : campaign.pointPerUnit ?? 0 as NSNumber
         ]
@@ -1484,14 +1428,14 @@ extension CampaignDetailViewController {
     func sendGABeginCheckout() {
         
         var reward1 = [String:AnyObject]()
-        reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
+        reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)" as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")".lowercased() as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
         reward1[AnalyticsParameterQuantity] = 1 as NSNumber
-        reward1[AnalyticsParameterIndex] = 1 as NSNumber
+        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
         reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
         reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
         
@@ -1517,14 +1461,14 @@ extension CampaignDetailViewController {
     func sendGAThankyouPage(_ redeemKey:String?) {
         
         var reward1 = [String:AnyObject]()
-        reward1[AnalyticsParameterItemID] = (campaign.ID ?? -1) as AnyObject
+        reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)" as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")".lowercased() as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
         reward1[AnalyticsParameterQuantity] = 1 as NSNumber
-        reward1[AnalyticsParameterIndex] = 1 as NSNumber
+        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
         reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
         reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
         
@@ -1536,7 +1480,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "seen_text" as NSString,
             "eventLabel" : "redeem_complete | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: "reward_detail" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
             AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
 
         ]

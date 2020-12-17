@@ -261,6 +261,24 @@ class TokenSelectViewController: UIViewController {
         }
     }
     
+    @IBAction func clickGoToMainWithBack(_ sender: Any) {
+        view.endEditing(true)
+        if isChangeUser {
+            guard let _ = self.token, let _ = self.ticket, let _ = self.segment else {return}
+            TelType = segmentTelType.selectedSegmentIndex == 0 ? "P" : "T"
+            Bzbs.shared.logout()
+            isChangeUser = false
+            delay(0.5) {
+                DispatchQueue.main.async {
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType)
+                    self.gotoMainWithBack()
+                }
+            }
+        } else {
+            self.gotoMainWithBack()
+        }
+    }
+    
     @IBAction func clickLogout(_ sender: Any) {
         resetBtn()
         Bzbs.shared.logout()
@@ -386,6 +404,13 @@ class TokenSelectViewController: UIViewController {
     func gotoMain()
     {
         tabBarController?.selectedIndex = 2
+    }
+    
+    func gotoMainWithBack()
+    {
+        if let nav = self.navigationController {
+            nav.pushViewController(BzbsMainViewController.getView(), animated: true)
+        }
     }
     
     

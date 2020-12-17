@@ -121,7 +121,7 @@ class SearchViewController: BaseListController {
         ]
         analyticsSetEventEcommerce(eventName: AnalyticsEventSearch, params: reward1)
         
-        analyticsSetEvent(event: "track_event", category: "reward", action: "search", label: strSearch)
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "search", label: strSearch)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

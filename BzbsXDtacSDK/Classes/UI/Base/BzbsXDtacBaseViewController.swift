@@ -42,7 +42,6 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateLocation), name: EnumLocationManagerNotification.updateLocation.notification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(actionDeeplink(notification:)), name: NSNotification.Name.BzbsDeeplinkAction, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reLogin), name: NSNotification.Name.BzbsTokenTicketDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshApi), name: NSNotification.Name.BzbsApiReset, object: nil)
         
@@ -71,10 +70,16 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(actionDeeplink(notification:)), name: NSNotification.Name.BzbsDeeplinkAction, object: nil)
         if let url = Bzbs.shared.deepLinkUrl
         {
             openDeepLinkURL(url)
         }
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsDeeplinkAction, object: nil)
     }
     
     @objc func gotoCampaignDetail(_ notification:NSNotification)
@@ -552,9 +557,9 @@ extension BzbsXDtacBaseViewController {
             {
                 switch strFunc {
                 case "category":
-                    let catName = params["category_id"] as? String
-                    let subCatName = params["sub_category"] as? String
-                    gotoCategory(catName: catName, subCatName: subCatName)
+                    let catName = Int((params["category_id"] as? String ?? ""))
+                    let subCatName = Int((params["sub_category"] as? String ?? ""))
+                    gotoCategory(categoryId: catName, subCategoryId: subCatName)
                     break
                 case "favorite":
                     gotoFavorite()
@@ -586,29 +591,27 @@ extension BzbsXDtacBaseViewController {
         }
     }
     
-    func gotoCategory(catName tmpCatName:String?,subCatName tmpSubCatName:String?)
+    func gotoCategory(categoryId tmpCatId:Int?,subCategoryId tmpSubCatId:Int?)
     {
-        let catName = tmpCatName?.removingPercentEncoding?.lowercased()
-        let subCatName = tmpSubCatName?.removingPercentEncoding?.lowercased()
-        print("goto \(catName ?? ""), \(subCatName ?? "")")
+        print("goto \(tmpCatId ?? 0), \(tmpSubCatId ?? 0)")
         guard let arrCat = Bzbs.shared.arrCategory else {
             delay(0.33) {
-                self.gotoCategory(catName: catName, subCatName: subCatName)
+                self.gotoCategory(categoryId: tmpCatId, subCategoryId: tmpSubCatId)
             }
             return
         }
         
         var cat :BzbsCategory?
         var subCat : BzbsCategory?
-        if let catName = catName {
+        if let catId = tmpCatId {
             if let _cat = arrCat.first(where: { (tmpCat) -> Bool in
-                return tmpCat.nameEn.lowercased() == catName })
+                return tmpCat.id == catId })
             {
                 cat = _cat
-                if let subCatName = subCatName
+                if let subCatId = tmpSubCatId
                 {
                     if let _subCat = _cat.subCat.first(where: { (tmpSubCat) -> Bool in
-                        return tmpSubCat.nameEn.lowercased() == subCatName })
+                        return tmpSubCat.id == subCatId })
                     {
                         subCat = _subCat
                     }
@@ -634,7 +637,7 @@ extension BzbsXDtacBaseViewController {
                 GotoPage.gotoCategory(nav, cat: cat!, subCat: subCat, arrCategory: arrCat)
             } else {
                 delay(0.33) {
-                    self.gotoCategory(catName: catName, subCatName: subCatName)
+                    self.gotoCategory(categoryId: tmpCatId, subCategoryId: tmpSubCatId)
                 }
             }
         }

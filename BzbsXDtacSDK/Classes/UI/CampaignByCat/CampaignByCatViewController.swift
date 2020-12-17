@@ -11,6 +11,7 @@ import CoreLocation
 import AVFoundation
 import FirebaseAnalytics
 import WebKit
+import ImageSlideshow
 
 open class CampaignByCatViewController: BaseListController {
     
@@ -141,6 +142,8 @@ open class CampaignByCatViewController: BaseListController {
     var strCategory:String?
     var strSubCategory:String?
     
+    var imageSlider : ImageSlideshow?
+    
     // MARK:- Class function
     // MARK:-
     @objc public class func getView(category: String?, subCategory:String?) -> CampaignByCatViewController
@@ -192,6 +195,7 @@ open class CampaignByCatViewController: BaseListController {
         super.viewWillAppear(animated)
         
         self.vwCategory.alpha = 0
+        imageSlider?.unpauseTimer()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
@@ -201,6 +205,7 @@ open class CampaignByCatViewController: BaseListController {
     
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        imageSlider?.pauseTimer()
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsViewDidBecomeActive, object: nil)
     }
     
@@ -338,8 +343,6 @@ open class CampaignByCatViewController: BaseListController {
                                 self._arrDataShow = tmpList
                                 if self.currentCat.id == BuzzebeesCore.catIdCoin {
                                     self.sendCoinImpressionItem(tmpList)
-                                } else if !self.isSendImpressionItems {
-                                    self.sendImpressionItem(tmpList)
                                 }
                             } else {
                                 self._arrDataShow.append(contentsOf: tmpList)
@@ -494,27 +497,25 @@ open class CampaignByCatViewController: BaseListController {
     }
     
     func categoryLoaded(){
-        let catName = strCategory?.removingPercentEncoding?.lowercased()
-        let subCatName = strSubCategory?.removingPercentEncoding?.lowercased()
-        print("goto \(catName ?? ""), \(subCatName ?? "")")
+        let tmpCatId = Int((strCategory?.removingPercentEncoding ?? ""))
+        let tmpSubCatId = Int(strSubCategory?.removingPercentEncoding ?? "")
+        print("goto \(tmpCatId ?? 0), \(tmpSubCatId ?? 0)")
         
         var cat :BzbsCategory?
         var subCat : BzbsCategory?
-        if let catName = catName , catName != ""{
+        if let catId = tmpCatId {
             if let _cat = arrCategory.first(where: { (tmpCat) -> Bool in
-                                                return tmpCat.nameEn.lowercased() == catName })
+                return tmpCat.id == catId })
             {
                 cat = _cat
-                if let subCatName = subCatName, subCatName != ""
+                if let subCatId = tmpSubCatId
                 {
                     if let _subCat = _cat.subCat.first(where: { (tmpSubCat) -> Bool in
-                                                        return tmpSubCat.nameEn.lowercased() == subCatName })
+                        return tmpSubCat.id == subCatId })
                     {
                         subCat = _subCat
-                    } 
+                    }
                 }
-            } else if let first = arrCategory.first {
-                cat = first
             }
         } else {
             if let first = arrCategory.first {
@@ -555,114 +556,6 @@ open class CampaignByCatViewController: BaseListController {
     }
     
     // MARK:- Analytic Impression
-    // MARK:- item campaign list cat all
-    func sendImpressionItems()
-    {
-        if isSendImpressionItems { return }
-        isSendImpressionItems = true
-        var items = [[String:AnyObject]]()
-        var i = 0
-        for item in impressionItems
-        {
-            let reward : [String:AnyObject] = [
-                AnalyticsParameterItemID : (item.ID ?? -1) as AnyObject,
-                AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-                AnalyticsParameterItemCategory : (item.categoryID ?? -1) as AnyObject,
-                AnalyticsParameterItemBrand : (item.agencyName ?? "") as AnyObject,
-                AnalyticsParameterIndex : i as AnyObject
-            ]
-            i += 1
-            items.append(reward)
-        }
-        
-        let name = currentCat.nameEn.lowercased()
-        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_") + "_banner"
-        
-        let ecommerce  : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject
-        ]
-        
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
-    }
-    
-    // MARK:- item campaign list
-    func sendImpressionItem(_ campaigns:[BzbsCampaign])
-    {
-        if isSendImpressionItems { return }
-        isSendImpressionItems = true
-        var items = [[String:AnyObject]]()
-        var i = 0
-        for item in campaigns
-        {
-            let reward : [String:AnyObject] = [
-                AnalyticsParameterItemID : (item.ID ?? -1) as AnyObject,
-                AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-                AnalyticsParameterItemCategory : (item.categoryID ?? -1) as AnyObject,
-                AnalyticsParameterItemBrand : (item.agencyName ?? "") as AnyObject,
-                AnalyticsParameterIndex : i as AnyObject
-            ]
-            i += 1
-            items.append(reward)
-        }
-        
-        let name = currentCat.nameEn.lowercased()
-        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-        let ecommerce  : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject
-        ]
-        
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
-    }
-    
-    // MARK:- Top banner
-    func sendImpressionItem(_ impressionBanner:[BzbsDashboard])
-    {
-        if isSendImpressionItems || impressionBanner.count == 0 { return }
-        isSendImpressionItems = true
-        var items = [[String:AnyObject]]()
-        var i = 0
-        for item in impressionBanner
-        {
-            var rewardType = ""
-            let type = item.type
-            switch type {
-                case "hashtag" :
-                    rewardType = "group"
-                case "link" :
-                    rewardType = "none"
-                case "cat" :
-                    rewardType = "category"
-                case "none" :
-                    rewardType = "none"
-                case "campaign" :
-                    rewardType = "campaign"
-                default:
-                    break
-            }
-            
-            let reward : [String:AnyObject] = [
-                AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-                AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-                AnalyticsParameterItemCategory : "reward/\(rewardType)" as AnyObject,
-                AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
-                AnalyticsParameterIndex : i as AnyObject
-            ]
-            i += 1
-            items.append(reward)
-        }
-        
-        let name = currentCat.nameEn.lowercased()
-        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-        let ecommerce  : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject
-        ]
-        
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
-    }
-    
     // MARK:- Top banner
     func sendCoinImpressionItem(_ campaigns:[BzbsCampaign])
     {
@@ -673,11 +566,11 @@ open class CampaignByCatViewController: BaseListController {
         for item in campaigns
         {
             var reward = [String:AnyObject]()
-            reward[AnalyticsParameterItemID] = (item.ID ?? -1) as AnyObject
+            reward[AnalyticsParameterItemID] = "\(item.ID ?? -1)" as AnyObject
             reward[AnalyticsParameterItemName] = (item.name ?? "") as AnyObject
-            reward[AnalyticsParameterItemCategory] = "coin_reward/\(currentSubCat.name ?? "")" as AnyObject
+            reward[AnalyticsParameterItemCategory] = "coin_reward/\(currentSubCat.name ?? "")".lowercased() as AnyObject
             reward[AnalyticsParameterItemBrand] = (item.agencyName ?? "") as NSString
-            reward[AnalyticsParameterIndex] = i as AnyObject
+            reward[AnalyticsParameterIndex] = NSNumber(value: i) as AnyObject
             reward[AnalyticsParameterItemVariant] = (item.expireIn?.toTimeString() ?? "") as NSString
             reward["metric1"] = item.pointPerUnit as NSNumber
             
@@ -689,49 +582,10 @@ open class CampaignByCatViewController: BaseListController {
         ecommerce["items"] = items as AnyObject
         ecommerce["eventCategory"] = "reward" as NSString
         ecommerce["eventAction" ] = " impression_list" as NSString
-        ecommerce["eventLabel"] = "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")" as NSString
-        ecommerce[AnalyticsParameterItemListName] = "dtac_coin_reward_\(currentSubCat.nameEn ?? "")" as NSString
+        ecommerce["eventLabel"] = "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")".lowercased() as NSString
+        ecommerce[AnalyticsParameterItemListName] = "dtac_coin_reward_\(currentSubCat.nameEn ?? "")".lowercased() as NSString
         
         analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
-    }
-    
-    // MARK:- item list cat all
-    func sendImpressionBanner(_ item:BzbsDashboard, index:Int)
-    {
-        var rewardType = ""
-        let type = item.type
-        switch type {
-            case "hashtag" :
-                rewardType = "group"
-            case "link" :
-                rewardType = "none"
-            case "cat" :
-                rewardType = "category"
-            case "none" :
-                rewardType = "none"
-            case "campaign" :
-                rewardType = "campaign"
-            default:
-                break
-        }
-        
-        let reward : [String:AnyObject] = [
-            AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory : "reward/\(rewardType)" as AnyObject,
-            AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
-            AnalyticsParameterIndex : index as AnyObject
-        ]
-        
-        let name = currentCat.nameEn.lowercased()
-        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_") + "_banner"
-        let ecommerce  : [String:AnyObject] = [
-            "items" : [reward] as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject
-        ]
-        
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
-        
     }
     
     func sendCoinImpressionBanner(_ item:BzbsDashboard, index:Int)
@@ -767,18 +621,18 @@ open class CampaignByCatViewController: BaseListController {
         var reward = [String:AnyObject]()
         reward[AnalyticsParameterItemID] = item.id! as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
-        reward[AnalyticsParameterItemCategory] = "reward/coins/\(currentCat.nameEn ?? "")" as AnyObject
-        reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
-        reward[AnalyticsParameterIndex] = index as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/\(currentSubCat.nameEn ?? "")".lowercased() as AnyObject
+        reward[AnalyticsParameterItemBrand] = (agencyName ?? "") as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
         //            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let previousScreenName = getPreviousScreenName()
+        let previousScreenName = getPreviousScreenName().lowercased()
         let ecommerce : [String: AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "impression_banner" as NSString,
-            "eventLabel" : "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(index) | \(item.id!) | \(intPointPerUnit)" as NSString,
+            "eventLabel" : "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(index) | \(item.id!) | \(intPointPerUnit)".lowercased() as NSString,
             AnalyticsParameterItemListName: previousScreenName as AnyObject
         ]
         
@@ -790,22 +644,57 @@ open class CampaignByCatViewController: BaseListController {
         
     }
     
+    func sendCoinImpressionCampaign(_ item:BzbsCampaign, index:Int)
+    {
+        if item.ID == -1 {
+            return
+        }
+        let name = item.name
+        let agencyName = item.agencyName
+        let intPointPerUnit = item.pointPerUnit ?? 0
+        
+        var reward = [String:AnyObject]()
+        reward[AnalyticsParameterItemID] = "\(item.ID ?? 0)" as AnyObject
+        reward[AnalyticsParameterItemName] = name as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/\(currentSubCat.nameEn ?? "")".lowercased() as AnyObject
+        reward[AnalyticsParameterItemBrand] = (agencyName ?? "") as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
+        //            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+        reward["metric1"] = intPointPerUnit as AnyObject
+        
+        let previousScreenName = getPreviousScreenName().lowercased()
+        let ecommerce : [String: AnyObject] = [
+            "items" : [reward] as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "impression_list" as NSString,
+            "eventLabel" : "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(index) | \(item.ID!) | \(intPointPerUnit)".lowercased() as NSString,
+            AnalyticsParameterItemListName: previousScreenName as AnyObject
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
+        
+        let label =  "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(index) | \(item.ID!) | \(intPointPerUnit)".lowercased()
+        Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventViewItemList, category: "reward", action: "impression_list", label: label)
+        
+    }
+    
     func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
     {
         if currentCat.id == BuzzebeesCore.catIdCoin {
             var reward = [String:Any]()
-            reward[AnalyticsParameterItemID] = campaign.ID
+            reward[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)"
             reward[AnalyticsParameterItemName] = campaign.name as NSString
-            reward[AnalyticsParameterItemCategory] = "reward/coins/\(currentSubCat.nameEn ?? "")" as NSString
-            reward[AnalyticsParameterItemBrand] = campaign.agencyName
-            reward[AnalyticsParameterIndex] = indexPath.row + 1
+            reward[AnalyticsParameterItemCategory] = "reward/coins/\(currentSubCat.nameEn ?? "")".lowercased() as NSString
+            reward[AnalyticsParameterItemBrand] = campaign.agencyName ?? ""
+            reward[AnalyticsParameterIndex] = NSNumber(value: indexPath.row + 1)
             reward[AnalyticsParameterItemVariant] = campaign.expireIn?.toTimeString()
             reward["metric1"] = campaign.pointPerUnit ?? 0
             
             // Prepare ecommerce dictionary.
             let items : [Any] = [reward]
             
-            let eventLabel = "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(indexPath.row + 1) | \(campaign.ID!) | \(campaign.pointPerUnit ?? 0)"
+            let eventLabel = "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(indexPath.row + 1) | \(campaign.ID!) | \(campaign.pointPerUnit ?? 0)".lowercased()
             
             let previousScreenName = self.getPreviousScreenName()
             let ecommerce : [String:AnyObject] = [
@@ -820,38 +709,20 @@ open class CampaignByCatViewController: BaseListController {
             analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
             
             analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: eventLabel)
-            return
+            
         }
-        
-        let name = currentCat.nameEn.lowercased()
-        let screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-        let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : campaign.ID as AnyObject,
-            AnalyticsParameterItemName : campaign.name as AnyObject,
-            AnalyticsParameterItemCategory: "reward_\(name.replace(" ", replacement: "_"))" as AnyObject,
-            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
-            AnalyticsParameterIndex: "\(indexPath.row - 1)" as AnyObject
-        ]
-        let ecommerce : [String:AnyObject] = [
-            "items" : reward1  as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
-        
-        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: screenName, label: gaLabel)
     }
     
     func sendGATouchEvent(_ category:BzbsCategory, subCat:BzbsCategory?)
     {
-        let name = category.nameEn.lowercased()
-        var screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
-        if let subname = subCat?.nameEn?.lowercased()
-        {
-            screenName = screenName + "_" + subname.replace(" ", replacement: "_")
-        }
-        let gaLabel = "\(category.id ?? -1)|\(category.nameEn ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: screenName, label: gaLabel)
+//        let name = category.nameEn.lowercased()
+//        var screenName = "dtac_reward_" + name.replace(" ", replacement: "_")
+//        if let subname = subCat?.nameEn?.lowercased()
+//        {
+//            screenName = screenName + "_" + subname.replace(" ", replacement: "_")
+//        }
+//        let gaLabel = "\(category.id ?? -1)|\(category.nameEn ?? "")"
+        // analyticsSetEvent(event:"track_event", category: "reward", action: screenName, label: gaLabel)
     }
 }
 
@@ -893,7 +764,9 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCVCell", for: indexPath)
                 }
                 let headerView = collectionView.dequeueReusableCell(withReuseIdentifier: "dashboardHeaderCell", for: indexPath) as! CampaignRotateCVCell
-                
+                if imageSlider != headerView.imageSlideShow {
+                    imageSlider = headerView.imageSlideShow
+                }
                 if self.currentCat.id == Bzbs.shared.blueCategory?.id {
                     let width = collectionView.frame.size.width
                     let height = width / 2
@@ -931,7 +804,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 } else {
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
                     cell.setupWith(item)
-                    sendImpressionItem(item.subCampaignDetails)
+//                    sendImpressionItem(item.subCampaignDetails)
                     return cell
                 }
             }
@@ -951,7 +824,8 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             if item.parentCategoryID == BuzzebeesCore.catIdCoin {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCoinCell", for: indexPath) as! CampaignCoinCVCell
                 cell.setupWith(item)
-                analyticsSetEvent(event: AnalyticsEventViewItemList,category: "reward", action: "impression_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")")
+                sendCoinImpressionCampaign(item, index: indexPath.row)
+//                analyticsSetEvent(event: AnalyticsEventViewItemList,category: "reward", action: "impression_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "")")
                 return cell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignCell", for: indexPath) as! CampaignCVCell
@@ -1098,11 +972,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             if _arrDataShow.count == 0 || indexPath.section == 0 { return }
             let campaign = _arrDataShow[indexPath.row] as! BzbsCampaign
             if campaign.ID == -1 { return }
-            if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
-                analyticsSetEvent(event: AnalyticsEventSelectItem,category: "reward", action: "touch_list", label: "reward_list | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(indexPath.row) | \(campaign.ID!) | \(campaign.pointPerUnit ?? 0)")
-            } else {
-                sendGATouchEvent(campaign, indexPath: indexPath)
-            }
+            sendGATouchEvent(campaign, indexPath: indexPath)
             if let nav = self.navigationController
             {
                 GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
@@ -1224,21 +1094,59 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
     func didViewDashboard(_ item: BzbsDashboard, index:Int) {
         if self.currentCat.id == BuzzebeesCore.catIdCoin {
             self.sendCoinImpressionBanner(item, index: index)
-        } else {
-            self.sendImpressionBanner(item, index: index)
+        }
+    }
+    
+    func sendSelectItem(_ item: BzbsDashboard)
+    {
+        let index = dashboardItems.firstIndex { (dashboard) -> Bool in
+            return dashboard.dict?.description == item.dict?.description
+        }
+        
+        if currentCat.id == BuzzebeesCore.catIdCoin
+        {
+            let dict = item.dict
+            let pointPerUnit = Convert.IntFromObject(dict?["pointperunit"]) ?? 0
+            let reward1 : [String:Any] = [
+                AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
+                AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
+                AnalyticsParameterItemCategory: "reward/coins/\(currentSubCat.name ?? "")".lowercased() as NSString,
+                AnalyticsParameterItemBrand: (item.line1 ?? "") as AnyObject,
+                AnalyticsParameterIndex: NSNumber(value: ((index ?? -1) + 1)),
+//                    AnalyticsParameterItemVariant: "{code_duration}" as NSString,
+                "metric1" : pointPerUnit as NSNumber
+            ]
+            
+            // Prepare ecommerce dictionary.
+            let items : [Any] = [reward1]
+            
+            let previousScreenName = self.getPreviousScreenName()
+            
+            let ecommerce : [String:AnyObject] = [
+                "items" : items as AnyObject,
+                "eventCategory" : "reward" as NSString,
+                "eventAction" : " touch_banner" as NSString,
+                "eventLabel" : "hero_reward | coins | \(currentSubCat.name ?? "") | \((index ?? -1) + 1) | \(item.id ?? "-1") | \(pointPerUnit)".lowercased() as NSString,
+                AnalyticsParameterItemListName: previousScreenName as AnyObject
+            ]
+            
+            // Log select_content event with ecommerce dictionary.
+            analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
+            
+            analyticsSetEvent(event: AnalyticsEventSelectItem, category: "reward", action: "touch_banner", label: "hero_reward | coins | \(currentSubCat.name ?? "") | \((index ?? -1) + 1) | \(item.id ?? "-1") | \(pointPerUnit)")
+            
         }
     }
     
     func didSelectDashboard(_ item: BzbsDashboard) {
+        sendSelectItem(item)
         if let type = item.type
         {
-            var eventLabel = ""
             switch type {
                 case "hashtag" :
                     if let nav = self.navigationController {
                         let vc = MajorCampaignListViewController.getViewController()
                         vc.dashboard = item
-                        eventLabel = "\(item.hashtag ?? "")|\(item.line1 ?? "")"
                         nav.pushViewController(vc, animated: true)
                     }
                 case "link" :
@@ -1249,7 +1157,6 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
                         } else {
                             UIApplication.shared.openURL(url)
                         }
-                        eventLabel = strUrl
                     }
                 case "cat" :
                     if let _ = self.navigationController {
@@ -1267,81 +1174,19 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
                                     GotoPage.gotoCategory(nav, cat: arrCat.first!, arrCategory: arrCat)
                                 }
                             }
-                            let name = item.name ?? ""
-                            eventLabel = "\(catId)|\(name)"
                         }
                     }
                 case "none" :
-                    eventLabel = "\(item.imageUrl ?? "")"
                     break
                 case "campaign" :
                     if let nav = self.navigationController {
-                        if let id = item.id {
-                            let campaign = item.toCampaign()
-                            GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
-                            // ไม่มี name/agency ส่งมา เดาๆไป
-                            eventLabel = "\(id)|\(item.name ?? "")|\(item.line1 ?? "")"
-                        }
+                        let campaign = item.toCampaign()
+                        GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
                     }
                 default:
                     break
             }
             
-            let index = dashboardItems.firstIndex { (dashboard) -> Bool in
-                return dashboard.dict?.description == item.dict?.description
-            }
-            
-            if currentCat.id == BuzzebeesCore.catIdCoin
-            {
-                let dict = item.dict
-                let pointPerUnit = Convert.IntFromObject(dict?["pointperunit"]) ?? 0
-                let reward1 : [String:Any] = [
-                    AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-                    AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-                    AnalyticsParameterItemCategory: "reward/coins/\(item.categoryName ?? "")" as NSString,
-                    AnalyticsParameterItemBrand: (item.line1 ?? "") as AnyObject,
-                    AnalyticsParameterIndex: "\((index ?? -1) + 1)" as AnyObject,
-//                    AnalyticsParameterItemVariant: "{code_duration}" as NSString,
-                    "metric1" : pointPerUnit as NSNumber
-                ]
-                
-                // Prepare ecommerce dictionary.
-                let items : [Any] = [reward1]
-                
-                let previousScreenName = self.getPreviousScreenName()
-                
-                let ecommerce : [String:AnyObject] = [
-                    "items" : items as AnyObject,
-                    "eventCategory" : "reward" as NSString,
-                    "eventAction" : " touch_banner" as NSString,
-                    "eventLabel" : "hero_reward | coins | \(currentSubCat.name ?? "") | \((index ?? -1) + 1) | \(item.id ?? "-1") | \(pointPerUnit)" as NSString,
-                    AnalyticsParameterItemListName: previousScreenName as AnyObject
-                ]
-                
-                // Log select_content event with ecommerce dictionary.
-                analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
-                
-                analyticsSetEvent(event: AnalyticsEventSelectItem, category: "reward", action: "touch_banner", label: "hero_reward | coins | \(currentSubCat.name ?? "") | \((index ?? -1) + 1) | \(item.id ?? "-1") | \(pointPerUnit)")
-                
-                return
-            }
-            
-            let name = currentCat.nameEn.lowercased()
-            let screenName = "dtac_reward_" + name.replace(" ", replacement: "_") + "_banner"
-            analyticsSetEvent(event:"track_event", category: "reward", action: screenName, label: eventLabel)
-            
-            let reward1 : [String : AnyObject] = [
-                AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-                AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-                AnalyticsParameterItemCategory: "reward/discount" as AnyObject,
-                AnalyticsParameterItemBrand: (item.line1 ?? "") as AnyObject,
-                AnalyticsParameterIndex: "\(index ?? -1)" as AnyObject
-            ]
-            let ecommerce : [String:AnyObject] = [
-                "items" : reward1  as AnyObject,
-                AnalyticsParameterItemList : screenName as AnyObject
-            ]
-            analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
         }
     }
 }

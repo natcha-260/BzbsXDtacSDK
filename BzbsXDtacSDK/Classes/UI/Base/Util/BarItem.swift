@@ -11,7 +11,7 @@ import UIKit
 
 class BarItem: NSObject {
     private static let barHeight :CGFloat = 44
-    class func generate_logo() -> [UIBarButtonItem]? 
+    class func generate_logo(isShowBack:Bool = false, target:UIViewController? = nil, selector:Selector? = nil, isWhiteIcon:Bool = false) -> [UIBarButtonItem]?
     {
         let spaceFix: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         
@@ -36,7 +36,15 @@ class BarItem: NSObject {
 //
         vwHeader.addSubview(lblTitle)
         
-        return [spaceFix, UIBarDtacIcon(), UIBarButtonItem(customView: vwHeader)]
+        if isShowBack,
+           let _ = target,
+           let _ = selector
+           {
+            let backIcon = generateBackBarButton(target!, selector: selector!, isWhiteIcon: isWhiteIcon)
+            return [spaceFix, backIcon, UIBarDtacIcon(), UIBarButtonItem(customView: vwHeader)]
+        } else {
+            return [spaceFix, UIBarDtacIcon(), UIBarButtonItem(customView: vwHeader)]
+        }
     }
     
     class func UIBarDtacIcon() -> UIBarButtonItem {
@@ -97,18 +105,23 @@ class BarItem: NSObject {
         let spaceFix: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         spaceFix.width = -15
         
-        let view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: barHeight))
+        return [spaceFix, generateBackBarButton(target, selector: selector, isWhiteIcon: isWhiteIcon)]
+    }
+    
+    private class func generateBackBarButton(_ target: AnyObject, selector: Selector, isWhiteIcon:Bool = false) -> UIBarButtonItem
+    {
+        let view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: barHeight))
         let imv = UIImageView(frame: CGRect(x: 0, y: 10, width: 20, height: 22))
         imv.contentMode = .scaleAspectFit
         imv.image = UIImage(named: isWhiteIcon ? "img_navbar_icon_backwhite" : "img_navbar_icon_back", in: Bzbs.shared.currentBundle, compatibleWith: nil)
         
         view.addSubview(imv)
         let btnMenu: UIButton = UIButton(type: .custom)
-        btnMenu.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        btnMenu.frame = CGRect(x: 0, y: 0, width: 20, height: 40)
         btnMenu.addTarget(target, action: selector, for: UIControl.Event.touchUpInside)
         view.addSubview(btnMenu)
         
-        return [spaceFix, UIBarButtonItem(customView: view)]
+        return UIBarButtonItem(customView: view)
     }
     
     

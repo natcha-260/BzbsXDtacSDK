@@ -204,11 +204,11 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     {
         let screenName = "reward"
         let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : (purchase?.ID ?? -1) as AnyObject,
+            AnalyticsParameterItemID : "\(purchase?.ID ?? -1)" as AnyObject,
             AnalyticsParameterItemName : (purchase?.name ?? "") as AnyObject,
             AnalyticsParameterItemCategory: "reward/\(purchase?.categoryID ?? -1)" as AnyObject,
             AnalyticsParameterItemBrand: (purchase?.agencyName ?? "") as AnyObject,
-            AnalyticsParameterIndex: "1" as AnyObject
+            AnalyticsParameterIndex: NSNumber(value: 1) as AnyObject
         ]
         let ecommerce : [String:AnyObject] = [
             "items" : reward1  as AnyObject,
@@ -223,11 +223,11 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     {
         let screenName = "reward"
         let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : (purchase?.ID ?? -1) as AnyObject,
+            AnalyticsParameterItemID : "\(purchase?.ID ?? -1)" as AnyObject,
             AnalyticsParameterItemName : (purchase?.name ?? "") as AnyObject,
             AnalyticsParameterItemCategory: "reward/\(purchase?.categoryID ?? -1)" as AnyObject,
             AnalyticsParameterItemBrand: (purchase?.agencyName ?? "") as AnyObject,
-            AnalyticsParameterIndex: "1" as AnyObject
+            AnalyticsParameterIndex: NSNumber(value: 1) as AnyObject
         ]
         
         let ecommerce : [String:AnyObject] = [
@@ -439,8 +439,16 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
             showLoader()
             BzbsCoreApi().useCampaign(token:token , redeemKey: redeemKey, successCallback: { (dict) in
                 let tmpItem = BzbsHistory(dict: dict)
-                self.purchase?.expireIn = tmpItem.expireIn
-                self.purchase?.arrangedDate = tmpItem.arrangedDate
+                
+                if let expireIn = tmpItem.expireIn
+                {
+                    self.purchase?.expireIn = expireIn
+                }
+                
+                if let arrangedDate = tmpItem.arrangedDate
+                {
+                    self.purchase?.arrangedDate = arrangedDate
+                }
                 self.countDown = 1
                 self.timer?.invalidate()
                 self.timer = nil

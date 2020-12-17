@@ -183,7 +183,7 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: 1),
             AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
             "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
         ]
@@ -196,7 +196,7 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "choose_line_sticker | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: "reward_detail" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.

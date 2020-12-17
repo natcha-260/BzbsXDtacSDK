@@ -181,5 +181,12 @@
     "line_history_back" : "Back to History",
     
     "redeem_date" : "Redeem date",
+    
+    "activity" : "Activity",
+    "accum_paid_amount" : "Accumulated paid amount",
+    "c2c_paid_date_unlock" : "Month",
+    "c2c_paid_date" : "Date",
+    
+    "bonus_amount" : "Bonus",
 }
 

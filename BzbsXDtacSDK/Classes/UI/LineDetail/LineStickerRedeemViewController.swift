@@ -166,7 +166,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: 1),
             AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
             "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
         ]
@@ -179,7 +179,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "line_sticker_info | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: "reward_detail" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -199,7 +199,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: 1),
             AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
             "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
         ]
@@ -212,7 +212,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "confirm_line_sticker | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: "reward_detail" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -220,6 +220,56 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         
         Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventAddPaymentInfo, category: "reward", action: "touch_button", label: "confirm_line_sticker | \(campaignId ?? "0") | \(bzbsCampaign.pointPerUnit ?? 0)")
         
+    }
+    
+    func sendGAThankyouPage(_ redeemKey:String?) {
+        
+        var reward1 = [String:AnyObject]()
+        reward1[AnalyticsParameterItemID] = "\(bzbsCampaign.ID ?? 0)" as AnyObject
+        reward1[AnalyticsParameterItemName] = bzbsCampaign.name as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(bzbsCampaign.categoryName ?? "")".lowercased() as AnyObject
+        reward1[AnalyticsParameterItemBrand] = bzbsCampaign.agencyName as AnyObject
+        reward1[AnalyticsParameterPrice] = 0 as NSNumber
+        reward1[AnalyticsParameterCurrency] = "THB" as NSString
+        reward1[AnalyticsParameterQuantity] = 1 as NSNumber
+        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
+//        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
+        reward1["metric1"] = (bzbsCampaign.pointPerUnit ?? 0) as AnyObject
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "seen_text" as NSString,
+            "eventLabel" : "redeem_complete | \(bzbsCampaign.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
+            AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
+
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventPurchase, params: ecommerce)
+        
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
+             AnalyticsParameterItemName : "\(bzbsCampaign.ID ?? -1) | \(bzbsCampaign.name ?? "")" as NSString,
+             AnalyticsParameterItemVariant : bzbsCampaign.agencyName as NSString,
+             AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
+             AnalyticsParameterValue: (bzbsCampaign.pointPerUnit ?? 0) as NSNumber,
+             AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
+         ])
+
+        
+        let gaLabel = "redeem_complete | \(bzbsCampaign.ID ?? -1) | \(bzbsCampaign.pointPerUnit ?? 0)"
+        analyticsSetEvent(event: AnalyticsEventPurchase, category: "reward", action: "seen_text", label: gaLabel)
+        analyticsSetEvent(event: AnalyticsEventSpendVirtualCurrency, category: "reward", action: "seen_text", label: gaLabel)
+        
+        //Push to Front-End Team
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        analyticsSetUserProperty(propertyName: "last_redeem_coin", value: "\(formatter.string(from: Date()))")
+        analyticsSetUserProperty(propertyName: "remaining_coin", value: "\((Bzbs.shared.userLogin?.bzbsPoints ?? 0) - bzbsCampaign.pointPerUnit)")
     }
     
     func apiValidateLineSticker() {
@@ -267,6 +317,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         BzbsCoreApi().getRedeemLineSticker(token: token, refId: refID, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (_) in
             self.hideLoader()
             GotoPage.gotoLineHistory(self.navigationController!, lineCampaign: self.lineCampaign, bzbsCampaign: self.bzbsCampaign, contactNumber: contactNumber, packageId:self.packageId) {
+                self.sendGAThankyouPage(refID)
                 NotificationCenter.default.post(name: NSNotification.Name.BzbsApiReset, object: nil)
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }

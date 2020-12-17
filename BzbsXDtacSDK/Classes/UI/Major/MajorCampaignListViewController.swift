@@ -11,7 +11,7 @@ class MajorCampaignListViewController: BaseListController {
     
     // MARK:- Class function
     // MARK:-
-    open class func getViewController(isHideNav:Bool = false) -> MajorCampaignListViewController {
+    @objc open class func getViewController(isHideNav:Bool = false) -> MajorCampaignListViewController {
         
         let storyboard = UIStoryboard(name: "Util", bundle: Bzbs.shared.currentBundle)
         let controller = storyboard.instantiateViewController(withIdentifier: "major_list_view") as! MajorCampaignListViewController

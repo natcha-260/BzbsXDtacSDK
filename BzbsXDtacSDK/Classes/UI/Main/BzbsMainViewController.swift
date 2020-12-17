@@ -14,6 +14,7 @@ import CoreLocation
 import AVFoundation
 import FirebaseAnalytics
 import WebKit
+import ImageSlideshow
 
 @objc public class BzbsMainViewController: BaseListController {
 
@@ -89,6 +90,8 @@ import WebKit
     
     var webView : WKWebView?
     var isCallingExpiringPoint = false
+    
+    var rotateImageSlider : ImageSlideshow?
     
     // MARK:- Life Cycle
     // MARK:-
@@ -178,7 +181,7 @@ import WebKit
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.tintColorDidChange()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.mainFont(), NSAttributedString.Key.foregroundColor:UIColor.black]
-        
+        rotateImageSlider?.unpauseTimer()
 //        if !isLoggedIn()
 //        {
 //            Bzbs.shared.delegate?.reTokenTicket()
@@ -187,6 +190,7 @@ import WebKit
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        rotateImageSlider?.pauseTimer()
 //        self._intSkip = 0
 //        self._isEnd = false
     }
@@ -229,11 +233,22 @@ import WebKit
     
     @objc func updateNavigationBar()
     {
-        navigationItem.leftBarButtonItems = BarItem.generate_logo()
+        if let navController = self.navigationController,
+           navController.viewControllers.first != self
+        {
+            navigationItem.leftBarButtonItems = BarItem.generate_logo(isShowBack: true, target: self, selector: #selector(dismissMain), isWhiteIcon: false)
+        } else {
+            navigationItem.leftBarButtonItems = BarItem.generate_logo()
+        }
+        
         if UIDevice.current.userInterfaceIdiom == .phone
         {
             navigationItem.rightBarButtonItems = BarItem.generate_message(self, isHasNewMessage: Bzbs.shared.isHasNewMessage, messageSelector: #selector(clickMessage))
         }
+    }
+    
+    @objc func dismissMain() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     public override func updateUI() {
@@ -591,7 +606,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(event: "track_event", category: "reward", action: "scan", label: "screen_name")
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "scan", label: "screen_name")
         AVCaptureDevice.requestAccess(for: .video) { success in
           if success { // if request is granted (success is true)
             DispatchQueue.main.async {
@@ -641,7 +656,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "favorite")
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "favorite")
         if let nav = self.navigationController {
             GotoPage.gotoFavorite(nav)
         }
@@ -666,7 +681,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "history")
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "history")
         if let nav = self.navigationController {
             GotoPage.gotoHistory(nav)
         }
@@ -680,7 +695,7 @@ import WebKit
             return
         }
         
-        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "faq")
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "faq")
         if let nav = self.navigationController {
             GotoPage.gotoWebSite(nav, strUrl: Bzbs.shared.getUrlFAQ(), strTitle: "main_footer_faq".localized())
         }
@@ -692,7 +707,7 @@ import WebKit
             showPopupInternet()
             return
         }
-        analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "about")
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "about")
         if let nav = self.navigationController {
             GotoPage.gotoWebSite(nav, strUrl: Bzbs.shared.getUrlAbout(), strTitle: "main_footer_about".localized())
         }
@@ -718,23 +733,23 @@ import WebKit
             case .blue :
                 strUrl = Bzbs.shared.getUrlBlueMember()
                 strTitle = BuzzebeesCore.levelNameBlue
-                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "blue")
+                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "blue")
             case .gold :
                 strUrl = Bzbs.shared.getUrlGoldMember()
                 strTitle = BuzzebeesCore.levelNameGold
-                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "gold")
+                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "gold")
             case .silver :
                 strUrl = Bzbs.shared.getUrlSilverMember()
                 strTitle = BuzzebeesCore.levelNameSilver
-                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "silver")
+                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "silver")
             case .customer:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
-                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
+                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
             case .no_level:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
-                analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
+                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
             }
             
             if let nav = self.navigationController {
@@ -767,11 +782,11 @@ import WebKit
     func sendImpressionItem(item:BzbsCampaign, index:Int)
     {
         let reward : [String:AnyObject] = [
-            AnalyticsParameterItemID : (item.ID ?? -1) as AnyObject,
+            AnalyticsParameterItemID : "\(item.ID ?? -1)" as AnyObject,
             AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
             AnalyticsParameterItemCategory : (item.categoryID ?? -1) as AnyObject,
             AnalyticsParameterItemBrand : (item.agencyName ?? "") as AnyObject,
-            AnalyticsParameterIndex : index as AnyObject
+            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject
         ]
         
         let ecommerce  : [String:AnyObject] = [
@@ -779,7 +794,7 @@ import WebKit
             AnalyticsParameterItemList : "dtac_reward" as AnyObject
         ]
         
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
+        // analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
     }
     
     func sendImpressionCoinItem(item:BzbsDashboard, index:Int)
@@ -813,11 +828,11 @@ import WebKit
         }
         
         var reward = [String:AnyObject]()
-        reward[AnalyticsParameterItemID] = item.id! as AnyObject
+        reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
-        reward[AnalyticsParameterIndex] = index as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
         //            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
@@ -857,7 +872,7 @@ import WebKit
             AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
             AnalyticsParameterItemCategory : "reward/\(rewardType)" as AnyObject,
             AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
-            AnalyticsParameterIndex : index as AnyObject
+            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject
         ]
         
         let ecommerce  : [String:AnyObject] = [
@@ -865,17 +880,17 @@ import WebKit
             AnalyticsParameterItemList : "dtac_reward_banner" as AnyObject
         ]
         
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
+        // analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
     }
     
     func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
     {
         let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : campaign.ID as AnyObject,
+            AnalyticsParameterItemID : "\(campaign.ID ?? 0)" as AnyObject,
             AnalyticsParameterItemName : campaign.name as AnyObject,
             AnalyticsParameterItemCategory: "dtac_reward" as AnyObject,
             AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
-            AnalyticsParameterIndex: "\(indexPath.row - 1)" as AnyObject
+            AnalyticsParameterIndex: NSNumber(value: (indexPath.row - 1)) as AnyObject
         ]
         let ecommerce : [String:AnyObject] = [
             "items" : reward1  as AnyObject,
@@ -884,7 +899,7 @@ import WebKit
         analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
         
         let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        analyticsSetEvent(event: "track_event", category: "reward", action: "dtac_reward", label: gaLabel)
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "dtac_reward", label: gaLabel)
     }
     
     func sendCoinGATouchEvent(_ item:BzbsDashboard, indexPath:IndexPath)
@@ -919,11 +934,11 @@ import WebKit
         let index = indexPath.row
         
         var reward = [String:AnyObject]()
-        reward[AnalyticsParameterItemID] = item.id! as AnyObject
+        reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
-        reward[AnalyticsParameterIndex] = index as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
 //        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
@@ -1016,6 +1031,9 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "campaignRotateCell", for: indexPath) as! CampaignRotateCVCell
             cell.dashboardItems = dashboardItems
+            if rotateImageSlider != cell.imageSlideShow {
+                rotateImageSlider = cell.imageSlideShow
+            }
             cell.delegate = self
             return cell
         }
@@ -1225,7 +1243,7 @@ extension BzbsMainViewController : CategoryCVCellDelegate
         if let nav = self.navigationController
         {
             let name = item.nameEn ?? ""
-            analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: name)
+            // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: name)
             if item.mode == "near_by"
             {
                 if LocationManager.shared.authorizationStatus == .denied  {
@@ -1318,7 +1336,7 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
                 break
             }
             
-            analyticsSetEvent(event:"track_event", category: "reward", action: "dtac_reward_banner", label: eventLabel)
+            // analyticsSetEvent(event:"track_event", category: "reward", action: "dtac_reward_banner", label: eventLabel)
         }
     }
 }

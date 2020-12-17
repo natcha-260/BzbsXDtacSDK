@@ -163,7 +163,6 @@ open class PointHistoryViewController: BaseListController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        analyticsSetScreen(screenName: "your_coin_earn")
         apiGetimagefooter()
     }
     
@@ -253,7 +252,6 @@ open class PointHistoryViewController: BaseListController {
     }
     
     @IBAction func clickGotoMission(_ sender: Any) {
-        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: "go_to_your_missions")
         analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
         var url:URL?
         if isEarn {

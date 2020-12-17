@@ -37,7 +37,7 @@ class RecommendCoinListViewController: RecommendListViewController {
         lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
-        getApi()
+//        getApi()
         
         analyticsSetScreen(screenName: "reward")
     }
@@ -131,7 +131,7 @@ class RecommendCoinListViewController: RecommendListViewController {
             }
             
             var reward = [String:AnyObject]()
-            reward[AnalyticsParameterItemID] = item.id! as AnyObject
+            reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
             reward[AnalyticsParameterItemName] = name as AnyObject
             reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
             reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
@@ -188,9 +188,9 @@ class RecommendCoinListViewController: RecommendListViewController {
         let index = indexPath.row
         
         var reward = [String:AnyObject]()
-        reward[AnalyticsParameterItemID] = item.id! as AnyObject
+        reward[AnalyticsParameterItemID] = (item.id ?? "")  as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
-        reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")".lowercased() as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
         reward[AnalyticsParameterIndex] = index as AnyObject
 //        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
@@ -204,7 +204,7 @@ class RecommendCoinListViewController: RecommendListViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_list" as NSString,
             "eventLabel" : "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)" as NSString,
-            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.

@@ -10,7 +10,7 @@ PODS:
   - AppCenter/Core (3.3.4)
   - AppCenter/Crashes (3.3.4):
     - AppCenter/Core
-  - BzbsXDtacSDK (2.0.15):
+  - BzbsXDtacSDK (2.0.21):
     - Alamofire (~> 4.9.0)
     - AlamofireImage
     - ESPullToRefresh
@@ -27,67 +27,67 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - Firebase/Analytics (7.0.0):
+  - Firebase/Analytics (7.1.0):
     - Firebase/Core
-  - Firebase/Core (7.0.0):
+  - Firebase/Core (7.1.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 7.0.0)
-  - Firebase/CoreOnly (7.0.0):
-    - FirebaseCore (= 7.0.0)
-  - FirebaseAnalytics (7.0.0):
+    - FirebaseAnalytics (= 7.1.0)
+  - Firebase/CoreOnly (7.1.0):
+    - FirebaseCore (= 7.1.0)
+  - FirebaseAnalytics (7.1.0):
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
-    - GoogleAppMeasurement (= 7.0.0)
+    - GoogleAppMeasurement (= 7.1.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
     - GoogleUtilities/MethodSwizzler (~> 7.0)
     - GoogleUtilities/Network (~> 7.0)
     - "GoogleUtilities/NSData+zlib (~> 7.0)"
     - nanopb (~> 2.30906.0)
-  - FirebaseCore (7.0.0):
+  - FirebaseCore (7.1.0):
     - FirebaseCoreDiagnostics (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
-  - FirebaseCoreDiagnostics (7.0.0):
+  - FirebaseCoreDiagnostics (7.1.0):
     - GoogleDataTransport (~> 8.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30906.0)
-  - FirebaseInstallations (7.0.0):
+  - FirebaseInstallations (7.1.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
     - PromisesObjC (~> 1.2)
-  - GoogleAppMeasurement (7.0.0):
+  - GoogleAppMeasurement (7.1.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
     - GoogleUtilities/MethodSwizzler (~> 7.0)
     - GoogleUtilities/Network (~> 7.0)
     - "GoogleUtilities/NSData+zlib (~> 7.0)"
     - nanopb (~> 2.30906.0)
-  - GoogleDataTransport (8.0.0):
+  - GoogleDataTransport (8.0.1):
     - nanopb (~> 2.30906.0)
   - GoogleMaps (4.0.0):
     - GoogleMaps/Maps (= 4.0.0)
   - GoogleMaps/Base (4.0.0)
   - GoogleMaps/Maps (4.0.0):
     - GoogleMaps/Base
-  - GoogleUtilities/AppDelegateSwizzler (7.0.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.1.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.0.0):
+  - GoogleUtilities/Environment (7.1.1):
     - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (7.0.0):
+  - GoogleUtilities/Logger (7.1.1):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.0.0):
+  - GoogleUtilities/MethodSwizzler (7.1.1):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.0.0):
+  - GoogleUtilities/Network (7.1.1):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.0.0)"
-  - GoogleUtilities/Reachability (7.0.0):
+  - "GoogleUtilities/NSData+zlib (7.1.1)"
+  - GoogleUtilities/Reachability (7.1.1):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.0.0):
+  - GoogleUtilities/UserDefaults (7.1.1):
     - GoogleUtilities/Logger
   - ImageSlideshow (1.8.3):
     - ImageSlideshow/Core (= 1.8.3)
@@ -157,18 +157,18 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   AppCenter: 0487be185c038ed2ecc5ed38219af1dcd280af23
-  BzbsXDtacSDK: 6bfaa85e6b03b43094018288faa47161c356860f
+  BzbsXDtacSDK: 30976ff0279fd287bf1d1e8a0725f7b38e9655de
   ESPullToRefresh: 0d68daa602b343c81753a1b95e09fd0bfcddfd40
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  Firebase: 50be68416f50eb4eb2ecb0e78acab9a051ef95df
-  FirebaseAnalytics: c1166b7990bae464c6436132510bb718c6680f80
-  FirebaseCore: cf3122185fce1cf71cedbbc498ea84d2b3e7cb69
-  FirebaseCoreDiagnostics: 5f4aa04fdb04923693cc704c7ef9158bdf41a48b
-  FirebaseInstallations: c28d4bcbb5c6884d1a39afbc0bd7fc590e31e9b7
-  GoogleAppMeasurement: 7790ef975d1d463c8614cd949a847e612edf087a
-  GoogleDataTransport: 6ce8004a961db1b905740d7be106c61ba7e89c21
+  Firebase: 78e8dd2e39d653de6270432ad84fe8b59f7bf4e8
+  FirebaseAnalytics: 7f165a56dea86ddd5b8ce02af3bee982c683405c
+  FirebaseCore: 20046127eef0fcb8fa25df7fc12f7b97d4e48611
+  FirebaseCoreDiagnostics: 872cdb9b749b23346dddd5c1014d1babd2257de3
+  FirebaseInstallations: 3de38553e86171b5f81d83cdeef63473d37bfdb0
+  GoogleAppMeasurement: 89e1a64593f968713b0506ba1b53b38a154bf9a5
+  GoogleDataTransport: e4085e6762f36a6141738f46b0153473ce57fb18
   GoogleMaps: b7f7fc569a9b354a3af0d9729dbec40957b7d41e
-  GoogleUtilities: ffb2f4159f2c897c6e8992bd7fbcdef8a300589c
+  GoogleUtilities: 3dc4ff0d5e4840e2fa8eef0889620e8c33d4218c
   ImageSlideshow: 4694d7d699a1549582e7cc631fb392d8f91630f3
   InfiniteCarouselCollectionView: d63e9c834ff41f4d2ce99a2b58c9bb679bb14ab5
   Kingfisher: 6e1a13523fcb1c86924ce53affe4ac957e544d59

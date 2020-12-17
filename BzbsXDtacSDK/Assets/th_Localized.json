@@ -180,4 +180,11 @@
     "line_history_back" : "กลับสู่หน้าประวัติ",
     
     "redeem_date" : "วันที่แลกสิทธิ์",
+    
+    "activity" : "รายการที่ทำ",
+    "accum_paid_amount" : "ยอดชำระสะสม",
+    "c2c_paid_date_unlock" : "เดือนที่ทำรายการ",
+    "c2c_paid_date" : "วันที่ทำรายการ",
+    
+    "bonus_amount" : "โบนัสที่ได้รับ",
 }
