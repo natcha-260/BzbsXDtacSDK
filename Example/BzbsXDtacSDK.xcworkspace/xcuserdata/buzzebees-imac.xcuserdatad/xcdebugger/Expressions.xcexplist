@@ -138,10 +138,10 @@
          contextName = "RecommendCVCell.setupWith(_:):RecommendCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Double(round(100 * distance) / 100)">
+               value = "item.distance">
             </PersistentString>
             <PersistentString
-               value = "item.distance">
+               value = "Double(round(100 * distance) / 100)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -338,13 +338,13 @@
          contextName = "CampaignByCatViewController.collectionView(_:numberOfItemsInSection:):CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrCategory">
+               value = "currentSubCat.name.lowercased()">
             </PersistentString>
             <PersistentString
                value = "dashboardItems">
             </PersistentString>
             <PersistentString
-               value = "currentSubCat.name.lowercased()">
+               value = "arrCategory">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -360,13 +360,13 @@
          contextName = "PointHistoryViewController.isEarnEnd.getter:PointHistoryViewController.swift">
          <PersistentStrings>
             <PersistentString
+               value = "dateFormatter.date(from: strEarnDate)">
+            </PersistentString>
+            <PersistentString
                value = "endDate &lt; date">
             </PersistentString>
             <PersistentString
                value = "strEarnDate">
-            </PersistentString>
-            <PersistentString
-               value = "dateFormatter.date(from: strEarnDate)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -435,7 +435,7 @@
                value = "">
             </PersistentString>
             <PersistentString
-               value = "NSLocalizedString(self, bundle: bundle, comment: &quot;my_comment&quot;)">
+               value = "bundle.localizations">
             </PersistentString>
             <PersistentString
                value = "NSLocalizedString(self, bundle: Bzbs.shared.currentBundle, comment: &quot;my_comment&quot;)">
@@ -444,7 +444,7 @@
                value = "Bzbs.shared.currentBundle.localizations">
             </PersistentString>
             <PersistentString
-               value = "bundle.localizations">
+               value = "NSLocalizedString(self, bundle: bundle, comment: &quot;my_comment&quot;)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -705,13 +705,13 @@
          contextName = "CampaignCVCell.setupWith(_:isShowDistance:):CampaignCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "!(isShowDistance &amp;&amp; LocationManager.shared.authorizationStatus == .authorizedWhenInUse)">
+               value = "lblTitle.numberOfVisibleLines">
             </PersistentString>
             <PersistentString
                value = "imv.contentMode">
             </PersistentString>
             <PersistentString
-               value = "lblTitle.numberOfVisibleLines">
+               value = "!(isShowDistance &amp;&amp; LocationManager.shared.authorizationStatus == .authorizedWhenInUse)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -730,13 +730,13 @@
          contextName = "CampaignByCatViewController.getApi():CampaignByCatViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "vwCampaignList">
+               value = "campaignList">
             </PersistentString>
             <PersistentString
                value = "currentSubCat">
             </PersistentString>
             <PersistentString
-               value = "campaignList">
+               value = "vwCampaignList">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -766,10 +766,10 @@
                value = "currentCat">
             </PersistentString>
             <PersistentString
-               value = "currentSubCat.name.lowercased()">
+               value = "arrCategory">
             </PersistentString>
             <PersistentString
-               value = "arrCategory">
+               value = "currentSubCat.name.lowercased()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1029,13 +1029,13 @@
          contextName = "PointHistoryViewController.getDate():PointHistoryViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "isEarn">
+               value = "strEarnDate">
             </PersistentString>
             <PersistentString
                value = "strBurnDate">
             </PersistentString>
             <PersistentString
-               value = "strEarnDate">
+               value = "isEarn">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1043,7 +1043,7 @@
          contextName = "BzbsMainViewController.collectionView(_:cellForItemAt:):BzbsMainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrCampaign">
+               value = "arrCampaign.count + 1">
             </PersistentString>
             <PersistentString
                value = "dashboardItems">
@@ -1052,7 +1052,7 @@
                value = "self.arrCategory">
             </PersistentString>
             <PersistentString
-               value = "arrCampaign.count + 1">
+               value = "arrCampaign">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1186,10 +1186,10 @@
          contextName = "CampaignRotateCVCell.dashboardItems.didset:CampaignRotateCVCell.swift">
          <PersistentStrings>
             <PersistentString
-               value = "pageControl.numberOfPages &gt; 1">
+               value = "frameSize">
             </PersistentString>
             <PersistentString
-               value = "frameSize">
+               value = "pageControl.numberOfPages &gt; 1">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1353,14 +1353,6 @@
          <PersistentStrings>
             <PersistentString
                value = "resultError.localizedDescription">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "PopupPointHistoryDetailViewController.tableView(_:cellForRowAt:):PopupPointHistoryDetailViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "pointLog">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

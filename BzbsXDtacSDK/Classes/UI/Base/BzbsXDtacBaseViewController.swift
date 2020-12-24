@@ -681,36 +681,28 @@ extension BzbsXDtacBaseViewController {
     
     func gotoBlueMember()
     {
-        if let userLogin = Bzbs.shared.userLogin
-        {
-            if userLogin.dtacLevel == .blue
-            {
-                guard let arrCat = Bzbs.shared.arrCategory, let blueCat = Bzbs.shared.blueCategory else {
-                    delay(0.33) {
-                        self.gotoBlueMember()
-                    }
-                    return
-                }
-                
-                if self is CampaignByCatViewController
-                {
-                    let vc = self as! CampaignByCatViewController
-                    vc.currentCat = blueCat
-                } else {
-                    if let nav = self.navigationController {
-                        GotoPage.gotoCategory(nav, cat: blueCat, subCat: nil, arrCategory: arrCat)
-                    } else {
-                        delay(0.33) {
-                            self.gotoBlueMember()
-                        }
-                    }
-                }
-            }
-        } else {
+        guard let userLogin = Bzbs.shared.userLogin,
+              let arrCat = Bzbs.shared.arrCategory,
+              let blueCat = Bzbs.shared.blueCategory
+        else {
             delay(0.33) {
                 self.gotoBlueMember()
             }
+            return
         }
+        
+        let targetCat = (userLogin.dtacLevel == .blue) ? blueCat : arrCat.first!
+        
+        if self is CampaignByCatViewController
+        {
+            let vc = self as! CampaignByCatViewController
+            vc.currentCat = targetCat
+        } else {
+            if let nav = self.navigationController {
+                GotoPage.gotoCategory(nav, cat: targetCat, subCat: nil, arrCategory: arrCat)
+            }
+        }
+        
     }
     
     func openCampaignDetail(_ campaignId:Int) {

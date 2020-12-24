@@ -1,4 +1,19 @@
 # BzbsXDtacSDK
+## 2.0.23
+- handle history on Earn bonus
+- handle deeplink blue on other segment
+- handle new ticket caching 
+- update wording
+## 2.0.22 
+- Update GA 
+- fix popup serial expired 
+- get MajorCampaignListViewController individual 
+- handle deeplink category/subcategory by id 
+- handle history pointlog id 12,13
+## 2.0.21
+- handle lucky game on dashboard
+- Improve performance
+- handle coin campaign in nearby list
 ## 2.0.21
 - handle lucky game on dashboard
 - Improve performance

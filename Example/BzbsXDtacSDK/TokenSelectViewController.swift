@@ -297,14 +297,13 @@ class TokenSelectViewController: UIViewController {
         if isDev || isStg {
             token = "Jfoex0iU8URI86Ly3d7Yt2w3z2e3D81j7b5H72kK9wwlBpq0We72xFZidFYY4G2GTvXEBZKxacU="
             ticket = "FgM9fHbSOF7apRtVTFcSVwFtTZl1U9o1xlJgIATH54LL2mFtwoYu93sBO/M="
-            segment = "0000"
         }
         
         if isPrd {
             token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
             ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
-            segment = "0000"
         }
+        segment = "0000"
         token = ""
         ticket = ""
         segment = ""
@@ -316,23 +315,20 @@ class TokenSelectViewController: UIViewController {
         resetBtn()
         (sender as! UIButton).isSelected = true
         
-        if isDev {
+        if isDev || isStg {
             token = "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxqPRR5G8XlhiHA+65JbklZ9kGj7dmo5XyY="
             ticket = "1QF39OSA+F19HcQDU3JwhQWeznT0vF7VnBrIj1HoWclwa9RZ6VZPiEXNolM="
-            segment = "4000"
-        }
-        
-        if isStg {
-            token = "auB55gmxyG5qNny65t2HVj9gU8w9MvQYocfqExQ9ILYQgqO+5A0TCS1BAYI0wOUWqV+coBAgDbs="
-            ticket = "rAF4+rR7SF8rgDwzX+/yvNkdQVoSua0RYbZznjeI2gg2S8RFAE4IVo8CY2o="
-            segment = "4000"
+            
+//            token = "auB55gmxyG5qNny65t2HVj9gU8w9MvQYocfqExQ9ILYQgqO+5A0TCS1BAYI0wOUWqV+coBAgDbs="
+//            ticket = "rAF4+rR7SF8rgDwzX+/yvNkdQVoSua0RYbZznjeI2gg2S8RFAE4IVo8CY2o="
         }
         
         if isPrd {
             token = "vKmKza5IX9mZLXbQcShMZmdvShCrtw+7RgskBhLRvxoH1KiSmJ6WvfESsSSBNfz94XtJABzCNG4="
             ticket = "AgN3VXKvpl2a9BVRZgx8SpkaLjWQuKc7h/nMZAJdoGaE4MKLPAvJPPVMU5c="
-            segment = "4000"
         }
+        
+        segment = "4000"
         isChangeUser = true
         //        gotoMain()
     }
@@ -344,15 +340,15 @@ class TokenSelectViewController: UIViewController {
         
         if isDev || isStg {
             token = "6SjkaciPnsVcxjSQsgJJ3jaKF48+uteT37l/Rhh01xxg8zlK5dP1hB7HQRkLZ+3aHEqDusyKx28="
-            ticket = "1QKNrsS2El4Eu5PDEIVs/1boJiOWTyH1ZC3EOZiXtI5KlD7uFRpm55srYSY="
-            segment = "3000"
+            ticket = "iwKES6Dn4l9IanWO5ICqFt6RJNUNYgz8+YTGbT86gHziI/2u4ysATb4WzdI="
         }
         
         if isPrd {
             token = "ecTRUtHv6HxkdJJ4h2KpOs1vGEd8NPmy95FUzj7RpzqwhNGkzRBJi7Z3/Z0MxnOEj7hyj2ovEG4="
             ticket = "zABxi7c6310ZoxU8etbjI84fOsNBp3tCku3aNKb8TdryP93K54b0jLVCghw="
-            segment = "3000"
         }
+        
+        segment = "3000"
         isChangeUser = true
     }
     
@@ -364,14 +360,13 @@ class TokenSelectViewController: UIViewController {
         if isDev || isStg {
             token = "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ9g8zlK5dP1hMOxWSS5czz2anEnkpfnKJs="
             ticket = "RQJOAlC1El69TXrhg0xyIS7uvhL4Euy/nKuzyfwMzu9Vb9es7Q7vAGw1cgA="
-            segment = "2000"
         }
         
         if isPrd {
             token = "ImypiEXvH008mncu3eiT+6tNhrRi8HqvR2S8rIHvrJ8H1KiSmJ6WvfESsSSBNfz9ELcMZ6lm4hY="
             ticket = "IQEcGD5nrV1bwWvTVzaoYAEnRbw0aPwTVLzIZQ3jZlTiZ6qxDfojfAw0RNs="
-            segment = "2000"
         }
+        segment = "2000"
         isChangeUser = true
     }
     
@@ -381,22 +376,26 @@ class TokenSelectViewController: UIViewController {
         (sender as! UIButton).isSelected = true
         
         if isDev || isStg {
+            
             token = "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8="
             ticket = "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ="
-            segment = "1000"
+            
+//            token = "x6RFt1Fb/8w19ZhR2aISNG9Q7PA7CAkXJAHLbuCy2h2boxk6dSqZdsAoDgBlOv6h1k0gXHEWq4k="
+//            ticket = "DAMiifVb4F9I9S/W7OohE7Nz6wwD9i0Lwu3z5g/3N683rmlZMuAjFzQDBr8="
+//            segment = "1000"
         }
         
         if isPrd {
             
             token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
             ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
-            segment = "1000"
             
             //เบอร์ Production -------- dtacId : cd0e30fc90eea2856055d1119c4e9511 -----------
-            token = "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1XGZbE0djiOprnHSuLRltgsdEi05NIY8iU="
-            ticket = "rABKI6lBkV+auzNXGrCACkH97R8ZMAAnd6ie2fUoknM+A8g+ZAXLJvbWQ2E="
+//            token = "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1XGZbE0djiOprnHSuLRltgsdEi05NIY8iU="
+//            ticket = "rABKI6lBkV+auzNXGrCACkH97R8ZMAAnd6ie2fUoknM+A8g+ZAXLJvbWQ2E="
             // -----------------------------------------------------------------------------
         }
+        segment = "1000"
         isChangeUser = true
         
     }

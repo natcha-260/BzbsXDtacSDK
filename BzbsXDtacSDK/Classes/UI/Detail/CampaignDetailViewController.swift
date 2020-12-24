@@ -310,16 +310,15 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.hideLoader()
             return
         }
-        CacheCore.shared.loadCacheData(key: BBCache.keys.statusCampaign, customKey: "\(campaign.ID!)", successCallback: { (ao) in
-            if let dict = ao as? Dictionary<String, AnyObject> {
-                self.campaignStatus = CampaignStatus(dict: dict)
-                self.manageFooter()
-                self.tableView.reloadData()
-                self.hideLoader()
-            } else {
-                self.getApiCampaignStatus()
-            }
-        }) {
+        
+        if let ao = CacheCore.shared.loadCacheData(key: BBCache.keys.statusCampaign, customKey: "\(campaign.ID!)") ,
+            let dict = ao as? Dictionary<String, AnyObject>
+        {
+            self.campaignStatus = CampaignStatus(dict: dict)
+            self.manageFooter()
+            self.tableView.reloadData()
+            self.hideLoader()
+        } else {
             self.getApiCampaignStatus()
         }
     }
@@ -374,6 +373,9 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                                     self.manageFooter()
                                                     self.tableView.reloadData()
                                                     self.hideLoader()
+                                                    if let ticket = dict["ticket"] as? String {
+                                                        Bzbs.shared.updateTicket(ticket)
+                                                    }
             },
                                                    failCallback: { (error) in
                                                     self.isLoadedStatus = true

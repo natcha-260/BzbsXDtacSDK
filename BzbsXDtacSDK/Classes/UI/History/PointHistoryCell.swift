@@ -46,10 +46,13 @@ class PointHistoryCell: UITableViewCell {
             strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/transfer.jpg"
             lblTitle.text = "coin_transfer".localized()
         }
+        else if item.type == "earn_bonus" {
+            strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/bonus.jpg"
+        }
         else {
             let productID = item.productId ?? "0"
             
-            if productID == "12" && (item.isUnlock ?? false) {
+            if (productID == "12" ||  productID == "13") && (item.isUnlock ?? false) {
                 strUrl = strUrl + "reach1tier.jpg"
             } else {
                 strUrl = strUrl + "product\(productID).jpg"   

@@ -76,11 +76,18 @@ class PopupPointHistoryDetailViewController: UIViewController {
                 imv.bzbsSetImage(withURL: strUrl)
                 listCell = ["transfer_from", "transfer_date"]
             }
+            else if pointLog.type == "earn_bonus"
+            {
+                let strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/bonus.jpg"
+                lblPoint.text = "coin_earn_detail".localized() + ": \(pointLog.points.withCommas())"
+                imv.bzbsSetImage(withURL: strUrl)
+                listCell = ["activity" , "bonus_paid_amount", "bonus_amount" , "bonus_date"]
+            }
             else {
                 lblPoint.text = "coin_earn_detail".localized() + ": " + pointLog.points.withCommas()
                 let productID = pointLog.productId ?? "0"
                 var strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/product\(productID).jpg"
-                if productID == "12" && (pointLog.isUnlock ?? false) {
+                if (productID == "12" ||  productID == "13")  && (pointLog.isUnlock ?? false) {
                     strUrl = BuzzebeesCore.blobUrl + "/config/353144231924127/history/reach1tier.jpg"
                 }
                 imv.bzbsSetImage(withURL: strUrl)
@@ -127,6 +134,9 @@ class PopupPointHistoryDetailViewController: UIViewController {
                         break
                     case "13":
                         listCell = ["activity" , "paid_amount", "accum_paid_amount" , "c2c_paid_date"]
+                        if (pointLog.isUnlock ?? false) {
+                            listCell = ["activity" , "accum_paid_amount" , "c2c_paid_date"]
+                        }
                         break
                     default:
                         break
@@ -197,6 +207,14 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
         else if cellIdent == "accum_paid_amount" {
             cell.title = "accum_paid_amount".localized() + ": "
             cell.detail = Double(pointLog.totalAmount ?? 0).withCommas() + " " + "baht".localized()
+        }
+        else if cellIdent == "bonus_paid_amount" {
+            cell.title = "accum_paid_amount".localized() + ": "
+            cell.detail = Double(pointLog.amount ?? 0).withCommas() + " " + "baht".localized()
+        }
+        else if cellIdent == "bonus_amount" {
+            cell.title = "bonus_amount".localized() + ": "
+            cell.detail = Double(pointLog.points ?? 0).withCommas(fractionDigits: 0) + " " + "baht".localized()
         }
         else if cellIdent.contains("date") {
             
@@ -295,11 +313,29 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
                 } else {
                     cell.title = "c2c_paid_date".localized() + ": "
                 }
-                
+
                 if let activityDate = pointLog.period {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
                     cell.detail = "-"
+                }
+            } else if cellIdent == "bonus_date" {
+                cell.title = "c2c_paid_date_unlock".localized() + ": "
+                cell.detail = "-"
+                if let rowKey = pointLog.rowKey ,
+                   rowKey.contains("|")
+                {
+                    let subStrings = rowKey.split(separator: "|")
+                    if let strPeriod = subStrings.last
+                    {
+                        let tmpDateFormat = DateFormatter()
+                        tmpDateFormat.dateFormat = "yyyyMM"
+                        tmpDateFormat.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                        if let date = tmpDateFormat.date(from: String(strPeriod)) {
+                            formatter.dateFormat = pointLog.periodFormat
+                            cell.detail = formatter.string(from: date)
+                        }
+                    }
                 }
             }
             

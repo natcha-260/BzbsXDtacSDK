@@ -77,19 +77,16 @@ struct DtacLoginParams {
     
     func getCacheLoginParams(loginCacheSelector: ((DtacLoginParams?) -> Void))
     {
-        CacheCore.shared.loadCacheData(key: BBCache.keys.loginparam, successCallback: { (ao) in
-            if let dict = ao as? Dictionary<String, String>
-            {
-                var loginParams = DtacLoginParams()
-                loginParams.token = dict["token"]
-                loginParams.ticket = dict["ticket"]
-                loginParams.DTACSegment = dict["DTACSegment"]
-                loginParams.TelType = dict["TelType"]
-                loginCacheSelector(loginParams)
-            } else {
-                loginCacheSelector(nil)
-            }
-        }) {
+        if let ao = CacheCore.shared.loadCacheData(key: BBCache.keys.loginparam),
+           let dict = ao as? Dictionary<String, String>
+        {
+            var loginParams = DtacLoginParams()
+            loginParams.token = dict["token"]
+            loginParams.ticket = dict["ticket"]
+            loginParams.DTACSegment = dict["DTACSegment"]
+            loginParams.TelType = dict["TelType"]
+            loginCacheSelector(loginParams)
+        } else {
             loginCacheSelector(nil)
         }
     }
@@ -130,6 +127,17 @@ struct DtacLoginParams {
                 self.delegate = delegate
             }
         }
+    }
+    
+    @objc public func updateTicket(_ newTicket:String) {
+        print("updateTicket : \(newTicket)")
+        self.dtacLoginParams.ticket = newTicket
+        var dict = Dictionary<String, String>()
+        dict["token"] = dtacLoginParams.token
+        dict["ticket"] = dtacLoginParams.ticket
+        dict["DTACSegment"] = dtacLoginParams.DTACSegment
+        dict["TelType"] = dtacLoginParams.TelType
+        CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.loginparam, lifetime: BuzzebeesCore.cacheTimeSegment)
     }
     
     @objc public func isLoggedIn() -> Bool {

@@ -54,11 +54,9 @@ open class BBCache: NSObject
     /**
      โหลดข้อมูลจากเครื่อง
      */
-    open func loadCacheData(key:BBCache.keys, customKey:String? = nil
-        , successCallback: (AnyObject) -> Void
-        , failCallback: () -> Void)
+    
+    open func loadCacheData(key:BBCache.keys, customKey:String? = nil) -> AnyObject?
     {
-        
         let folderName: String = key.folder
         var fileName: String = key.rawValue
         if let key = customKey {
@@ -72,21 +70,50 @@ open class BBCache: NSObject
         if let data = NSKeyedUnarchiver.unarchiveObject(withFile: pathToTheFile) as? Dictionary<String, AnyObject>
         {
             if let value  = data["value"],
-                let lifetime = data["lifetime"] as? TimeInterval
+               let lifetime = data["lifetime"] as? TimeInterval
             {
                 let date = Date().timeIntervalSince1970
                 if date < lifetime {
-                    successCallback(value as AnyObject)
-                } else {
-                    failCallback()
+                    return(value as AnyObject)
                 }
-            } else {
-                failCallback()
             }
-        } else {
-            failCallback()
         }
+        return nil
     }
+//    
+//    open func loadCacheData(key:BBCache.keys, customKey:String? = nil
+//        , successCallback: (AnyObject) -> Void
+//        , failCallback: () -> Void)
+//    {
+//        
+//        let folderName: String = key.folder
+//        var fileName: String = key.rawValue
+//        if let key = customKey {
+//            fileName = "\(fileName)_\(key)"
+//        }
+//        
+//        let strPath = getVersion() + "/" + folderName + "/"
+//        let dataPath = _documentFolderForSavingFiles.stringByAppendingPathComponent(strPath) + "/"
+//        let pathToTheFile = dataPath + fileName
+//        
+//        if let data = NSKeyedUnarchiver.unarchiveObject(withFile: pathToTheFile) as? Dictionary<String, AnyObject>
+//        {
+//            if let value  = data["value"],
+//                let lifetime = data["lifetime"] as? TimeInterval
+//            {
+//                let date = Date().timeIntervalSince1970
+//                if date < lifetime {
+//                    successCallback(value as AnyObject)
+//                } else {
+//                    failCallback()
+//                }
+//            } else {
+//                failCallback()
+//            }
+//        } else {
+//            failCallback()
+//        }
+//    }
     /**
      บันทึกข้อมูลลงเครื่อง
      */
