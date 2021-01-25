@@ -11,26 +11,14 @@ import UIKit
 import Alamofire
 
 open class BzbsXDtacBaseViewController: BzbsBaseViewController {
+    // MARK:- Properties
+    // MARK:- Variable
     static var isInitialized = false
     static var isOpeningDeeplink = false
     var screenName = "-"
     
-    func getPreviousScreenName() -> String {
-        if let previousVC = self.parent as? BzbsXDtacBaseViewController{
-            return previousVC.screenName
-        }
-        
-        if let nav = self.navigationController {
-            if let index = nav.viewControllers.firstIndex(of: self) {
-                if index > 0 {
-                    if let vc = nav.viewControllers[index - 1] as? BzbsXDtacBaseViewController {
-                        return vc.screenName
-                    }
-                }
-            }
-        }
-        return "-"
-    }
+    // MARK:- View Life cycle
+    // MARK:-
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -82,6 +70,9 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsDeeplinkAction, object: nil)
     }
     
+    // MARK:- Notification
+    // MARK:-
+    
     @objc func gotoCampaignDetail(_ notification:NSNotification)
     {
         if let campaignId = notification.object as? Int{
@@ -104,15 +95,6 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     @objc func refreshApi()
     {
         
-    }
-    
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        //NotificationCenter.default.removeObserver(self, name: EnumLocationManagerNotification.updateLocation.notification, object: nil)
-        //NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsDeeplinkAction, object: nil)
-        //NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsTokenTicketDidChange, object: nil)
-        //NotificationCenter.default.removeObserver(self, name: NSNotification.Name.BzbsApiReset, object: nil)
     }
     
     @objc func updateLocation() {
@@ -143,11 +125,6 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     {
         
     }
-    
-    deinit{
-        
-    }
-    
     
     func openWebSite(_ url:URL!)
     {
@@ -224,7 +201,7 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
         PopupManager.informationPopup(self, title: "alert_internet_title".errorLocalized(), message: "alert_internet_description".errorLocalized() , close: closeCallback)
     }
     
-    // MARK:- Languaget
+    // MARK:- Language
     // MARK:-
     func userLocale() -> Int
     {
@@ -307,6 +284,24 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
     
     func analyticsSetUserProperty(propertyName: String, value: String) {
         Bzbs.shared.delegate?.analyticsSetUserProperty(propertyName: propertyName, value: value)
+    }
+    
+    // MARK:- GA Support
+    func getPreviousScreenName() -> String {
+        if let previousVC = self.parent as? BzbsXDtacBaseViewController{
+            return previousVC.screenName
+        }
+        
+        if let nav = self.navigationController {
+            if let index = nav.viewControllers.firstIndex(of: self) {
+                if index > 0 {
+                    if let vc = nav.viewControllers[index - 1] as? BzbsXDtacBaseViewController {
+                        return vc.screenName
+                    }
+                }
+            }
+        }
+        return "-"
     }
 }
 

@@ -119,7 +119,7 @@ class SearchResultListController: BaseListController {
     }
     
     override func loadedData() {
-        self.collectionView.es.stopPullToRefresh()
+        self.collectionView.stopPullToRefresh()
         self.collectionView.reloadData()
         self._isCallApi = false
         self.hideLoader()

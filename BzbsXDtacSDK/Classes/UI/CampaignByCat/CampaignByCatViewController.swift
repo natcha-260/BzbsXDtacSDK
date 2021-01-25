@@ -68,19 +68,28 @@ open class CampaignByCatViewController: BaseListController {
             campaignCV.register(BlankCVCell.getNib(), forCellWithReuseIdentifier: "blankCVCell")
             campaignCV.contentInset = UIEdgeInsets(top: 0, left: 2, bottom: 8, right: 2)
             campaignCV.alwaysBounceVertical = true
-            campaignCV.es.addPullToRefresh {
-                self._intSkip = 0
-                self._isEnd = false
-                
-                if self.isCategoryAll()  {
-                    self.getAllDashboard()
-                } else {
-                    self.getApi()
-                }
-            }
+            addPullToRefresh(on: campaignCV)
         }
         
     }
+    
+    private let refreshControl = UIRefreshControl()
+    func addPullToRefresh(on collectionView: UICollectionView) {
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshSelector() {
+        self._intSkip = 0
+        self._isEnd = false
+        
+        if self.isCategoryAll()  {
+            self.getAllDashboard()
+        } else {
+            self.getApi()
+        }
+    }
+    
     
     // MARK:- Variable
     var dashboardItems = [BzbsDashboard]()
@@ -223,7 +232,9 @@ open class CampaignByCatViewController: BaseListController {
         let lbl = UILabel(frame: vw.bounds)
         lbl.font = UIFont.mainFont()
         lbl.textColor = .black
-        lbl.text = currentCat.name
+        if currentCat != nil {
+            lbl.text = currentCat.name
+        }
         lbl.textAlignment = .center
         lbl.sizeToFit()
         lbl.frame = CGRect(x: 8, y: 0, width:  lbl.bounds.size.width, height: 30)
@@ -551,7 +562,7 @@ open class CampaignByCatViewController: BaseListController {
     override func loadedData() {
         self.campaignCV.reloadData()
         self._isCallApi = false
-        self.campaignCV.es.stopPullToRefresh()
+        self.campaignCV.stopPullToRefresh()
         self.hideLoader()
     }
     

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,6 +41,7 @@
                     </view>
                 </subviews>
             </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="p7c-Z8-DDp" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="3QA-qM-hAh"/>
                 <constraint firstItem="tj3-zC-mw6" firstAttribute="leading" secondItem="p7c-Z8-DDp" secondAttribute="leading" id="5rU-I2-wCC"/>
@@ -51,7 +52,6 @@
                 <constraint firstItem="tj3-zC-mw6" firstAttribute="bottom" secondItem="p7c-Z8-DDp" secondAttribute="bottom" id="dQD-SG-8A0"/>
                 <constraint firstAttribute="bottom" secondItem="p7c-Z8-DDp" secondAttribute="bottom" id="jLE-Gx-hjk"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="237" height="49"/>
             <connections>
                 <outlet property="imvBG" destination="tj3-zC-mw6" id="StS-1D-vxz"/>

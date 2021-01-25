@@ -193,6 +193,8 @@ public class BzbsCampaign {
     
     public var raw : Dictionary<String, AnyObject>!
     
+    public var subCategoryId: String?
+    
     init()
     {
     }

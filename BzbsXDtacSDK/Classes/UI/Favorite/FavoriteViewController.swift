@@ -62,10 +62,7 @@ public class FavoriteViewController: BaseListController {
         } else {
             showLoader()
         }
-        self.tableView.es.addPullToRefresh {
-            self.resetList()
-            self.getApi()
-        }
+        addPullToRefresh(on: tableView)
     }
     
     public override func updateUI() {
@@ -91,12 +88,15 @@ public class FavoriteViewController: BaseListController {
         //        self.navigationController?.isNavigationBarHidden = !isHideNav
     }
     
-    override func addPullToRefresh() {
-        createPullToRefresh(tableView){
-            OperationQueue().addOperation {
-                self.resetList()
-            }
-        }
+    private let refreshControl = UIRefreshControl()
+    func addPullToRefresh(on tableView: UITableView) {
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshSelector() {
+        self.resetList()
+        self.getApi()
     }
     
     @objc override func resetList() {
@@ -155,7 +155,7 @@ public class FavoriteViewController: BaseListController {
     override func loadedData() {
         self._isCallApi = false
         self.tableView.reloadData()
-        self.tableView.es.stopPullToRefresh()
+        self.tableView.stopPullToRefresh()
         self.hideLoader()
     }
     

@@ -27,11 +27,19 @@ class HistoryViewController: BaseListController {
         initUI()
         getApi()
         
-        self.tableView.es.addPullToRefresh {
-            self.resetList()
-            self.getApi()
-        }
+        addPullToRefresh(on: tableView)
         // Do any additional setup after loading the view.
+    }
+    
+    private let refreshControl = UIRefreshControl()
+    func addPullToRefresh(on tableView: UITableView) {
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshSelector() {
+        self.resetList()
+        self.getApi()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -129,7 +137,7 @@ class HistoryViewController: BaseListController {
         self.hideLoader()
         self._isCallApi = false
         self.tableView.reloadData()
-        self.tableView.es.stopPullToRefresh()
+        self.tableView.stopPullToRefresh()
     }
 
     override func refreshApi() {

@@ -142,6 +142,10 @@ class TokenSelectViewController: UIViewController {
         Bzbs.shared.versionString = strVersion
         Bzbs.shared.isDebugLog = true
         isChangeUser = true
+        
+        resetBtn()
+        token = nil
+        ticket = nil
     }
     
     @IBAction func didChangeTelType(_ sender: Any) {
@@ -387,13 +391,21 @@ class TokenSelectViewController: UIViewController {
         
         if isPrd {
             
-            token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
-            ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
-            
+//            token = "QAefS0N6zNq/RyrGUPJ1fR4d4gWcoEjaOCrPWUVh24Zg8zlK5dP1hIj31QyMaePnxhyew+D2tRc="
+//            ticket = "AAK66a/vDl42UyY+gwKVyXtnU9FBhMQFdRCklcJ9kCPxEa6L0C4RuSRIIeU="
+//
             //เบอร์ Production -------- dtacId : cd0e30fc90eea2856055d1119c4e9511 -----------
 //            token = "om4KPcpdtLskR40YrbQmboJSvCCqSgk908fDJBmKg1XGZbE0djiOprnHSuLRltgsdEi05NIY8iU="
 //            ticket = "rABKI6lBkV+auzNXGrCACkH97R8ZMAAnd6ie2fUoknM+A8g+ZAXLJvbWQ2E="
             // -----------------------------------------------------------------------------
+            
+//            // Android 15012021 --- DTW_e2f352dae54f5751b88674f5ac7eac16
+//            token = "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8="
+//            ticket = "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ="
+            
+            // Dtac 19012021
+            token = "IfGdWXyuVnaFblTRM2REHWIuc1AvzmoONcN7Ctjr8xMs6VUjbNYcFqkFn9suCogkNS4G7b2viOY="
+            ticket = "JAE3bLZRBmCUBjh3Ya6097FraUod3djjyG68QToxT/RvQoNRiKgdvk1HD00="
         }
         segment = "1000"
         isChangeUser = true

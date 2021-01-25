@@ -168,23 +168,23 @@ public class BuzzebeesCampaign: BuzzebeesCore {
     
     public func redeem(token: String
                        , campaignId: Int
-                       , redeemType tmpRedeemType:String? = nil
+                       , customParams: [String : AnyObject]
                        , successCallback: @escaping (_ result: Dictionary<String, AnyObject>) -> Void
                        , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
         var headers = [String:String]()
         headers["Authorization"] = "token \(token)"
         
-        var params: [String : AnyObject]?
-        if let redeemType = tmpRedeemType
-        {
-            params  = [String : AnyObject]()
-            params!["typeredeem"] = redeemType as AnyObject
-        }
+//        var params = customParams [String : AnyObject]?
+//        if let redeemType = tmpRedeemType
+//        {
+//            params  = [String : AnyObject]()
+//            params!["typeredeem"] = redeemType as AnyObject
+//        }
         
         requestAlamofire(HTTPMethod.post
             , strURL: BuzzebeesCore.redeemBaseUrl + "/api/campaign/" + String(campaignId) + "/redeem"
-            , params: params
+            , params: customParams
             , headers: headers
             , successCallback: { (ao) in
                 if let dictJSON = ao as? Dictionary<String, AnyObject> {

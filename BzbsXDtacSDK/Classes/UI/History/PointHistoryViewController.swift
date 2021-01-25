@@ -113,23 +113,9 @@ open class PointHistoryViewController: BaseListController {
             }
         }
         
-        tableView.es.addPullToRefresh {
-            self.arrPointLogEarn.removeAll()
-            self.strEarnDate = ""
-            self.apiGetimagefooter()
-            self.getApi()
-            self.getExpiringPoint()
-        }
+        addPullToRefreshEarn(on: tableView)
         
-        burnTableView.es.addPullToRefresh {
-            self._intSkip = 0
-            self.isBurnEnd = false
-            self.arrPointLogBurn.removeAll()
-            self.apiGetimagefooter()
-            self.getApiPurchase()
-            self.getExpiringPoint()
-        }
-
+        addPullToRefreshBurn(on: burnTableView)
         
         NotificationCenter.default.addObserver(self, selector: #selector(resetList), name: NSNotification.Name.BzbsApiReset, object: nil)
         
@@ -141,7 +127,41 @@ open class PointHistoryViewController: BaseListController {
             showLoader()
 //            checkAPI()
         }
+        
+        // Do any additional setup after loading the view.
     }
+    
+    //MARK:- Tabale Refresher
+    //MARK:-
+    private let refreshEarnControl = UIRefreshControl()
+    func addPullToRefreshEarn(on tableView: UITableView) {
+        tableView.refreshControl = refreshEarnControl
+        refreshEarnControl.addTarget(self, action: #selector(refreshEarnSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshEarnSelector() {
+        self.arrPointLogEarn.removeAll()
+        self.strEarnDate = ""
+        self.apiGetimagefooter()
+        self.getApi()
+        self.getExpiringPoint()
+    }
+    
+    private let refreshBurnControl = UIRefreshControl()
+    func addPullToRefreshBurn(on tableView: UITableView) {
+        tableView.refreshControl = refreshBurnControl
+        refreshBurnControl.addTarget(self, action: #selector(refreshBurnSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshBurnSelector() {
+        self._intSkip = 0
+        self.isBurnEnd = false
+        self.arrPointLogBurn.removeAll()
+        self.apiGetimagefooter()
+        self.getApiPurchase()
+        self.getExpiringPoint()
+    }
+    
     
     open override func updateUI() {
         super.updateUI()
@@ -305,10 +325,10 @@ open class PointHistoryViewController: BaseListController {
                 }
             }
             self.loadedData()
-            self.tableView.es.stopPullToRefresh()
+            self.tableView.stopPullToRefresh()
         }) { (error) in
             self.loadedData()
-            self.tableView.es.stopPullToRefresh()
+            self.tableView.stopPullToRefresh()
             print(error.description())
         }
     }
@@ -334,11 +354,11 @@ open class PointHistoryViewController: BaseListController {
             self.loadedData()
             self._isCallBurnApi = false
             self.burnTableView.reloadData()
-            self.burnTableView.es.stopPullToRefresh()
+            self.burnTableView.stopPullToRefresh()
         } failCallback: { (error) in
             self.loadedData()
             self.burnTableView.reloadData()
-            self.burnTableView.es.stopPullToRefresh()
+            self.burnTableView.stopPullToRefresh()
             self._isCallBurnApi = false
             print(error.description())
         }
@@ -497,11 +517,11 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView == self.tableView {
-            if arrPointLogEarn.count > 0 && indexPath.row > arrPointLogEarn.count - 3 {
+            if !_isCallApi && indexPath.row > arrPointLogEarn.count - 3 {
                 getApi()
             }
         } else {
-            if arrPointLogBurn.count > 0 && indexPath.row == arrPointLogBurn.count - 2 {
+            if !_isCallBurnApi && indexPath.row == arrPointLogBurn.count - 2 {
                 getApiPurchase()
             }
         }

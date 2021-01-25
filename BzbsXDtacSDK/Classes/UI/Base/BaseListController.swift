@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ESPullToRefresh
 
 open class BaseListController: BzbsXDtacBaseViewController
 {
@@ -113,45 +112,45 @@ open class BaseListController: BzbsXDtacBaseViewController
     
     // MARK:- Pull To Refresh
     // MARK:-
-    func createPullToRefresh(_ target: UIView, textColor: UIColor = UIColor.white, width: CGFloat = UIScreen.main.bounds.width, callBack: @escaping () -> Void)
-    {
-        //        let beatAnimator = BeatAnimator(frame: CGRect(x: 0, y: 0, width: width, height: 50))
-        //        beatAnimator.textColor = textColor
-        //
-        if let tableTarget = target as? UITableView
-        {
-            tableTarget.es.addPullToRefresh {
-                OperationQueue().addOperation {
-                    sleep(1)
-                    callBack()
-                }
-            }
-        }
-
-        if let collectionTarget = target as? UICollectionView
-        {
-            collectionTarget.es.addPullToRefresh {
-                OperationQueue().addOperation {
-                    sleep(1)
-                    callBack()
-                }
-            }
-        }
-    }
+//    func createPullToRefresh(_ target: UIView, textColor: UIColor = UIColor.white, width: CGFloat = UIScreen.main.bounds.width, callBack: @escaping () -> Void)
+//    {
+//        //        let beatAnimator = BeatAnimator(frame: CGRect(x: 0, y: 0, width: width, height: 50))
+//        //        beatAnimator.textColor = textColor
+//        //
+//        if let tableTarget = target as? UITableView
+//        {
+//            tableTargetaddPullToRefresh {
+//                OperationQueue().addOperation {
+//                    sleep(1)
+//                    callBack()
+//                }
+//            }
+//        }
+//
+//        if let collectionTarget = target as? UICollectionView
+//        {
+//            collectionTargetaddPullToRefresh {
+//                OperationQueue().addOperation {
+//                    sleep(1)
+//                    callBack()
+//                }
+//            }
+//        }
+//    }
     
     // MARK:- Util
     // MARK:-
-    
-    func addPullToRefresh()
-    {
-        if tableView != nil {
-            createPullToRefresh(tableView){
-                OperationQueue().addOperation {
-                    self.resetList()
-                }
-            }
-        }
-    }
+//    
+//    func addPullToRefresh()
+//    {
+//        if tableView != nil {
+//            tableView.addPullToRefresh {
+//                OperationQueue().addOperation {
+//                    self.resetList()
+//                }
+//            }
+//        }
+//    }
     
     func resetList()
     {

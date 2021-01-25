@@ -114,3 +114,16 @@ class DashedHorizontalView :UIView{
         self.layer.addSublayer(shapeLayer)
     }
 }
+
+extension UICollectionView {
+    func stopPullToRefresh() {
+        self.refreshControl?.endRefreshing()
+    }
+}
+
+extension UITableView {
+    func stopPullToRefresh() {
+        self.refreshControl?.endRefreshing()
+    }
+}
+

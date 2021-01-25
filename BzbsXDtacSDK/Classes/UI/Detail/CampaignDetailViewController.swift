@@ -480,9 +480,25 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 }
             }
         }
+        var customParams = [String : String]()
+        if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
+            customParams["typeredeem"] = "coin"
+        }
+        
+        if let categoryId = campaign.categoryID {
+            customParams["categoryid"] = "\(categoryId)"
+        }
+        
+        if let subCategoryId = campaign.subCategoryId {
+            customParams["subcategoryid"] = "\(subCategoryId)"
+        }
+        
+//        if let subCategory = campaign.
+//        categoryid={category id} & subcategoryid={subcategory id} for Support log redeem
+        
         BuzzebeesCampaign().redeem(token:token
                                    , campaignId: campaign.ID
-                                   , redeemType: campaign.parentCategoryID == BuzzebeesCore.catIdCoin ? "coin" : nil
+                                   , customParams: customParams as [String : AnyObject]
                                    , successCallback: { (dict) in
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)

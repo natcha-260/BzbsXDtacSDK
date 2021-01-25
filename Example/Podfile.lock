@@ -10,10 +10,9 @@ PODS:
   - AppCenter/Core (3.3.4)
   - AppCenter/Crashes (3.3.4):
     - AppCenter/Core
-  - BzbsXDtacSDK (2.0.21):
+  - BzbsXDtacSDK (2.0.23):
     - Alamofire (~> 4.9.0)
     - AlamofireImage
-    - ESPullToRefresh
     - Firebase/Analytics
     - GoogleMaps
     - ImageSlideshow
@@ -21,7 +20,6 @@ PODS:
     - InfiniteCarouselCollectionView
     - Kingfisher
     - lottie-ios (= 2.5.3)
-  - ESPullToRefresh (2.9.3)
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
@@ -128,7 +126,6 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - AppCenter
-    - ESPullToRefresh
     - FBSnapshotTestCase
     - Firebase
     - FirebaseAnalytics
@@ -157,8 +154,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   AppCenter: 0487be185c038ed2ecc5ed38219af1dcd280af23
-  BzbsXDtacSDK: 30976ff0279fd287bf1d1e8a0725f7b38e9655de
-  ESPullToRefresh: 0d68daa602b343c81753a1b95e09fd0bfcddfd40
+  BzbsXDtacSDK: fd1e7535466a59ab4cfcb1ec21bbaebdfd994194
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Firebase: 78e8dd2e39d653de6270432ad84fe8b59f7bf4e8
   FirebaseAnalytics: 7f165a56dea86ddd5b8ce02af3bee982c683405c

@@ -45,6 +45,8 @@
 	<string>Dtac use camera to scanning qr code for your searching convinient </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Dtac test app will provide nearest promotion for you</string>
+	<key>UIBackgroundModes</key>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

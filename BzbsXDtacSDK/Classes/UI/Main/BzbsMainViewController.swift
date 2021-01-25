@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ESPullToRefresh
 import Alamofire
 import AlamofireImage
 import CoreLocation
@@ -98,20 +97,7 @@ import ImageSlideshow
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        collectionView.es.addPullToRefresh {
-            self.currentCenter = LocationManager.shared.getCurrentCoorndate()
-            self._intSkip = 0
-            self._isEnd = false
-            self._intSkipCoin = 0
-            self._isEndCoin = false
-            self.getExpiringPoint()
-            self.getApiGreeting()
-            self.getApiCategory()
-            self.getApiRecommend()
-            self.getApiCoinRecommend()
-            self.getApi()
-        }
+        addPullToRefresh(on: collectionView)
         
         if !isConnectedToInternet()
         {
@@ -135,6 +121,26 @@ import ImageSlideshow
         NotificationCenter.default.addObserver(self, selector: #selector(backToMainView), name: NSNotification.Name.BzbsBackToMainView, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateNavigationBar), name: NSNotification.Name.BzbsUpdateNavigationBar, object: nil)
         
+    }
+    
+    private let refreshControl = UIRefreshControl()
+    func addPullToRefresh(on collectionView: UICollectionView) {
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshSelector() {
+        self.currentCenter = LocationManager.shared.getCurrentCoorndate()
+        self._intSkip = 0
+        self._isEnd = false
+        self._intSkipCoin = 0
+        self._isEndCoin = false
+        self.getExpiringPoint()
+        self.getApiGreeting()
+        self.getApiCategory()
+        self.getApiRecommend()
+        self.getApiCoinRecommend()
+        self.getApi()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -537,8 +543,7 @@ import ImageSlideshow
     }
     
     override func loadedData() {
-        
-        collectionView.es.stopPullToRefresh()
+        collectionView.stopPullToRefresh()
         DispatchQueue.main.async(execute: {
             self.collectionView.reloadData()
         })

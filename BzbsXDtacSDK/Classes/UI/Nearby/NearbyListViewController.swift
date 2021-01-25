@@ -47,19 +47,31 @@ class NearbyListViewController: BaseListController {
 //        //self.title = "nearby_map_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
         self.navigationItem.rightBarButtonItems = BarItem.generate_map(self, selector: #selector(clickMaps))
-        collectionView.es.addPullToRefresh {
-            self.currentCenter = LocationManager.shared.getCurrentCoorndate()
-            self._intSkip = 0
-            self._isEnd = false
-            self.getApi()
-        }
+
         if LocationManager.shared.authorizationStatus == .denied {
             _isEnd = true
             return
         }
         analyticsSetScreen(screenName: "dtac_reward_nearby")
         getApi()
+        
+        addPullToRefresh(on: collectionView)
+        // Do any additional setup after loading the view.
     }
+    
+    private let refreshControl = UIRefreshControl()
+    func addPullToRefresh(on tableView: UICollectionView) {
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshSelector() {
+        self.currentCenter = LocationManager.shared.getCurrentCoorndate()
+        self._intSkip = 0
+        self._isEnd = false
+        self.getApi()
+    }
+    
     override func updateUI() {
         
         let lblTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
@@ -172,7 +184,7 @@ class NearbyListViewController: BaseListController {
     
     override func loadedData() {
         DispatchQueue.main.async {
-            self.collectionView.es.stopPullToRefresh()
+            self.collectionView.stopPullToRefresh()
             self.collectionView.reloadData()
             self.hideLoader()
         }

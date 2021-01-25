@@ -45,15 +45,25 @@ class MajorCampaignListViewController: BaseListController {
         txtSearch.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])
         vwSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
-        collectionView.es.addPullToRefresh {
-            self._isEnd = false
-            self._intSkip = 0
-            self.getApi()
-        }
         self.getApi()
         if dashboard.imageUrl == nil || dashboard.imageUrl == "" {
             getMajorImage()
         }
+        
+        addPullToRefresh(on: collectionView)
+        // Do any additional setup after loading the view.
+    }
+    
+    private let refreshControl = UIRefreshControl()
+    func addPullToRefresh(on tableView: UICollectionView) {
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshSelector), for: .valueChanged)
+    }
+    
+    @objc func refreshSelector() {
+        self._isEnd = false
+        self._intSkip = 0
+        self.getApi()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +139,7 @@ class MajorCampaignListViewController: BaseListController {
     
     override func loadedData() {
         self.hideLoader()
-        collectionView.es.stopPullToRefresh()
+        collectionView.stopPullToRefresh()
         collectionView.reloadData()
         _isCallApi = false
     }

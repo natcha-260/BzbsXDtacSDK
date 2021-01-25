@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.24
+- remove dependency 'ESPullToRefresh'
+- add natively refresh control
 ## 2.0.23
 - handle history on Earn bonus
 - handle deeplink blue on other segment
