@@ -109,7 +109,7 @@
     "coin_refill_date" : "Refill date",
     "coin_paid_amount" : "Paid amount",
     "coin_paid_date" : "Payment date",
-    "coin_first_use_date" : "First login date",
+    "coin_first_use_date" : "Activity date",
     "coin_checkin_date" : "Check-in month",
     
     "coin_adjust" : "Adjust Coins",

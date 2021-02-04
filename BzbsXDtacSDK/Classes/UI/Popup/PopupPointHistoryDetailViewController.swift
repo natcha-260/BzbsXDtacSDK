@@ -92,7 +92,32 @@ class PopupPointHistoryDetailViewController: UIViewController {
                 }
                 imv.bzbsSetImage(withURL: strUrl)
                 
-                switch pointLog.productId {
+                if let template = pointLog.templateId , !template.isEmpty {
+                    switch template {
+                    case "1":
+                        listCell = ["package_sub", "sub_date", "package_fee"]
+                        break
+                    case "2":
+                        listCell = ["paid_amount" , "paid_date"]
+                        break
+                    case "3":
+                        listCell = ["checkin_date"]
+                        break
+                    case "4":
+                        listCell = ["jaidee_service","usage_date"]
+                        break
+                    case "5":
+                        listCell = ["refill_date"]
+                        break
+                    case "6":
+                        listCell = ["first_use_date"]
+                        break
+                    default:
+                        break
+                    }
+                } else {
+                    
+                    switch pointLog.productId {
                     case "1":
                         listCell = ["package_sub", "sub_date", "package_fee"]
                         break
@@ -140,6 +165,8 @@ class PopupPointHistoryDetailViewController: UIViewController {
                         break
                     default:
                         break
+                    }
+                    
                 }
             }
         }
@@ -257,7 +284,8 @@ extension PopupPointHistoryDetailViewController : UITableViewDataSource, UITable
             {
                 cell.title = "coin_refill_date".localized() + ": "
                 
-                if let activityDate = pointLog.period {
+                formatter.dateFormat = "dd MMM yyyy - HH:mm"
+                if let activityDate = pointLog.activityDate {
                     cell.detail = formatter.string(from: Date(timeIntervalSince1970: activityDate))
                 } else {
                     cell.detail = "-"

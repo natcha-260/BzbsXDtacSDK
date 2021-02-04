@@ -108,7 +108,7 @@
     "coin_refill_date" : "วันที่เติมเงิน",
     "coin_paid_amount" : "ยอดชำระ",
     "coin_paid_date" : "วันที่ทำรายการ",
-    "coin_first_use_date" : "วันที่เปิดแอพครั้งแรก",
+    "coin_first_use_date" : "วันที่ทำรายการ",
     "coin_checkin_date" : "เดือนที่เช็คอินสำเร็จ",
     
     "coin_adjust" : "ปรับปรุง Coins",

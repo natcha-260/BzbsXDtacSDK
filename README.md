@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.25
+- add Template history display
+- update wording
 ## 2.0.24
 - remove dependency 'ESPullToRefresh'
 - add natively refresh control

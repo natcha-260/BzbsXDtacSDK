@@ -64,6 +64,8 @@ open class PointLog {
     open var totalAmount : Double?
     open var isUnlock : Bool?
     
+    open var templateId:String?
+    
     public init()
     {
         
@@ -161,8 +163,9 @@ open class PointLog {
                 }
                 
                 totalAmount = BuzzebeesConvert.DoubleFromObject(dict["TotalAmount"])
-                isUnlock = dict["Unlock"] as? Bool ?? false
+                isUnlock =  BuzzebeesConvert.BoolFromObject(dict["Unlock"])
                 
+                templateId = BuzzebeesConvert.StringFromObject(dict["Template"])
             }
         } catch _ {
             
