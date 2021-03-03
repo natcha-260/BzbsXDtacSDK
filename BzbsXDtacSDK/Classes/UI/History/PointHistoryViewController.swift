@@ -7,6 +7,16 @@
 
 import UIKit
 
+extension Date {
+    func getNextMonth() -> Date? {
+        return Calendar.current.date(byAdding: .month, value: 1, to: self)
+    }
+
+    func getPreviousMonth() -> Date? {
+        return Calendar.current.date(byAdding: .month, value: -1, to: self)
+    }
+}
+
 open class PointHistoryViewController: BaseListController {
     
     // MARK:- Properties
@@ -33,7 +43,10 @@ open class PointHistoryViewController: BaseListController {
         if strEarnDate == "" {
             return false
         }
-        let endDate = Date().timeIntervalSince1970 + (-2 * 30 * 24 * 60 * 60)
+        var endDate = Date().timeIntervalSince1970 + (-2 * 30 * 24 * 60 * 60)
+        if let last2Month = Date().getPreviousMonth()?.getPreviousMonth()?.timeIntervalSince1970 {
+            endDate = last2Month
+        }
         if let date = dateFormatter.date(from: strEarnDate)?.timeIntervalSince1970 {
             return endDate > date
         }
@@ -224,7 +237,7 @@ open class PointHistoryViewController: BaseListController {
             strDate = dateFormatter.string(from: Date())
         } else {
             if let lastDate = dateFormatter.date(from: strDate) {
-                let lastMonthDate = lastDate.addingTimeInterval(-1 * 30 * 24 * 60 * 60)
+                let lastMonthDate = lastDate.getPreviousMonth() ?? lastDate.addingTimeInterval(-1 * 30 * 24 * 60 * 60)
                 strDate = dateFormatter.string(from: lastMonthDate)
             }
         }
@@ -255,6 +268,7 @@ open class PointHistoryViewController: BaseListController {
         tableView.isHidden = false
         burnTableView.isHidden = true
         analyticsSetScreen(screenName: "your_coin_earn")
+        sendGAClickEarn()
         apiGetimagefooter()
     }
     
@@ -268,6 +282,7 @@ open class PointHistoryViewController: BaseListController {
         tableView.isHidden = true
         burnTableView.isHidden = false
         analyticsSetScreen(screenName: "your_coin_burn")
+        sendGAClickBurn()
         apiGetimagefooter()
     }
     
@@ -276,8 +291,10 @@ open class PointHistoryViewController: BaseListController {
         var url:URL?
         if isEarn {
             url = BuzzebeesCore.urlDeeplinkHistory
+            sendGAClickEarnBanner()
         } else {
             url = BuzzebeesCore.urlDeeplinkHistoryRedeemed
+            sendGAClickBurnBanner()
         }
         if let _url = url {
             UIApplication.shared.open(_url, options: [:], completionHandler: nil)
@@ -302,6 +319,19 @@ open class PointHistoryViewController: BaseListController {
 
     }
     
+    public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if scrollView == self.tableView {
+            if !_isCallApi && (scrollView.contentOffset.y >= scrollView.contentSize.height * 0.9) {
+                getApi()
+            }
+        } else {
+            if !_isCallBurnApi  && (scrollView.contentOffset.y >= scrollView.contentSize.height * 0.9) {
+                getApiPurchase()
+            }
+        }
+    }
+    
     // MARK:- Api
     // MARK:-
     override func getApi() {
@@ -313,7 +343,8 @@ open class PointHistoryViewController: BaseListController {
         if isEarnEnd { return }
         _isCallApi = true
         showLoader()
-        BuzzebeesHistory().pointHistory(token: token, date: getDate(), successCallback: { (arr) in
+        let strDate = getDate()
+        BuzzebeesHistory().pointHistory(token: token, date: strDate, successCallback: { (arr) in
             if arr.count == 0 {
                 self.loadedData()
                 self.getApi()
@@ -324,6 +355,7 @@ open class PointHistoryViewController: BaseListController {
                     self.arrPointLogEarn.append(item)
                 }
             }
+            print("pointHistory(\(strDate)) : \(arr.count)")
             self.loadedData()
             self.tableView.stopPullToRefresh()
         }) { (error) in
@@ -517,12 +549,16 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView == self.tableView {
-            if !_isCallApi && indexPath.row > arrPointLogEarn.count - 3 {
-                getApi()
+            if indexPath.row == self.arrPointLogEarn.count - 1{
+                if tableView.contentSize.height < tableView.frame.size.height {
+                    getApi()
+                }
             }
         } else {
-            if !_isCallBurnApi && indexPath.row == arrPointLogBurn.count - 2 {
-                getApiPurchase()
+            if indexPath.row == self.arrPointLogBurn.count - 1 {
+                if tableView.contentSize.height < tableView.frame.size.height {
+                    getApiPurchase()
+                }
             }
         }
     }
@@ -540,23 +576,20 @@ extension PointHistoryViewController: PopupSerialDelegate
     }
 }
 
+// MARK:- GA
+// MARK:-
 extension PointHistoryViewController {
-    
-    func sendGAViewBurn(_ purchase:BzbsHistory){
-        var status = "available"
-        if purchase.serial == "XXXXXXX" || purchase.arrangedDate != nil{
-            status = "expire"
-        }
-        let date = Date(timeIntervalSince1970: purchase.redeemDate ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
-        let formatter = DateFormatter()
-        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
-        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        let gaLabel = "redeemed_list | \(purchase.categoryName ?? "") | \(status) | \(formatter.string(from: date)) | \(purchase.pointPerUnit ?? 0)"
-        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_list", label: gaLabel)
+    //FIXME:GA#44
+    func sendGAClickEarn(){
+        
     }
     
+    //FIXME:GA#44
+    func sendGAClickBurn(){
+        
+    }
+    
+    //FIXME:GA#45
     func sendGAViewEarn(_ purchase:PointLog){
         
         let date = Date(timeIntervalSince1970: purchase.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
@@ -574,4 +607,30 @@ extension PointHistoryViewController {
         let ga2Label = "mission_list | \(purchase.productType ?? "") | \(formatter.string(from: date)) | \(purchase.points ?? 0)"
         analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_list", label: ga2Label)
     }
+    //FIXME:GA#46
+    func sendGAClickEarnBanner() {
+        
+    }
+    
+    //FIXME:GA#47
+    func sendGAViewBurn(_ purchase:BzbsHistory){
+        var status = "available"
+        if purchase.serial == "XXXXXXX" || purchase.arrangedDate != nil{
+            status = "expire"
+        }
+        let date = Date(timeIntervalSince1970: purchase.redeemDate ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
+        let formatter = DateFormatter()
+        formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+        formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let gaLabel = "redeemed_list | \(purchase.categoryName ?? "") | \(status) | \(formatter.string(from: date)) | \(purchase.pointPerUnit ?? 0)"
+        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_list", label: gaLabel)
+    }
+    
+    //FIXME:GA#48
+    func sendGAClickBurnBanner() {
+        
+    }
+    
 }

@@ -1,7 +1,9 @@
 # BzbsXDtacSDK
+## 2.0.26
+- adjust load more login on earn history
+- fix bug on campaign by category
 ## 2.0.25
 - add Template history display
-- update wording
 ## 2.0.24
 - remove dependency 'ESPullToRefresh'
 - add natively refresh control
