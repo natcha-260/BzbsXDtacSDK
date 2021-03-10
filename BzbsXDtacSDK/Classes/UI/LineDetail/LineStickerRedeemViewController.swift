@@ -155,123 +155,6 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
             apiValidateLineSticker()
         }
     }
-    
-    func sendGAContinue() {
-        
-        let reward1 : [String:Any] = [
-            AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
-            AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
-            AnalyticsParameterPrice: 0 as NSNumber,
-            AnalyticsParameterCurrency: "THB" as NSString,
-            AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: NSNumber(value: 1),
-            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
-            "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
-        ]
-        
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
-        let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            "eventCategory" : "reward" as NSString,
-            "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "line_sticker_info | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
-        ]
-        
-        // Log select_content event with ecommerce dictionary.
-        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventAddShippingInfo, params: ecommerce)
-        
-        Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventAddShippingInfo, category: "reward", action: "touch_button", label: "line_sticker_info | \(campaignId ?? "0") | \(bzbsCampaign.pointPerUnit ?? 0)")
-        
-    }
-    
-    func sendGAConfirm() {
-        
-        let reward1 : [String:Any] = [
-            AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
-            AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
-            AnalyticsParameterPrice: 0 as NSNumber,
-            AnalyticsParameterCurrency: "THB" as NSString,
-            AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: NSNumber(value: 1),
-            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
-            "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
-        ]
-        
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
-        let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            "eventCategory" : "reward" as NSString,
-            "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "confirm_line_sticker | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
-        ]
-        
-        // Log select_content event with ecommerce dictionary.
-        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventAddPaymentInfo, params: ecommerce)
-        
-        Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventAddPaymentInfo, category: "reward", action: "touch_button", label: "confirm_line_sticker | \(campaignId ?? "0") | \(bzbsCampaign.pointPerUnit ?? 0)")
-        
-    }
-    
-    func sendGAThankyouPage(_ redeemKey:String?) {
-        
-        var reward1 = [String:AnyObject]()
-        reward1[AnalyticsParameterItemID] = "\(bzbsCampaign.ID ?? 0)" as AnyObject
-        reward1[AnalyticsParameterItemName] = bzbsCampaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(bzbsCampaign.categoryName ?? "")".lowercased() as AnyObject
-        reward1[AnalyticsParameterItemBrand] = bzbsCampaign.agencyName as AnyObject
-        reward1[AnalyticsParameterPrice] = 0 as NSNumber
-        reward1[AnalyticsParameterCurrency] = "THB" as NSString
-        reward1[AnalyticsParameterQuantity] = 1 as NSNumber
-        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
-//        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
-        reward1["metric1"] = (bzbsCampaign.pointPerUnit ?? 0) as AnyObject
-        
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
-        let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            "eventCategory" : "reward" as NSString,
-            "eventAction" : "seen_text" as NSString,
-            "eventLabel" : "redeem_complete | \(bzbsCampaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
-            AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
-
-        ]
-        
-        // Log select_content event with ecommerce dictionary.
-        analyticsSetEventEcommerce(eventName: AnalyticsEventPurchase, params: ecommerce)
-        
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
-             AnalyticsParameterItemName : "\(bzbsCampaign.ID ?? -1) | \(bzbsCampaign.name ?? "")" as NSString,
-             AnalyticsParameterItemVariant : bzbsCampaign.agencyName as NSString,
-             AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
-             AnalyticsParameterValue: (bzbsCampaign.pointPerUnit ?? 0) as NSNumber,
-             AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
-         ])
-
-        
-        let gaLabel = "redeem_complete | \(bzbsCampaign.ID ?? -1) | \(bzbsCampaign.pointPerUnit ?? 0)"
-        analyticsSetEvent(event: AnalyticsEventPurchase, category: "reward", action: "seen_text", label: gaLabel)
-        analyticsSetEvent(event: AnalyticsEventSpendVirtualCurrency, category: "reward", action: "seen_text", label: gaLabel)
-        
-        //Push to Front-End Team
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd"
-        analyticsSetUserProperty(propertyName: "last_redeem_coin", value: "\(formatter.string(from: Date()))")
-        analyticsSetUserProperty(propertyName: "remaining_coin", value: "\((Bzbs.shared.userLogin?.bzbsPoints ?? 0) - bzbsCampaign.pointPerUnit)")
-    }
-    
     func apiValidateLineSticker() {
         guard let token = Bzbs.shared.userLogin?.token,
               let contactNumber = txtMobile.text?.removeContactFormat()
@@ -301,8 +184,7 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
                 message = "line_error_msg_redeemed".localized()
                 info = "line_error_msg_redeemed_info".localized()
             }
-            let label = "line_sticker_step_{number_of_step} | \(self.bzbsCampaign.ID ?? 0) | \(message)"
-            Bzbs.shared.delegate?.analyticsEvent(event: "event_app", category: "reward", action: "seen_text", label: label)
+            self.sendGARedeemLineFail(strMessage: message)
             PopupManager.lineErrorPopup(onView: self, strMessage: message, strInfo: info)
         }
     }
@@ -317,12 +199,13 @@ class LineStickerRedeemViewController: BzbsXDtacBaseViewController {
         BzbsCoreApi().getRedeemLineSticker(token: token, refId: refID, campaignId: campaignId, packageId: packageId, contactNumber: contactNumber) { (_) in
             self.hideLoader()
             GotoPage.gotoLineHistory(self.navigationController!, lineCampaign: self.lineCampaign, bzbsCampaign: self.bzbsCampaign, contactNumber: contactNumber, packageId:self.packageId) {
-                self.sendGAThankyouPage(refID)
+                self.sendGARedeemSuccessEvent()
                 NotificationCenter.default.post(name: NSNotification.Name.BzbsApiReset, object: nil)
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }
         } failCallback: { (error) in
             self.hideLoader()
+            self.sendGARedeemLineFail(strMessage: "line_error_msg_not_found".localized())
             print(error.description())
             PopupManager.lineErrorPopup(onView: self, strMessage: "line_error_msg_not_found".localized(), strInfo: "line_error_msg_not_found_info".localized())
         }
@@ -402,4 +285,148 @@ extension String {
     func removeContactFormat() -> String {
         return self.replace("-", replacement: "")
     }
+}
+
+//MARK:- GA
+//MARK:-
+extension LineStickerRedeemViewController {
+    
+    // FIXME:GA#27
+    func sendGARedeemSuccessEvent()
+    {
+        let screenName = "reward"
+        let reward1 : [String : AnyObject] = [
+            AnalyticsParameterItemID : "\(bzbsCampaign?.ID ?? -1)" as AnyObject,
+            AnalyticsParameterItemName : (bzbsCampaign?.name ?? "") as AnyObject,
+            AnalyticsParameterItemCategory: "reward/\(bzbsCampaign?.categoryID ?? -1)" as AnyObject,
+            AnalyticsParameterItemBrand: (bzbsCampaign?.agencyName ?? "") as AnyObject,
+            AnalyticsParameterIndex: NSNumber(value: 1) as AnyObject
+        ]
+        let ecommerce : [String:AnyObject] = [
+            "items" : reward1  as AnyObject,
+            AnalyticsParameterItemList : screenName as AnyObject,
+            AnalyticsParameterCheckoutStep: 1 as AnyObject,
+            AnalyticsParameterCheckoutOption: "Create Code" as AnyObject
+        ]
+        analyticsSetEventEcommerce(eventName: AnalyticsEventBeginCheckout, params: ecommerce)
+    }
+    
+    // FIXME:GA#45
+    func sendGAContinue() {
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
+            AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
+            AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
+            AnalyticsParameterPrice: 0 as NSNumber,
+            AnalyticsParameterCurrency: "THB" as NSString,
+            AnalyticsParameterQuantity: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: 1),
+            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
+            "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_button" as NSString,
+            "eventLabel" : "line_sticker_info | \(campaignId ?? "0")" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventAddShippingInfo, params: ecommerce)
+    }
+    
+    // FIXME:GA#46
+    func sendGAConfirm() {
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
+            AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
+            AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
+            AnalyticsParameterPrice: 0 as NSNumber,
+            AnalyticsParameterCurrency: "THB" as NSString,
+            AnalyticsParameterQuantity: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: 1),
+            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
+            "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_button" as NSString,
+            "eventLabel" : "confirm_line_sticker | \(campaignId ?? "0")" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventAddPaymentInfo, params: ecommerce)
+        
+    }
+    
+    // FIXME:GA#48
+    func sendGARedeemLineFail(strMessage:String) {
+//        "line_sticker_error | {reward_id} | {error_text}"
+    }
+    
+//    func sendGAThankyouPage(_ redeemKey:String?) {
+//
+//        var reward1 = [String:AnyObject]()
+//        reward1[AnalyticsParameterItemID] = "\(bzbsCampaign.ID ?? 0)" as AnyObject
+//        reward1[AnalyticsParameterItemName] = bzbsCampaign.name as AnyObject
+//        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(bzbsCampaign.categoryName ?? "")".lowercased() as AnyObject
+//        reward1[AnalyticsParameterItemBrand] = bzbsCampaign.agencyName as AnyObject
+//        reward1[AnalyticsParameterPrice] = 0 as NSNumber
+//        reward1[AnalyticsParameterCurrency] = "THB" as NSString
+//        reward1[AnalyticsParameterQuantity] = 1 as NSNumber
+//        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
+////        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
+//        reward1["metric1"] = (bzbsCampaign.pointPerUnit ?? 0) as AnyObject
+//
+//        // Prepare ecommerce dictionary.
+//        let items : [Any] = [reward1]
+//
+//        let ecommerce : [String:AnyObject] = [
+//            "items" : items as AnyObject,
+//            "eventCategory" : "reward" as NSString,
+//            "eventAction" : "seen_text" as NSString,
+//            "eventLabel" : "redeem_complete | \(bzbsCampaign.ID ?? -1)" as NSString,
+//            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
+//            AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
+//
+//        ]
+//
+//        // Log select_content event with ecommerce dictionary.
+//        analyticsSetEventEcommerce(eventName: AnalyticsEventPurchase, params: ecommerce)
+//
+//        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
+//             AnalyticsParameterItemName : "\(bzbsCampaign.ID ?? -1) | \(bzbsCampaign.name ?? "")" as NSString,
+//             AnalyticsParameterItemVariant : bzbsCampaign.agencyName as NSString,
+//             AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
+//             AnalyticsParameterValue: (bzbsCampaign.pointPerUnit ?? 0) as NSNumber,
+//             AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
+//         ])
+//
+//
+//        let gaLabel = "redeem_complete | \(bzbsCampaign.ID ?? -1) | \(bzbsCampaign.pointPerUnit ?? 0)"
+//        analyticsSetEvent(event: AnalyticsEventPurchase, category: "reward", action: "seen_text", label: gaLabel)
+//        analyticsSetEvent(event: AnalyticsEventSpendVirtualCurrency, category: "reward", action: "seen_text", label: gaLabel)
+//
+//        //Push to Front-End Team
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyyMMdd"
+//        analyticsSetUserProperty(propertyName: "last_redeem_coin", value: "\(formatter.string(from: Date()))")
+//        analyticsSetUserProperty(propertyName: "remaining_coin", value: "\((Bzbs.shared.userLogin?.bzbsPoints ?? 0) - bzbsCampaign.pointPerUnit)")
+//    }
+    
 }

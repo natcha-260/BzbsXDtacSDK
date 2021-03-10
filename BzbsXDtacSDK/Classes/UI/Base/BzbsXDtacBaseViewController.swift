@@ -642,7 +642,7 @@ extension BzbsXDtacBaseViewController {
     {
         if let nav = self.navigationController
         {
-            GotoPage.gotoFavorite(nav)
+            GotoPage.gotoFavourite(nav)
         } else {
             delay(0.33){
                 self.gotoFavorite()

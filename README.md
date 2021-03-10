@@ -1,6 +1,8 @@
 # BzbsXDtacSDK
+## 2.0.27
+- show distance on nearby
 ## 2.0.26
-- adjust load more login on earn history
+- adjust load more logic on earn history
 - fix bug on campaign by category
 ## 2.0.25
 - add Template history display

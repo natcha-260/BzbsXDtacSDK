@@ -579,17 +579,17 @@ extension PointHistoryViewController: PopupSerialDelegate
 // MARK:- GA
 // MARK:-
 extension PointHistoryViewController {
-    //FIXME:GA#44
+    // FIXME:GA#49
     func sendGAClickEarn(){
         
     }
     
-    //FIXME:GA#44
+    // FIXME:GA#49
     func sendGAClickBurn(){
         
     }
     
-    //FIXME:GA#45
+    // FIXME:GA#50
     func sendGAViewEarn(_ purchase:PointLog){
         
         let date = Date(timeIntervalSince1970: purchase.timestamp ?? Date().timeIntervalSince1970) + (7 * 60 * 60)
@@ -607,12 +607,13 @@ extension PointHistoryViewController {
         let ga2Label = "mission_list | \(purchase.productType ?? "") | \(formatter.string(from: date)) | \(purchase.points ?? 0)"
         analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_list", label: ga2Label)
     }
-    //FIXME:GA#46
+    
+    // FIXME:GA#51
     func sendGAClickEarnBanner() {
         
     }
     
-    //FIXME:GA#47
+    // FIXME:GA#52
     func sendGAViewBurn(_ purchase:BzbsHistory){
         var status = "available"
         if purchase.serial == "XXXXXXX" || purchase.arrangedDate != nil{
@@ -628,7 +629,7 @@ extension PointHistoryViewController {
         analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_list", label: gaLabel)
     }
     
-    //FIXME:GA#48
+    // FIXME:GA#53
     func sendGAClickBurnBanner() {
         
     }

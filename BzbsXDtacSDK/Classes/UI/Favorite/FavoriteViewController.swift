@@ -174,6 +174,7 @@ public class FavoriteViewController: BaseListController {
         if let indexPath: IndexPath = tableView.indexPathForRow(at: point)
         {
             let itemCampaign = _arrDataShow[indexPath.row] as! BzbsCampaign
+            sendGATouchFavItem(itemCampaign)
             if let token = Bzbs.shared.userLogin?.token
             {
                 showLoader()
@@ -242,6 +243,7 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
         }
         
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        sendGAImpression(item)
         let cell = tableView.dequeueReusableCell(withIdentifier: "favoriteCell", for: indexPath) as! FavoriteCell
         cell.setupWith(item)
         cell.btnFav.addTarget(self, action: #selector(self.clickFavourite), for: UIControl.Event.touchUpInside)
@@ -269,6 +271,7 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        sendGATouchItem(item)
         if item.currentDate > item.expireDate { return }
         if let nav = self.navigationController
         {
@@ -276,4 +279,24 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
         }
     }
     
+}
+
+// MARK:- GA
+// MARK:-
+extension FavoriteViewController {
+    
+    // FIXME:GA#42
+    func sendGAImpression(_ item:BzbsCampaign) {
+        
+    }
+    
+    // FIXME:GA#43
+    func sendGATouchItem(_ item:BzbsCampaign) {
+        
+    }
+    
+    // FIXME:GA#44
+    func sendGATouchFavItem(_ item:BzbsCampaign) {
+        
+    }
 }

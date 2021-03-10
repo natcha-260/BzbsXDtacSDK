@@ -196,46 +196,8 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
             cstAgencyBottom.constant = 25
             cstQRWidth.constant = 25
         }
-        sendGABeginEvent()
         analyticsSetScreen(screenName: "reward_detail")
-    }
-    
-    func sendGABeginEvent()
-    {
-        let screenName = "reward"
-        let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : "\(purchase?.ID ?? -1)" as AnyObject,
-            AnalyticsParameterItemName : (purchase?.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory: "reward/\(purchase?.categoryID ?? -1)" as AnyObject,
-            AnalyticsParameterItemBrand: (purchase?.agencyName ?? "") as AnyObject,
-            AnalyticsParameterIndex: NSNumber(value: 1) as AnyObject
-        ]
-        let ecommerce : [String:AnyObject] = [
-            "items" : reward1  as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject,
-            AnalyticsParameterCheckoutStep: 1 as AnyObject,
-            AnalyticsParameterCheckoutOption: "Create Code" as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventBeginCheckout, params: ecommerce)
-    }
-    
-    func sendGAUseEvent()
-    {
-        let screenName = "reward"
-        let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : "\(purchase?.ID ?? -1)" as AnyObject,
-            AnalyticsParameterItemName : (purchase?.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory: "reward/\(purchase?.categoryID ?? -1)" as AnyObject,
-            AnalyticsParameterItemBrand: (purchase?.agencyName ?? "") as AnyObject,
-            AnalyticsParameterIndex: NSNumber(value: 1) as AnyObject
-        ]
-        
-        let ecommerce : [String:AnyObject] = [
-            "items" : reward1  as AnyObject,
-            AnalyticsParameterItemList : screenName as AnyObject,
-            AnalyticsParameterTransactionID: (purchase?.privilegeMessage ?? purchase?.serial ?? "XXXXXXXX") as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventEcommercePurchase, params: ecommerce)
+        sendGABeginEvent()
     }
     
     override func updateUI() {
@@ -487,8 +449,7 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
         UIPasteboard.general.string = purchase?.privilegeMessage ?? purchase?.serial ?? ""
         showCopylabel()
         
-        let gaLabel = "copy_transaction_id | \(purchase?.redeemKey ?? "")"
-        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
+        sendGAClickCopy()
     }
     
     var isShowingCopy = false
@@ -518,15 +479,72 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
             }
         }
         
-        
-        let gaLabel = "confirm_redemption | \(purchase?.redeemKey ?? "")"
-        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
+        sendGAUseEvent()
         
         PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: "popup_confirm_redeem_prefix".localized() + "\n" + (purchase?.name ?? "-"), confirm: {
             self.apiStaffUse()
         }) {
             
         }
+    }
+}
+
+// MARK:- GA
+// MARK:-
+extension PopupSerialViewController {
+    // FIXME:GA#29
+    func sendGABeginEvent()
+    {
+//        let reward1 : [String:Any] = [
+//                    AnalyticsParameterItemID: "{reward_id}" as NSString,
+//                    AnalyticsParameterItemName: "{reward_title}" as NSString,
+//                    AnalyticsParameterItemCategory: "reward/{reward_category}/{reward_filter}" as NSString,
+//                    AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
+//                    AnalyticsParameterIndex: {reward_index} as NSNumber
+//                    "metric1" : {coins} as NSNumber,
+//                    AnalyticsParameterPrice: 0 as NSNumber,
+//                    AnalyticsParameterCurrency: "THB" as NSString,
+//                    AnalyticsParameterQuantity: 1 as NSNumber,
+//                    ]
+//
+//                    // Prepare ecommerce dictionary.
+//                    let items : [Any] = [reward1]
+//
+//                    let ecommerce : [String:Any] = [
+//                        "items" : items,
+//                        "eventCategory" : "reward" as NSString,
+//                        "eventAction" : " touch_button" as NSString,
+//                        "eventLabel" : "redeem_success | {reward_category} | {reward_filter} | {reward_index} | {reward_id}" as NSString,
+//                        AnalyticsParameterItemListName: "{previous_step}" as NSString,
+//                        AnalyticsParameterTransactionID: "{reference_number}" as NSString
+//                    ]
+//
+//                    // Log select_content event with ecommerce dictionary.
+//                    Analytics.logEvent(AnalyticsEventPurchase, parameters: ecommerce)
+//
+//        Additional send only Burn coin
+//        Analytics.logEvent(AnalyticsEventSpendVirtualCurrency, parameters: [
+//             AnalyticsParameterItemName : "{reward_id} | {reward_name}" as NSString,
+//             AnalyticsParameterItemVariant : "{reward_brand}" as NSString,
+//             AnalyticsParameterVirtualCurrencyName : "Coin"" as NSString,
+//             AnalyticsParameterValue: {Coin} as NSNumber,
+//             AnalyticsParameterTransactionID: "{reference_number}" as NSString
+//         ])
+//
+//        Analytics.setUserProperty(‘last_redeem_coin’, {YYYYMMDD})
+    }
+    
+    // FIXME:GA#30
+    fileprivate func sendGAClickCopy() {
+        let gaLabel = "copy_transaction_id | \(purchase?.redeemKey ?? "")"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
+    }
+    
+    // FIXME:GA#31
+    func sendGAUseEvent()
+    {
+        let gaLabel = "confirm_redemption | \(purchase?.redeemKey ?? "")"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: gaLabel)
     }
 }
 

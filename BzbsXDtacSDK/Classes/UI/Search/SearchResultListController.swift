@@ -111,6 +111,7 @@ class SearchResultListController: BaseListController {
                 self._isEnd = tmpList.count < self._intTop
                 self.lblSearchResults.text = String(format: "search_result_format".localized(), "\(tmpList.count)")
                 self.lblSearchResults.isHidden = tmpList.count <= 0
+                self.anaylticsSearchResult()
                 self.loadedData()
         }) { (error) in
             self._isEnd = true
@@ -123,6 +124,16 @@ class SearchResultListController: BaseListController {
         self.collectionView.reloadData()
         self._isCallApi = false
         self.hideLoader()
+    }
+    
+    // FIXME:GA#40
+    func anaylticsSearchResult() {
+        
+    }
+    
+    // FIXME:GA#41
+    func anaylticsImpressionSearchResult() {
+        
     }
     
 }

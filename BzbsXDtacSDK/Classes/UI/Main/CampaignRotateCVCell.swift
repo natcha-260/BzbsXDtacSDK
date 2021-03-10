@@ -12,7 +12,7 @@ import ImageSlideshow
 
 protocol CampaignRotateCVDelegate {
     func didViewDashboard(_ item:BzbsDashboard, index:Int)
-    func didSelectDashboard(_ item:BzbsDashboard)
+    func didSelectDashboard(_ item:BzbsDashboard, index: Int)
 }
 
 class CampaignRotateCVCell: UICollectionViewCell {
@@ -90,7 +90,7 @@ class CampaignRotateCVCell: UICollectionViewCell {
         }
         
         let item = showDashboardItems[index]
-        delegate?.didSelectDashboard(item)
+        delegate?.didSelectDashboard(item, index: index)
     }
 
 }

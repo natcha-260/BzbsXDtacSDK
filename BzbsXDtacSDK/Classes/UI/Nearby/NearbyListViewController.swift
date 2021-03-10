@@ -226,7 +226,7 @@ extension NearbyListViewController : UICollectionViewDataSource, UICollectionVie
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
-        cell.setupWith(item, isShowDistance: false)
+        cell.setupWith(item, isShowDistance: true)
         return cell
     }
     

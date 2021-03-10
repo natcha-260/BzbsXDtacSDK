@@ -403,9 +403,12 @@ class TokenSelectViewController: UIViewController {
 //            token = "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8="
 //            ticket = "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ="
             
-            // Dtac 19012021
-            token = "IfGdWXyuVnaFblTRM2REHWIuc1AvzmoONcN7Ctjr8xMs6VUjbNYcFqkFn9suCogkNS4G7b2viOY="
-            ticket = "JAE3bLZRBmCUBjh3Ya6097FraUod3djjyG68QToxT/RvQoNRiKgdvk1HD00="
+//            // Dtac 19012021
+//            token = "IfGdWXyuVnaFblTRM2REHWIuc1AvzmoONcN7Ctjr8xMs6VUjbNYcFqkFn9suCogkNS4G7b2viOY="
+//            ticket = "JAE3bLZRBmCUBjh3Ya6097FraUod3djjyG68QToxT/RvQoNRiKgdvk1HD00="
+
+            token = "9a3WHd0Q2nBpAEaY3OT5YWhiQmgjLsB0mEKA3OAOJAjdIzIQgkgjdhIl4+0T2bzzXelUU+pW3fU="
+            ticket = "cwKNgRz9KWD3knMwxdv6PbpT2Q8IOFai11Sh8nKRIF4B9186UZGbUwpGXHg="
         }
         segment = "1000"
         isChangeUser = true

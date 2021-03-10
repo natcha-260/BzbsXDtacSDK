@@ -513,6 +513,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.hideLoader()
             self.refreshApi()
             self.isCallingApiRedeem = false
+            self.anayticsImpressionError(errorID: error.id, errorMessage: error.message)
             
             if Int(error.id)! == 412 || Int(error.code)! == 412 {
                 PopupManager.informationPopup(self, message: error.message) {
@@ -580,6 +581,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         if let token = Bzbs.shared.userLogin?.token
         {
             showLoader()
+            sendGAClickFavour()
             BuzzebeesCampaign().favourite(token: token, campaignId: campaign.ID, isFav: !(campaign.isFavourite ?? false), successCallback: { (str) in
                 self.hideLoader()
                 self.getApiCampaignDetail()
@@ -602,6 +604,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     @IBAction func clickHistory(_ sender: Any) {
         guard let nav = self.navigationController else {return}
+        sendGAClickHistory()
         if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
             GotoPage.gotoCoinHistory(nav, defaultTabEarn: false)
         } else {
@@ -660,7 +663,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         message = message + "\n\n" + strMinAfteruse
                     }
                     
-                    sendGARedeem()
+                    sendGAClickRedeem()
                     
                     PopupManager.confirmPopup(self, title: "popup_confirm".localized(), message: message, confirm: { () in
                         if self.campaign.categoryID == BuzzebeesCore.catIdLineSticker {
@@ -672,7 +675,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                         self.sendGABeginCheckout()
                         self.apiRedeem()
                     }) {
-                        
+                        self.sendGACancelCheckout()
                     }
                 }
             }
@@ -1379,18 +1382,16 @@ extension CampaignDetailViewController: PopupSerialDelegate
 
 // MARK:- Analytics
 extension CampaignDetailViewController {
-    
+     // FIXME:GA#24
     func sendGAViewEvent()
     {
-        if campaign.parentCategoryID == BuzzebeesCore.catIdCoin {
             var reward1 = [String:AnyObject]()
             reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? -1)" as AnyObject
             reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-            reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")".lowercased() as AnyObject
+            reward1[AnalyticsParameterItemCategory] = "reward/{reward_category}/\(campaign.categoryName ?? "")".lowercased() as AnyObject
             reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
             reward1[AnalyticsParameterIndex] = NSNumber(value: 1) as NSNumber
             reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
-            reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
             
             
             // Prepare ecommerce dictionary.
@@ -1400,29 +1401,26 @@ extension CampaignDetailViewController {
                 "items" : items as AnyObject,
                 "eventCategory" : "reward" as NSString,
                 "eventAction" : "seen_text" as NSString,
-                "eventLabel" : "reward_detail | \(campaign.ID ?? -1)" as NSString,
-                AnalyticsParameterItemListName: getPreviousScreenName() as NSString
+                "eventLabel" : "reward_detail | {reward_category} | {reward_filter} | {reward_index} | \(campaign.ID ?? -1)" as NSString,
+                AnalyticsParameterItemListName: "{previous_step}" as NSString
             ]
             
             // Log select_content event with ecommerce dictionary.
             analyticsSetEventEcommerce(eventName: AnalyticsEventViewItem, params: ecommerce)
-            
-            analyticsSetEvent(event: AnalyticsEventViewItem, category: "reward", action: "seen_text", label: "reward_detail | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)")
-        }
     }
     
-    func sendGARedeem() {
+    // FIXME:GA#25
+    func sendGAClickRedeem() {
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(campaign.ID ?? -1)",
             AnalyticsParameterItemName: (campaign.name ?? "") as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(campaign.categoryName ?? "")".lowercased() as NSString,
+            AnalyticsParameterItemCategory : "reward/{reward_category}/\(campaign.categoryName ?? "")".lowercased() as AnyObject,
             AnalyticsParameterItemBrand: (campaign.agencyName ?? "") as NSString,
+            AnalyticsParameterIndex: NSNumber(value: 1),
+            "metric1" : campaign.pointPerUnit ?? 0 as NSNumber,
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: NSNumber(value: 1),
-            AnalyticsParameterItemVariant: campaign.expireIn?.toTimeString() ?? "" as NSString,
-            "metric1" : campaign.pointPerUnit ?? 0 as NSNumber
         ]
         
         // Prepare ecommerce dictionary.
@@ -1432,30 +1430,27 @@ extension CampaignDetailViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "redeem_reward | \(campaign.ID ?? -1)" as NSString,
+            "eventLabel" : "redeem_reward | {reward_category} | {reward_filter} | {reward_index} | \(campaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
         analyticsSetEventEcommerce(eventName: AnalyticsEventAddToCart, params: ecommerce)
-        
-        let gaLabel = "redeem_reward | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)"
-        analyticsSetEvent(event: AnalyticsEventAddToCart, category: "reward", action: "touch_button", label: gaLabel)
     }
     
+    // FIXME:GA#26
     func sendGABeginCheckout() {
         
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)" as AnyObject
         reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")".lowercased() as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/{reward_category}/\(campaign.categoryName ?? "")".lowercased() as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
+        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
+        reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
         reward1[AnalyticsParameterCurrency] = "THB" as NSString
         reward1[AnalyticsParameterQuantity] = 1 as NSNumber
-        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
-        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
-        reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
         
         
         // Prepare ecommerce dictionary.
@@ -1465,15 +1460,60 @@ extension CampaignDetailViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "confirm_reward | \(campaign.ID ?? -1)" as NSString,
+            "eventLabel" : "redeem_confirm | {reward_category} | {reward_filter} | {reward_index} | \(campaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
         analyticsSetEventEcommerce(eventName: AnalyticsEventBeginCheckout, params: ecommerce)
+    }
+    // FIXME:GA#27
+    func sendGACancelCheckout() {
+//        let reward1 : [String:Any] = [
+//                    AnalyticsParameterItemID: "{reward_id}" as NSString,
+//                    AnalyticsParameterItemName: "{reward_title}" as NSString,
+//                    AnalyticsParameterItemCategory: "reward/{reward_category}/{reward_filter}" as NSString,
+//                    AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
+//                    AnalyticsParameterIndex: {reward_index} as NSNumber
+//                    "metric1" : {coins} as NSNumber,
+//                    AnalyticsParameterPrice: 0 as NSNumber,
+//                    AnalyticsParameterCurrency: "THB" as NSString,
+//                    AnalyticsParameterQuantity: 1 as NSNumber,
+//                    ]
+//
+//                    // Prepare ecommerce dictionary.
+//                    let items : [Any] = [reward1]
+//
+//                    let ecommerce : [String:Any] = [
+//                        "items" : items,
+//                        "eventCategory" : "reward" as NSString,
+//                        "eventAction" : " touch_button" as NSString,
+//                        "eventLabel" : "redeem_cancel | {reward_category} | {reward_filter} | {reward_index} | {reward_id}" as NSString,
+//                        AnalyticsParameterItemListName: "{previous_step}" as NSString
+//                    ]
+//
+//                    // Log select_content event with ecommerce dictionary.
+//                    Analytics.logEvent(AnalyticsEventRemoveFromCart, parameters: ecommerce)
+    }
+    
+    // FIXME:GA#28
+    func anayticsImpressionError(errorID:String ,errorMessage:String) {
         
-        let gaLabel = "confirm_reward | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)"
-        analyticsSetEvent(event: AnalyticsEventBeginCheckout, category: "reward", action: "touch_button", label: gaLabel)
+    }
+    
+    // FIXME:GA#32
+    func sendGAClickHistory()
+    {
+        let label = "history_reward | {reward_category} | {reward_filter} | {reward_index} | {reward_id}"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: label)
+    }
+    
+    // FIXME:GA#33
+    func sendGAClickFavour()
+    {
+        let isFavour = !(campaign.isFavourite ?? false) ? "add" : "remove"
+        let label = "\(isFavour)_favorite | {reward_category} | {reward_filter} | {reward_index} | {reward_id}"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: label)
     }
     
     func sendGAThankyouPage(_ redeemKey:String?) {

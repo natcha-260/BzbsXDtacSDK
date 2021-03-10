@@ -93,7 +93,7 @@ class GotoPage: NSObject
         nav.pushViewController(qrScanner, animated: true)
     }
     
-    class func gotoFavorite(_ nav:UINavigationController) {
+    class func gotoFavourite(_ nav:UINavigationController) {
         let storboard = UIStoryboard(name: "Favorite", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_favorite_list") as! FavoriteViewController
         vc.hidesBottomBarWhenPushed = true

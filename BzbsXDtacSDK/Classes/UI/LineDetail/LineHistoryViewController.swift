@@ -78,8 +78,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     // MARK:- Event
     // MARK:- Click
     @IBAction func clickDownload(_ sender: Any) {
-        Bzbs.shared.delegate?.analyticsEvent(event: "event_app", category: "reward", action: "touch_button", label: "download_line_sticker | \(bzbsCampaign.ID ?? 0) | \(bzbsCampaign.pointPerUnit ?? 0)")
-        
+        sendGADownload()
         let strUrl = "https://line.me/R/shop/sticker/detail/\(packageId!)"
         guard let url = URL(string: strUrl) else { return }
         if #available(iOS 10.0, *) {
@@ -95,5 +94,11 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
         } else {
             navigationController?.popViewController(animated: true)
         }
+    }
+    
+    // MARK:- GA
+    // FIXME:GA#47
+    func sendGADownload() {
+        Bzbs.shared.delegate?.analyticsEvent(event: "event_app", category: "reward", action: "touch_button", label: "download_line_sticker | \(bzbsCampaign.ID ?? 0) | \(bzbsCampaign.pointPerUnit ?? 0)")
     }
 }

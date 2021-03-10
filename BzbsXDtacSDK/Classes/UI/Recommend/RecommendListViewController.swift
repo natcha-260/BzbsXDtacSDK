@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 class RecommendListViewController: BaseListController {
     
@@ -92,31 +93,6 @@ class RecommendListViewController: BaseListController {
     let _intTop = 25
     override func getApi() {
         getApiDashboard()
-        
-//        if _isCallApi || _isEnd { return }
-//        _isCallApi = true
-//
-//        controller.list(config: getConfig()
-//            , top : _intTop
-//            , skip: _intSkip
-//            , search: ""
-//            , catId: catId
-//            , token: nil
-//            , center : currentCenter
-//            , successCallback: { (tmpList) in
-//                if self._intSkip == 0 {
-//                    self._arrDataShow = tmpList
-//                } else {
-//                    self._arrDataShow.append(contentsOf: tmpList)
-//                }
-//                self._isEnd = tmpList.count < self._intTop
-//                self._intSkip += self._intTop
-//                self.collectionView.reloadData()
-//                self._isCallApi = false
-//        }) { (error) in
-//            self._isEnd = true
-//            self._isCallApi = false
-//        }
     }
     
     func getAllDashboardConfig() -> String {
@@ -173,6 +149,64 @@ class RecommendListViewController: BaseListController {
         super.loadedData()
         collectionView.reloadData()
     }
+    
+    //MARK:- GA
+    //MARK:-
+    // FIXME:GA#20
+    func sendGAImpression(_ item:BzbsDashboard) {
+        if item.id == "-1" {
+            return
+        }
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "{reward_id}" as NSString,
+            AnalyticsParameterItemName: "{reward_title}" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(item.categoryName ?? "")/recommended" as NSString,
+            AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
+            AnalyticsParameterIndex: 1 as NSNumber,
+            "metric1" : 0 as NSNumber,
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " impression_list" as NSString,
+            "eventLabel" : "recommended_for_you | all" as NSString,
+            AnalyticsParameterItemListName: "reward_recommend" as NSString
+        ]
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
+    }
+    
+    // FIXME:GA#21
+    func sendGATouchItem(_ item:BzbsDashboard, index:Int) {
+        if item.id == "-1" {
+            return
+        }
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "{reward_id}" as NSString,
+            AnalyticsParameterItemName: "{reward_title}" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(item.categoryName ?? "")/recommended" as NSString,
+            AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
+            AnalyticsParameterIndex: index as NSNumber,
+            "metric1" : 0 as NSNumber,
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " touch_list" as NSString,
+            "eventLabel" : "recommended_for_you | {reward_category} | recommended | {reward_index} | {reward_id}" as NSString,
+            AnalyticsParameterItemListName: "reward_recommend" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
+    }
 }
 
 
@@ -197,6 +231,7 @@ extension RecommendListViewController : UICollectionViewDataSource, UICollection
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
         let item = _arrDataShow[indexPath.row] as! BzbsDashboard
+        sendGAImpression(item)
         cell.setupWith(item)
         return cell
     }
@@ -226,6 +261,7 @@ extension RecommendListViewController : UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsDashboard
+        sendGATouchItem(item, index: indexPath.row)
         let campaign = item.toCampaign()
         if let nav = self.navigationController
         {

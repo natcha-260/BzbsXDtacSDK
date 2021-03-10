@@ -173,20 +173,19 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
         GotoPage.gotoLineRedeem(self.navigationController!, campaignId : campaignId, packageId: packageId, bzbsCampaign: bzbsCampaign, lineCampaign: lineCampaign!)
     }
     
+    // FIXME:GA#25
     func sendGA() {
+        var reward1 = [String:AnyObject]()
+        reward1[AnalyticsParameterItemID] = "\(bzbsCampaign.ID ?? 0)" as AnyObject
+        reward1[AnalyticsParameterItemName] = bzbsCampaign.name as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/{reward_category}/\(bzbsCampaign.categoryName ?? "")".lowercased() as AnyObject
+        reward1[AnalyticsParameterItemBrand] = bzbsCampaign.agencyName as AnyObject
+        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
+        reward1["metric1"] = (bzbsCampaign.pointPerUnit ?? 0) as AnyObject
+        reward1[AnalyticsParameterPrice] = 0 as NSNumber
+        reward1[AnalyticsParameterCurrency] = "THB" as NSString
+        reward1[AnalyticsParameterQuantity] = 1 as NSNumber
         
-        let reward1 : [String:Any] = [
-            AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
-            AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
-            AnalyticsParameterPrice: 0 as NSNumber,
-            AnalyticsParameterCurrency: "THB" as NSString,
-            AnalyticsParameterQuantity: 1 as NSNumber,
-            AnalyticsParameterIndex: NSNumber(value: 1),
-            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
-            "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
-        ]
         
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward1]
@@ -195,15 +194,46 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "choose_line_sticker | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
+            "eventLabel" : "redeem_confirm | {reward_category} | {reward_filter} | {reward_index} | \(bzbsCampaign.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Bzbs.shared.delegate?.analyticsEventEcommerce(eventName: AnalyticsEventBeginCheckout, params: ecommerce)
-        
-        Bzbs.shared.delegate?.analyticsEvent(event: AnalyticsEventBeginCheckout, category: "reward", action: "touch_button", label: "choose_line_sticker | \(campaignId ?? "0") | \(bzbsCampaign.pointPerUnit ?? 0)")
-        
+        analyticsSetEventEcommerce(eventName: AnalyticsEventBeginCheckout, params: ecommerce)
+    }
+    
+    override func back_1_step() {
+        sendGACancelCheckout()
+        super.back_1_step()
+    }
+    
+    // FIXME:GA#26
+    func sendGACancelCheckout() {
+//        let reward1 : [String:Any] = [
+//                    AnalyticsParameterItemID: "{reward_id}" as NSString,
+//                    AnalyticsParameterItemName: "{reward_title}" as NSString,
+//                    AnalyticsParameterItemCategory: "reward/{reward_category}/{reward_filter}" as NSString,
+//                    AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
+//                    AnalyticsParameterIndex: {reward_index} as NSNumber
+//                    "metric1" : {coins} as NSNumber,
+//                    AnalyticsParameterPrice: 0 as NSNumber,
+//                    AnalyticsParameterCurrency: "THB" as NSString,
+//                    AnalyticsParameterQuantity: 1 as NSNumber,
+//                    ]
+//
+//                    // Prepare ecommerce dictionary.
+//                    let items : [Any] = [reward1]
+//
+//                    let ecommerce : [String:Any] = [
+//                        "items" : items,
+//                        "eventCategory" : "reward" as NSString,
+//                        "eventAction" : " touch_button" as NSString,
+//                        "eventLabel" : "redeem_cancel | {reward_category} | {reward_filter} | {reward_index} | {reward_id}" as NSString,
+//                        AnalyticsParameterItemListName: "{previous_step}" as NSString
+//                    ]
+//
+//                    // Log select_content event with ecommerce dictionary.
+//                    Analytics.logEvent(AnalyticsEventRemoveFromCart, parameters: ecommerce)
     }
 }
 

@@ -110,19 +110,6 @@ class SearchViewController: BaseListController {
         }
     }
     
-    func sendGASearch()
-    {
-        
-        let reward1 : [String : AnyObject] = [
-            "eventCategory": "reward" as AnyObject,
-            "eventAction": "search" as AnyObject,
-            "eventLabel": strSearch as AnyObject,
-            AnalyticsParameterSearchTerm: strSearch as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSearch, params: reward1)
-        
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "search", label: strSearch)
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "search_result",
@@ -350,6 +337,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == autoCompleteTableView{
             let item = autoCompleteResult[indexPath.row]
+            sendGAClickHistorySearch(string: item)
             txtSearch.text = item
             self.view.endEditing(true)
             vwAutoComplete.alpha = 0
@@ -371,7 +359,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource
                 return
             }
             if row == 0 {
-                
+                sendGAClickMap()
                 if LocationManager.shared.authorizationStatus == .denied  {
                     PopupManager.confirmPopup(self, message: "popup_location_denied".localized(), strConfirm: "popup_setting".localized(), strClose: "popup_deny".localized(), confirm: {
                         if let settingsUrl = URL(string: UIApplication.openSettingsURLString),
@@ -393,7 +381,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource
                 
                 return
             }
-            GotoPage.gotoFavorite(self.navigationController!)
+            sendGAClickFavour()
+            GotoPage.gotoFavourite(self.navigationController!)
         }
     }
     
@@ -559,6 +548,7 @@ extension SearchViewController : CategoryCVCellDelegate
         if let arrCategory = Bzbs.shared.arrCategory
         {
             let item = arrCategory[index]
+            sendGAClickCategory(item)
             if let nav = self.navigationController
             {
                 if item.mode == "near_by"
@@ -596,6 +586,46 @@ extension SearchViewController : UIGestureRecognizerDelegate
     }
 }
 
+// MARK:- GA
+// MARK:-
+extension SearchViewController {
+    
+    // FIXME:GA#34
+    func sendGAClickMap() {
+        
+    }
+    
+    // FIXME:GA#35
+    func sendGAClickFavour() {
+        
+    }
+    
+    // FIXME:GA#36
+    func sendGAClickCategory(_ item:BzbsCategory) {
+        
+    }
+    
+    // FIXME:GA#37
+    func sendGAClickHistorySearch(string:String) {
+        
+    }
+    
+    // FIXME:GA#38
+    func sendGASearch()
+    {
+        let reward1 : [String : AnyObject] = [
+            "eventCategory": "reward" as AnyObject,
+            "eventAction": "search" as AnyObject,
+            "eventLabel": strSearch as AnyObject,
+            AnalyticsParameterSearchTerm: strSearch as AnyObject
+        ]
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSearch, params: reward1)
+        
+        // analyticsSetEvent(event:"track_event", category: "reward", action: "search", label: strSearch)
+    }
+    
+    
+}
 
 extension String {
 
@@ -611,3 +641,4 @@ extension String {
         return true
     }
 }
+

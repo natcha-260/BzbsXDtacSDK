@@ -578,8 +578,11 @@ import ImageSlideshow
     
     // MARK:- Action
     // MARK:-
+    
     @IBAction func clickViewAllCampaign(_ sender: Any) {
         self.view.endEditing(true)
+        
+        analyticsSendRecommendedViewAll()
         
         if let nav = self.navigationController {
             nav.pushViewController(RecommendListViewController.getViewController(), animated: true)
@@ -588,7 +591,7 @@ import ImageSlideshow
     
     @IBAction func clickViewAllCoinRecommend(_ sender: Any) {
         self.view.endEditing(true)
-        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "recommend_coin_reward | view_all")
+        analyticsViewRecommendCoinAll()
         if let nav = self.navigationController {
             nav.pushViewController(RecommendCoinListViewController.getViewController(), animated: true)
         }
@@ -661,9 +664,11 @@ import ImageSlideshow
             showPopupInternet()
             return
         }
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "favorite")
+        
+        sendGATouchFooter(strLable: "main_footer_fav".localized())
+        
         if let nav = self.navigationController {
-            GotoPage.gotoFavorite(nav)
+            GotoPage.gotoFavourite(nav)
         }
         
     }
@@ -686,7 +691,9 @@ import ImageSlideshow
             showPopupInternet()
             return
         }
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "history")
+        
+        sendGATouchFooter(strLable: "main_footer_hist".localized())
+        
         if let nav = self.navigationController {
             GotoPage.gotoHistory(nav)
         }
@@ -700,7 +707,8 @@ import ImageSlideshow
             return
         }
         
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "faq")
+        sendGATouchFooter(strLable: "main_footer_faq".localized())
+        
         if let nav = self.navigationController {
             GotoPage.gotoWebSite(nav, strUrl: Bzbs.shared.getUrlFAQ(), strTitle: "main_footer_faq".localized())
         }
@@ -712,7 +720,9 @@ import ImageSlideshow
             showPopupInternet()
             return
         }
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "about")
+        
+        sendGATouchFooter(strLable: "main_footer_about".localized())
+        
         if let nav = self.navigationController {
             GotoPage.gotoWebSite(nav, strUrl: Bzbs.shared.getUrlAbout(), strTitle: "main_footer_about".localized())
         }
@@ -738,23 +748,18 @@ import ImageSlideshow
             case .blue :
                 strUrl = Bzbs.shared.getUrlBlueMember()
                 strTitle = BuzzebeesCore.levelNameBlue
-                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "blue")
             case .gold :
                 strUrl = Bzbs.shared.getUrlGoldMember()
                 strTitle = BuzzebeesCore.levelNameGold
-                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "gold")
             case .silver :
                 strUrl = Bzbs.shared.getUrlSilverMember()
                 strTitle = BuzzebeesCore.levelNameSilver
-                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "silver")
             case .customer:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
-                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
             case .no_level:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
-                // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: "reward")
             }
             
             if let nav = self.navigationController {
@@ -764,8 +769,7 @@ import ImageSlideshow
     }
     
     @objc func clickCoin() {
-        
-        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "your_coin")
+        analyticsTapCoinHist()
         if let nav = self.navigationController {
             GotoPage.gotoCoinHistory(nav)
         }
@@ -784,24 +788,145 @@ import ImageSlideshow
     // MARK:- Analytic Impression
     // MARK:-
     
-    func sendImpressionItem(item:BzbsCampaign, index:Int)
-    {
-        let reward : [String:AnyObject] = [
-            AnalyticsParameterItemID : "\(item.ID ?? -1)" as AnyObject,
-            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory : (item.categoryID ?? -1) as AnyObject,
-            AnalyticsParameterItemBrand : (item.agencyName ?? "") as AnyObject,
-            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject
-        ]
-        
-        let ecommerce  : [String:AnyObject] = [
-            "items" : [reward] as AnyObject,
-            AnalyticsParameterItemList : "dtac_reward" as AnyObject
-        ]
-        
-        // analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
+    // FIXME:GA#1
+    func analyticsTapSegment(segmentName:String) {
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "your_segment | \(segmentName)")
     }
     
+    // FIXME:GA#2
+    func analyticsTapCoinHist() {
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "your_coin")
+    }
+    
+    // FIXME:GA#3
+    func sendImpressionBanner(item:BzbsDashboard, index:Int)
+    {
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
+            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
+            AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? "")/reward_banner" as AnyObject,
+            AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
+            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
+            "metric1" : Double("\(item.price ?? "0")") ?? 0 as Any,
+        ]
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "impression_banner" as NSString,
+            "eventLabel" : "hero | \(item.categoryName ?? "") | reward_banner | \(index) | \(item.id ?? "")" as NSString,
+            AnalyticsParameterItemListName: "reward_banner" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+    }
+    
+    // FIXME:GA#4
+    func analyticsSendSelectDashboard(_ item: BzbsDashboard, _ index: Int) {
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
+            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
+            AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? "")/reward_banner" as AnyObject,
+            AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
+            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
+            "metric1" : Double("\(item.price ?? "0")") ?? 0 as Any,
+        ]
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "touch_banner" as NSString,
+            "eventLabel" : "hero | \(item.categoryName ?? "") | reward_banner | \(index) | \(item.id ?? "")" as NSString,
+            AnalyticsParameterItemListName: "reward_banner" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+    }
+    
+    // FIXME:GA#5
+    func analyticsSelectCategory(_ name: String) {
+        analyticsSetEvent(event:"event_app", category: "reward", action: "touch_button", label: "reward_main_category | \(name)")
+    }
+    
+    // FIXME:GA#6
+    func analyticsSendRecommendedViewAll() {
+        let eventLabel = "recommended_for_you | view_all"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: eventLabel)
+    }
+    
+    // FIXME:GA#7
+    func sendImpressionItem(item:BzbsCampaign, index:Int)
+    {
+        if item.ID == -1 {
+            return
+        }
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID : "\(item.ID ?? -1)" as AnyObject,
+            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
+            AnalyticsParameterItemCategory: "reward/\(item.categoryName ?? "")/reward_main".lowercased() as NSString,
+            AnalyticsParameterItemBrand : (item.agencyName ?? "") as AnyObject,
+            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
+            "metric1" : 0 as NSNumber,
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " impression_list" as NSString,
+            "eventLabel" : "recommended_for_you" as NSString,
+            AnalyticsParameterItemListName: "reward_main" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+    }
+    
+    // FIXME:GA#8
+    func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
+    {
+        if campaign.ID == -1 {
+            return
+        }
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID : "\(campaign.ID ?? 0)" as AnyObject,
+            AnalyticsParameterItemName : campaign.name as AnyObject,
+            AnalyticsParameterItemCategory: "reward/\(campaign.categoryName ?? "")/reward_main".lowercased() as NSString,
+            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
+            AnalyticsParameterIndex: NSNumber(value: (indexPath.row - 1)) as AnyObject,
+            "metric1" : 0 as NSNumber,
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " touch_list" as NSString,
+            "eventLabel" : "recommended_for_you | {reward_index} | {reward_id}" as NSString,
+            AnalyticsParameterItemListName: "reward_main" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+    }
+    
+    // FIXME:GA#9
+    func analyticsViewRecommendCoinAll() {
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "recommend_coin_reward | view_all")
+    }
+    
+    // FIXME:GA#10
     func sendImpressionCoinItem(item:BzbsDashboard, index:Int)
     {
         if item.id == "-1" {
@@ -835,78 +960,27 @@ import ImageSlideshow
         var reward = [String:AnyObject]()
         reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
-        reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/reward_main" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
         reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
-        //            reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let ecommerce : [String:AnyObject] = [
-            "items" : [reward] as AnyObject,
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward]
+        
+        let ecommerce : [String:Any] = [
+            "items" : items,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " impression_list" as NSString,
-            "eventLabel" : "recommend_coin_reward" as NSString,
-            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+            "eventLabel" : "recommended_coin_rewards" as NSString,
+            AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
+        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
     }
     
-    func sendImpressionBanner(item:BzbsDashboard, index:Int)
-    {
-        var rewardType = ""
-        let type = item.type
-        switch type {
-            case "hashtag" :
-                rewardType = "group"
-            case "link" :
-                rewardType = "none"
-            case "cat" :
-                rewardType = "category"
-            case "none" :
-                rewardType = "none"
-            case "campaign" :
-                rewardType = "campaign"
-            default:
-                break
-        }
-        
-        let reward : [String:AnyObject] = [
-            AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory : "reward/\(rewardType)" as AnyObject,
-            AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
-            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject
-        ]
-        
-        let ecommerce  : [String:AnyObject] = [
-            "items" : [reward] as AnyObject,
-            AnalyticsParameterItemList : "dtac_reward_banner" as AnyObject
-        ]
-        
-        // analyticsSetEventEcommerce(eventName: AnalyticsEventViewSearchResults, params: ecommerce)
-    }
-    
-    func sendGATouchEvent(_ campaign:BzbsCampaign, indexPath:IndexPath)
-    {
-        let reward1 : [String : AnyObject] = [
-            AnalyticsParameterItemID : "\(campaign.ID ?? 0)" as AnyObject,
-            AnalyticsParameterItemName : campaign.name as AnyObject,
-            AnalyticsParameterItemCategory: "dtac_reward" as AnyObject,
-            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
-            AnalyticsParameterIndex: NSNumber(value: (indexPath.row - 1)) as AnyObject
-        ]
-        let ecommerce : [String:AnyObject] = [
-            "items" : reward1  as AnyObject,
-            AnalyticsParameterItemList : "dtac_reward" as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectContent, params: ecommerce)
-        
-        let gaLabel = "\(campaign.ID!)|\(campaign.name ?? "")|\(campaign.agencyName ?? "")"
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "dtac_reward", label: gaLabel)
-    }
-    
+    // FIXME:GA#11
     func sendCoinGATouchEvent(_ item:BzbsDashboard, indexPath:IndexPath)
     {
         if item.id == "-1" {
@@ -921,7 +995,6 @@ import ImageSlideshow
         if name == nil {
             name = item.line1 ?? item.line2 ?? "-"
         }
-        
         
         var agencyName = item.line3
         if LocaleCore.shared.getUserLocale() == 1033
@@ -941,7 +1014,7 @@ import ImageSlideshow
         var reward = [String:AnyObject]()
         reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
-        reward[AnalyticsParameterItemCategory] = "reward/coins/\(item.categoryName ?? "")" as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/reward_main" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
         reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
 //        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
@@ -950,18 +1023,21 @@ import ImageSlideshow
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward]
         
-        let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
+        let ecommerce : [String:Any] = [
+            "items" : items,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : "touch_list" as NSString,
-            "eventLabel" : "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)" as NSString,
-            AnalyticsParameterItemListName: "dtac_coin_reward" as NSString
+            "eventAction" : " touch_list" as NSString,
+            "eventLabel" : "recommended_coin_rewards | coins | reward_main | {reward_index} | {reward_id}" as NSString,
+            AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
-        
-        analyticsSetEvent(event: AnalyticsEventSelectItem, category: "reward", action: "touch_list", label: "recommend_coin_reward | \(index) | \(item.id!) | \(intPointPerUnit)")
+        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+    }
+    
+    // FIXME:GA#12
+    func sendGATouchFooter(strLable:String) {
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "footer | \(strLable)")
     }
     
 }
@@ -1062,13 +1138,6 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             if row == arrCampaign.count + 1 {
                 // Workaround bug apple : https://stackoverflow.com/questions/36716834/ios-uicollectionview-layout-last-row
                 return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "loadMoreCell", for: indexPath) as! LoadMoreCVCell
-//                cell.setLoadMore()
-//                if !isSendImpressionItems
-//                {
-//                    sendImpressionItems()
-//                }
-//                return cell
             }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
             let item = arrCampaign[row - 1]
@@ -1085,13 +1154,6 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             if row == arrCoinCampaign.count + 1 {
                 // Workaround bug apple : https://stackoverflow.com/questions/36716834/ios-uicollectionview-layout-last-row
                 return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "loadMoreCell", for: indexPath) as! LoadMoreCVCell
-//                cell.setLoadMore()
-//                if !isSendImpressionItems
-//                {
-//                    sendImpressionItems()
-//                }
-//                return cell
             }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
             let item = arrCoinCampaign[row - 1]
@@ -1227,6 +1289,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
 // MARK:- CellCategoryDelegate
 extension BzbsMainViewController : CategoryCVCellDelegate
 {
+    
     func didSelectedItem(index: Int) {
         if !isLoggedIn()
         {
@@ -1248,7 +1311,7 @@ extension BzbsMainViewController : CategoryCVCellDelegate
         if let nav = self.navigationController
         {
             let name = item.nameEn ?? ""
-            // analyticsSetEvent(event:"track_event", category: "reward", action: "touch", label: name)
+            analyticsSelectCategory(name)
             if item.mode == "near_by"
             {
                 if LocationManager.shared.authorizationStatus == .denied  {
@@ -1282,17 +1345,15 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
         sendImpressionBanner(item: item, index: index)
     }
     
-    func didSelectDashboard(_ item: BzbsDashboard) {
+    func didSelectDashboard(_ item: BzbsDashboard, index: Int) {
         if let type = item.type
         {
-            var eventLabel = ""
             switch type {
             case "hashtag" :
                 if let nav = self.navigationController {
                     let vc = MajorCampaignListViewController.getViewController()
                     vc.dashboard = item
                     vc.hidesBottomBarWhenPushed = true
-                    eventLabel = "\(item.hashtag ?? "")|\(item.line1 ?? "")"
                     nav.pushViewController(vc, animated: true)
                 }
             case "link" :
@@ -1303,7 +1364,6 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
                     } else {
                         UIApplication.shared.openURL(url)
                     }
-                    eventLabel = strUrl
                 }
             case "cat" :
                 if let _ = self.navigationController {
@@ -1321,30 +1381,24 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
                                 GotoPage.gotoCategory(nav, cat: arrCat.first!, arrCategory: arrCat)
                             }
                         }
-                        let name = item.name ?? ""
-                        eventLabel = "\(catId)|\(name)"
                     }
                 }
             case "none" :
-                eventLabel = "\(item.imageUrl ?? "")"
                 break
             case "campaign" :
                 if let nav = self.navigationController {
-                    if let id = item.id {
-                        let campaign = item.toCampaign()
-                        GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
-                        // ไม่มี name/agency ส่งมา เดาๆไป
-                        eventLabel = "\(id)|\(item.name ?? "")|\(item.line1 ?? "")"
-                    }
+                    let campaign = item.toCampaign()
+                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
                 }
             default:
                 break
             }
             
-            // analyticsSetEvent(event:"track_event", category: "reward", action: "dtac_reward_banner", label: eventLabel)
+            analyticsSendSelectDashboard(item, index)
         }
     }
 }
+
 // MARK:- ScanQRViewControllerDelegate
 extension BzbsMainViewController: ScanQRViewControllerDelegate{
     func didScanWithResult(result: String) {
