@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.28
+- add 'appVersion' param on init
 ## 2.0.27
 - show distance on nearby
 ## 2.0.26

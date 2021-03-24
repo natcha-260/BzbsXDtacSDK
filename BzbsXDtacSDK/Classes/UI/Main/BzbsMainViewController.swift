@@ -207,10 +207,11 @@ import ImageSlideshow
         if let token = Bzbs.shared.dtacLoginParams.token, token != "",
             let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != "",
             let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != "",
+            let appVersion = Bzbs.shared.dtacLoginParams.appVersion, appVersion != "",
             let TelType = Bzbs.shared.dtacLoginParams.TelType
         {
             let language = Bzbs.shared.dtacLoginParams.language ?? "th"
-            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment, TelType: TelType)
+            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment, TelType: TelType, appVersion: appVersion)
             if Bzbs.shared.userLogin != nil {
                 getApiCategory()
                 getApiRecommend()
@@ -288,13 +289,13 @@ import ImageSlideshow
         }
     }
     
-    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String, TelType: String)
+    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String, TelType: String, appVersion: String)
     {
         let isNeedupdateUI = Bzbs.shared.userLogin == nil
         if !isNeedupdateUI {
             showLoader()
         }
-        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType: TelType, completionHandler: {
+        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType: TelType, appVersion: appVersion, completionHandler: {
             
             if let user = Bzbs.shared.userLogin, user.dtacLevel == .no_level {
                 Bzbs.shared.delegate?.reLogin()

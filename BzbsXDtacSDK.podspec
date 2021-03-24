@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BzbsXDtacSDK'
-  s.version          = '2.0.27'
+  s.version          = '2.0.28'
   s.summary          = 'Buzzebees SDK For Dtac Rewards'
 
 # This description is used to generate tags and improve search results.

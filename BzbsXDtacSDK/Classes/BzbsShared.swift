@@ -18,6 +18,36 @@ struct DtacLoginParams {
     var language :String?
     var DTACSegment : String?
     var TelType : String?
+    var appVersion: String?
+    
+    var dict: [String : String] {
+        get {
+            var dict = [String : String]()
+            dict["token"] = token
+            dict["ticket"] = ticket
+            dict["DTACSegment"] = DTACSegment
+            dict["TelType"] = TelType
+            dict["appVersion"] = appVersion
+            return dict
+        }
+    }
+    
+    init(token:String? = nil, ticket :String? = nil, language :String? = nil, DTACSegment : String? = nil, TelType : String? = nil, appVersion: String? = nil) {
+        self.token = token
+        self.ticket = ticket
+        self.language = language
+        self.DTACSegment = DTACSegment
+        self.TelType = TelType
+        self.appVersion = appVersion
+    }
+    
+    init(dict: [String : String]? = nil) {
+        token = dict?["token"]
+        ticket = dict?["ticket"]
+        DTACSegment = dict?["DTACSegment"]
+        TelType = dict?["TelType"]
+        appVersion = dict?["appVersion"]
+    }
 }
 
 @objc public protocol BzbsDelegate {
@@ -53,7 +83,7 @@ struct DtacLoginParams {
     private let pathUrlFAQ = "/misc/faq"
     private let pathUrlAbout = "/misc/about"
     
-    @objc public var versionString :String = "0.0.4"
+//    @objc public var versionString :String = "0.0.4"
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
     
@@ -80,25 +110,28 @@ struct DtacLoginParams {
         if let ao = CacheCore.shared.loadCacheData(key: BBCache.keys.loginparam),
            let dict = ao as? Dictionary<String, String>
         {
-            var loginParams = DtacLoginParams()
-            loginParams.token = dict["token"]
-            loginParams.ticket = dict["ticket"]
-            loginParams.DTACSegment = dict["DTACSegment"]
-            loginParams.TelType = dict["TelType"]
+            let loginParams = DtacLoginParams(dict: dict)
             loginCacheSelector(loginParams)
         } else {
             loginCacheSelector(nil)
         }
     }
     
-    @objc public func setup(token:String, ticket:String, language:String, DTACSegment:String, TelType: String ,delegate:BzbsDelegate? = nil, isHasNewMessage:Bool = false){
+    @objc public func setup(token:String,
+                            ticket:String,
+                            language:String,
+                            DTACSegment:String,
+                            TelType: String ,
+                            delegate:BzbsDelegate? = nil,
+                            isHasNewMessage:Bool = false,
+                            appVersion: String)
+    {
 
-        var loginParams = DtacLoginParams()
         if token == "" || ticket == "" || DTACSegment == ""
         {
             getCacheLoginParams { (loginParamsCache) in
-                if loginParamsCache != nil {
-                    loginParams = loginParamsCache!
+                if let _loginParamsCache = loginParamsCache {
+                    var loginParams = _loginParamsCache
                     loginParams.language = language
                     self.dtacLoginParams = loginParams
                 }
@@ -109,16 +142,8 @@ struct DtacLoginParams {
                 }
             }
         } else {
-            loginParams.token = token
-            loginParams.ticket = ticket
-            loginParams.language = language
-            loginParams.DTACSegment = DTACSegment
-            loginParams.TelType = TelType
-            var dict = Dictionary<String, String>()
-            dict["token"] = token
-            dict["ticket"] = ticket
-            dict["DTACSegment"] = DTACSegment
-            dict["TelType"] = TelType
+            let loginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment: DTACSegment, TelType: TelType, appVersion: appVersion)
+            let dict = loginParams.dict
             CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.loginparam, lifetime: BuzzebeesCore.cacheTimeSegment)
             self.dtacLoginParams = loginParams
             relogin()
@@ -153,9 +178,9 @@ struct DtacLoginParams {
     
     private(set) var isCallingLogin = false
     
-    @objc public func login(token:String, ticket:String, language:String, DTACSegment:String, TelType: String)
+    @objc public func login(token:String, ticket:String, language:String, DTACSegment:String, TelType: String, appVersion: String?)
     {
-        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, completionHandler: nil, failureHandler: nil)
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, appVersion: appVersion, completionHandler: nil, failureHandler: nil)
     }
     
     func relogin(completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
@@ -165,10 +190,11 @@ struct DtacLoginParams {
         let language = dtacLoginParams.language ?? "th"
         let DTACSegment = dtacLoginParams.DTACSegment ?? ""
         let TelType = dtacLoginParams.TelType ?? ""
-        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, completionHandler: completionHandler, failureHandler: failureHandler)
+        let appVersion = dtacLoginParams.appVersion ?? ""
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, appVersion: appVersion, completionHandler: completionHandler, failureHandler: failureHandler)
     }
     
-    func login(token:String?, ticket:String?, language:String, DTACSegment: String, TelType: String, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
+    func login(token:String?, ticket:String?, language:String, DTACSegment: String, TelType: String, appVersion: String?, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
     {
         if isCallingLogin { return }
         isCallingLogin = true
@@ -176,15 +202,15 @@ struct DtacLoginParams {
         {
             BuzzebeesCore.apiSetupPrefix(successCallback: {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, appVersion: appVersion, completionHandler: completionHandler, failureHandler: failureHandler)
             }) {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, appVersion: appVersion, completionHandler: completionHandler, failureHandler: failureHandler)
             }
             return
         }
         
-        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType)
+        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, appVersion: appVersion)
         
         if let token = dtacLoginParams.token, token != "",
             let ticket = dtacLoginParams.ticket, ticket != "",
@@ -203,8 +229,7 @@ struct DtacLoginParams {
                 return
                 
             }
-            let version = Bzbs.shared.versionString
-            let strVersion = Bzbs.shared.prefixApp + version
+            let strVersion = Bzbs.shared.prefixApp + (appVersion ?? "0.0.4")
             let loginParams = DtacDeviceLoginParams(ticket: ticket, token: token, language: language, DTACSegment: DTACSegment, TelType: TelType, clientVersion: strVersion)
 //            let loginParams = DtacDeviceLoginParams(uuid: token
 //                , os: "ios " + UIDevice.current.systemVersion
@@ -247,7 +272,7 @@ struct DtacLoginParams {
     
     @objc public func logout()
     {
-        dtacLoginParams = DtacLoginParams(token: "logout", ticket: nil, language: nil, DTACSegment: nil)
+        dtacLoginParams = DtacLoginParams(token: "logout")
         Bzbs.shared.userLogin = nil
         reLogin()
         backToMainView()
