@@ -207,10 +207,10 @@ import ImageSlideshow
         if let token = Bzbs.shared.dtacLoginParams.token, token != "",
             let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != "",
             let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != "",
-            let appVersion = Bzbs.shared.dtacLoginParams.appVersion, appVersion != "",
             let TelType = Bzbs.shared.dtacLoginParams.TelType
         {
             let language = Bzbs.shared.dtacLoginParams.language ?? "th"
+            let appVersion = Bzbs.shared.dtacLoginParams.appVersion ?? ""
             apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment, TelType: TelType, appVersion: appVersion)
             if Bzbs.shared.userLogin != nil {
                 getApiCategory()

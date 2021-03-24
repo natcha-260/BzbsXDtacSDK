@@ -83,7 +83,7 @@ struct DtacLoginParams {
     private let pathUrlFAQ = "/misc/faq"
     private let pathUrlAbout = "/misc/about"
     
-//    @objc public var versionString :String = "0.0.4"
+    @objc public var versionString :String = "0.0.4"
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
     
@@ -229,8 +229,8 @@ struct DtacLoginParams {
                 return
                 
             }
-            let strVersion = Bzbs.shared.prefixApp + (appVersion ?? "0.0.4")
-            let loginParams = DtacDeviceLoginParams(ticket: ticket, token: token, language: language, DTACSegment: DTACSegment, TelType: TelType, clientVersion: strVersion)
+            let clientVersion = prefixApp + versionString
+            let loginParams = DtacDeviceLoginParams(ticket: ticket, token: token, language: language, DTACSegment: DTACSegment, TelType: TelType, clientVersion: clientVersion)
 //            let loginParams = DtacDeviceLoginParams(uuid: token
 //                , os: "ios " + UIDevice.current.systemVersion
 //                , platform: UIDevice.current.model

@@ -1,6 +1,6 @@
 //
 //  TokenSelectViewController.swift
-//  
+//
 //
 //  Created by Buzzebees iMac on 25/9/2562 BE.
 //
@@ -59,6 +59,8 @@ class TokenSelectViewController: UIViewController {
     var strVersion:String {
         segmentVersion.titleForSegment(at: segmentVersion.selectedSegmentIndex) ?? versionList.first!
     }
+    
+    let dtacAppVersion = "9.0.1"
     
     var isChangeUser = false
     
@@ -139,6 +141,7 @@ class TokenSelectViewController: UIViewController {
         }
         strLabel = strLabel + strVersion
         lblEnv.text = strLabel
+        Bzbs.shared.versionString = strVersion
         Bzbs.shared.isDebugLog = true
         isChangeUser = true
         
@@ -167,7 +170,7 @@ class TokenSelectViewController: UIViewController {
             {
                 delay(0.5) {
                     DispatchQueue.main.async {
-                        Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.strVersion)
+                        Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
                         nav.pushViewController(CampaignDetailViewController.getView(campaignId: txtId), animated: true)
                     }
                 }
@@ -188,7 +191,7 @@ class TokenSelectViewController: UIViewController {
             isChangeUser = false
             delay(0.5) {
                 DispatchQueue.main.async {
-                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.strVersion)
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
                     nav.pushViewController(PointHistoryViewController.getView(), animated: true)
                 }
             }
@@ -208,7 +211,7 @@ class TokenSelectViewController: UIViewController {
             isChangeUser = false
             delay(0.5) {
                 DispatchQueue.main.async {
-                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.strVersion)
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
                     nav.pushViewController(FavoriteViewController.getViewController(), animated: true)
                 }
             }
@@ -234,7 +237,7 @@ class TokenSelectViewController: UIViewController {
                 isChangeUser = false
                 delay(0.5) {
                     DispatchQueue.main.async {
-                        Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.strVersion)
+                        Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
                         nav.pushViewController(CampaignByCatViewController.getView(category: catName, subCategory: subCatName), animated: true)
                     }
                 }
@@ -255,7 +258,7 @@ class TokenSelectViewController: UIViewController {
             isChangeUser = false
             delay(0.5) {
                 DispatchQueue.main.async {
-                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.strVersion)
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
                     self.gotoMain()
                 }
             }
@@ -273,7 +276,7 @@ class TokenSelectViewController: UIViewController {
             isChangeUser = false
             delay(0.5) {
                 DispatchQueue.main.async {
-                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.strVersion)
+                    Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
                     self.gotoMainWithBack()
                 }
             }
@@ -289,7 +292,7 @@ class TokenSelectViewController: UIViewController {
     }
     
     @IBAction func clickLogin(_ sender: Any) {
-        Bzbs.shared.setup(token: token!, ticket: ticket!, language: language, DTACSegment: segment!, TelType: TelType, appVersion: self.strVersion)
+        Bzbs.shared.setup(token: token!, ticket: ticket!, language: language, DTACSegment: segment!, TelType: TelType, appVersion: dtacAppVersion)
     }
     
     @IBAction func clickNoToken(_ sender: Any) {
