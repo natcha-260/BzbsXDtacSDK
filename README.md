@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.30
+- improve performance
 ## 2.0.29
 - add 'versionString' param on setup
 ## 2.0.28

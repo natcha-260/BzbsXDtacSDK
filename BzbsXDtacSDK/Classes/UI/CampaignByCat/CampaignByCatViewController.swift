@@ -373,6 +373,9 @@ open class CampaignByCatViewController: BaseListController {
     // api get Dashboard Top
     func getDashboard()
     {
+        if self.currentCat == nil {
+            self.currentCat = arrCategory.first
+        }
         if self.currentCat.id == Bzbs.shared.blueCategory?.id {
             var imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat.id!)"
             if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
@@ -622,14 +625,14 @@ open class CampaignByCatViewController: BaseListController {
         }
         
         var reward = [String:AnyObject]()
-        reward[AnalyticsParameterItemID] = item.id! as AnyObject
+        reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/\(currentCat.nameEn ?? "")/\(currentSubCat.nameEn ?? "")".lowercased() as AnyObject
         reward[AnalyticsParameterItemBrand] = (agencyName ?? "") as AnyObject
         reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let label =  "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(index) | \(item.id!)"
+        let label =  "hero_reward | \(currentCat.nameEn ?? "") | \(currentSubCat.nameEn ?? "") | \(index) | \(item.id ?? "")"
         let previousScreenName = getPreviousScreenName().lowercased()
         let ecommerce : [String: AnyObject] = [
             "items" : [reward] as AnyObject,
