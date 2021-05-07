@@ -1040,6 +1040,10 @@ import ImageSlideshow
     func sendGATouchFooter(strLable:String) {
         analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "footer | \(strLable)")
     }
+    // FIXME:GA#14
+    func sendGATouchSearch() {
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search_box")
+    }
     
 }
 
@@ -1066,7 +1070,7 @@ extension BzbsMainViewController: UITextFieldDelegate
             }, cancel: nil)
             return false
         }
-        
+        sendGATouchSearch()
         GotoPage.gotoSearch(self.navigationController!)
         return false
     }

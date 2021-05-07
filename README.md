@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.31
+- improve analytics
 ## 2.0.30
 - improve performance
 ## 2.0.29

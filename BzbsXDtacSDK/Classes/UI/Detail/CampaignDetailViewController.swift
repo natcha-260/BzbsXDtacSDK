@@ -513,7 +513,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.hideLoader()
             self.refreshApi()
             self.isCallingApiRedeem = false
-            self.anayticsImpressionError(errorID: error.id, errorMessage: error.message)
+            self.anayticsImpressionError(errorID: error.id, errorMessage: error.message, rewardID: self.campaign.ID)
             
             if Int(error.id)! == 412 || Int(error.code)! == 412 {
                 PopupManager.informationPopup(self, message: error.message) {
@@ -627,6 +627,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         {
             let dtacLevel = userLogin.dtacLevel
             if dtacLevel == .no_level {
+                anayticsImpressionError(errorID: "", errorMessage: "popup_dtac_error_no_level".localized(), rewardID: campaign.ID)
                 PopupManager.informationPopup(self, title: nil, message: "popup_dtac_error_no_level".localized(), strClose:"popup_confirm_2".localized()) {
                     self.reLogin()
                 }
@@ -637,7 +638,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 if let errorcode = campaignStatus?.errorCode,
                     errorcode == "s2009"
                     {
-                        PopupManager.informationPopup(self, message: "popup_suspend_info".localized(), strClose:"popup_ok".localized(), close: nil)
+                    anayticsImpressionError(errorID: "", errorMessage: "popup_suspend_info".localized(), rewardID: campaign.ID)
+                    PopupManager.informationPopup(self, message: "popup_suspend_info".localized(), strClose:"popup_ok".localized(), close: nil)
                     return
                 }
                 if type == 1 {
@@ -1497,8 +1499,9 @@ extension CampaignDetailViewController {
     }
     
     // FIXME:GA#28
-    func anayticsImpressionError(errorID:String ,errorMessage:String) {
-        
+    func anayticsImpressionError(errorID:String ,errorMessage:String, rewardID: Int) {
+        let label = "redeem_confirm_error | \(rewardID) | \(errorMessage)"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "seen_text", label: label)
     }
     
     // FIXME:GA#32

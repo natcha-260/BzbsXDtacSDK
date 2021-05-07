@@ -58,6 +58,7 @@ class SearchResultListController: BaseListController {
         lblSearchResults.font = UIFont.mainFont()
         lblSearchResults.text = "About 0 results"
         getApi()
+        analyticsSetScreen(screenName: "reward_search")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -111,7 +112,8 @@ class SearchResultListController: BaseListController {
                 self._isEnd = tmpList.count < self._intTop
                 self.lblSearchResults.text = String(format: "search_result_format".localized(), "\(tmpList.count)")
                 self.lblSearchResults.isHidden = tmpList.count <= 0
-                self.anaylticsSearchResult()
+                self.analyticsSearchResult(text: self.strSearch, numberOfPrivileges: tmpList.count)
+                self.analyticsImpressionSearchResult()
                 self.loadedData()
         }) { (error) in
             self._isEnd = true
@@ -126,14 +128,21 @@ class SearchResultListController: BaseListController {
         self.hideLoader()
     }
     
-    // FIXME:GA#40
-    func anaylticsSearchResult() {
-        
+    // FIXME:GA#39
+    func analyticsSearchResult(text: String, numberOfPrivileges: Int) {
+        let label = "search_result | \(text) | \(numberOfPrivileges)"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "seen_text", label: label)
     }
     
-    // FIXME:GA#41
-    func anaylticsImpressionSearchResult() {
-        
+    // FIXME:GA#40
+    func analyticsImpressionSearchResult() {
+        analyticsSetEvent(event: "view_item_list", category: "reward", action: "impression_list", label: "search_result")
+    }
+    
+    //FIXME:GA#41
+    func analyticsSelectItemResult(category: String = "unknown_category", filter: String = "unknown_subcategory", index: Int, id: Int) {
+        let label = "search_result | \(category) | \(filter) | \(index) | \(id)"
+        analyticsSetEvent(event: "select_item", category: "reward", action: "touch_list", label: label)
     }
     
 }
@@ -214,6 +223,7 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
         if let nav = self.navigationController
         {
+            analyticsSelectItemResult(category: item.categoryName, filter: item.subCampaignStyles, index: indexPath.row, id: item.ID)
             GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)
         }
     }

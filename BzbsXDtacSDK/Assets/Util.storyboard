@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -43,6 +43,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Vq2-ji-e2M"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Uma-ZZ-hPH" firstAttribute="top" secondItem="WWV-Ky-pa8" secondAttribute="top" id="1gJ-Ib-1tg"/>
@@ -50,7 +51,6 @@
                             <constraint firstAttribute="bottom" secondItem="Uma-ZZ-hPH" secondAttribute="bottom" id="feN-Z4-Xkb"/>
                             <constraint firstItem="Uma-ZZ-hPH" firstAttribute="leading" secondItem="WWV-Ky-pa8" secondAttribute="leading" id="imc-Sl-EQT"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Vq2-ji-e2M"/>
                     </view>
                     <connections>
                         <outlet property="webView" destination="ztD-th-Udl" id="OvY-gX-nhI"/>
@@ -107,7 +107,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dAu-zZ-b4Z">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dAu-zZ-b4Z">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="40"/>
                                                 <connections>
                                                     <action selector="clickCancel:" destination="S6f-jC-Sb1" eventType="touchUpInside" id="VRX-im-9c8"/>
@@ -186,6 +186,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="KE6-Ku-eC1"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="3kB-2F-Dyv" firstAttribute="leading" secondItem="YOm-Wb-3uk" secondAttribute="leading" id="5n4-VZ-JcN"/>
@@ -204,7 +205,6 @@
                             <constraint firstItem="IIK-Mt-nhD" firstAttribute="top" secondItem="24T-c7-eVO" secondAttribute="bottom" id="yx9-Nn-PsQ"/>
                             <constraint firstItem="KE6-Ku-eC1" firstAttribute="trailing" secondItem="4di-F5-nmm" secondAttribute="trailing" id="zmm-ZW-BrG"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="KE6-Ku-eC1"/>
                     </view>
                     <navigationItem key="navigationItem" id="PJP-dC-1D4"/>
                     <connections>
@@ -336,6 +336,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ipa-1O-Y3C"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="R0c-SY-ICe" firstAttribute="leading" secondItem="Ipa-1O-Y3C" secondAttribute="leading" id="33p-3H-yLh"/>
@@ -346,7 +347,6 @@
                             <constraint firstItem="LPz-rs-2Bx" firstAttribute="leading" secondItem="Ipa-1O-Y3C" secondAttribute="leading" id="pcK-6Q-pcx"/>
                             <constraint firstItem="Ipa-1O-Y3C" firstAttribute="bottom" secondItem="R0c-SY-ICe" secondAttribute="bottom" id="zlo-vY-pQn"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Ipa-1O-Y3C"/>
                     </view>
                     <navigationItem key="navigationItem" id="F3B-Xg-2vL"/>
                     <connections>
@@ -441,7 +441,7 @@
                                             <constraint firstAttribute="height" constant="20" id="j9D-Ud-jOg"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOw-3W-wz1">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOw-3W-wz1">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                         <connections>
                                             <action selector="ClickClose:" destination="dFm-SR-MZ4" eventType="touchUpInside" id="Ij5-vG-c6d"/>
@@ -461,6 +461,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="bjp-zE-PaX"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bjp-zE-PaX" firstAttribute="trailing" secondItem="eRP-Nl-zkT" secondAttribute="trailing" id="74m-PQ-ADT"/>
@@ -474,7 +475,6 @@
                             <constraint firstAttribute="bottom" secondItem="eRP-Nl-zkT" secondAttribute="bottom" id="vvL-D5-Cz4"/>
                             <constraint firstItem="bjp-zE-PaX" firstAttribute="trailing" secondItem="7Pt-Y8-KQu" secondAttribute="trailing" constant="16" id="wNZ-Xm-keB"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="bjp-zE-PaX"/>
                     </view>
                     <navigationItem key="navigationItem" id="S6N-de-IrP"/>
                     <connections>
@@ -537,6 +537,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="7AD-fE-sq7"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="AiQ-AR-OON" firstAttribute="leading" secondItem="4au-sQ-qfF" secondAttribute="leading" id="0UD-WX-8wP"/>
@@ -547,7 +548,6 @@
                             <constraint firstAttribute="trailing" secondItem="VSV-1i-4xz" secondAttribute="trailing" id="lIz-Ws-MLx"/>
                             <constraint firstItem="VSV-1i-4xz" firstAttribute="leading" secondItem="4au-sQ-qfF" secondAttribute="leading" id="mzP-AP-gaC"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="7AD-fE-sq7"/>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="VSV-1i-4xz" id="ydH-EU-gtX"/>

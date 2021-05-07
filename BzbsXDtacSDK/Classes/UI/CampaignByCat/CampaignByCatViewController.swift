@@ -582,7 +582,7 @@ open class CampaignByCatViewController: BaseListController {
     
     // FIXME:GA#14
     func anaylticsTapSearch() {
-        analyticsSetEvent(event:"event_app", category: "reward", action: "touch_button", label: "search_box")
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search_box")
     }
     
     // FIXME:GA#15

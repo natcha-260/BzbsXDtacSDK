@@ -291,10 +291,10 @@ open class PointHistoryViewController: BaseListController {
         var url:URL?
         if isEarn {
             url = BuzzebeesCore.urlDeeplinkHistory
-            sendGAClickEarnBanner()
+            sendGAClickEarnBanner(strUrl: url?.absoluteString ?? "")
         } else {
             url = BuzzebeesCore.urlDeeplinkHistoryRedeemed
-            sendGAClickBurnBanner()
+            sendGAClickBurnBanner(strUrl: url?.absoluteString ?? "")
         }
         if let _url = url {
             UIApplication.shared.open(_url, options: [:], completionHandler: nil)
@@ -609,8 +609,8 @@ extension PointHistoryViewController {
     }
     
     // FIXME:GA#51
-    func sendGAClickEarnBanner() {
-        
+    func sendGAClickEarnBanner(strUrl: String) {
+        analyticsSetEvent(event: "event_app", category: "your_coin_earn", action: "touch_banner", label: strUrl)
     }
     
     // FIXME:GA#52
@@ -630,8 +630,8 @@ extension PointHistoryViewController {
     }
     
     // FIXME:GA#53
-    func sendGAClickBurnBanner() {
-        
+    func sendGAClickBurnBanner(strUrl: String) {
+        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: strUrl)
     }
     
 }
