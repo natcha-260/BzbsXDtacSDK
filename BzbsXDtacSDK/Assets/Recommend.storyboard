@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Recommend List View Controller-->
+        <scene sceneID="3Ju-dw-TbW">
+            <objects>
+                <viewController storyboardIdentifier="recommend_list_view" id="C1D-nQ-Fom" customClass="RecommendListViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DG1-oR-8Mp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xs9-D9-7WY" customClass="SectionLineView" customModule="BzbsXDtacSDK" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="NzZ-4y-xrw"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kH0-Ct-xha">
+                                <rect key="frame" x="0.0" y="49" width="414" height="813"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4M8-j3-r6B">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="C1D-nQ-Fom" id="E6T-tv-T3o"/>
+                                    <outlet property="delegate" destination="C1D-nQ-Fom" id="yZj-1p-Paw"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xs9-D9-7WY" firstAttribute="top" secondItem="DnI-bz-Oov" secondAttribute="top" id="2nQ-vr-hnL"/>
+                            <constraint firstItem="kH0-Ct-xha" firstAttribute="top" secondItem="xs9-D9-7WY" secondAttribute="bottom" id="BhG-Ng-Qwf"/>
+                            <constraint firstItem="kH0-Ct-xha" firstAttribute="leading" secondItem="DnI-bz-Oov" secondAttribute="leading" id="Pyj-ZD-L2t"/>
+                            <constraint firstItem="DnI-bz-Oov" firstAttribute="trailing" secondItem="kH0-Ct-xha" secondAttribute="trailing" id="auc-n7-bya"/>
+                            <constraint firstItem="xs9-D9-7WY" firstAttribute="leading" secondItem="DnI-bz-Oov" secondAttribute="leading" id="fVL-2a-ocS"/>
+                            <constraint firstItem="DnI-bz-Oov" firstAttribute="trailing" secondItem="xs9-D9-7WY" secondAttribute="trailing" id="grB-Z3-oOl"/>
+                            <constraint firstItem="DnI-bz-Oov" firstAttribute="bottom" secondItem="kH0-Ct-xha" secondAttribute="bottom" id="j7G-yv-bf6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="DnI-bz-Oov"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="kH0-Ct-xha" id="LHC-P7-gH8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nZh-du-nnj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="228.98550724637684" y="377.67857142857139"/>
+        </scene>
+        <!--Recommend Coin List View Controller-->
+        <scene sceneID="y0M-ka-ovS">
+            <objects>
+                <viewController storyboardIdentifier="recommend_coin_list_view" id="DrD-FJ-3cf" customClass="RecommendCoinListViewController" customModule="BzbsXDtacSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fX1-if-uap">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zxk-Pj-Vb0" customClass="SectionLineView" customModule="BzbsXDtacSDK" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="WyL-eR-N2b"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XQ1-FH-lMQ">
+                                <rect key="frame" x="0.0" y="49" width="414" height="813"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eQK-9Y-XoM">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="DrD-FJ-3cf" id="zg6-XZ-2TB"/>
+                                    <outlet property="delegate" destination="DrD-FJ-3cf" id="mbK-H1-t5b"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XQ1-FH-lMQ" firstAttribute="leading" secondItem="ixc-ef-6vI" secondAttribute="leading" id="2ib-V2-VRP"/>
+                            <constraint firstItem="Zxk-Pj-Vb0" firstAttribute="top" secondItem="ixc-ef-6vI" secondAttribute="top" id="Bng-1G-weF"/>
+                            <constraint firstItem="Zxk-Pj-Vb0" firstAttribute="leading" secondItem="ixc-ef-6vI" secondAttribute="leading" id="U7p-TS-9Xn"/>
+                            <constraint firstItem="ixc-ef-6vI" firstAttribute="trailing" secondItem="XQ1-FH-lMQ" secondAttribute="trailing" id="dyD-Q9-sAS"/>
+                            <constraint firstItem="ixc-ef-6vI" firstAttribute="bottom" secondItem="XQ1-FH-lMQ" secondAttribute="bottom" id="fEF-S9-kRv"/>
+                            <constraint firstItem="ixc-ef-6vI" firstAttribute="trailing" secondItem="Zxk-Pj-Vb0" secondAttribute="trailing" id="haY-dM-1GJ"/>
+                            <constraint firstItem="XQ1-FH-lMQ" firstAttribute="top" secondItem="Zxk-Pj-Vb0" secondAttribute="bottom" id="k1u-tR-TPH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ixc-ef-6vI"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="XQ1-FH-lMQ" id="Qog-G2-Bav"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="INg-gi-BVk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="974" y="378"/>
+        </scene>
+    </scenes>
+</document>
