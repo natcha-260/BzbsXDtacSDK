@@ -1,6 +1,6 @@
 # BzbsXDtacSDK
-## 2.0.31
-- improve analytics
+## 2.0.37
+- update GA
 ## 2.0.30
 - improve performance
 ## 2.0.29
@@ -23,7 +23,7 @@
 - handle new ticket caching 
 - update wording
 ## 2.0.22 
-- Update GA 
+- update GA 
 - fix popup serial expired 
 - get MajorCampaignListViewController individual 
 - handle deeplink category/subcategory by id 

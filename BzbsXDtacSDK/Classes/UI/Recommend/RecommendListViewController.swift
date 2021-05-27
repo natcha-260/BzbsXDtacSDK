@@ -64,7 +64,8 @@ class RecommendListViewController: BaseListController {
         self.navigationItem.titleView = lblTitle
         //self.title = "recommend_title".localized()
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
-        getApi()
+        analyticsSetScreen(screenName: "reward_recommend")
+//        getApi()
     }
     
     override func updateUI() {
@@ -157,11 +158,41 @@ class RecommendListViewController: BaseListController {
         if item.id == "-1" {
             return
         }
+        
+        var name = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
+        {
+            if !item.line1.isEmpty {
+                name = item.line1
+            }
+        } else {
+            if !item.line1.isEmpty {
+                name = item.line2
+            }
+        }
+        
+        var agencyName = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
+        {
+            if !item.line3.isEmpty {
+                agencyName = item.line3
+            }
+        } else {
+            if !item.line4.isEmpty {
+                agencyName = item.line4
+            }
+        }
+        
+        var categoryName: String! = item.categoryName ?? ""
+        if categoryName.isEmpty {
+            categoryName = BzbsAnalyticDefault.category.rawValue
+        }
+        
         let reward1 : [String:Any] = [
-            AnalyticsParameterItemID: "{reward_id}" as NSString,
-            AnalyticsParameterItemName: "{reward_title}" as NSString,
-            AnalyticsParameterItemCategory: "reward/\(item.categoryName ?? "")/recommended" as NSString,
-            AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
+            AnalyticsParameterItemID: "\(item.id ?? "0")" as NSString,
+            AnalyticsParameterItemName: name as NSString,
+            AnalyticsParameterItemCategory: "reward/\(categoryName ?? "")/recommended" as NSString,
+            AnalyticsParameterItemBrand: "\(agencyName)" as NSString,
             AnalyticsParameterIndex: 1 as NSNumber,
             "metric1" : 0 as NSNumber,
         ]
@@ -172,7 +203,7 @@ class RecommendListViewController: BaseListController {
         let ecommerce : [String:AnyObject] = [
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " impression_list" as NSString,
+            "eventAction" : "impression_list" as NSString,
             "eventLabel" : "recommended_for_you | all" as NSString,
             AnalyticsParameterItemListName: "reward_recommend" as NSString
         ]
@@ -184,12 +215,42 @@ class RecommendListViewController: BaseListController {
         if item.id == "-1" {
             return
         }
+        
+        var name = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
+        {
+            if !item.line1.isEmpty {
+                name = item.line1
+            }
+        } else {
+            if !item.line1.isEmpty {
+                name = item.line2
+            }
+        }
+        
+        var agencyName = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
+        {
+            if !item.line3.isEmpty {
+                agencyName = item.line3
+            }
+        } else {
+            if !item.line4.isEmpty {
+                agencyName = item.line4
+            }
+        }
+        
+        var categoryName: String! = item.categoryName ?? ""
+        if categoryName.isEmpty {
+            categoryName = BzbsAnalyticDefault.category.rawValue
+        }
+        
         let reward1 : [String:Any] = [
-            AnalyticsParameterItemID: "{reward_id}" as NSString,
-            AnalyticsParameterItemName: "{reward_title}" as NSString,
-            AnalyticsParameterItemCategory: "reward/\(item.categoryName ?? "")/recommended" as NSString,
-            AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
-            AnalyticsParameterIndex: index as NSNumber,
+            AnalyticsParameterItemID: "\(item.id ?? "0")" as NSString,
+            AnalyticsParameterItemName: name as NSString,
+            AnalyticsParameterItemCategory: "reward/\(categoryName ?? "")/recommended" as NSString,
+            AnalyticsParameterItemBrand: "\(agencyName)" as NSString,
+            AnalyticsParameterIndex: 1 as NSNumber,
             "metric1" : 0 as NSNumber,
         ]
         
@@ -200,7 +261,7 @@ class RecommendListViewController: BaseListController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_list" as NSString,
-            "eventLabel" : "recommended_for_you | {reward_category} | recommended | {reward_index} | {reward_id}" as NSString,
+            "eventLabel" : "recommended_for_you | \(categoryName ?? "") | recommended | \(index) | \(item.id ?? "0")" as NSString,
             AnalyticsParameterItemListName: "reward_recommend" as NSString
         ]
         

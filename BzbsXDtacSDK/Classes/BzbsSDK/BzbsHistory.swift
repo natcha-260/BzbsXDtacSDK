@@ -138,7 +138,7 @@ public class BzbsHistory {
 //            }
 //        }
         
-        redeemKey = BuzzebeesConvert.StringFromObjectNull(dict["RedeemKey"])
+        redeemKey = BuzzebeesConvert.StringOrNull(dict["RedeemKey"])
         serial = BuzzebeesConvert.StringFromObject(dict["Serial"])
         shippedStatus = BuzzebeesConvert.StringFromObject(dict["ShippedStatus"])
         shippingDate = BuzzebeesConvert.DoubleFromObject(dict["ShippingDate"])

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 class SearchResultListController: BaseListController {
 
@@ -57,8 +58,8 @@ class SearchResultListController: BaseListController {
         //self.title = "search_title".localized()
         lblSearchResults.font = UIFont.mainFont()
         lblSearchResults.text = "About 0 results"
-        getApi()
         analyticsSetScreen(screenName: "reward_search")
+        getApi()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -89,7 +90,7 @@ class SearchResultListController: BaseListController {
     
     let _intTop = 1000
     override func getApi() {
-        if _isCallApi || _isEnd { return }
+        if _isCallApi || _isEnd || strSearch.isEmpty { return }
         showLoader()
         _isCallApi = true
         controller.list(config: getConfig()
@@ -113,7 +114,6 @@ class SearchResultListController: BaseListController {
                 self.lblSearchResults.text = String(format: "search_result_format".localized(), "\(tmpList.count)")
                 self.lblSearchResults.isHidden = tmpList.count <= 0
                 self.analyticsSearchResult(text: self.strSearch, numberOfPrivileges: tmpList.count)
-                self.analyticsImpressionSearchResult()
                 self.loadedData()
         }) { (error) in
             self._isEnd = true
@@ -135,14 +135,50 @@ class SearchResultListController: BaseListController {
     }
     
     // FIXME:GA#40
-    func analyticsImpressionSearchResult() {
-        analyticsSetEvent(event: "view_item_list", category: "reward", action: "impression_list", label: "search_result")
+    func analyticsImpressionItemResult(_ item:BzbsCampaign) {
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(item.ID ?? -1)" as NSString,
+            AnalyticsParameterItemName: "\(item.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemBrand: "\(item.categoryName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterIndex: 1 as NSNumber,
+            "metric1" : (item.pointPerUnit ?? 0) as NSNumber,
+        ]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : [reward1] as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " impression_list" as NSString,
+            "eventLabel" : "search_result" as NSString,
+            AnalyticsParameterItemListName: "reward_search" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     //FIXME:GA#41
-    func analyticsSelectItemResult(category: String = "unknown_category", filter: String = "unknown_subcategory", index: Int, id: Int) {
-        let label = "search_result | \(category) | \(filter) | \(index) | \(id)"
-        analyticsSetEvent(event: "select_item", category: "reward", action: "touch_list", label: label)
+    func analyticsSelectItemResult(_ item:BzbsCampaign, indexPath:IndexPath) {
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(item.ID ?? -1)" as NSString,
+            AnalyticsParameterItemName: "\(item.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemBrand: "\(item.categoryName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterIndex: (indexPath.row + 1) as NSNumber,
+            "metric1" : (item.pointPerUnit ?? 0) as NSNumber,
+        ]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : [reward1] as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " touch_list" as NSString,
+            "eventLabel" : "search_result | \(BzbsAnalyticDefault.category.rawValue) | \(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | \(indexPath.row + 1) | \(item.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: "reward_search" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
     }
     
 }
@@ -168,6 +204,7 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
             return cell
         }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        analyticsImpressionItemResult(item)
         if item.parentCategoryID == BuzzebeesCore.catIdCoin {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
             cell.setupWith(item, isShowDistance: false)
@@ -221,9 +258,9 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self._arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
+        analyticsSelectItemResult(item, indexPath: indexPath)
         if let nav = self.navigationController
         {
-            analyticsSelectItemResult(category: item.categoryName, filter: item.subCampaignStyles, index: indexPath.row, id: item.ID)
             GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)
         }
     }

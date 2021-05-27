@@ -28,7 +28,7 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoCampaignDetail(_ nav:UINavigationController, campaign: BzbsCampaign, target: UIViewController) {
+    class func gotoCampaignDetail(_ nav:UINavigationController, campaign: BzbsCampaign, parentCategoryName:String = BzbsAnalyticDefault.category.rawValue, target: UIViewController) {
         if !ReachabilityManager.shared.isConnectedToInternet() {
             ReachabilityManager.shared.showPopupInternet(target: target)
             return
@@ -41,6 +41,7 @@ class GotoPage: NSObject
         let vc = storboard.instantiateViewController(withIdentifier: "scene_campaign_detail") as! CampaignDetailViewController
         vc.hidesBottomBarWhenPushed = true
         vc.campaign = campaign
+        vc.parentCategoryName = parentCategoryName
         nav.pushViewController(vc, animated: true)
     }
     
@@ -151,12 +152,13 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoLineHistory(_ nav: UINavigationController, isFromHistory:Bool = false, lineCampaign:LineStickerCampaign, bzbsCampaign:BzbsCampaign, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
+    class func gotoLineHistory(_ nav: UINavigationController, isFromHistory:Bool = false, lineCampaign:LineStickerCampaign, bzbsCampaign:BzbsCampaign, bzbsHistory:BzbsHistory? = nil, contactNumber:String, packageId: String, backSelector:(() -> Void)? = nil) {
         let storboard = UIStoryboard(name: "History", bundle: currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "scene_line_history") as! LineHistoryViewController
         vc.hidesBottomBarWhenPushed = true
         vc.lineCampaign = lineCampaign
         vc.bzbsCampaign = bzbsCampaign
+        vc.bzbsHistory = bzbsHistory
         vc.contactNumber = contactNumber
         vc.packageId = packageId
         vc.backSelector = backSelector

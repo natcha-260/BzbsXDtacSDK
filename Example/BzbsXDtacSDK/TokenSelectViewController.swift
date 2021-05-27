@@ -60,7 +60,7 @@ class TokenSelectViewController: UIViewController {
         segmentVersion.titleForSegment(at: segmentVersion.selectedSegmentIndex) ?? versionList.first!
     }
     
-    let dtacAppVersion = "9.0.1"
+    let dtacAppVersion = "9.1.0.2212345"
     
     var isChangeUser = false
     
@@ -171,7 +171,6 @@ class TokenSelectViewController: UIViewController {
                 delay(0.5) {
                     DispatchQueue.main.async {
                         Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
-                        nav.pushViewController(CampaignDetailViewController.getView(campaignId: txtId), animated: true)
                     }
                 }
             }
@@ -192,7 +191,6 @@ class TokenSelectViewController: UIViewController {
             delay(0.5) {
                 DispatchQueue.main.async {
                     Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
-                    nav.pushViewController(PointHistoryViewController.getView(), animated: true)
                 }
             }
         } else {
@@ -212,7 +210,6 @@ class TokenSelectViewController: UIViewController {
             delay(0.5) {
                 DispatchQueue.main.async {
                     Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
-                    nav.pushViewController(FavoriteViewController.getViewController(), animated: true)
                 }
             }
         } else {
@@ -238,7 +235,6 @@ class TokenSelectViewController: UIViewController {
                 delay(0.5) {
                     DispatchQueue.main.async {
                         Bzbs.shared.setup(token: self.token!, ticket: self.ticket!, language: self.language, DTACSegment: self.segment!, TelType: self.TelType, appVersion: self.dtacAppVersion)
-                        nav.pushViewController(CampaignByCatViewController.getView(category: catName, subCategory: subCatName), animated: true)
                     }
                 }
             } else {

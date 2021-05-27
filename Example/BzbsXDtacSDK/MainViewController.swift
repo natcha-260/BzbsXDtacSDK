@@ -87,7 +87,7 @@ extension MainViewController : BzbsDelegate
         i += 1
         if let tabbar = self.tabBarController
         {
-            if let nav = tabbar.viewControllers?[1] as? UINavigationController,
+            if let nav = tabbar.viewControllers?[3] as? UINavigationController,
                 let vc = nav.viewControllers.first as? AnalyticDebugViewController
             {
                 vc.printLog("\(i) => \n \(string) \n<=\n")

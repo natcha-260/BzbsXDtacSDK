@@ -7,48 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1CAE64FF-E800-4A1A-96F1-C0B6A9CBEC74"
-            shouldBeEnabled = "No"
+            uuid = "796CF4C6-34D2-4057-99C0-A23FD2BE0241"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../BzbsXDtacSDK/Classes/UI/CampaignByCat/CampaignByCatViewController.swift"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Main/BzbsMainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
-            landmarkName = "CampaignByCatViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4C69D8C1-4096-4E9A-A4FB-FE3524068208"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BzbsXDtacSDK/TokenSelectViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
-            landmarkName = "clickBlueMember(_:)"
+            startingLineNumber = "1087"
+            endingLineNumber = "1087"
+            landmarkName = "sendCoinGATouchEvent(_:indexPath:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BF936A89-4281-4AE0-8C87-FD1FC112F8B1"
-            shouldBeEnabled = "No"
+            uuid = "0527F08A-98C8-4313-AB66-67335D84C816"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../BzbsXDtacSDK/Classes/UI/Model/PointLogModel.swift"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Detail/CampaignDetailViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
-            landmarkName = "extractDetail()"
+            startingLineNumber = "622"
+            endingLineNumber = "622"
+            landmarkName = "clickRedeem(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

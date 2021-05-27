@@ -178,7 +178,7 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = "\(bzbsCampaign.ID ?? 0)" as AnyObject
         reward1[AnalyticsParameterItemName] = bzbsCampaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/{reward_category}/\(bzbsCampaign.categoryName ?? "")".lowercased() as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/coin/\(bzbsCampaign.categoryName ?? "")".lowercased() as AnyObject
         reward1[AnalyticsParameterItemBrand] = bzbsCampaign.agencyName as AnyObject
         reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
         reward1["metric1"] = (bzbsCampaign.pointPerUnit ?? 0) as AnyObject
@@ -194,7 +194,7 @@ class LineStickerDetailViewController: BzbsXDtacBaseViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "redeem_confirm | {reward_category} | {reward_filter} | {reward_index} | \(bzbsCampaign.ID ?? -1)" as NSString,
+            "eventLabel" : "redeem_confirm | coin | \(bzbsCampaign.categoryName ?? "") | 1 | \(bzbsCampaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         

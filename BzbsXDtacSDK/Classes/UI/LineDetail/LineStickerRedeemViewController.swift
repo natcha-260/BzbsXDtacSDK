@@ -313,29 +313,24 @@ extension LineStickerRedeemViewController {
     
     // FIXME:GA#45
     func sendGAContinue() {
-        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
             AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
             AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
             AnalyticsParameterIndex: NSNumber(value: 1),
-            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
             "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
         ]
         
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
         let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
+            "items" : [reward1] as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "line_sticker_info | \(campaignId ?? "0")" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
+            "eventAction" : " touch_button" as NSString,
+            "eventLabel" : "redeem_shipping | coins | \(bzbsCampaign.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)| 1 | \(bzbsCampaign.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -348,24 +343,20 @@ extension LineStickerRedeemViewController {
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(campaignId ?? "0")" as NSString,
             AnalyticsParameterItemName: "\(bzbsCampaign.name ?? "")" as NSString,
-            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/coins/\(bzbsCampaign.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
             AnalyticsParameterItemBrand: "\(bzbsCampaign.agencyName ?? "")" as NSString,
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
             AnalyticsParameterQuantity: 1 as NSNumber,
             AnalyticsParameterIndex: NSNumber(value: 1),
-            AnalyticsParameterItemVariant: "\(bzbsCampaign.expireIn ?? 0)" as NSString,
             "metric1" : (bzbsCampaign.pointPerUnit ?? 0) as NSNumber
         ]
         
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
         let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
+            "items" : [reward1] as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "confirm_line_sticker | \(campaignId ?? "0")" as NSString,
+            "eventLabel" : "redeem_payment/coin | \(bzbsCampaign.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | 1 | \(bzbsCampaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
         ]
         
@@ -376,7 +367,7 @@ extension LineStickerRedeemViewController {
     
     // FIXME:GA#48
     func sendGARedeemLineFail(strMessage:String) {
-//        "line_sticker_error | {reward_id} | {error_text}"
+        analyticsSetEvent(event: "event_app", category: "reward", action: "seen_text", label: "line_sticker_error | \(bzbsCampaign.ID ?? -1) | \(strMessage)")
     }
     
 //    func sendGAThankyouPage(_ redeemKey:String?) {

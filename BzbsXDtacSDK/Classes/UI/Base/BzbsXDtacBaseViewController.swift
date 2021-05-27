@@ -582,6 +582,8 @@ extension BzbsXDtacBaseViewController {
                     }
                     break
                 }
+            } else if let groupCmpg = params["groupCmpg"] as? String {
+                openCampaignHashtag(groupCmpg)
             }
         }
     }

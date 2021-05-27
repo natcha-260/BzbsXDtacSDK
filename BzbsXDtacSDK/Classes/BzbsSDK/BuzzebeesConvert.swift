@@ -27,7 +27,7 @@ class BuzzebeesConvert {
         return ""
     }
     
-    class func StringFromObjectNull(_ ao: AnyObject?) -> String? {
+    class func StringOrNull(_ ao: AnyObject?) -> String? {
         if(ao == nil) { return nil }
         
         if let itemStr = ao as? String {
@@ -138,7 +138,7 @@ class BuzzebeesConvert {
         return nil
     }
     
-    class func IntFromObjectNull(_ ao: AnyObject?) -> Int? {
+    class func IntOrNull(_ ao: AnyObject?) -> Int? {
         if let raw = ao {
             if let itemInt = raw as? Int {
                 return itemInt

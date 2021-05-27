@@ -592,36 +592,28 @@ extension SearchViewController {
     
     // FIXME:GA#34
     func sendGAClickMap() {
-        
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search | map")
     }
     
     // FIXME:GA#35
     func sendGAClickFavour() {
-        
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search | favorites")
     }
     
     // FIXME:GA#36
     func sendGAClickCategory(_ item:BzbsCategory) {
-        
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search | \(item.name ?? BzbsAnalyticDefault.subCategory.rawValue)")
     }
     
     // FIXME:GA#37
     func sendGAClickHistorySearch(string:String) {
-        
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search_history | \(string)")
     }
     
     // FIXME:GA#38
     func sendGASearch()
     {
-        let reward1 : [String : AnyObject] = [
-            "eventCategory": "reward" as AnyObject,
-            "eventAction": "search" as AnyObject,
-            "eventLabel": strSearch as AnyObject,
-            AnalyticsParameterSearchTerm: strSearch as AnyObject
-        ]
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSearch, params: reward1)
-        
-        // analyticsSetEvent(event:"track_event", category: "reward", action: "search", label: strSearch)
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search_text | \(strSearch )")
     }
     
     

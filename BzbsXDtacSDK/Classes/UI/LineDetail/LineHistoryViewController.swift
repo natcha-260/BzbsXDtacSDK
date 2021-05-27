@@ -24,6 +24,7 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     var isFromHistory:Bool!
     var lineCampaign:LineStickerCampaign!
     var bzbsCampaign:BzbsCampaign!
+    var bzbsHistory:BzbsHistory?
     var contactNumber:String!
     var packageId:String!
     var isNavHidden = false
@@ -99,6 +100,6 @@ class LineHistoryViewController: BzbsXDtacBaseViewController {
     // MARK:- GA
     // FIXME:GA#47
     func sendGADownload() {
-        Bzbs.shared.delegate?.analyticsEvent(event: "event_app", category: "reward", action: "touch_button", label: "download_line_sticker | \(bzbsCampaign.ID ?? 0) | \(bzbsCampaign.pointPerUnit ?? 0)")
+        Bzbs.shared.delegate?.analyticsEvent(event: "event_app", category: "reward", action: "touch_button", label: "download_line_sticker | \(bzbsHistory?.redeemKey ?? "-")")
     }
 }

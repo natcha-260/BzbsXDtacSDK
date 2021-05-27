@@ -19,6 +19,7 @@ enum DetailTab {
 public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     // MARK:- Properties
     var campaignStatus : CampaignStatus?
+    var parentCategoryName : String = BzbsAnalyticDefault.category.rawValue
     
     // MARK:- Outlet
     @IBOutlet weak var vwNav: UIView!
@@ -1384,39 +1385,37 @@ extension CampaignDetailViewController: PopupSerialDelegate
 
 // MARK:- Analytics
 extension CampaignDetailViewController {
-     // FIXME:GA#24
+    // FIXME:GA#24
     func sendGAViewEvent()
     {
-            var reward1 = [String:AnyObject]()
-            reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? -1)" as AnyObject
-            reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-            reward1[AnalyticsParameterItemCategory] = "reward/{reward_category}/\(campaign.categoryName ?? "")".lowercased() as AnyObject
-            reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
-            reward1[AnalyticsParameterIndex] = NSNumber(value: 1) as NSNumber
-            reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
-            
-            
-            // Prepare ecommerce dictionary.
-            let items : [Any] = [reward1]
-            
-            let ecommerce : [String:AnyObject] = [
-                "items" : items as AnyObject,
-                "eventCategory" : "reward" as NSString,
-                "eventAction" : "seen_text" as NSString,
-                "eventLabel" : "reward_detail | {reward_category} | {reward_filter} | {reward_index} | \(campaign.ID ?? -1)" as NSString,
-                AnalyticsParameterItemListName: "{previous_step}" as NSString
-            ]
-            
-            // Log select_content event with ecommerce dictionary.
-            analyticsSetEventEcommerce(eventName: AnalyticsEventViewItem, params: ecommerce)
+        
+        var reward1 = [String:AnyObject]()
+        reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? -1)" as AnyObject
+        reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/\(parentCategoryName)/\(campaign.categoryName ?? "")".lowercased() as AnyObject
+        reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
+        reward1[AnalyticsParameterIndex] = NSNumber(value: 1) as NSNumber
+        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : [reward1] as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : "seen_text" as NSString,
+            "eventLabel" : "reward_detail | \(parentCategoryName) | \(campaign.categoryName ?? "") | \(1) | \(campaign.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItem, params: ecommerce)
     }
     
     // FIXME:GA#25
     func sendGAClickRedeem() {
+        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(campaign.ID ?? -1)",
             AnalyticsParameterItemName: (campaign.name ?? "") as NSString,
-            AnalyticsParameterItemCategory : "reward/{reward_category}/\(campaign.categoryName ?? "")".lowercased() as AnyObject,
+            AnalyticsParameterItemCategory : "reward/\(parentCategoryName)/\(campaign.categoryName ?? "")".lowercased() as AnyObject,
             AnalyticsParameterItemBrand: (campaign.agencyName ?? "") as NSString,
             AnalyticsParameterIndex: NSNumber(value: 1),
             "metric1" : campaign.pointPerUnit ?? 0 as NSNumber,
@@ -1425,14 +1424,11 @@ extension CampaignDetailViewController {
             AnalyticsParameterQuantity: 1 as NSNumber,
         ]
         
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
         let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
+            "items" : [reward1] as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "redeem_reward | {reward_category} | {reward_filter} | {reward_index} | \(campaign.ID ?? -1)" as NSString,
+            "eventLabel" : "redeem_reward | \(parentCategoryName) | \(campaign.categoryName ?? "") | 1 | \(campaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
@@ -1445,9 +1441,9 @@ extension CampaignDetailViewController {
         
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)" as AnyObject
-        reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/{reward_category}/\(campaign.categoryName ?? "")".lowercased() as AnyObject
-        reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
+        reward1[AnalyticsParameterItemName] = "\(campaign.name ?? BzbsAnalyticDefault.name.rawValue)" as AnyObject
+        reward1[AnalyticsParameterItemCategory] = "reward/\(parentCategoryName)/\(campaign.categoryName ?? "")".lowercased() as AnyObject
+        reward1[AnalyticsParameterItemBrand] = "\(campaign.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as AnyObject
         reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
         reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
         reward1[AnalyticsParameterPrice] = 0 as NSNumber
@@ -1462,7 +1458,7 @@ extension CampaignDetailViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
-            "eventLabel" : "redeem_confirm | {reward_category} | {reward_filter} | {reward_index} | \(campaign.ID ?? -1)" as NSString,
+            "eventLabel" : "redeem_confirm | \(parentCategoryName) | \(campaign.categoryName ?? "") | 1 | \(campaign.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
         ]
         
@@ -1471,31 +1467,32 @@ extension CampaignDetailViewController {
     }
     // FIXME:GA#27
     func sendGACancelCheckout() {
-//        let reward1 : [String:Any] = [
-//                    AnalyticsParameterItemID: "{reward_id}" as NSString,
-//                    AnalyticsParameterItemName: "{reward_title}" as NSString,
-//                    AnalyticsParameterItemCategory: "reward/{reward_category}/{reward_filter}" as NSString,
-//                    AnalyticsParameterItemBrand: "{reward_brand}" as NSString,
-//                    AnalyticsParameterIndex: {reward_index} as NSNumber
-//                    "metric1" : {coins} as NSNumber,
-//                    AnalyticsParameterPrice: 0 as NSNumber,
-//                    AnalyticsParameterCurrency: "THB" as NSString,
-//                    AnalyticsParameterQuantity: 1 as NSNumber,
-//                    ]
-//
-//                    // Prepare ecommerce dictionary.
-//                    let items : [Any] = [reward1]
-//
-//                    let ecommerce : [String:Any] = [
-//                        "items" : items,
-//                        "eventCategory" : "reward" as NSString,
-//                        "eventAction" : " touch_button" as NSString,
-//                        "eventLabel" : "redeem_cancel | {reward_category} | {reward_filter} | {reward_index} | {reward_id}" as NSString,
-//                        AnalyticsParameterItemListName: "{previous_step}" as NSString
-//                    ]
-//
-//                    // Log select_content event with ecommerce dictionary.
-//                    Analytics.logEvent(AnalyticsEventRemoveFromCart, parameters: ecommerce)
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(campaign.ID ?? 0)" as NSString,
+            AnalyticsParameterItemName: "\(campaign.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(parentCategoryName)/\(campaign.categoryName ?? "")".lowercased() as AnyObject,
+            AnalyticsParameterItemBrand: "\(campaign.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterIndex: 1 as NSNumber,
+            "metric1" : (campaign.pointPerUnit ?? 0) as NSNumber,
+            AnalyticsParameterPrice: 0 as NSNumber,
+            AnalyticsParameterCurrency: "THB" as NSString,
+            AnalyticsParameterQuantity: 1 as NSNumber,
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " touch_button" as NSString,
+            "eventLabel" : "redeem_cancel | \(parentCategoryName) | \(campaign.categoryName ?? "") | 1 | \(campaign.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventRemoveFromCart, params: ecommerce)
     }
     
     // FIXME:GA#28
@@ -1507,7 +1504,7 @@ extension CampaignDetailViewController {
     // FIXME:GA#32
     func sendGAClickHistory()
     {
-        let label = "history_reward | {reward_category} | {reward_filter} | {reward_index} | {reward_id}"
+        let label = "history_reward | \(parentCategoryName) | \(campaign.categoryName ?? "") | 1 | \(campaign.ID ?? -1)"
         analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: label)
     }
     
@@ -1515,7 +1512,7 @@ extension CampaignDetailViewController {
     func sendGAClickFavour()
     {
         let isFavour = !(campaign.isFavourite ?? false) ? "add" : "remove"
-        let label = "\(isFavour)_favorite | {reward_category} | {reward_filter} | {reward_index} | {reward_id}"
+        let label = "\(isFavour)_favorite | \(parentCategoryName) | \(campaign.categoryName ?? "") | 1 | \(campaign.ID ?? -1)"
         analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: label)
     }
     

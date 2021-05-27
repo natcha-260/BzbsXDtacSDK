@@ -56,6 +56,7 @@ class PopupManager :NSObject
         vc.purchase = purchase
         vc.delegate = target as? PopupSerialDelegate
         vc.isNeedUpdate = isNeedUpdate
+        vc.previousScreenName = (target as? BzbsXDtacBaseViewController)?.screenName
         present(view: vc, on: target)
     }
     

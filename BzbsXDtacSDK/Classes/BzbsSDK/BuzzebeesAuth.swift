@@ -506,8 +506,12 @@ extension BuzzebeesAuth {
         //                , deviceNotiEnable: false
         //                , clientVersion: strVersion
         //                , deviceToken: token, customInfo: ticket, language:language, DTACSegment: DTACSegment == "" ? "9999" : DTACSegment)
-        
-        let info = "{\"ticket\": \"\(loginParams.ticket!)\", \"segment\": \"\(loginParams.DTACSegment!)\", \"teltype\": \"\(loginParams.TelType!)\"}"
+        var appversion = loginParams.DtacAppVersion ?? ""
+        if appversion.split(separator: ".").count > 3 {
+            let tmp = appversion.split(separator: ".")
+            appversion = String(tmp[0]) + "." + String(tmp[1]) + "." + String(tmp[2])
+        }
+        let info = "{\"ticket\": \"\(loginParams.ticket!)\", \"segment\": \"\(loginParams.DTACSegment!)\", \"teltype\": \"\(loginParams.TelType!)\", \"appversion\": \"\(appversion)\"}"
         
         let params = [
             "uuid": loginParams.token as Any,

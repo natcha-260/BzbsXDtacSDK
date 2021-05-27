@@ -91,7 +91,7 @@ public class BzbsDashboard {
             line2 = BuzzebeesConvert.StringFromObject(item["line2"])
             line3 = BuzzebeesConvert.StringFromObject(item["line3"])
             line4 = BuzzebeesConvert.StringFromObject(item["line4"])
-            name = BuzzebeesConvert.StringFromObject(item["name"])
+            name = BuzzebeesConvert.StringOrNull(item["name"])
             url = BuzzebeesConvert.StringFromObject(item["url"])
             strGA = BuzzebeesConvert.StringFromObject(item["ga_label"])
             hashtag = BuzzebeesConvert.StringFromObject(item["hashtag"])
@@ -114,9 +114,9 @@ public class BzbsDashboard {
             start_date = BuzzebeesConvert.DoubleFromObject(item["start_date"])
             end_date = BuzzebeesConvert.DoubleFromObject(item["end_date"])
             
-            level = BuzzebeesConvert.IntFromObjectNull(item["level"])
+            level = BuzzebeesConvert.IntOrNull(item["level"])
             
-            categoryName = BuzzebeesConvert.StringFromObject(item["categoryName"])
+            categoryName = BuzzebeesConvert.StringOrNull(item["categoryName"])
             
             if let tmpSubCategoryId = item["subCategoryId"] as? [Int] {
                 self.subCategoryId = tmpSubCategoryId

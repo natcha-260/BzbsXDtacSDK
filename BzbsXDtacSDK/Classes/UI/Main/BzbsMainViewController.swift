@@ -210,8 +210,8 @@ import ImageSlideshow
             let TelType = Bzbs.shared.dtacLoginParams.TelType
         {
             let language = Bzbs.shared.dtacLoginParams.language ?? "th"
-            let appVersion = Bzbs.shared.dtacLoginParams.appVersion ?? ""
-            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment, TelType: TelType, appVersion: appVersion)
+            let DtacAppVersion = Bzbs.shared.dtacLoginParams.DtacAppVersion ?? ""
+            apiLogin(token, ticket: ticket, language:language, DTACSegment: DTACSegment, TelType: TelType, DtacAppVersion: DtacAppVersion)
             if Bzbs.shared.userLogin != nil {
                 getApiCategory()
                 getApiRecommend()
@@ -286,16 +286,17 @@ import ImageSlideshow
             getApiRecommend()
             getApiCoinRecommend()
             getApi()
+            analyticsSetRemainingCoin()
         }
     }
     
-    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String, TelType: String, appVersion: String)
+    func apiLogin(_ token:String, ticket: String, language:String, DTACSegment:String, TelType: String, DtacAppVersion: String)
     {
         let isNeedupdateUI = Bzbs.shared.userLogin == nil
         if !isNeedupdateUI {
             showLoader()
         }
-        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType: TelType, appVersion: appVersion, completionHandler: {
+        Bzbs.shared.login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType: TelType, DtacAppVersion: DtacAppVersion, completionHandler: {
             
             if let user = Bzbs.shared.userLogin, user.dtacLevel == .no_level {
                 Bzbs.shared.delegate?.reLogin()
@@ -385,6 +386,7 @@ import ImageSlideshow
             {
                 if let expiringPoint = first["points"] as? Int {
                     Bzbs.shared.userLogin?.bzbsPoints = expiringPoint
+                    self.analyticsSetRemainingCoin()
                 }
             }
             if self.collectionView.numberOfSections > 1 {
@@ -765,6 +767,7 @@ import ImageSlideshow
             
             if let nav = self.navigationController {
                 GotoPage.gotoWebSite(nav, strUrl: strUrl, strTitle: strTitle)
+                analyticsTapSegment(segmentName: strTitle)
             }
         }
     }
@@ -789,6 +792,11 @@ import ImageSlideshow
     // MARK:- Analytic Impression
     // MARK:-
     
+    // FIXME:GA#A
+    func analyticsSetRemainingCoin() {
+        analyticsSetUserProperty(propertyName: "remaining_coin", value: "\(Bzbs.shared.userLogin?.bzbsPoints ?? 0)")
+    }
+    
     // FIXME:GA#1
     func analyticsTapSegment(segmentName:String) {
         analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "your_segment | \(segmentName)")
@@ -804,50 +812,50 @@ import ImageSlideshow
     {
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? "")/reward_banner" as AnyObject,
-            AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
+            AnalyticsParameterItemName : (item.name ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
+            AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_banner" as AnyObject,
+            AnalyticsParameterItemBrand : (item.line2 ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
             AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
             "metric1" : Double("\(item.price ?? "0")") ?? 0 as Any,
         ]
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward1]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "impression_banner" as NSString,
-            "eventLabel" : "hero | \(item.categoryName ?? "") | reward_banner | \(index) | \(item.id ?? "")" as NSString,
+            "eventLabel" : "hero | \(item.categoryName ?? BzbsAnalyticDefault.category.rawValue) | reward_banner | \(index) | \(item.id ?? "")" as NSString,
             AnalyticsParameterItemListName: "reward_banner" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     // FIXME:GA#4
     func analyticsSendSelectDashboard(_ item: BzbsDashboard, _ index: Int) {
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
-            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? "")/reward_banner" as AnyObject,
-            AnalyticsParameterItemBrand : (item.line2 ?? "") as AnyObject,
+            AnalyticsParameterItemName : (item.name ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
+            AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_banner" as AnyObject,
+            AnalyticsParameterItemBrand : (item.line2 ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
             AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
             "metric1" : Double("\(item.price ?? "0")") ?? 0 as Any,
         ]
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward1]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_banner" as NSString,
-            "eventLabel" : "hero | \(item.categoryName ?? "") | reward_banner | \(index) | \(item.id ?? "")" as NSString,
+            "eventLabel" : "hero | \(item.categoryName ?? BzbsAnalyticDefault.category.rawValue) | reward_banner | \(index) | \(item.id ?? "")" as NSString,
             AnalyticsParameterItemListName: "reward_banner" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
     }
     
     // FIXME:GA#5
@@ -867,11 +875,27 @@ import ImageSlideshow
         if item.ID == -1 {
             return
         }
+        
+        var campaignName = item.name
+        if (campaignName ?? "").isEmpty {
+            campaignName = BzbsAnalyticDefault.name.rawValue
+        }
+        
+        var categoryName: String! = item.categoryName ?? ""
+        if categoryName.isEmpty {
+            categoryName = BzbsAnalyticDefault.category.rawValue
+        }
+        
+        var agencyName = item.agencyName
+        if (agencyName ?? "").isEmpty {
+            agencyName = BzbsAnalyticDefault.name.rawValue
+        }
+        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID : "\(item.ID ?? -1)" as AnyObject,
-            AnalyticsParameterItemName : (item.name ?? "") as AnyObject,
-            AnalyticsParameterItemCategory: "reward/\(item.categoryName ?? "")/reward_main".lowercased() as NSString,
-            AnalyticsParameterItemBrand : (item.agencyName ?? "") as AnyObject,
+            AnalyticsParameterItemName : campaignName as AnyObject,
+            AnalyticsParameterItemCategory: "reward/\(categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_main".lowercased() as NSString,
+            AnalyticsParameterItemBrand : agencyName as AnyObject,
             AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
             "metric1" : 0 as NSNumber,
         ]
@@ -879,16 +903,16 @@ import ImageSlideshow
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward1]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " impression_list" as NSString,
+            "eventAction" : "impression_list" as NSString,
             "eventLabel" : "recommended_for_you" as NSString,
             AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     // FIXME:GA#8
@@ -898,11 +922,27 @@ import ImageSlideshow
             return
         }
         
-        let reward1 : [String:Any] = [
+        var campaignName = campaign.name
+        if (campaignName ?? "").isEmpty {
+            campaignName = BzbsAnalyticDefault.name.rawValue
+        }
+        
+        var categoryName: String! = campaign.categoryName
+        if categoryName.isEmpty {
+            categoryName = BzbsAnalyticDefault.category.rawValue
+        }
+        
+        var agencyName = campaign.agencyName
+        if (agencyName ?? "").isEmpty {
+            agencyName = BzbsAnalyticDefault.name.rawValue
+        }
+        
+        
+        let reward1 : [String:AnyObject] = [
             AnalyticsParameterItemID : "\(campaign.ID ?? 0)" as AnyObject,
-            AnalyticsParameterItemName : campaign.name as AnyObject,
-            AnalyticsParameterItemCategory: "reward/\(campaign.categoryName ?? "")/reward_main".lowercased() as NSString,
-            AnalyticsParameterItemBrand: campaign.agencyName as AnyObject,
+            AnalyticsParameterItemName : campaignName as AnyObject,
+            AnalyticsParameterItemCategory: "reward/\(categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_main".lowercased() as NSString,
+            AnalyticsParameterItemBrand: agencyName as AnyObject,
             AnalyticsParameterIndex: NSNumber(value: (indexPath.row - 1)) as AnyObject,
             "metric1" : 0 as NSNumber,
         ]
@@ -910,21 +950,21 @@ import ImageSlideshow
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward1]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_list" as NSString,
-            "eventLabel" : "recommended_for_you | {reward_index} | {reward_id}" as NSString,
+            "eventLabel" : "recommended_for_you | \(indexPath.row - 1) | \(campaign.ID ?? 0)" as NSString,
             AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
     }
     
     // FIXME:GA#9
     func analyticsViewRecommendCoinAll() {
-        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "recommend_coin_reward | view_all")
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "recommended_coin_rewards | view_all")
     }
     
     // FIXME:GA#10
@@ -933,24 +973,29 @@ import ImageSlideshow
         if item.id == "-1" {
             return
         }
-        var name = item.line1
-        if LocaleCore.shared.getUserLocale() == 1033
+        
+        var name = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            name = item.line2
+            if !item.line1.isEmpty {
+                name = item.line1
+            }
+        } else {
+            if !item.line1.isEmpty {
+                name = item.line2
+            }
         }
         
-        if name == nil {
-            name = item.line1 ?? item.line2 ?? "-"
-        }
-        
-        
-        var agencyName = item.line3
-        if LocaleCore.shared.getUserLocale() == 1033
+        var agencyName = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            agencyName = item.line4
-        }
-        if agencyName == nil {
-            agencyName = item.line3 ?? item.line4 ?? "-"
+            if !item.line3.isEmpty {
+                agencyName = item.line3
+            }
+        } else {
+            if !item.line4.isEmpty {
+                agencyName = item.line4
+            }
         }
         
         var intPointPerUnit = 0
@@ -963,22 +1008,22 @@ import ImageSlideshow
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/coins/reward_main" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
-        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index + 1) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " impression_list" as NSString,
+            "eventAction" : "impression_list" as NSString,
             "eventLabel" : "recommended_coin_rewards" as NSString,
             AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventViewItemList, parameters: ecommerce)
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     // FIXME:GA#11
@@ -987,23 +1032,29 @@ import ImageSlideshow
         if item.id == "-1" {
             return
         }
-        var name = item.line1
-        if LocaleCore.shared.getUserLocale() == 1033
+        
+        var name = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            name = item.line2
+            if !item.line1.isEmpty {
+                name = item.line1
+            }
+        } else {
+            if !item.line1.isEmpty {
+                name = item.line2
+            }
         }
         
-        if name == nil {
-            name = item.line1 ?? item.line2 ?? "-"
-        }
-        
-        var agencyName = item.line3
-        if LocaleCore.shared.getUserLocale() == 1033
+        var agencyName = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            agencyName = item.line4
-        }
-        if agencyName == nil {
-            agencyName = item.line3 ?? item.line4 ?? "-"
+            if !item.line3.isEmpty {
+                agencyName = item.line3
+            }
+        } else {
+            if !item.line4.isEmpty {
+                agencyName = item.line4
+            }
         }
         
         var intPointPerUnit = 0
@@ -1024,16 +1075,16 @@ import ImageSlideshow
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward]
         
-        let ecommerce : [String:Any] = [
-            "items" : items,
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_list" as NSString,
-            "eventLabel" : "recommended_coin_rewards | coins | reward_main | {reward_index} | {reward_id}" as NSString,
+            "eventLabel" : "recommended_coin_rewards | coins | reward_main | \(index) | \(item.id ?? "0")" as NSString,
             AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
-        Analytics.logEvent(AnalyticsEventSelectItem, parameters: ecommerce)
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
     }
     
     // FIXME:GA#12
@@ -1412,9 +1463,9 @@ extension BzbsMainViewController: ScanQRViewControllerDelegate{
             {
                 if params.keys.contains("thrdPrtyCmpgId") || params.keys.contains("cmpggroupid"){
                     var campaignId :Int?
-                    if let id = BuzzebeesConvert.IntFromObjectNull(params["thrdPrtyCmpgId"] as AnyObject?) {
+                    if let id = BuzzebeesConvert.IntOrNull(params["thrdPrtyCmpgId"] as AnyObject?) {
                         campaignId = id
-                    } else if let id = BuzzebeesConvert.IntFromObjectNull(params["cmpggroupid"] as AnyObject?) {
+                    } else if let id = BuzzebeesConvert.IntOrNull(params["cmpggroupid"] as AnyObject?) {
                         campaignId = id
                     }
                     guard let _ = campaignId else{

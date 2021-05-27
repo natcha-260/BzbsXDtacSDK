@@ -18,7 +18,7 @@ struct DtacLoginParams {
     var language :String?
     var DTACSegment : String?
     var TelType : String?
-    var appVersion: String?
+    var DtacAppVersion: String?
     
     var dict: [String : String] {
         get {
@@ -27,18 +27,18 @@ struct DtacLoginParams {
             dict["ticket"] = ticket
             dict["DTACSegment"] = DTACSegment
             dict["TelType"] = TelType
-            dict["appVersion"] = appVersion
+            dict["appversion"] = DtacAppVersion
             return dict
         }
     }
     
-    init(token:String? = nil, ticket :String? = nil, language :String? = nil, DTACSegment : String? = nil, TelType : String? = nil, appVersion: String? = nil) {
+    init(token:String? = nil, ticket :String? = nil, language :String? = nil, DTACSegment : String? = nil, TelType : String? = nil, DtacAppVersion: String? = nil) {
         self.token = token
         self.ticket = ticket
         self.language = language
         self.DTACSegment = DTACSegment
         self.TelType = TelType
-        self.appVersion = appVersion
+        self.DtacAppVersion = DtacAppVersion
     }
     
     init(dict: [String : String]? = nil) {
@@ -46,7 +46,7 @@ struct DtacLoginParams {
         ticket = dict?["ticket"]
         DTACSegment = dict?["DTACSegment"]
         TelType = dict?["TelType"]
-        appVersion = dict?["appVersion"]
+        DtacAppVersion = dict?["appversion"]
     }
 }
 
@@ -83,7 +83,10 @@ struct DtacLoginParams {
     private let pathUrlFAQ = "/misc/faq"
     private let pathUrlAbout = "/misc/about"
     
-    @objc public var versionString :String = "0.0.4"
+    @objc public var versionString :String = "0.0.4" {
+        didSet{
+            BuzzebeesCore.isSetEndpoint = false }
+    }
     let agencyID = "110807"
     let prefixApp = "ios_dtw"
     
@@ -142,7 +145,7 @@ struct DtacLoginParams {
                 }
             }
         } else {
-            let loginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment: DTACSegment, TelType: TelType, appVersion: appVersion)
+            let loginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment: DTACSegment, TelType: TelType, DtacAppVersion: appVersion)
             let dict = loginParams.dict
             CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.loginparam, lifetime: BuzzebeesCore.cacheTimeSegment)
             self.dtacLoginParams = loginParams
@@ -162,6 +165,7 @@ struct DtacLoginParams {
         dict["ticket"] = dtacLoginParams.ticket
         dict["DTACSegment"] = dtacLoginParams.DTACSegment
         dict["TelType"] = dtacLoginParams.TelType
+        dict["appversion"] = dtacLoginParams.DtacAppVersion
         CacheCore.shared.saveCacheData(dict as AnyObject, key: BBCache.keys.loginparam, lifetime: BuzzebeesCore.cacheTimeSegment)
     }
     
@@ -180,7 +184,7 @@ struct DtacLoginParams {
     
     @objc public func login(token:String, ticket:String, language:String, DTACSegment:String, TelType: String, appVersion: String?)
     {
-        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, appVersion: appVersion, completionHandler: nil, failureHandler: nil)
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, DtacAppVersion: appVersion, completionHandler: nil, failureHandler: nil)
     }
     
     func relogin(completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
@@ -190,11 +194,11 @@ struct DtacLoginParams {
         let language = dtacLoginParams.language ?? "th"
         let DTACSegment = dtacLoginParams.DTACSegment ?? ""
         let TelType = dtacLoginParams.TelType ?? ""
-        let appVersion = dtacLoginParams.appVersion ?? ""
-        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, appVersion: appVersion, completionHandler: completionHandler, failureHandler: failureHandler)
+        let DtacAppVersion = dtacLoginParams.DtacAppVersion ?? ""
+        login(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, DtacAppVersion: DtacAppVersion, completionHandler: completionHandler, failureHandler: failureHandler)
     }
     
-    func login(token:String?, ticket:String?, language:String, DTACSegment: String, TelType: String, appVersion: String?, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
+    func login(token:String?, ticket:String?, language:String, DTACSegment: String, TelType: String, DtacAppVersion: String?, completionHandler:(() -> Void)? = nil, failureHandler:((BzbsError) -> Void)? = nil)
     {
         if isCallingLogin { return }
         isCallingLogin = true
@@ -202,20 +206,21 @@ struct DtacLoginParams {
         {
             BuzzebeesCore.apiSetupPrefix(successCallback: {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, appVersion: appVersion, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, DtacAppVersion: DtacAppVersion, completionHandler: completionHandler, failureHandler: failureHandler)
             }) {
                 self.isCallingLogin = false
-                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, appVersion: appVersion, completionHandler: completionHandler, failureHandler: failureHandler)
+                self.login(token:token, ticket:ticket, language:language, DTACSegment:DTACSegment, TelType: TelType, DtacAppVersion: DtacAppVersion, completionHandler: completionHandler, failureHandler: failureHandler)
             }
             return
         }
         
-        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, appVersion: appVersion)
+        Bzbs.shared.dtacLoginParams = DtacLoginParams(token: token, ticket: ticket, language: language, DTACSegment:DTACSegment, TelType:TelType, DtacAppVersion: DtacAppVersion)
         
         if let token = dtacLoginParams.token, token != "",
             let ticket = dtacLoginParams.ticket, ticket != "",
             let language = dtacLoginParams.language,
-            let DTACSegment = dtacLoginParams.DTACSegment
+            let DTACSegment = dtacLoginParams.DTACSegment,
+            let DtacAppVersion = dtacLoginParams.DtacAppVersion
         {
             if DTACSegment == "" && !isRetriedGetSegment
             {
@@ -230,7 +235,7 @@ struct DtacLoginParams {
                 
             }
             let clientVersion = prefixApp + versionString
-            let loginParams = DtacDeviceLoginParams(ticket: ticket, token: token, language: language, DTACSegment: DTACSegment, TelType: TelType, clientVersion: clientVersion)
+            let loginParams = DtacDeviceLoginParams(ticket: ticket, token: token, language: language, DTACSegment: DTACSegment, TelType: TelType, clientVersion: clientVersion, DtacAppVersion: DtacAppVersion)
 //            let loginParams = DtacDeviceLoginParams(uuid: token
 //                , os: "ios " + UIDevice.current.systemVersion
 //                , platform: UIDevice.current.model
@@ -526,6 +531,7 @@ class DtacDeviceLoginParams: NSObject {
     var language: String?
     var DTACSegment:String!
     var TelType:String!
+    var DtacAppVersion:String!
 //    init(uuid: String, os: String, platform: String, macAddress: String, deviceNotiEnable: Bool, clientVersion: String, deviceToken: String?, customInfo: String?, language: String?, DTACSegment:String?) {
 //        super.init(uuid: uuid,
 //                   os: os,
@@ -540,12 +546,19 @@ class DtacDeviceLoginParams: NSObject {
 //        self.DTACSegment = DTACSegment
 //    }
     
-    init(ticket:String, token:String, language:String, DTACSegment:String, TelType:String, clientVersion: String) {
+    init(ticket:String, token:String, language:String, DTACSegment:String, TelType:String, clientVersion: String, DtacAppVersion:String) {
         self.ticket = ticket
         self.token = token
         self.language = language
         self.DTACSegment = DTACSegment
         self.TelType = TelType
         self.clientVersion = clientVersion
+        self.DtacAppVersion = DtacAppVersion
     }
+}
+
+enum BzbsAnalyticDefault : String{
+    case name  = "unknown_title"
+    case category = "unknown_category"
+    case subCategory = "unknown_subcategory"
 }

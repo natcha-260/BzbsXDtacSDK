@@ -6,13 +6,12 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 public class FavoriteViewController: BaseListController {
     
-    
     // MARK:- Properties
     // MARK:- Outlet
-    
     
     // MARK:- Variable
     let controller = BuzzebeesCampaign()
@@ -80,7 +79,7 @@ public class FavoriteViewController: BaseListController {
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        analyticsSetScreen(screenName: "dtac_reward_favorite")
+        analyticsSetScreen(screenName: "reward_favorite")
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
@@ -174,7 +173,7 @@ public class FavoriteViewController: BaseListController {
         if let indexPath: IndexPath = tableView.indexPathForRow(at: point)
         {
             let itemCampaign = _arrDataShow[indexPath.row] as! BzbsCampaign
-            sendGATouchFavItem(itemCampaign)
+            sendGATouchFavItem(itemCampaign, indexPath: indexPath)
             if let token = Bzbs.shared.userLogin?.token
             {
                 showLoader()
@@ -243,7 +242,7 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
         }
         
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-        sendGAImpression(item)
+        sendGAImpression(item, indexPath: indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: "favoriteCell", for: indexPath) as! FavoriteCell
         cell.setupWith(item)
         cell.btnFav.addTarget(self, action: #selector(self.clickFavourite), for: UIControl.Event.touchUpInside)
@@ -271,7 +270,7 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-        sendGATouchItem(item)
+        sendGATouchItem(item, indexPath: indexPath)
         if item.currentDate > item.expireDate { return }
         if let nav = self.navigationController
         {
@@ -286,17 +285,53 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
 extension FavoriteViewController {
     
     // FIXME:GA#42
-    func sendGAImpression(_ item:BzbsCampaign) {
+    func sendGAImpression(_ item:BzbsCampaign, indexPath: IndexPath) {
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(item.ID ?? -1)" as NSString,
+            AnalyticsParameterItemName: "\(item.name ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemBrand: "\(item.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterIndex: indexPath.row + 1 as NSNumber,
+            "metric1" : item.pointPerUnit ?? 0 as NSNumber,
+        ]
         
+        let ecommerce : [String:AnyObject] = [
+            "items" : [reward1] as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " impression_list" as NSString,
+            "eventLabel" : "reward_favorite | all" as NSString,
+            AnalyticsParameterItemListName: "reward_favorite" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventViewItemList, params: ecommerce)
     }
     
     // FIXME:GA#43
-    func sendGATouchItem(_ item:BzbsCampaign) {
+    func sendGATouchItem(_ item:BzbsCampaign, indexPath: IndexPath) {
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(item.ID ?? -1)" as NSString,
+            AnalyticsParameterItemName: "\(item.name ?? "")" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemBrand: "\(item.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterIndex: indexPath.row + 1 as NSNumber,
+            "metric1" : item.pointPerUnit ?? 0 as NSNumber,
+        ]
+
+        let ecommerce : [String:AnyObject] = [
+            "items" : [reward1] as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " touch_list" as NSString,
+            "eventLabel" : "reward_favorite | \(BzbsAnalyticDefault.category.rawValue) | \(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | \(indexPath.row + 1) | \(item.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: "reward_favorite" as NSString
+        ]
         
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSelectItem, params: ecommerce)
     }
     
     // FIXME:GA#44
-    func sendGATouchFavItem(_ item:BzbsCampaign) {
-        
+    func sendGATouchFavItem(_ item:BzbsCampaign, indexPath: IndexPath) {
+        analyticsSetEvent(event: "event_app", category: "reward", action:" touch_button", label: "remove_favorite | \(BzbsAnalyticDefault.category.rawValue) | \(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | \(indexPath.row + 1) | \(item.ID ?? -1)")
     }
 }

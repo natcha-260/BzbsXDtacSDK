@@ -301,7 +301,7 @@ class MapsViewController: BzbsXDtacBaseViewController ,UIScrollViewDelegate{
     @IBAction func clickImage(_ sender: Any) {
         if campaigns.count <= currentIndex { return }
         if let reference_code = currentPlace?.reference_code,
-            let id = BuzzebeesConvert.IntFromObjectNull(reference_code as AnyObject)
+            let id = BuzzebeesConvert.IntOrNull(reference_code as AnyObject)
         {
             let campaign = BzbsCampaign()
             campaign.ID = id

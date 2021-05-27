@@ -37,9 +37,8 @@ class RecommendCoinListViewController: RecommendListViewController {
         lblTitle.sizeToFit()
         self.navigationItem.titleView = lblTitle
         self.navigationItem.leftBarButtonItems = BarItem.generate_back(self, selector: #selector(back_1_step))
+        analyticsSetScreen(screenName: "reward_recommend_coin")
 //        getApi()
-        
-        analyticsSetScreen(screenName: "reward")
     }
     
     override func getApi() {
@@ -49,7 +48,6 @@ class RecommendCoinListViewController: RecommendListViewController {
                                  successCallback: { (dashboard) in
                                     let tmpDashboard = dashboard.filter(BzbsDashboard.filterDashboardWithTelType(dashboard:))
                                     self._arrDataShow = tmpDashboard
-                                    self.sendImpressionCoinItems(impressionItems: tmpDashboard)
                                         // wordaround odd collection list count
                                     if self._arrDataShow.count % 2 != 0 {
                                         let dummyCampaign = BzbsDashboard()
@@ -79,6 +77,7 @@ class RecommendCoinListViewController: RecommendListViewController {
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
         let item = _arrDataShow[indexPath.row] as! BzbsDashboard
+        self.sendImpressionCoinItems(item: item, indexPath: indexPath)
         cell.setupWith(item)
         return cell
     }
@@ -100,53 +99,50 @@ class RecommendCoinListViewController: RecommendListViewController {
     }
     
     // FIXME:GA#22
-    func sendImpressionCoinItems(impressionItems:[BzbsDashboard])
+    func sendImpressionCoinItems(item:BzbsDashboard, indexPath: IndexPath)
     {
-        var items = [[String:AnyObject]]()
-        var i = 1
-        for item in impressionItems
+        
+        var name = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            var name = item.line1
-            if LocaleCore.shared.getUserLocale() == 1033
-            {
+            if !item.line1.isEmpty {
+                name = item.line1
+            }
+        } else {
+            if !item.line1.isEmpty {
                 name = item.line2
             }
-    
-            if name == nil {
-                name = item.line1 ?? item.line2 ?? "-"
-            }
-            
-            
-            var agencyName = item.line3
-            if LocaleCore.shared.getUserLocale() == 1033
-            {
-                agencyName = item.line4
-            }
-            if agencyName == nil {
-                agencyName = item.line3 ?? item.line4 ?? "-"
-            }
-            
-            var intPointPerUnit = 0
-            if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
-                intPointPerUnit = pointPerUnit
-            }
-            
-            var reward = [String:AnyObject]()
-            reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
-            reward[AnalyticsParameterItemName] = name as AnyObject
-            reward[AnalyticsParameterItemCategory] = "reward/coins/recommended" as AnyObject
-            reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
-            reward[AnalyticsParameterIndex] = i as AnyObject
-            reward["metric1"] = intPointPerUnit as AnyObject
-            
-            i += 1
-            items.append(reward)
         }
         
+        var agencyName = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
+        {
+            if !item.line3.isEmpty {
+                agencyName = item.line3
+            }
+        } else {
+            if !item.line4.isEmpty {
+                agencyName = item.line4
+            }
+        }
+        
+        var intPointPerUnit = 0
+        if let pointPerUnit = Convert.IntFromObject(item.dict?["pointperunit"]) {
+            intPointPerUnit = pointPerUnit
+        }
+        
+        var reward = [String:AnyObject]()
+        reward[AnalyticsParameterItemID] = (item.id ?? "") as AnyObject
+        reward[AnalyticsParameterItemName] = name as AnyObject
+        reward[AnalyticsParameterItemCategory] = "reward/coins/recommended" as AnyObject
+        reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
+        reward[AnalyticsParameterIndex] = indexPath.row + 1 as AnyObject
+        reward["metric1"] = intPointPerUnit as AnyObject
+        
         let ecommerce : [String: AnyObject] = [
-            "items" : items as AnyObject,
+            "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " impression_list" as NSString,
+            "eventAction" : "impression_list" as NSString,
             "eventLabel" : "recommend_coin_reward | all" as NSString,
             AnalyticsParameterItemListName: "reward_recommend_coin" as NSString
         ]
@@ -162,24 +158,29 @@ class RecommendCoinListViewController: RecommendListViewController {
         if item.id == "-1" {
             return
         }
-        var name = item.line1
-        if LocaleCore.shared.getUserLocale() == 1033
+        
+        var name = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            name = item.line2
+            if !item.line1.isEmpty {
+                name = item.line1
+            }
+        } else {
+            if !item.line1.isEmpty {
+                name = item.line2
+            }
         }
         
-        if name == nil {
-            name = item.line1 ?? item.line2 ?? "-"
-        }
-        
-        
-        var agencyName = item.line3
-        if LocaleCore.shared.getUserLocale() == 1033
+        var agencyName = BzbsAnalyticDefault.name.rawValue
+        if LocaleCore.shared.getUserLocale() == 1054
         {
-            agencyName = item.line4
-        }
-        if agencyName == nil {
-            agencyName = item.line3 ?? item.line4 ?? "-"
+            if !item.line3.isEmpty {
+                agencyName = item.line3
+            }
+        } else {
+            if !item.line4.isEmpty {
+                agencyName = item.line4
+            }
         }
         
         var intPointPerUnit = 0
@@ -198,13 +199,13 @@ class RecommendCoinListViewController: RecommendListViewController {
         
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward]
-        let label = "recommended_coin_rewards | coins | recommended  | \(index) | \(item.id ?? "0")"
+        let label = "recommended_coin_rewards | coins | recommended | \(index) | \(item.id ?? "0")"
         let ecommerce : [String: AnyObject] = [
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_list" as NSString,
             "eventLabel" : label.lowercased() as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
+            AnalyticsParameterItemListName: "reward_recommend_coin" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.

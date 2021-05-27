@@ -28,9 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        com.buzzebees.xDtac
         FirebaseApp.configure()
         GMSServices.provideAPIKey("AIzaSyD16TFAFMmV0bsu8Hi-kkGFS8dYkWPtIM0")
-        MSAppCenter.start("909eb374-e9b4-4369-a09a-2f23bbe1cc03", withServices:[
-          MSAnalytics.self,
-          MSCrashes.self
+        AppCenter.start(withAppSecret: "909eb374-e9b4-4369-a09a-2f23bbe1cc03", services:[
+            AppCenterAnalytics.Analytics.self,
+            AppCenterCrashes.Crashes.self
         ])
         UINavigationBar.appearance().backgroundColor = .blue
         return true
