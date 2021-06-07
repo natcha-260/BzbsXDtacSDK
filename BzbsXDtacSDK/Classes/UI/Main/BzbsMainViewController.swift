@@ -977,11 +977,11 @@ import ImageSlideshow
         var name = BzbsAnalyticDefault.name.rawValue
         if LocaleCore.shared.getUserLocale() == 1054
         {
-            if !item.line1.isEmpty {
+            if let line1 = item.line1 ,!line1.isEmpty {
                 name = item.line1
             }
         } else {
-            if !item.line1.isEmpty {
+            if let line2 = item.line2 ,!line2.isEmpty {
                 name = item.line2
             }
         }
@@ -989,11 +989,11 @@ import ImageSlideshow
         var agencyName = BzbsAnalyticDefault.name.rawValue
         if LocaleCore.shared.getUserLocale() == 1054
         {
-            if !item.line3.isEmpty {
+            if let line3 = item.line3 ,!line3.isEmpty {
                 agencyName = item.line3
             }
         } else {
-            if !item.line4.isEmpty {
+            if let line4 = item.line4 ,!line4.isEmpty {
                 agencyName = item.line4
             }
         }
@@ -1036,11 +1036,11 @@ import ImageSlideshow
         var name = BzbsAnalyticDefault.name.rawValue
         if LocaleCore.shared.getUserLocale() == 1054
         {
-            if !item.line1.isEmpty {
+            if let line1 = item.line1 ,!line1.isEmpty {
                 name = item.line1
             }
         } else {
-            if !item.line1.isEmpty {
+            if let line2 = item.line2 ,!line2.isEmpty {
                 name = item.line2
             }
         }
@@ -1048,11 +1048,11 @@ import ImageSlideshow
         var agencyName = BzbsAnalyticDefault.name.rawValue
         if LocaleCore.shared.getUserLocale() == 1054
         {
-            if !item.line3.isEmpty {
+            if let line3 = item.line3 ,!line3.isEmpty {
                 agencyName = item.line3
             }
         } else {
-            if !item.line4.isEmpty {
+            if let line4 = item.line4 ,!line4.isEmpty {
                 agencyName = item.line4
             }
         }

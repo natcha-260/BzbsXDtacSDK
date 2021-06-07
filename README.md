@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.38
+- improve performance
 ## 2.0.37
 - update GA
 ## 2.0.30
