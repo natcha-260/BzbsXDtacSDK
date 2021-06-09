@@ -47,12 +47,12 @@ class BasePopupController: UIViewController
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK:- Language
-    // MARK:-
-    func language(strMessage: String) -> String
-    {
-        return LocaleCore.shared.language(string: strMessage)
-    }
+//    // MARK:- Language
+//    // MARK:-
+//    func language(strMessage: String) -> String
+//    {
+//        return LocaleCore.shared.language(string: strMessage)
+//    }
     
     func userLocale() -> Int
     {

@@ -194,12 +194,12 @@ class RecommendCoinListViewController: RecommendListViewController {
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/coins/recommended".lowercased() as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
-        reward[AnalyticsParameterIndex] = index as AnyObject
+        reward[AnalyticsParameterIndex] = index + 1 as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
         // Prepare ecommerce dictionary.
         let items : [Any] = [reward]
-        let label = "recommended_coin_rewards | coins | recommended | \(index) | \(item.id ?? "0")"
+        let label = "recommended_coin_rewards | coins | recommended | \(index + 1) | \(item.id ?? "0")"
         let ecommerce : [String: AnyObject] = [
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,

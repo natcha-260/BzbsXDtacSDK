@@ -74,6 +74,7 @@ class SearchViewController: BaseListController {
         lblCancel.textColor = .dtacBlue
         closeCancel()
         loadSearchHistory()
+        analyticsSetScreen(screenName: "reward_search")
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeShown(noti:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(noti:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -613,7 +614,7 @@ extension SearchViewController {
     // FIXME:GA#38
     func sendGASearch()
     {
-        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search_text | \(strSearch )")
+        analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: "search_text | \(strSearch)")
     }
     
     

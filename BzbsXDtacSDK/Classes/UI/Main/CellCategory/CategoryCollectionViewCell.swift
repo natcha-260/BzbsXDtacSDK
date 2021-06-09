@@ -28,10 +28,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     func setupCell(_ item:BzbsCategory)
     {
         self.cat = item
-        var name = item.nameEn
-        if LocaleCore.shared.getUserLocale() == BBLocaleKey.th.rawValue {
-            name = item.nameTh
-        }
+        var name = item.name
         if item.nameEn.lowercased() == "nearby"
         {
             name = "nearby_title".localized()

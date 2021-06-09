@@ -7,32 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "796CF4C6-34D2-4057-99C0-A23FD2BE0241"
+            uuid = "6713F30C-C24C-4270-A1C9-CC10CC2C30B6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../BzbsXDtacSDK/Classes/UI/Main/BzbsMainViewController.swift"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Popup/PopupSerialViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1087"
-            endingLineNumber = "1087"
-            landmarkName = "sendCoinGATouchEvent(_:indexPath:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0527F08A-98C8-4313-AB66-67335D84C816"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../BzbsXDtacSDK/Classes/UI/Detail/CampaignDetailViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "622"
-            endingLineNumber = "622"
-            landmarkName = "clickRedeem(_:)"
+            startingLineNumber = "544"
+            endingLineNumber = "544"
+            landmarkName = "sendGAClickCopy()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

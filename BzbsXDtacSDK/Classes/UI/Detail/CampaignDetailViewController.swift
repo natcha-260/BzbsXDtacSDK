@@ -122,13 +122,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         super.viewDidLoad()
         cstCoinHeight.constant = isRedeemCoinCampaign() ? 25 : 0
         
-        if let type = self.campaign.type, type == 16 {
-            self.cellList = ["image_name_detail","line","detail"]
-            analyticsSetScreen(screenName: "dtac_reward_blue_detail")
-            isShowTab = .condition
-        } else {
             analyticsSetScreen(screenName: "reward_detail")
-        }
         manageFooter()
         initialUI()
         setupNav()
@@ -146,6 +140,10 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         }
     }
     
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsSetScreen(screenName: "reward_detail")
+    }
     
     let gradient: CAGradientLayer = CAGradientLayer()
     public override func viewDidLayoutSubviews() {
@@ -503,7 +501,6 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                                    , successCallback: { (dict) in
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)
-            self.sendGAThankyouPage(purchase.redeemKey)
             if self.campaign.categoryID == BuzzebeesCore.catIdVoiceNet {
                 PopupManager.subscriptionPopup(onView: self, purchase: purchase)
             } else {
@@ -1395,7 +1392,6 @@ extension CampaignDetailViewController {
         reward1[AnalyticsParameterItemCategory] = "reward/\(parentCategoryName)/\(campaign.categoryName ?? "")".lowercased() as AnyObject
         reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
         reward1[AnalyticsParameterIndex] = NSNumber(value: 1) as NSNumber
-        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
         
         let ecommerce : [String:AnyObject] = [
             "items" : [reward1] as AnyObject,
@@ -1411,6 +1407,7 @@ extension CampaignDetailViewController {
     
     // FIXME:GA#25
     func sendGAClickRedeem() {
+        analyticsSetScreen(screenName: "reward_detail")
         
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(campaign.ID ?? -1)",
@@ -1438,6 +1435,12 @@ extension CampaignDetailViewController {
     
     // FIXME:GA#26
     func sendGABeginCheckout() {
+        
+        if let type = self.campaign.type, type == 16 {
+            analyticsSetScreen(screenName: "dtac_reward_blue_detail")
+        } else {
+            analyticsSetScreen(screenName: "reward_detail")
+        }
         
         var reward1 = [String:AnyObject]()
         reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)" as AnyObject
@@ -1467,6 +1470,12 @@ extension CampaignDetailViewController {
     }
     // FIXME:GA#27
     func sendGACancelCheckout() {
+        
+        if let type = self.campaign.type, type == 16 {
+            analyticsSetScreen(screenName: "dtac_reward_blue_detail")
+        } else {
+            analyticsSetScreen(screenName: "reward_detail")
+        }
         
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(campaign.ID ?? 0)" as NSString,
@@ -1514,58 +1523,6 @@ extension CampaignDetailViewController {
         let isFavour = !(campaign.isFavourite ?? false) ? "add" : "remove"
         let label = "\(isFavour)_favorite | \(parentCategoryName) | \(campaign.categoryName ?? "") | 1 | \(campaign.ID ?? -1)"
         analyticsSetEvent(event: "event_app", category: "reward", action: "touch_button", label: label)
-    }
-    
-    func sendGAThankyouPage(_ redeemKey:String?) {
-        
-        var reward1 = [String:AnyObject]()
-        reward1[AnalyticsParameterItemID] = "\(campaign.ID ?? 0)" as AnyObject
-        reward1[AnalyticsParameterItemName] = campaign.name as AnyObject
-        reward1[AnalyticsParameterItemCategory] = "reward/coins/\(campaign.categoryName ?? "")".lowercased() as AnyObject
-        reward1[AnalyticsParameterItemBrand] = campaign.agencyName as AnyObject
-        reward1[AnalyticsParameterPrice] = 0 as NSNumber
-        reward1[AnalyticsParameterCurrency] = "THB" as NSString
-        reward1[AnalyticsParameterQuantity] = 1 as NSNumber
-        reward1[AnalyticsParameterIndex] = NSNumber(value: 1)
-        reward1[AnalyticsParameterItemVariant] = (campaign.expireIn?.toTimeString() ?? "") as AnyObject
-        reward1["metric1"] = (campaign.pointPerUnit ?? 0) as AnyObject
-        
-        // Prepare ecommerce dictionary.
-        let items : [Any] = [reward1]
-        
-        let ecommerce : [String:AnyObject] = [
-            "items" : items as AnyObject,
-            "eventCategory" : "reward" as NSString,
-            "eventAction" : "seen_text" as NSString,
-            "eventLabel" : "redeem_complete | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName().lowercased() as NSString,
-            AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
-
-        ]
-        
-        // Log select_content event with ecommerce dictionary.
-        analyticsSetEventEcommerce(eventName: AnalyticsEventPurchase, params: ecommerce)
-        
-        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
-             AnalyticsParameterItemName : "\(campaign.ID ?? -1) | \(campaign.name ?? "")" as NSString,
-             AnalyticsParameterItemVariant : campaign.agencyName as NSString,
-             AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
-             AnalyticsParameterValue: (campaign.pointPerUnit ?? 0) as NSNumber,
-             AnalyticsParameterTransactionID: "\(redeemKey ?? "-")" as NSString
-         ])
-
-        
-        let gaLabel = "redeem_complete | \(campaign.ID ?? -1) | \(campaign.pointPerUnit ?? 0)"
-        analyticsSetEvent(event: AnalyticsEventPurchase, category: "reward", action: "seen_text", label: gaLabel)
-        analyticsSetEvent(event: AnalyticsEventSpendVirtualCurrency, category: "reward", action: "seen_text", label: gaLabel)
-        
-        //Push to Front-End Team
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd"
-        analyticsSetUserProperty(propertyName: "last_redeem_coin", value: "\(formatter.string(from: Date()))")
-        analyticsSetUserProperty(propertyName: "remaining_coin", value: "\((Bzbs.shared.userLogin?.bzbsPoints ?? 0) - campaign.pointPerUnit)")
-        
-
     }
     
 }

@@ -286,6 +286,7 @@ extension FavoriteViewController {
     
     // FIXME:GA#42
     func sendGAImpression(_ item:BzbsCampaign, indexPath: IndexPath) {
+        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(item.ID ?? -1)" as NSString,
             AnalyticsParameterItemName: "\(item.name ?? "")" as NSString,
@@ -298,7 +299,7 @@ extension FavoriteViewController {
         let ecommerce : [String:AnyObject] = [
             "items" : [reward1] as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " impression_list" as NSString,
+            "eventAction" : "impression_list" as NSString,
             "eventLabel" : "reward_favorite | all" as NSString,
             AnalyticsParameterItemListName: "reward_favorite" as NSString
         ]

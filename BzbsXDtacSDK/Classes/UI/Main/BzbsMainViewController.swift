@@ -430,36 +430,52 @@ import ImageSlideshow
                                     // first cat is always Blue
                                     Bzbs.shared.blueCategory = listCategory.first
                                     Bzbs.shared.coinCategory = listCategory.last
-                                    for cat in self.arrCategory{
-                                        let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
-                                        allCat.nameEn = "Recommend"
-                                        allCat.nameTh = "แนะนำ"
-                                        allCat.listConfig = cat.listConfig
-                                        allCat.id = cat.id
-                                        cat.subCat.insert(allCat, at: 0)
-                                    }
-        
-                                    if let userLogin = Bzbs.shared.userLogin
-                                    {
-                                        if userLogin.dtacLevel != .blue
+                                    
+                                    if self.userLocale() == BBLocaleKey.mm.rawValue {
+                                        if let coinCat =  self.arrCategory.first(where: { (cat) -> Bool in
+                                            return cat.id == BuzzebeesCore.catIdCoin
+                                        }) {
+                                            coinCat.subCat.removeAll { (subcat) -> Bool in
+                                                subcat.id != BuzzebeesCore.catIdVoiceNet
+                                            }
+                                            self.arrCategory = [coinCat]
+                                        } else {
+                                            self.arrCategory.removeAll()
+                                        }
+                                        
+                                        
+                                    } else {
+                                        for cat in self.arrCategory{
+                                            let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
+                                            allCat.nameEn = "Recommend"
+                                            allCat.nameTh = "แนะนำ"
+                                            allCat.listConfig = cat.listConfig
+                                            allCat.id = cat.id
+                                            cat.subCat.insert(allCat, at: 0)
+                                        }
+                                        
+                                        if let userLogin = Bzbs.shared.userLogin
                                         {
+                                            if userLogin.dtacLevel != .blue
+                                            {
+                                                self.arrCategory.removeAll { (cat) -> Bool in
+                                                    return cat.id == Bzbs.shared.blueCategory?.id
+                                                }
+                                            }
+                                            
+                                            if userLogin.telType == .postpaid {
+                                                Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                                    return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                }
+                                            }
+                                        } else {
                                             self.arrCategory.removeAll { (cat) -> Bool in
                                                 return cat.id == Bzbs.shared.blueCategory?.id
                                             }
-                                        }
-                                        
-                                        if userLogin.telType == .postpaid {
+                                            
                                             Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
                                                 return cat.id == BuzzebeesCore.catIdVoiceNet
                                             }
-                                        }
-                                    } else {
-                                        self.arrCategory.removeAll { (cat) -> Bool in
-                                            return cat.id == Bzbs.shared.blueCategory?.id
-                                        }
-                                        
-                                        Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
-                                            return cat.id == BuzzebeesCore.catIdVoiceNet
                                         }
                                     }
                                     self.loadedData()
@@ -751,23 +767,27 @@ import ImageSlideshow
             case .blue :
                 strUrl = Bzbs.shared.getUrlBlueMember()
                 strTitle = BuzzebeesCore.levelNameBlue
+                analyticsTapSegment(segmentName: "blue")
             case .gold :
                 strUrl = Bzbs.shared.getUrlGoldMember()
                 strTitle = BuzzebeesCore.levelNameGold
+                analyticsTapSegment(segmentName: "gold")
             case .silver :
                 strUrl = Bzbs.shared.getUrlSilverMember()
                 strTitle = BuzzebeesCore.levelNameSilver
+                analyticsTapSegment(segmentName: "silver")
             case .customer:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
+                analyticsTapSegment(segmentName: "customer")
             case .no_level:
                 strUrl = Bzbs.shared.getUrlDtacMember()
                 strTitle = BuzzebeesCore.levelNameDtac
+                analyticsTapSegment(segmentName: "customer")
             }
             
             if let nav = self.navigationController {
                 GotoPage.gotoWebSite(nav, strUrl: strUrl, strTitle: strTitle)
-                analyticsTapSegment(segmentName: strTitle)
             }
         }
     }
@@ -814,8 +834,8 @@ import ImageSlideshow
             AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
             AnalyticsParameterItemName : (item.name ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
             AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_banner" as AnyObject,
-            AnalyticsParameterItemBrand : (item.line2 ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
-            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
+            AnalyticsParameterItemBrand : (item.line2.isEmpty ? BzbsAnalyticDefault.name.rawValue : item.line2) as AnyObject,
+            AnalyticsParameterIndex : NSNumber(value: index + 1) as AnyObject,
             "metric1" : Double("\(item.price ?? "0")") ?? 0 as Any,
         ]
         // Prepare ecommerce dictionary.
@@ -825,7 +845,7 @@ import ImageSlideshow
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "impression_banner" as NSString,
-            "eventLabel" : "hero | \(item.categoryName ?? BzbsAnalyticDefault.category.rawValue) | reward_banner | \(index) | \(item.id ?? "")" as NSString,
+            "eventLabel" : "hero | \(item.categoryName ?? BzbsAnalyticDefault.category.rawValue) | reward_banner | \(index + 1) | \(item.id ?? "")" as NSString,
             AnalyticsParameterItemListName: "reward_banner" as NSString
         ]
         
@@ -839,8 +859,8 @@ import ImageSlideshow
             AnalyticsParameterItemID : (item.id ?? "") as AnyObject,
             AnalyticsParameterItemName : (item.name ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
             AnalyticsParameterItemCategory : "reward/\(item.categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_banner" as AnyObject,
-            AnalyticsParameterItemBrand : (item.line2 ?? BzbsAnalyticDefault.name.rawValue) as AnyObject,
-            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
+            AnalyticsParameterItemBrand : (item.line2.isEmpty ? BzbsAnalyticDefault.name.rawValue : item.line2) as AnyObject,
+            AnalyticsParameterIndex : NSNumber(value: index + 1) as AnyObject,
             "metric1" : Double("\(item.price ?? "0")") ?? 0 as Any,
         ]
         // Prepare ecommerce dictionary.
@@ -850,7 +870,7 @@ import ImageSlideshow
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_banner" as NSString,
-            "eventLabel" : "hero | \(item.categoryName ?? BzbsAnalyticDefault.category.rawValue) | reward_banner | \(index) | \(item.id ?? "")" as NSString,
+            "eventLabel" : "hero | \(item.categoryName ?? BzbsAnalyticDefault.category.rawValue) | reward_banner | \(index + 1) | \(item.id ?? "")" as NSString,
             AnalyticsParameterItemListName: "reward_banner" as NSString
         ]
         
@@ -896,7 +916,7 @@ import ImageSlideshow
             AnalyticsParameterItemName : campaignName as AnyObject,
             AnalyticsParameterItemCategory: "reward/\(categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_main".lowercased() as NSString,
             AnalyticsParameterItemBrand : agencyName as AnyObject,
-            AnalyticsParameterIndex : NSNumber(value: index) as AnyObject,
+            AnalyticsParameterIndex : NSNumber(value: index + 1) as AnyObject,
             "metric1" : 0 as NSNumber,
         ]
         
@@ -943,7 +963,7 @@ import ImageSlideshow
             AnalyticsParameterItemName : campaignName as AnyObject,
             AnalyticsParameterItemCategory: "reward/\(categoryName ?? BzbsAnalyticDefault.category.rawValue)/reward_main".lowercased() as NSString,
             AnalyticsParameterItemBrand: agencyName as AnyObject,
-            AnalyticsParameterIndex: NSNumber(value: (indexPath.row - 1)) as AnyObject,
+            AnalyticsParameterIndex: NSNumber(value: indexPath.row) as AnyObject,
             "metric1" : 0 as NSNumber,
         ]
         
@@ -954,7 +974,7 @@ import ImageSlideshow
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_list" as NSString,
-            "eventLabel" : "recommended_for_you | \(indexPath.row - 1) | \(campaign.ID ?? 0)" as NSString,
+            "eventLabel" : "recommended_for_you | \(indexPath.row) | \(campaign.ID ?? 0)" as NSString,
             AnalyticsParameterItemListName: "reward_main" as NSString
         ]
         

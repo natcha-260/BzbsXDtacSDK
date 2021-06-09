@@ -497,6 +497,8 @@ extension PopupSerialViewController {
     // FIXME:GA#29
     func sendGABeginEvent()
     {
+        analyticsSetScreen(screenName: "reward_detail")
+        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(purchase?.ID ?? -1)" as NSString,
             AnalyticsParameterItemName: "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
@@ -526,12 +528,12 @@ extension PopupSerialViewController {
         
         //        Additional send only Burn coin
         analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
-                                    AnalyticsParameterItemName : "\(purchase?.ID ?? -1) | \(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
-                                    AnalyticsParameterItemVariant : "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
-                                    AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
-                                   AnalyticsParameterValue: (purchase?.pointPerUnit ?? 0) as NSNumber,
-                                   AnalyticsParameterTransactionID: "\(purchase?.serial ?? "-")" as NSString
-                                   ])
+            AnalyticsParameterItemName : "\(purchase?.ID ?? -1) | \(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterItemVariant : "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
+            AnalyticsParameterValue: (purchase?.pointPerUnit ?? 0) as NSNumber,
+            AnalyticsParameterTransactionID: "\(purchase?.serial ?? "-")" as NSString
+        ])
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         analyticsSetUserProperty(propertyName: "last_redeem_coin", value: dateFormatter.string(from: Date(timeIntervalSince1970: purchase?.redeemDate ?? Date().timeIntervalSince1970)))

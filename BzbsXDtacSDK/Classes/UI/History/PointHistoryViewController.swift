@@ -287,7 +287,6 @@ open class PointHistoryViewController: BaseListController {
     }
     
     @IBAction func clickGotoMission(_ sender: Any) {
-        analyticsSetEvent(event: "event_app", category: "your_coin_burn", action: "touch_banner", label: "how_to_earn_more_coins")
         var url:URL?
         if isEarn {
             url = BuzzebeesCore.urlDeeplinkHistory

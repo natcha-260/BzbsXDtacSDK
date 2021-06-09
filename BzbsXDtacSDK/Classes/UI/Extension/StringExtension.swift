@@ -9,13 +9,18 @@ import UIKit
 
 extension String {
     
-    func localized(locale:Int? = nil) -> String {
-        
-        var lang = LocaleCore.shared.getUserLocale() == 1033 ? "en" : "th"
-        if locale != nil {
-            if locale == 1033 || locale == 1054 {
-                lang = (locale! == 1033) ? "en" : "th"
-            }
+    func localized(locale _locale:Int? = nil) -> String {
+        let locale = _locale ?? LocaleCore.shared.getUserLocale()
+        var lang = "en"
+        switch locale {
+        case BBLocaleKey.en.rawValue:
+            lang = "en"
+        case BBLocaleKey.th.rawValue:
+            lang = "th"
+        case BBLocaleKey.mm.rawValue:
+            lang = "mm"
+        default:
+            lang = "en"
         }
         if let wordingDict = LocaleCore.shared.wordingDict[lang]
         {
@@ -28,7 +33,18 @@ extension String {
     }
     
     func errorLocalized() -> String {
-        let lang = LocaleCore.shared.getUserLocale() == 1033 ? "en" : "th"
+        let locale = LocaleCore.shared.getUserLocale()
+        var lang = "en"
+        switch locale {
+        case BBLocaleKey.en.rawValue:
+            lang = "en"
+        case BBLocaleKey.th.rawValue:
+            lang = "th"
+        case BBLocaleKey.mm.rawValue:
+            lang = "mm"
+        default:
+            lang = "en"
+        }
         
         if let wordingDict = LocaleCore.shared.extraWordingDict[lang]
         {

@@ -9,9 +9,9 @@
 import Foundation
 
 public class BzbsDashboard {
-    public var cat: String!
-    public var cat_header_en: String!
-    public var cat_header_th: String!
+    public var cat: String! = ""
+    public var cat_header_en: String! = ""
+    public var cat_header_th: String! = ""
     public var menu: String!
     public var type: String!
     public var size: String!
@@ -20,10 +20,10 @@ public class BzbsDashboard {
     public var id: String!
     public var ios_schema: String!
     public var imageUrl: String!
-    public var line1: String!
-    public var line2: String!
-    public var line3: String!
-    public var line4: String!
+    public var line1: String! = ""
+    public var line2: String! = ""
+    public var line3: String! = ""
+    public var line4: String! = ""
     public var name: String!
     public var subCampaignDetails: [BzbsDashboard]
     public var subCat: String!

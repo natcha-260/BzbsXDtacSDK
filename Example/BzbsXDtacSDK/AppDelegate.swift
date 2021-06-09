@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        th.co.dtac.beta
 //        com.buzzebees.xDtac
         FirebaseApp.configure()
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         GMSServices.provideAPIKey("AIzaSyD16TFAFMmV0bsu8Hi-kkGFS8dYkWPtIM0")
         AppCenter.start(withAppSecret: "909eb374-e9b4-4369-a09a-2f23bbe1cc03", services:[
             AppCenterAnalytics.Analytics.self,

@@ -154,7 +154,7 @@ class RecommendListViewController: BaseListController {
     //MARK:- GA
     //MARK:-
     // FIXME:GA#20
-    func sendGAImpression(_ item:BzbsDashboard) {
+    func sendGAImpression(_ item:BzbsDashboard, index:Int) {
         if item.id == "-1" {
             return
         }
@@ -193,7 +193,7 @@ class RecommendListViewController: BaseListController {
             AnalyticsParameterItemName: name as NSString,
             AnalyticsParameterItemCategory: "reward/\(categoryName ?? "")/recommended" as NSString,
             AnalyticsParameterItemBrand: "\(agencyName)" as NSString,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: index + 1 as NSNumber,
             "metric1" : 0 as NSNumber,
         ]
         
@@ -250,7 +250,7 @@ class RecommendListViewController: BaseListController {
             AnalyticsParameterItemName: name as NSString,
             AnalyticsParameterItemCategory: "reward/\(categoryName ?? "")/recommended" as NSString,
             AnalyticsParameterItemBrand: "\(agencyName)" as NSString,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: index + 1 as NSNumber,
             "metric1" : 0 as NSNumber,
         ]
         
@@ -261,7 +261,7 @@ class RecommendListViewController: BaseListController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_list" as NSString,
-            "eventLabel" : "recommended_for_you | \(categoryName ?? "") | recommended | \(index) | \(item.id ?? "0")" as NSString,
+            "eventLabel" : "recommended_for_you | \(categoryName ?? "") | recommended | \(index + 1) | \(item.id ?? "0")" as NSString,
             AnalyticsParameterItemListName: "reward_recommend" as NSString
         ]
         
@@ -292,7 +292,7 @@ extension RecommendListViewController : UICollectionViewDataSource, UICollection
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCell", for: indexPath) as! CampaignCVCell
         let item = _arrDataShow[indexPath.row] as! BzbsDashboard
-        sendGAImpression(item)
+        sendGAImpression(item, index: indexPath.row)
         cell.setupWith(item)
         return cell
     }

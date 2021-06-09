@@ -72,6 +72,10 @@ open class CampaignByCatViewController: BaseListController {
         }
         
     }
+    @IBOutlet weak var vwPointExpire: UIView!
+    @IBOutlet weak var lblPoint: UILabel!
+    @IBOutlet weak var imvCoin: UIImageView!
+    @IBOutlet weak var lblExpireDate: UILabel!
     
     private let refreshControl = UIRefreshControl()
     func addPullToRefresh(on collectionView: UICollectionView) {
@@ -107,7 +111,7 @@ open class CampaignByCatViewController: BaseListController {
                 getApiCategory()
                 return
             }
-            let name = currentCat.nameEn.lowercased()
+            let name = currentCat.name.lowercased()
             if let blueCat = Bzbs.shared.blueCategory, blueCat.id == currentCat.id {
                 analyticsSetScreen(screenName: "reward_blue")
             } else {
@@ -186,8 +190,6 @@ open class CampaignByCatViewController: BaseListController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
-        viewScan.cornerRadius()
         if let arrCategory = Bzbs.shared.arrCategory{
             if currentCat == nil {
                 self.arrCategory = arrCategory
@@ -203,6 +205,24 @@ open class CampaignByCatViewController: BaseListController {
             showLoader()
             getApiCategory()
         }
+        
+        if userLocale() == BBLocaleKey.mm.rawValue {
+            getExpiringPoint()
+            
+            lblPoint.font = UIFont.mainFont(.big, style: .bold)
+            lblExpireDate.font = UIFont.mainFont(.small,style: .bold)
+            lblPoint.text = ""
+            imvCoin.isHidden = true
+            lblExpireDate.text = ""
+            
+            vwPointExpire.isHidden = false
+            viewSearch.removeFromSuperview()
+            viewScan.removeFromSuperview()
+        } else {
+            vwPointExpire.removeFromSuperview()
+            viewScan.cornerRadius()
+            viewSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
+        }
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -214,6 +234,14 @@ open class CampaignByCatViewController: BaseListController {
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if let name = currentCat?.name.lowercased() {
+            if let blueCat = Bzbs.shared.blueCategory, blueCat.id == currentCat.id {
+                analyticsSetScreen(screenName: "reward_blue")
+            } else {
+                let screenName = "reward_" + name.replace(" ", replacement: "_")
+                analyticsSetScreen(screenName: screenName)
+            }
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(viewWillAppear(_:)), name: NSNotification.Name.BzbsViewDidBecomeActive, object: nil)
     }
     
@@ -225,8 +253,10 @@ open class CampaignByCatViewController: BaseListController {
     
     open override func updateUI() {
         super.updateUI()
-        lblScan.text = "scan_title".localized()
-        txtSearch.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])
+        if userLocale() != BBLocaleKey.mm.rawValue {
+            lblScan?.text = "scan_title".localized()
+            txtSearch?.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])
+        }
     }
     
     // MARK:- Util
@@ -244,14 +274,18 @@ open class CampaignByCatViewController: BaseListController {
         lbl.sizeToFit()
         lbl.frame = CGRect(x: 8, y: 0, width:  lbl.bounds.size.width, height: 30)
         vw.addSubview(lbl)
-        let imv = UIImageView(frame: CGRect(x: lbl.frame.origin.x + lbl.frame.size.width + 6, y: 10, width: 10, height: 10))
-        imv.image = UIImage(named: "img_navbar_icon_dropdown",in: Bzbs.shared.currentBundle, compatibleWith: nil)
-        imv.contentMode = .scaleAspectFit
-        vw.addSubview(imv)
-        vw.frame = CGRect(x: 0, y: 0, width: 8 + lbl.bounds.size.width + 6 + 10 + 8, height: 30)
-        let btn = UIButton(frame: CGRect(x: 0, y: 0, width: vw.frame.width, height: 44))
-        btn.addTarget(self, action: #selector(clickCat), for: UIControl.Event.touchUpInside)
-        vw.addSubview(btn)
+        if userLocale() != BBLocaleKey.mm.rawValue {
+            let imv = UIImageView(frame: CGRect(x: lbl.frame.origin.x + lbl.frame.size.width + 6, y: 10, width: 10, height: 10))
+            imv.image = UIImage(named: "img_navbar_icon_dropdown",in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            imv.contentMode = .scaleAspectFit
+            vw.addSubview(imv)
+            vw.frame = CGRect(x: 0, y: 0, width: 8 + lbl.bounds.size.width + 6 + 10 + 8, height: 30)
+            let btn = UIButton(frame: CGRect(x: 0, y: 0, width: vw.frame.width, height: 44))
+            btn.addTarget(self, action: #selector(clickCat), for: UIControl.Event.touchUpInside)
+            vw.addSubview(btn)
+        } else {
+            vw.frame = CGRect(x: 0, y: 0, width: 8 + lbl.bounds.size.width + 8, height: 30)
+        }
         
         self.navigationItem.titleView = vw
     }
@@ -293,6 +327,8 @@ open class CampaignByCatViewController: BaseListController {
     }
     
     func isCategoryAll() -> Bool {
+        if userLocale() == BBLocaleKey.mm.rawValue { return false }
+        guard let _ = currentSubCat else { return false }
         //#54590 if cat all and not blue member
         return currentSubCat.nameEn.lowercased() == ((currentCat.subCat.first?.nameEn.lowercased()) ?? "") && currentCat.id != Bzbs.shared.blueCategory?.id
     }
@@ -343,7 +379,7 @@ open class CampaignByCatViewController: BaseListController {
     let _intTop = 25
     let controller = BuzzebeesCampaign()
     override func getApi() {
-        if _isCallApi || _isEnd { return }
+        if _isCallApi || _isEnd || currentSubCat == nil { return }
         _isCallApi = true
         showLoader()
         controller.list(config: currentSubCat.listConfig
@@ -461,45 +497,61 @@ open class CampaignByCatViewController: BaseListController {
         if isCallingCategory { return }
         isCallingCategory = true
         
-        BuzzebeesCategory().list(config: "menu_dtac_coins",
+        BuzzebeesCategory().list(config: "menu_dtac_coins_v2",
                                  token: Bzbs.shared.userLogin?.token,
                                  successCallback: { (listCategory) in
                                     self.arrCategory = listCategory
                                     // first cat is always Blue
                                     Bzbs.shared.blueCategory = listCategory.first
                                     Bzbs.shared.coinCategory = listCategory.last
-                                    for cat in self.arrCategory{
-                                        let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
-                                        allCat.nameEn = "Recommend"
-                                        allCat.nameTh = "แนะนำ"
-                                        allCat.listConfig = cat.listConfig
-                                        allCat.id = cat.id
-                                        cat.subCat.insert(allCat, at: 0)
-                                    }
-                                    
-                                    if let userLogin = Bzbs.shared.userLogin
-                                    {
-                                        if userLogin.dtacLevel != .blue
+                                    if self.userLocale() == BBLocaleKey.mm.rawValue {
+                                        if let coinCat =  self.arrCategory.first(where: { (cat) -> Bool in
+                                            return cat.id == BuzzebeesCore.catIdCoin
+                                        }) {
+                                            coinCat.subCat.removeAll { (subcat) -> Bool in
+                                                subcat.id != BuzzebeesCore.catIdVoiceNet
+                                            }
+                                            self.arrCategory = [coinCat]
+                                        } else {
+                                            self.arrCategory.removeAll()
+                                        }
+                                        
+                                        
+                                    } else {
+                                        for cat in self.arrCategory{
+                                            let allCat = BzbsCategory(dict: Dictionary<String, AnyObject>())
+                                            allCat.nameEn = "Recommend"
+                                            allCat.nameTh = "แนะนำ"
+                                            allCat.listConfig = cat.listConfig
+                                            allCat.id = cat.id
+                                            cat.subCat.insert(allCat, at: 0)
+                                        }
+                                        
+                                        if let userLogin = Bzbs.shared.userLogin
                                         {
+                                            if userLogin.dtacLevel != .blue
+                                            {
+                                                self.arrCategory.removeAll { (cat) -> Bool in
+                                                    return cat.id == Bzbs.shared.blueCategory?.id
+                                                }
+                                            }
+                                            
+                                            if userLogin.telType == .postpaid {
+                                                Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
+                                                    return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                }
+                                            }
+                                        } else {
                                             self.arrCategory.removeAll { (cat) -> Bool in
                                                 return cat.id == Bzbs.shared.blueCategory?.id
                                             }
-                                        }
-                                        
-                                        if userLogin.telType == .postpaid {
+                                            
                                             Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
                                                 return cat.id == BuzzebeesCore.catIdVoiceNet
                                             }
                                         }
-                                    } else {
-                                        self.arrCategory.removeAll { (cat) -> Bool in
-                                            return cat.id == Bzbs.shared.blueCategory?.id
-                                        }
-                                        
-                                        Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
-                                            return cat.id == BuzzebeesCore.catIdVoiceNet
-                                        }
                                     }
+                                        
                                     self.categoryLoaded()
                                     self.loadedData()
                                     self.getDashboard()
@@ -552,6 +604,40 @@ open class CampaignByCatViewController: BaseListController {
             return cat.id == currentSubCat.id
         }) {
             subCategoryCV.scrollToItem(at: IndexPath(row: index, section: 0), at: UICollectionView.ScrollPosition.right, animated: false)
+        }
+    }
+    
+    func getExpiringPoint()
+    {
+        guard let token = Bzbs.shared.userLogin?.token else {
+            lblPoint.text = ""
+            imvCoin.isHidden = true
+            lblExpireDate.text = ""
+            return
+        }
+        showLoader()
+        BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
+            if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
+                let first = arr.first
+            {
+                if let expiringPoint = first["points"] as? Int {
+                    self.lblPoint.text = "your_coin".localized() + " " + expiringPoint.withCommas()
+                    self.imvCoin.isHidden = false
+                }
+                if let time = first["time"] as? TimeInterval
+                {
+                    let expireDate = Date(timeIntervalSince1970: time)
+                    let formatter = DateFormatter()
+                    formatter.calendar = LocaleCore.shared.getLocaleAndCalendar().calendar
+                    formatter.locale = LocaleCore.shared.getLocaleAndCalendar().locale
+                    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                    formatter.dateFormat = "dd MMM yyyy"
+                    self.lblExpireDate.text = "valid_till".localized() + " " + formatter.string(from: expireDate)
+                }
+            }
+            self.hideLoader()
+        }) { (error) in
+            self.hideLoader()
         }
     }
     
@@ -646,14 +732,13 @@ open class CampaignByCatViewController: BaseListController {
         reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let label =  "hero_reward | \(catName) | \(subCatName) | \(index) | \(item.id ?? "")"
-        let previousScreenName = getPreviousScreenName().lowercased()
+        let label =  "hero_reward | \(catName) | \(subCatName) | \(index) | \(item.id ?? "")".lowercased()
         let ecommerce : [String: AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "impression_banner" as NSString,
             "eventLabel" : label as NSString,
-            AnalyticsParameterItemListName: previousScreenName as AnyObject
+            AnalyticsParameterItemListName: "reward_banner_\(catName)" as AnyObject
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -710,10 +795,10 @@ open class CampaignByCatViewController: BaseListController {
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/\(catName)/\(subCatName)".lowercased() as AnyObject
         reward[AnalyticsParameterItemBrand] = (agencyName) as AnyObject
-        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index + 1) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let label =  "hero_reward | \(catName) | \(subCatName) | \(index) | \(item.id ?? "")"
+        let label =  "hero_reward | \(catName) | \(subCatName) | \(index + 1) | \(item.id ?? "")"
         let ecommerce : [String:AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
@@ -738,12 +823,12 @@ open class CampaignByCatViewController: BaseListController {
         }
         
         var catName = BzbsAnalyticDefault.name.rawValue
-        if !currentCat.nameEn.isEmpty {
-            catName = currentCat.nameEn
+        if !currentCat.name.isEmpty {
+            catName = currentCat.name
         }
         var subCatName = BzbsAnalyticDefault.name.rawValue
-        if !currentSubCat.nameEn.isEmpty {
-            subCatName = currentSubCat.nameEn
+        if !currentSubCat.name.isEmpty {
+            subCatName = currentSubCat.name
         }
         
         var agencyName = BzbsAnalyticDefault.name.rawValue
@@ -786,12 +871,12 @@ open class CampaignByCatViewController: BaseListController {
         }
         
         var catName = BzbsAnalyticDefault.name.rawValue
-        if !currentCat.nameEn.isEmpty {
-            catName = currentCat.nameEn
+        if !currentCat.name.isEmpty {
+            catName = currentCat.name
         }
         var subCatName = BzbsAnalyticDefault.name.rawValue
-        if !currentSubCat.nameEn.isEmpty {
-            subCatName = currentSubCat.nameEn
+        if !currentSubCat.name.isEmpty {
+            subCatName = currentSubCat.name
         }
         
         var agencyName = BzbsAnalyticDefault.name.rawValue
@@ -1043,7 +1128,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     self.dashboardItems = [dashboard]
                     self.campaignCV.reloadData()
                 }
-                if self.currentCat.id == BuzzebeesCore.catIdCoin {
+                else if self.currentCat.id == BuzzebeesCore.catIdCoin {
                     if currentSubCat.id == currentCat.subCat.first?.id {
                         apiGetSubDashboard(getBannerDashboardConfig())
                     } else {

@@ -44,7 +44,6 @@ class HistoryViewController: BaseListController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        analyticsSetScreen(screenName: "dtac_reward_history")
     }
     
     override func resetList() {

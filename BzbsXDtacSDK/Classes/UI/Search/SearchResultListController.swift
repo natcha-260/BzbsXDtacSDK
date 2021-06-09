@@ -135,20 +135,20 @@ class SearchResultListController: BaseListController {
     }
     
     // FIXME:GA#40
-    func analyticsImpressionItemResult(_ item:BzbsCampaign) {
+    func analyticsImpressionItemResult(_ item:BzbsCampaign, indexPath:IndexPath) {
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(item.ID ?? -1)" as NSString,
             AnalyticsParameterItemName: "\(item.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
             AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(item.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
             AnalyticsParameterItemBrand: "\(item.categoryName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: NSNumber(value: indexPath.row + 1),
             "metric1" : (item.pointPerUnit ?? 0) as NSNumber,
         ]
         
         let ecommerce : [String:AnyObject] = [
             "items" : [reward1] as AnyObject,
             "eventCategory" : "reward" as NSString,
-            "eventAction" : " impression_list" as NSString,
+            "eventAction" : "impression_list" as NSString,
             "eventLabel" : "search_result" as NSString,
             AnalyticsParameterItemListName: "reward_search" as NSString
         ]
@@ -204,7 +204,7 @@ extension SearchResultListController : UICollectionViewDataSource, UICollectionV
             return cell
         }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
-        analyticsImpressionItemResult(item)
+        analyticsImpressionItemResult(item, indexPath: indexPath)
         if item.parentCategoryID == BuzzebeesCore.catIdCoin {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendCoinCell", for: indexPath) as! CampaignCoinCVCell
             cell.setupWith(item, isShowDistance: false)

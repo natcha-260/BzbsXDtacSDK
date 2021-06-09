@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.39
+- Add Burmese Language category support
 ## 2.0.38
 - improve performance
 ## 2.0.37

@@ -75,8 +75,10 @@ public class BuzzebeesAuth: BuzzebeesCore {
         var locale = 1054
         if let language = loginParams.language?.lowercased()
         {
-            if language == "en" {
+            if language == "th" {
                 locale = 1033
+            } else if language == "mm" {
+                locale = 1109
             } else {
                 locale = 1054
             }
@@ -493,10 +495,12 @@ extension BuzzebeesAuth {
         var locale = 1054
         if let language = loginParams.language?.lowercased()
         {
-            if language == "en" {
-                locale = 1033
-            } else {
+            if language == "th" {
                 locale = 1054
+            } else if language == "mm" {
+                locale = 1109
+            } else {
+                locale = 1033
             }
         }
         //            let loginParams = DtacDeviceLoginParams(uuid: token

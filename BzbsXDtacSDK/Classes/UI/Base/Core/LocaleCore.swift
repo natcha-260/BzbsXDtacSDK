@@ -21,27 +21,27 @@ class LocaleCore: BBLocale {
     // MARK: Private Variables For Class
 //    let _appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    func getMessageFromError(_ errorCode:String, message:String) -> String{
-        return getMessageFromServer(key: message)
-    }
-
-    // MARK: Get Message Text
-    func getMessageFromServer(key: String) -> String
-    {
-        if key == "Your points are not enough to redeem this reward." || key == "คุณมีจำนวน Point ไม่เพียงพอสำหรับการรับสิทธิพิเศษนี้"
-        {
-            return language(string: "message_points_not_enough")
-        } else if key == "Invalid Username or Password" {
-            return language(string: "message_invalid_username_or_password")
-        } else if key == "This username has already been taken."
-        {
-            return language(string: "val_duplicate_number")
-        } else if key == "crash NSJSONSerialization"
-        {
-            return language(string: "val_general_error")
-        }
-        return key
-    }
+//    func getMessageFromError(_ errorCode:String, message:String) -> String{
+//        return getMessageFromServer(key: message)
+//    }
+//
+//    // MARK: Get Message Text
+//    func getMessageFromServer(key: String) -> String
+//    {
+//        if key == "Your points are not enough to redeem this reward." || key == "คุณมีจำนวน Point ไม่เพียงพอสำหรับการรับสิทธิพิเศษนี้"
+//        {
+//            return language(string: "message_points_not_enough")
+//        } else if key == "Invalid Username or Password" {
+//            return language(string: "message_invalid_username_or_password")
+//        } else if key == "This username has already been taken."
+//        {
+//            return language(string: "val_duplicate_number")
+//        } else if key == "crash NSJSONSerialization"
+//        {
+//            return language(string: "val_general_error")
+//        }
+//        return key
+//    }
 
     func getUserLocale() -> Int
     {
@@ -61,14 +61,16 @@ class LocaleCore: BBLocale {
             return userLogin.locale
         } else if let language = Bzbs.shared.dtacLoginParams.language
         {
-            if language == "en" {
-                return 1033
-            } else {
+            if language == "th" {
                 return 1054
+            } else if language == "mm" {
+                return 1109
+            } else {
+                return 1033
             }
         }
 
-        return 1054
+        return 1033
     }
 
     func getLocaleAndCalendar() -> (locale: Locale, calendar: Calendar)
@@ -84,10 +86,10 @@ class LocaleCore: BBLocale {
         return (locale, calendar)
     }
 
-    func language(string:String) -> String
-    {
-        return self.languageSelectedStringForKey(string, localeKey: getUserLocale())
-    }
+//    func language(string:String) -> String
+//    {
+//        return self.languageSelectedStringForKey(string, localeKey: getUserLocale())
+//    }
     
 }
 
@@ -105,9 +107,9 @@ public enum BBLocaleKey: Int {
      */
     case en = 1033
     /**
-     ลาว
+     พม่า
      */
-    case laos = 1108
+    case mm = 1109
 }
 /**
  เกี่ยวกับภาษา
@@ -121,41 +123,41 @@ open class BBLocale: NSObject
     /**
      ดึงข้อความตามภาษาที่เลือก
      */
-    open func languageSelectedStringForKey(_ key: String, localeKey: Int = BBLocaleKey.en.rawValue) -> String
-    {
-        let path = getPathLanguage(localeKey)
-        if let languageBundle = Bundle(path: path) {
-            if !languageBundle.isLoaded
-            {
-                languageBundle.load()
-            }
-            return NSLocalizedString(key, comment: "")// languageBundle.localizedString(forKey: key, value: "", table: nil)
-        }
-        return key
-    }
-    /**
-     get path ของไฟล์ภาษา
-     */
-    fileprivate func getPathLanguage(_ pIntLocale: Int) -> String
-    {
-        let bundle = Bzbs.shared.currentBundle
-        if(pIntLocale == BBLocaleKey.th.rawValue)
-        {
-            return bundle.path(forResource: "th", ofType: "lproj")!;
-        }
-        else{
-            return bundle.path(forResource: "en", ofType: "lproj")!;
-        }
-    }
-    /**
-     get key ของภาษา
-     */
-    open func getWindowLocaleCode(_ key: String) -> String
-    {
-        let uint_window_locale_code = Foundation.Locale.windowsLocaleCode(fromIdentifier: key);
-        
-        return String(describing: uint_window_locale_code);
-    }
+//    open func languageSelectedStringForKey(_ key: String, localeKey: Int = BBLocaleKey.en.rawValue) -> String
+//    {
+//        let path = getPathLanguage(localeKey)
+//        if let languageBundle = Bundle(path: path) {
+//            if !languageBundle.isLoaded
+//            {
+//                languageBundle.load()
+//            }
+//            return NSLocalizedString(key, comment: "")// languageBundle.localizedString(forKey: key, value: "", table: nil)
+//        }
+//        return key
+//    }
+//    /**
+//     get path ของไฟล์ภาษา
+//     */
+//    fileprivate func getPathLanguage(_ pIntLocale: Int) -> String
+//    {
+//        let bundle = Bzbs.shared.currentBundle
+//        if(pIntLocale == BBLocaleKey.th.rawValue)
+//        {
+//            return bundle.path(forResource: "th", ofType: "lproj")!;
+//        }
+//        else{
+//            return bundle.path(forResource: "en", ofType: "lproj")!;
+//        }
+//    }
+//    /**
+//     get key ของภาษา
+//     */
+//    open func getWindowLocaleCode(_ key: String) -> String
+//    {
+//        let uint_window_locale_code = Foundation.Locale.windowsLocaleCode(fromIdentifier: key);
+//
+//        return String(describing: uint_window_locale_code);
+//    }
     
     var wordingDict = Dictionary<String,Dictionary<String,String>>()
     var extraWordingDict = Dictionary<String,Dictionary<String,String>>()
@@ -195,6 +197,23 @@ open class BBLocale: NSObject
                 print(error.localizedDescription)
             }
         }
+        
+        
+        if let url = mainBundle.url(forResource: "mm_Localized", withExtension: "json") {
+            do {
+                let raw = try String(contentsOf: url, encoding: String.Encoding.utf8)
+                if let data = raw.data(using: String.Encoding.utf8)
+                {
+                    let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+                    if let dict = json as? Dictionary<String,String>
+                    {
+                        wordingDict["mm"] = dict
+                    }
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
     }
     
     func generateExtraWordingString(_ dict:Dictionary<String,AnyObject>)
@@ -202,6 +221,7 @@ open class BBLocale: NSObject
         extraWordingDict = Dictionary<String,Dictionary<String,String>>()
         extraWordingDict["th"] = Dictionary<String,String>()
         extraWordingDict["en"] = Dictionary<String,String>()
+        extraWordingDict["mm"] = Dictionary<String,String>()
         
         for key in dict.keys{
             if let word = dict[key]
@@ -211,6 +231,7 @@ open class BBLocale: NSObject
                 {
                     extraWordingDict["th"]![key] = th
                     extraWordingDict["en"]![key] = en
+                    extraWordingDict["mm"]![key] = en
                 }
             }
         }

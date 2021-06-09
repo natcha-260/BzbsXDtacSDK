@@ -15,11 +15,13 @@ public class BzbsCategory {
     public var listConfig: String!
     public var mode: String!
     public var name: String!{
+        if _name != nil { return _name }
         if LocaleCore.shared.getUserLocale() == 1054{
             return nameTh
         }
         return nameEn
     }
+    public var _name: String?
     public var nameEn: String!
     public var nameTh: String!
     public var tags: String!
@@ -48,7 +50,7 @@ public class BzbsCategory {
         }
         listConfig = BuzzebeesConvert.StringFromObject(dict["list_config"])
         mode = BuzzebeesConvert.StringFromObject(dict["mode"])
-//        name = BuzzebeesConvert.StringFromObject(dict["name"])
+        _name = BuzzebeesConvert.StringOrNull(dict["name"])
         nameEn = BuzzebeesConvert.StringFromObject(dict["name_en"])
         nameTh = BuzzebeesConvert.StringFromObject(dict["name_th"])
         tags = BuzzebeesConvert.StringFromObject(dict["tags"])
