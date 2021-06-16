@@ -738,7 +738,6 @@
                                                         <segment title="none"/>
                                                     </segments>
                                                     <connections>
-                                                        <action selector="didSelectLanguage:" destination="5vZ-vb-tb3" eventType="valueChanged" id="PY7-no-Yfx"/>
                                                         <action selector="didSelectLevel:" destination="5vZ-vb-tb3" eventType="valueChanged" id="3xI-y0-Zxi"/>
                                                     </connections>
                                                 </segmentedControl>

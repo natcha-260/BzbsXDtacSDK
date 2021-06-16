@@ -77,7 +77,7 @@ public class BuzzebeesAuth: BuzzebeesCore {
         {
             if language == "th" {
                 locale = 1033
-            } else if language == "mm" {
+            } else if language == "mm" || language == "my" {
                 locale = 1109
             } else {
                 locale = 1054
@@ -497,7 +497,7 @@ extension BuzzebeesAuth {
         {
             if language == "th" {
                 locale = 1054
-            } else if language == "mm" {
+            } else if language == "mm" || language == "my" {
                 locale = 1109
             } else {
                 locale = 1033

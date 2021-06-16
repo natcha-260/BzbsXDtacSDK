@@ -178,16 +178,17 @@
                                     <constraint firstItem="j5O-fh-XM7" firstAttribute="top" secondItem="BV1-LB-PIe" secondAttribute="top" constant="8" id="6fl-QX-60j"/>
                                     <constraint firstItem="JRo-Tj-JqJ" firstAttribute="top" secondItem="BV1-LB-PIe" secondAttribute="top" constant="8" id="8ej-S9-sh7"/>
                                     <constraint firstItem="KY0-em-wEw" firstAttribute="leading" secondItem="BV1-LB-PIe" secondAttribute="leading" constant="8" id="BYo-Qh-Li4"/>
-                                    <constraint firstAttribute="bottom" secondItem="KY0-em-wEw" secondAttribute="bottom" constant="8" id="KiM-mr-Ay7"/>
+                                    <constraint firstAttribute="bottom" secondItem="KY0-em-wEw" secondAttribute="bottom" priority="750" constant="8" id="KiM-mr-Ay7"/>
                                     <constraint firstAttribute="bottom" secondItem="dpk-J2-Mr8" secondAttribute="bottom" id="Puv-A4-kIW"/>
                                     <constraint firstItem="KY0-em-wEw" firstAttribute="top" secondItem="BV1-LB-PIe" secondAttribute="top" constant="8" id="VWP-s0-R3C"/>
                                     <constraint firstAttribute="trailing" secondItem="j5O-fh-XM7" secondAttribute="trailing" constant="8" id="Ytp-NY-YTb"/>
                                     <constraint firstAttribute="trailing" secondItem="KY0-em-wEw" secondAttribute="trailing" constant="8" id="cvQ-Q4-FBy"/>
                                     <constraint firstAttribute="trailing" secondItem="dpk-J2-Mr8" secondAttribute="trailing" id="dT8-ZF-fwK"/>
+                                    <constraint firstAttribute="height" constant="60" id="ejy-3z-Jai"/>
                                     <constraint firstAttribute="trailing" secondItem="JRo-Tj-JqJ" secondAttribute="trailing" id="g4x-tQ-r6t"/>
-                                    <constraint firstAttribute="bottom" secondItem="j5O-fh-XM7" secondAttribute="bottom" constant="8" id="goL-u1-BD1"/>
+                                    <constraint firstAttribute="bottom" secondItem="j5O-fh-XM7" secondAttribute="bottom" priority="750" constant="8" id="goL-u1-BD1"/>
                                     <constraint firstItem="dpk-J2-Mr8" firstAttribute="leading" secondItem="BV1-LB-PIe" secondAttribute="leading" id="nHv-Zs-TN0"/>
-                                    <constraint firstAttribute="bottom" secondItem="JRo-Tj-JqJ" secondAttribute="bottom" constant="8" id="oUi-IX-Df8"/>
+                                    <constraint firstAttribute="bottom" secondItem="JRo-Tj-JqJ" secondAttribute="bottom" priority="750" constant="8" id="oUi-IX-Df8"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uvd-ss-IUZ">
@@ -362,6 +363,7 @@
                         <outlet property="categoryCV" destination="J5c-NP-du6" id="2dB-yP-AMy"/>
                         <outlet property="cstCampaignListTop" destination="K2p-QS-4Gl" id="eSN-d5-33I"/>
                         <outlet property="cstCategoryHeight" destination="hO2-2a-D0e" id="dfu-VW-RvH"/>
+                        <outlet property="cstTopViewHeight" destination="ejy-3z-Jai" id="Scf-MF-fab"/>
                         <outlet property="imvCoin" destination="qOB-Ve-XFU" id="YlB-JH-YUY"/>
                         <outlet property="imvScan" destination="r0b-rn-BUS" id="aas-28-pUA"/>
                         <outlet property="lblExpireDate" destination="5MA-G1-uuf" id="IB6-DD-5zi"/>

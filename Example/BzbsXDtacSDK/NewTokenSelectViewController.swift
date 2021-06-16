@@ -26,7 +26,11 @@ class NewTokenSelectViewController: UIViewController {
     var bzbsVersion :(String,String)?
     var dtacVersion :String = "9.0.3"
     
-    var lang = Language.tha
+    var lang = Language.tha{
+        didSet {
+            
+        }
+    }
     var langSegment: UISegmentedControl?
     var level = DtacLevel.blue
     var levelSegment: UISegmentedControl?
@@ -371,6 +375,7 @@ enum Language: String{
     case tha = "th"
     case eng = "en"
     case mm = "mm"
+    case my = "my"
 }
 
 enum DtacLevel: String{

@@ -122,7 +122,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
         super.viewDidLoad()
         cstCoinHeight.constant = isRedeemCoinCampaign() ? 25 : 0
         
-            analyticsSetScreen(screenName: "reward_detail")
+        analyticsSetScreen(screenName: "reward_detail")
         manageFooter()
         initialUI()
         setupNav()
@@ -143,6 +143,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         analyticsSetScreen(screenName: "reward_detail")
+        setupNav()
     }
     
     let gradient: CAGradientLayer = CAGradientLayer()
@@ -228,12 +229,18 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     func setupNav()
     {
-        imvLike.image = UIImage(named: (self.campaign.isFavourite ?? false) ? "img_navbar_icon_fav_active" : "img_navbar_icon_fav_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
-        
-        if (campaign.type ?? 16) == 16 || isRedeemCoinCampaign() {
+        if userLocale() == 1109 {
+            vwHistory.isHidden = true
             vwLike.isHidden = true
         } else {
-            vwLike.isHidden = false
+            vwHistory.isHidden = false
+            imvLike.image = UIImage(named: (self.campaign.isFavourite ?? false) ? "img_navbar_icon_fav_active" : "img_navbar_icon_fav_unactive", in: Bzbs.shared.currentBundle, compatibleWith: nil)
+            
+            if (campaign.type ?? 16) == 16 || isRedeemCoinCampaign() {
+                vwLike.isHidden = true
+            } else {
+                vwLike.isHidden = false
+            }
         }
     }
     

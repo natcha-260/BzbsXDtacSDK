@@ -63,7 +63,7 @@ class LocaleCore: BBLocale {
         {
             if language == "th" {
                 return 1054
-            } else if language == "mm" {
+            } else if language == "mm" || language == "my" {
                 return 1109
             } else {
                 return 1033
