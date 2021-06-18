@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.41
+- handle category name
 ## 2.0.40
 - improve performance
 ## 2.0.39

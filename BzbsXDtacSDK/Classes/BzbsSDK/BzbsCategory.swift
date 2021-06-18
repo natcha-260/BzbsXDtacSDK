@@ -60,8 +60,8 @@ public class BzbsCategory {
         listConfig = BuzzebeesConvert.StringFromObject(dict["list_config"])
         mode = BuzzebeesConvert.StringFromObject(dict["mode"])
         _name = BuzzebeesConvert.StringOrNull(dict["name"])
-        nameEn = BuzzebeesConvert.StringFromObject(dict["name_en"])
-//        nameTh = BuzzebeesConvert.StringFromObject(dict["name_th"])
+        nameEn = BuzzebeesConvert.StringOrNull(dict["name_en"]) ?? _name ?? ""
+        nameTh = BuzzebeesConvert.StringOrNull(dict["name_th"]) ?? _name
         tags = BuzzebeesConvert.StringFromObject(dict["tags"])
         
         // Api "/api/reservation/" + strLocationId + "/category" ใช้ตัวใหญ่
