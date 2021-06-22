@@ -42,7 +42,7 @@ extension MainViewController : BzbsDelegate
     
     func reLogin() {
         print("reLogin")
-        Bzbs.shared.reLogin()
+//        Bzbs.shared.reLogin()
     }
     
     func clickMessage() {

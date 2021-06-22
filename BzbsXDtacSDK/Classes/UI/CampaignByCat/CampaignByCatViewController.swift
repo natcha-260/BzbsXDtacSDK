@@ -125,7 +125,7 @@ open class CampaignByCatViewController: BaseListController {
             if let first = currentCat.subCat.first
             {
                 currentSubCat = first
-                sendGACategoryTouchEvent(subCat: currentSubCat!)
+                sendGACategoryTouchEvent(subCat: first)
                 self.subCategoryCV?.reloadData()
                 self.subCategoryCV?.scrollRectToVisible(CGRect.zero, animated: false)
                 self._isEnd = false
@@ -1190,10 +1190,10 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 currentSubCat = item
                 if currentCat.id == Bzbs.shared.blueCategory?.id {
                     // Blue member จะเปลี่ยนทุก subcat
-                    var imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat!.id)"
+                    var imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat?.id ?? 0)"
                     if LocaleCore.shared.getUserLocale() == BBLocaleKey.en.rawValue
                     {
-                        imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat!.id)_en"
+                        imageUrl = BuzzebeesCore.blobUrl + "/dtac/category/\(self.currentSubCat?.id ?? 0)_en"
                     }
                     if let url = URL(string:imageUrl), let host = url.host, host == "buzzebees.blob.core.windows.net"
                     {
@@ -1209,11 +1209,11 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                     self.dashboardItems = [dashboard]
                     self.campaignCV.reloadData()
                 }
-                else if self.currentCat!.id == BuzzebeesCore.catIdCoin {
-                    if currentSubCat!.id == currentCat.subCat.first?.id {
+                else if self.currentCat?.id == BuzzebeesCore.catIdCoin {
+                    if currentSubCat?.id == currentCat.subCat.first?.id && currentSubCat != nil{
                         apiGetSubDashboard(getBannerDashboardConfig())
                     } else {
-                        let dashboardName = "dtac_category_\(currentSubCat!.id)"
+                        let dashboardName = "dtac_category_\(currentSubCat?.id ?? 0)"
                         apiGetSubDashboard(dashboardName)
                     }
                 }
