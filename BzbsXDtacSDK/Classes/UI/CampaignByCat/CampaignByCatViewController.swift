@@ -347,7 +347,7 @@ open class CampaignByCatViewController: BaseListController {
     func checkSearchBarOrPoint() {
         if userLocale() == BBLocaleKey.mm.rawValue {
             getExpiringPoint()
-            getApiCategory(isReloadOnly: true)
+            getApiCategory(isReloadOnly: false)
             lblPoint.font = UIFont.mainFont(.big, style: .bold)
             lblExpireDate.font = UIFont.mainFont(.small,style: .bold)
             lblPoint.text = ""
@@ -423,6 +423,7 @@ open class CampaignByCatViewController: BaseListController {
                         , catId: currentSubCat.id
                         , token: Bzbs.shared.userLogin?.token
                         , center : LocationManager.shared.getCurrentCoorndate()
+                        , isAllowCancel: true
                         , successCallback: { (tmpList) in
                             
                             if self._intSkip == 0 {
@@ -434,9 +435,12 @@ open class CampaignByCatViewController: BaseListController {
                             self._intSkip += self._intTop
                             self.loadedData()
                         }) { (error) in
-            self._arrDataShow.removeAll()
-            self._isEnd = true
-            self.loadedData()
+            if error.message != "cancelled" {
+                self._arrDataShow.removeAll()
+                self._isEnd = true
+                self.loadedData()
+                    
+            }
         }
     }
     
@@ -494,7 +498,12 @@ open class CampaignByCatViewController: BaseListController {
     
     func getBannerDashboardConfig() -> String {
         let config = "dtac_category_\(currentCat?.id ?? 0)"
-        if currentCat?.id == BuzzebeesCore.catIdCoin {
+        if userLocale() == BBLocaleKey.mm.rawValue {
+            if let id = currentSubCat?.id {
+                return "dtac_category_\(id)"
+            }
+        }
+        else if currentCat?.id == BuzzebeesCore.catIdCoin {
             return Bzbs.shared.userLogin?.telType.configRecommend ?? config
         }
         return config
@@ -534,6 +543,7 @@ open class CampaignByCatViewController: BaseListController {
         
         BuzzebeesCategory().list(config: "menu_dtac_coins_v2",
                                  token: Bzbs.shared.userLogin?.token,
+                                 isAllowCancel: true,
                                  successCallback: { (listCategory) in
                                     self.arrCategory = listCategory
                                     // first cat is always Blue
@@ -649,6 +659,10 @@ open class CampaignByCatViewController: BaseListController {
         }
     }
     
+    func analyticsSetRemainingCoin() {
+        analyticsSetUserProperty(propertyName: "remaining_coin", value: "\(Bzbs.shared.userLogin?.bzbsPoints ?? 0)")
+    }
+    
     func getExpiringPoint()
     {
         guard let token = Bzbs.shared.userLogin?.token else {
@@ -684,6 +698,8 @@ open class CampaignByCatViewController: BaseListController {
                 if let expiringPoint = first["points"] as? Int {
                     self.lblPoint.text = "your_coin".localized() + " " + expiringPoint.withCommas()
                     self.imvCoin.isHidden = false
+                    Bzbs.shared.userLogin?.bzbsPoints = expiringPoint
+                    self.analyticsSetRemainingCoin()
                 }
                 if let time = first["time"] as? TimeInterval
                 {
@@ -795,16 +811,16 @@ open class CampaignByCatViewController: BaseListController {
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/\(catName)/\(subCatName)".lowercased() as AnyObject
         reward[AnalyticsParameterItemBrand] = (agencyName) as AnyObject
-        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index + 1) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let label =  "hero_reward | \(catName) | \(subCatName) | \(index) | \(item.id ?? "")".lowercased()
+        let label =  "hero_reward | \(catName) | \(subCatName) | \(index + 1) | \(item.id ?? "")".lowercased()
         let ecommerce : [String: AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : "impression_banner" as NSString,
             "eventLabel" : label as NSString,
-            AnalyticsParameterItemListName: "reward_banner_\(catName)" as AnyObject
+            AnalyticsParameterItemListName: "reward_banner" as AnyObject
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -870,7 +886,7 @@ open class CampaignByCatViewController: BaseListController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_banner" as NSString,
             "eventLabel" : label as NSString,
-            AnalyticsParameterItemListName: "reward_banner_\(catName)" as NSString
+            AnalyticsParameterItemListName: "reward_banner" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -908,11 +924,11 @@ open class CampaignByCatViewController: BaseListController {
         reward[AnalyticsParameterItemName] = name as AnyObject
         reward[AnalyticsParameterItemCategory] = "reward/\(catName)/\(subCatName)".lowercased() as AnyObject
         reward[AnalyticsParameterItemBrand] = (agencyName) as AnyObject
-        reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
+        reward[AnalyticsParameterIndex] = NSNumber(value: index + 1) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
         
-        let label =  "reward_list | \(catName) | \(subCatName) | \(index) | \(item.ID!)".lowercased()
+        let label =  "reward_list | \(catName) | \(subCatName) | \(index + 1) | \(item.ID!)".lowercased()
         let ecommerce : [String: AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
@@ -1046,7 +1062,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 if dashboardAllItems.count == 0 {
                     if _isCallApi
                     {
-                        return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCell", for: indexPath)
+                        return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCVCell", for: indexPath)
                     }
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emptyCell", for: indexPath) as! EmptyCVCell
                     cell.imv.image = UIImage(named: "ic_reward_document", in: Bzbs.shared.currentBundle, compatibleWith: nil)

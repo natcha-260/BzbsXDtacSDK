@@ -1,4 +1,7 @@
 # BzbsXDtacSDK
+## 2.0.43
+- Fix banner for Burmese 
+- Fix campaign by category 
 ## 2.0.42
 - improve performance
 ## 2.0.41

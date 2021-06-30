@@ -23,6 +23,7 @@ public class BuzzebeesCampaign: BuzzebeesCore {
      - parameter result: Campaign List from
      - parameter error : BzbsError Object
      */
+    private static var lastRequest : DataRequest?
     public func list(config: String
         , top: Int = 25
         , skip: Int
@@ -31,6 +32,7 @@ public class BuzzebeesCampaign: BuzzebeesCore {
         , hashTag: String? = nil
         , token: String?
         , center tmpCenter: String? = nil
+                     , isAllowCancel: Bool = false
         , successCallback: @escaping (_ result: [BzbsCampaign]) -> Void
         , failCallback: @escaping (_ error: BzbsError) -> Void) {
         
@@ -64,10 +66,20 @@ public class BuzzebeesCampaign: BuzzebeesCore {
             headers!["Authorization"] = "token \(bzbToken)"
         }
         
+        let strUrl = BuzzebeesCore.apiUrl + "/api/campaign/"
+        if isAllowCancel {
+            if BuzzebeesCampaign.lastRequest != nil {
+                print("cancelled : \(strUrl)")
+                BuzzebeesCampaign.lastRequest?.cancel()
+                BuzzebeesCampaign.lastRequest = nil
+            }
+        }
         requestAlamofire(HTTPMethod.get
-            , strURL: BuzzebeesCore.apiUrl + "/api/campaign/"
+            , strURL: strUrl
             , params: params as [String : AnyObject]?
-            , headers: headers
+                         , headers: headers, requestCreated: { (request) in
+                            BuzzebeesCampaign.lastRequest = request
+                         }
             , successCallback: { (ao) in
                 if let arrJSON = ao as? [Dictionary<String, AnyObject>] {
                     var list = [BzbsCampaign]()

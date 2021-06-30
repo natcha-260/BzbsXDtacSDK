@@ -48,6 +48,7 @@ class NewTokenSelectViewController: UIViewController {
         if let str = UserDefaults.standard.string(forKey: "dtacAppVersion") {
             dtacVersion = str
         }
+        
         tableView.reloadData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -239,6 +240,7 @@ class NewTokenSelectViewController: UIViewController {
     @IBAction func clickGotoCategory(_ sender: Any) {
         guard let nav = self.navigationController else { return }
         if let tmpCat = txtCategory?.text {
+            UserDefaults.standard.set(tmpCat, forKey: "categoryIds")
             let rawCat = tmpCat.split(separator: ",")
             let catName = String(rawCat.first ?? "")
             var subCatName:String?
@@ -347,10 +349,23 @@ extension NewTokenSelectViewController : UITableViewDataSource, UITableViewDeleg
         
         if cellIdent == "actions" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "actionCell", for: indexPath)
-            txtCampaign = cell.viewWithTag(10) as? UITextField
-            txtCampaign?.delegate = self
-            txtCategory = cell.viewWithTag(11) as? UITextField
-            txtCategory?.delegate = self
+            if txtCampaign != cell.viewWithTag(10) as? UITextField {
+                txtCampaign = cell.viewWithTag(10) as? UITextField
+                if let campaignId = UserDefaults.standard.string(forKey: "campaignId"), campaignId != ""
+                {
+                    txtCampaign?.text = campaignId
+                }
+                txtCampaign?.delegate = self
+            }
+            
+            if txtCategory != cell.viewWithTag(11) as? UITextField {
+                txtCategory = cell.viewWithTag(11) as? UITextField
+                if let categoryIds = UserDefaults.standard.string(forKey: "categoryIds"), categoryIds != ""
+                {
+                    txtCategory?.text = categoryIds
+                }
+                txtCategory?.delegate = self
+            }
             return cell
         }
         return UITableViewCell()

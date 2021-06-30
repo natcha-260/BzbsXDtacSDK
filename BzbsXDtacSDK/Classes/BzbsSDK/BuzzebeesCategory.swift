@@ -12,9 +12,11 @@ import Alamofire
 public class BuzzebeesCategory: BuzzebeesCore {
     // MARK:- List
     // MARK:-
+    
+    private static var lastRequest : DataRequest?
     public func list(config: String
         , token: String?
-        , haveCampaign: Bool = false
+        , isAllowCancel: Bool = false
         , top: Int = 0
         , successCallback: @escaping (_ result: [BzbsCategory]) -> Void
         , failCallback: @escaping (_ error: BzbsError) -> Void) {
@@ -32,29 +34,55 @@ public class BuzzebeesCategory: BuzzebeesCore {
             headers!["Authorization"] = "token \(bzbsToken)"
         }
         
-        var strUrl = BuzzebeesCore.apiUrl + "/api/campaigncat/menu"
-        if haveCampaign {
-            strUrl = BuzzebeesCore.apiUrl + "/api/campaigncat/menu_campaigns"
+        let strUrl = BuzzebeesCore.apiUrl + "/api/campaigncat/menu"
+        if isAllowCancel {
+            BuzzebeesCategory.lastRequest?.cancel()
+            BuzzebeesCategory.lastRequest = nil
         }
-        
-        requestAlamofire(HTTPMethod.get
-            , strURL: strUrl
-            , params: params as [String : AnyObject]?
-            , headers: headers
-            , successCallback: { (ao) in
-                if let arrJSON = ao as? [Dictionary<String, AnyObject>] {
-                    var list = [BzbsCategory]()
-                    for i in 0..<arrJSON.count {
-                        list.append(BzbsCategory(dict: arrJSON[i]))
-                    }
-                    
-                    successCallback(list)
-                    return
+        requestAlamofire(.get
+                         , strURL: strUrl
+                         , params: params as [String : AnyObject]?
+                         , headers: headers) { (request) in
+            BuzzebeesCategory.lastRequest = request
+        } successCallback: { (ao) in
+            
+            BuzzebeesCategory.lastRequest = nil
+            if let arrJSON = ao as? [Dictionary<String, AnyObject>] {
+                var list = [BzbsCategory]()
+                for i in 0..<arrJSON.count {
+                    list.append(BzbsCategory(dict: arrJSON[i]))
                 }
                 
-                self.serverSendDataWrongFormat(failCallback: failCallback)
+                successCallback(list)
                 return
-        } , failCallback: failCallback )
+            }
+            
+            self.serverSendDataWrongFormat(failCallback: failCallback)
+            return
+        } failCallback: { (error) in
+            BuzzebeesCategory.lastRequest = nil
+            failCallback(error)
+        }
+//
+//
+//        requestAlamofire(HTTPMethod.get
+//            , strURL: strUrl
+//            , params: params as [String : AnyObject]?
+//            , headers: headers
+//            , successCallback: { (ao) in
+//                if let arrJSON = ao as? [Dictionary<String, AnyObject>] {
+//                    var list = [BzbsCategory]()
+//                    for i in 0..<arrJSON.count {
+//                        list.append(BzbsCategory(dict: arrJSON[i]))
+//                    }
+//
+//                    successCallback(list)
+//                    return
+//                }
+//
+//                self.serverSendDataWrongFormat(failCallback: failCallback)
+//                return
+//        } , failCallback: failCallback )
     }
     
     // MARK:- Favourite List
