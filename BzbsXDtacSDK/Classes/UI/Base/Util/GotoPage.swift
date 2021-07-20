@@ -28,7 +28,7 @@ class GotoPage: NSObject
         nav.pushViewController(vc, animated: true)
     }
     
-    class func gotoCampaignDetail(_ nav:UINavigationController, campaign: BzbsCampaign, parentCategoryName:String = BzbsAnalyticDefault.category.rawValue, target: UIViewController) {
+    class func gotoCampaignDetail(_ nav:UINavigationController, campaign: BzbsCampaign, parentCategoryName:String = BzbsAnalyticDefault.category.rawValue, target: UIViewController, gaIndex: Int) {
         if !ReachabilityManager.shared.isConnectedToInternet() {
             ReachabilityManager.shared.showPopupInternet(target: target)
             return
@@ -41,6 +41,7 @@ class GotoPage: NSObject
         let vc = storboard.instantiateViewController(withIdentifier: "scene_campaign_detail") as! CampaignDetailViewController
         vc.hidesBottomBarWhenPushed = true
         vc.campaign = campaign
+        vc.gaIndex = gaIndex
         vc.parentCategoryName = parentCategoryName
         nav.pushViewController(vc, animated: true)
     }

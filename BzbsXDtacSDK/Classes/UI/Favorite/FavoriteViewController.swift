@@ -274,7 +274,7 @@ extension FavoriteViewController: UITableViewDataSource, UITableViewDelegate
         if item.currentDate > item.expireDate { return }
         if let nav = self.navigationController
         {
-            GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)
+            GotoPage.gotoCampaignDetail(nav, campaign: item, target: self, gaIndex: indexPath.row + 1)
         }
     }
     

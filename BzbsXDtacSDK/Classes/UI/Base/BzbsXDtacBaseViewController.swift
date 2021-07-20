@@ -81,7 +81,7 @@ open class BzbsXDtacBaseViewController: BzbsBaseViewController {
                 let campaign = BzbsCampaign()
                 campaign.ID = campaignId
                 delay(0.33) {
-                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
+                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: 1)
                 }
             }
         }

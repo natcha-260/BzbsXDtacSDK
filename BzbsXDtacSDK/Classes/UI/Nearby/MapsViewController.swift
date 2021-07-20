@@ -305,7 +305,7 @@ class MapsViewController: BzbsXDtacBaseViewController ,UIScrollViewDelegate{
         {
             let campaign = BzbsCampaign()
             campaign.ID = id
-            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self)
+            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self, gaIndex: 1)
         }
     }
     

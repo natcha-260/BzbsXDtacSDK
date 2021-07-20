@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.44
+- update GA
 ## 2.0.43
 - Fix banner for Burmese 
 - Fix campaign by category 

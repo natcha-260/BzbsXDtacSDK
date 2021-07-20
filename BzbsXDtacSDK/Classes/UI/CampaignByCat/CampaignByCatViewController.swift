@@ -820,7 +820,7 @@ open class CampaignByCatViewController: BaseListController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "impression_banner" as NSString,
             "eventLabel" : label as NSString,
-            AnalyticsParameterItemListName: "reward_banner" as AnyObject
+            AnalyticsParameterItemListName: "reward_banner_\(catName)" as AnyObject
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -886,7 +886,7 @@ open class CampaignByCatViewController: BaseListController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_banner" as NSString,
             "eventLabel" : label as NSString,
-            AnalyticsParameterItemListName: "reward_banner" as NSString
+            AnalyticsParameterItemListName: "reward_banner_\(catName)" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -1245,7 +1245,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 {
                     let campaign = item.toCampaign()
                     sendTouchCampaign(campaign, indexPath: indexPath)
-                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, parentCategoryName: currentSubCat?.name ?? "-", target: self)
+                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, parentCategoryName: currentSubCat?.name ?? "-", target: self, gaIndex: indexPath.row + 1)
                 }
                 return
             }
@@ -1255,7 +1255,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             sendTouchCampaign(campaign, indexPath: indexPath)
             if let nav = self.navigationController
             {
-                GotoPage.gotoCampaignDetail(nav, campaign: campaign, parentCategoryName: currentCat?.name ?? "-", target: self)
+                GotoPage.gotoCampaignDetail(nav, campaign: campaign, parentCategoryName: currentCat?.name ?? "-", target: self, gaIndex: indexPath.row + 1)
             }
             return
         }
@@ -1418,7 +1418,7 @@ extension CampaignByCatViewController: CampaignRotateCVDelegate
                 case "campaign" :
                     if let nav = self.navigationController {
                         let campaign = item.toCampaign()
-                        GotoPage.gotoCampaignDetail(nav, campaign: campaign, parentCategoryName: currentCat?.name ?? "-", target: self)
+                        GotoPage.gotoCampaignDetail(nav, campaign: campaign, parentCategoryName: currentCat?.name ?? "-", target: self, gaIndex: 1)
                     }
                 default:
                     break
@@ -1457,7 +1457,7 @@ extension CampaignByCatViewController: ScanQRViewControllerDelegate{
                                                         let campaign = BzbsCampaign()
                                                         campaign.ID = campaignId!
                                                         DispatchQueue.main.async {
-                                                            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self)
+                                                            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self, gaIndex: 1)
                                                         }
                                                         self.hideLoader()
                                                     },

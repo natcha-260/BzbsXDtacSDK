@@ -326,10 +326,10 @@ extension RecommendListViewController : UICollectionViewDataSource, UICollection
         let campaign = item.toCampaign()
         if let nav = self.navigationController
         {
-            GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
+            GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: indexPath.row + 1)
         } else if let nav = customNav
         {
-            GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
+            GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: indexPath.row + 1)
         }
     }
     

@@ -1263,7 +1263,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
                 if item.ID == -1 { return }
                 sendGATouchEvent(item,indexPath: indexPath)
                 if let nav = self.navigationController {
-                    GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)
+                    GotoPage.gotoCampaignDetail(nav, campaign: item, target: self, gaIndex: indexPath.row)
                 }
             }
         }else if indexPath.section == 5 {
@@ -1276,7 +1276,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
                 sendCoinGATouchEvent(item,indexPath: indexPath)
                 if let nav = self.navigationController {
                     let campaign = item.toCampaign()
-                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
+                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: indexPath.row)
                 }
             }
         }
@@ -1464,7 +1464,7 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
             case "campaign" :
                 if let nav = self.navigationController {
                     let campaign = item.toCampaign()
-                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self)
+                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: 1)
                 }
             default:
                 break
@@ -1504,7 +1504,7 @@ extension BzbsMainViewController: ScanQRViewControllerDelegate{
                                                         let campaign = BzbsCampaign()
                                                         campaign.ID = campaignId!
                                                         DispatchQueue.main.async {
-                                                            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self)
+                                                            GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self, gaIndex: 1)
                                                         }
                                                         self.hideLoader()
                     },

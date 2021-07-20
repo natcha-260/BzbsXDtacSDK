@@ -270,7 +270,7 @@ extension NearbyListViewController : UICollectionViewDataSource, UICollectionVie
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
         if let nav = self.navigationController
         {
-            GotoPage.gotoCampaignDetail(nav, campaign: item, target: self)
+            GotoPage.gotoCampaignDetail(nav, campaign: item, target: self, gaIndex: indexPath.row + 1)
         }
     }
     
