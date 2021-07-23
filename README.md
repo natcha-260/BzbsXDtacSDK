@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.45
+- add Login cancellation
 ## 2.0.44
 - update GA
 ## 2.0.43

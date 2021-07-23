@@ -17,6 +17,8 @@ import Alamofire
 
 public class BuzzebeesAuth: BuzzebeesCore {
     
+    private static var loginRequest : DataRequest?
+    
     // MARK:- Login
     // MARK:-
     /**
@@ -541,6 +543,11 @@ extension BuzzebeesAuth {
         requestAlamofire(HTTPMethod.post
             , strURL: BuzzebeesCore.apiUrl + "/api/auth/device_login"
             , params: params as [String : AnyObject]?
+                         , requestCreated: { (request) in
+                            print("loginRequest cancelled")
+                            BuzzebeesAuth.loginRequest?.cancel()
+                            BuzzebeesAuth.loginRequest = request
+                         }
             , successCallback: { (ao) in
                 if let dictJSON = ao as? Dictionary<String, AnyObject> {
                     if(self.haveErrorFromDict(dict: dictJSON, failCallback: failCallback) == false) {
