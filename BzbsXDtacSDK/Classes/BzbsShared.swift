@@ -94,7 +94,7 @@ struct DtacLoginParams {
     var userLogin: BzbsUser?
     var arrCategory :[BzbsCategory]?
     var blueCategory : BzbsCategory?
-    var coinCategory : BzbsCategory?
+//    var coinCategory : BzbsCategory?
     var deepLinkUrl : URL?
     var isRetriedGetSegment = false
     

@@ -439,7 +439,7 @@ open class CampaignByCatViewController: BaseListController {
                 self._arrDataShow.removeAll()
                 self._isEnd = true
                 self.loadedData()
-                    
+                
             }
         }
     }
@@ -548,7 +548,6 @@ open class CampaignByCatViewController: BaseListController {
                                     self.arrCategory = listCategory
                                     // first cat is always Blue
                                     Bzbs.shared.blueCategory = listCategory.first
-                                    Bzbs.shared.coinCategory = listCategory.last
                                     if self.userLocale() == BBLocaleKey.mm.rawValue {
                                         if let coinCat =  self.arrCategory.first(where: { (cat) -> Bool in
                                             return cat.id == BuzzebeesCore.catIdCoin
@@ -582,8 +581,10 @@ open class CampaignByCatViewController: BaseListController {
                                             }
                                             
                                             if userLogin.telType == .postpaid {
-                                                Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
-                                                    return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                self.arrCategory.forEach { (cat) in
+                                                    cat.subCat.removeAll { (cat) -> Bool in
+                                                        return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                    }
                                                 }
                                             }
                                         } else {
@@ -591,8 +592,10 @@ open class CampaignByCatViewController: BaseListController {
                                                 return cat.id == Bzbs.shared.blueCategory?.id
                                             }
                                             
-                                            Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
-                                                return cat.id == BuzzebeesCore.catIdVoiceNet
+                                            self.arrCategory.forEach { (cat) in
+                                                cat.subCat.removeAll { (cat) -> Bool in
+                                                    return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                }
                                             }
                                         }
                                     }
@@ -625,13 +628,13 @@ open class CampaignByCatViewController: BaseListController {
         var subCat : BzbsCategory?
         if let catId = tmpCatId {
             if let _cat = arrCategory.first(where: { (tmpCat) -> Bool in
-                return tmpCat.id == catId })
+                                                return tmpCat.id == catId })
             {
                 cat = _cat
                 if let subCatId = tmpSubCatId
                 {
                     if let _subCat = _cat.subCat.first(where: { (tmpSubCat) -> Bool in
-                        return tmpSubCat.id == subCatId })
+                                                        return tmpSubCat.id == subCatId })
                     {
                         subCat = _subCat
                     }
@@ -685,7 +688,7 @@ open class CampaignByCatViewController: BaseListController {
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "dd MMM yyyy"
         self.lblExpireDate.text = "valid_till".localized() + " " + formatter.string(from: expireDate)
-
+        
         showLoader()
         BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
             if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
@@ -726,7 +729,7 @@ open class CampaignByCatViewController: BaseListController {
     override func refreshApi() {
         _intSkip = 0
         _isEnd = false
-        if Bzbs.shared.arrCategory == nil { return }
+//        if Bzbs.shared.arrCategory == nil { return }
         getApiCategory()
         getApi()
         getDashboard()
@@ -745,7 +748,7 @@ open class CampaignByCatViewController: BaseListController {
     func sendGACategoryTouchEvent(category:BzbsCategory)
     {
         let name = category.nameEn.lowercased()
-         analyticsSetEvent(event:"event_app", category: "reward", action: "touch_button", label: "dropdown_category | \(name)")
+        analyticsSetEvent(event:"event_app", category: "reward", action: "touch_button", label: "dropdown_category | \(name)")
     }
     
     // FIXME:GA#14
@@ -758,7 +761,7 @@ open class CampaignByCatViewController: BaseListController {
     {
         let categoryName = currentCat?.nameEn.lowercased() ?? BzbsAnalyticDefault.category.rawValue
         let subCategoryName = subCat.nameEn.lowercased()
-         analyticsSetEvent(event:"event_app", category: "reward", action: "touch_button", label: "filter | \(categoryName) | \(subCategoryName)")
+        analyticsSetEvent(event:"event_app", category: "reward", action: "touch_button", label: "filter | \(categoryName) | \(subCategoryName)")
     }
     
     // FIXME:GA#16
@@ -1003,7 +1006,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
     }
     
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if Bzbs.shared.arrCategory == nil { return 0}
+        if Bzbs.shared.arrCategory == nil { return 0 }
         if collectionView == subCategoryCV {
             return currentCat?.subCat.count ?? 0
         }
@@ -1011,7 +1014,7 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             return arrCategory.count
         }
         if collectionView == campaignCV {
-            if section == 0{
+            if section == 0 {
                 return 1
             }
             if isCategoryAll() {
@@ -1029,7 +1032,11 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             }
             let item = currentCat.subCat[indexPath.row]
             return generateCellSubcat(item, collectionView:collectionView, indexPath: indexPath)
-        } else if collectionView == campaignCV {
+        } else if collectionView == categoryCV{
+            let item = arrCategory[indexPath.row]
+            return generateCellCategory(item, collectionView:collectionView, indexPath: indexPath)
+        }
+        else {
             if indexPath.section == 0 {
                 if dashboardItems.count == 0 {
                     return collectionView.dequeueReusableCell(withReuseIdentifier: "blankCVCell", for: indexPath)
@@ -1107,9 +1114,6 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 return cell
             }
         }
-        
-        let item = arrCategory[indexPath.row]
-        return generateCellCategory(item, collectionView:collectionView, indexPath: indexPath)
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -1124,7 +1128,17 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
             lbl.text = name
             lbl.sizeToFit()
             return CGSize(width: 16 + lbl.frame.size.width + 16, height: 45)
-        }  else if collectionView == campaignCV {
+        } else if collectionView == categoryCV{
+            let width = collectionView.frame.size.width / 4.5
+            
+            let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.leastNonzeroMagnitude))
+            lbl.font = UIFont.mainFont(.small)
+            lbl.text = "\n"
+            lbl.sizeToFit()
+            let height = (width / 2) + lbl.frame.size.height
+            
+            return CGSize(width: width, height:  height)
+        } else {
             if indexPath.section == 0 {
                 let width = collectionView.frame.size.width - 8
                 if dashboardItems.count == 0 {
@@ -1178,18 +1192,8 @@ extension CampaignByCatViewController: UICollectionViewDataSource, UICollectionV
                 return CampaignCoinCVCell.getSize(collectionView)
             }
             return CampaignCVCell.getSize(collectionView)
-                
+            
         }
-        
-        let width = collectionView.frame.size.width / 4.5
-        
-        let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.leastNonzeroMagnitude))
-        lbl.font = UIFont.mainFont(.small)
-        lbl.text = "\n"
-        lbl.sizeToFit()
-        let height = (width / 2) + lbl.frame.size.height
-        
-        return CGSize(width: width, height:  height)
     }
     
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

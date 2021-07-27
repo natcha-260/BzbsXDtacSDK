@@ -16,7 +16,7 @@ import WebKit
 import ImageSlideshow
 
 @objc public class BzbsMainViewController: BaseListController {
-
+    
     @IBOutlet weak var collectionView: UICollectionView!
     {
         didSet{
@@ -55,7 +55,7 @@ import ImageSlideshow
             }
             return "campaign_dtac_guest_nolocation"
         }
-
+        
         if let level = Bzbs.shared.userLogin?.dtacLevel{
             if level == .no_level {
                 return "campaign_dtac_guest"
@@ -155,10 +155,10 @@ import ImageSlideshow
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.tintColorDidChange()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.mainFont(), NSAttributedString.Key.foregroundColor:UIColor.black]
-//        if BuzzebeesCore.isSetEndpoint && self._intSkip == 0{
-//            getApiRecommend()
-//            self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionView.ScrollPosition.top, animated: true)
-//        }
+        //        if BuzzebeesCore.isSetEndpoint && self._intSkip == 0{
+        //            getApiRecommend()
+        //            self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionView.ScrollPosition.top, animated: true)
+        //        }
     }
     
     func reloadSetupPrefix()
@@ -188,26 +188,26 @@ import ImageSlideshow
         navigationController?.navigationBar.tintColorDidChange()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.mainFont(), NSAttributedString.Key.foregroundColor:UIColor.black]
         rotateImageSlider?.unpauseTimer()
-//        if !isLoggedIn()
-//        {
-//            Bzbs.shared.delegate?.reTokenTicket()
-//        }
+        //        if !isLoggedIn()
+        //        {
+        //            Bzbs.shared.delegate?.reTokenTicket()
+        //        }
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         rotateImageSlider?.pauseTimer()
-//        self._intSkip = 0
-//        self._isEnd = false
+        //        self._intSkip = 0
+        //        self._isEnd = false
     }
     
     func initialUI() {
         
         getApiGreeting()
         if let token = Bzbs.shared.dtacLoginParams.token, token != "",
-            let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != "",
-            let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != "",
-            let TelType = Bzbs.shared.dtacLoginParams.TelType
+           let ticket = Bzbs.shared.dtacLoginParams.ticket, ticket != "",
+           let DTACSegment = Bzbs.shared.dtacLoginParams.DTACSegment, DTACSegment != "",
+           let TelType = Bzbs.shared.dtacLoginParams.TelType
         {
             let language = Bzbs.shared.dtacLoginParams.language ?? "th"
             let DtacAppVersion = Bzbs.shared.dtacLoginParams.DtacAppVersion ?? ""
@@ -322,7 +322,7 @@ import ImageSlideshow
         let rect = UIScreen.main.bounds
         return getView(rect)
     }
-
+    
     @objc open class func getView(_ frame:CGRect) -> BzbsMainViewController
     {
         let storyboard = UIStoryboard(name: "DtacRewardsMain", bundle: Bzbs.shared.currentBundle)
@@ -350,13 +350,13 @@ import ImageSlideshow
         viewController.addChild(nav)
         nav.view.translatesAutoresizingMaskIntoConstraints = false
         (containnerView ?? viewController.view).addSubview(nav.view)
-
+        
         NSLayoutConstraint.activate([
             nav.view.leadingAnchor.constraint(equalTo: (containnerView ?? viewController.view).leadingAnchor, constant: 0),
             nav.view.trailingAnchor.constraint(equalTo: (containnerView ?? viewController.view).trailingAnchor, constant: 0),
             nav.view.topAnchor.constraint(equalTo: (containnerView ?? viewController.view).topAnchor, constant: 0),
             nav.view.bottomAnchor.constraint(equalTo: (containnerView ?? viewController.view).bottomAnchor, constant: 0)
-            ])
+        ])
         nav.didMove(toParent: viewController)
     }
     
@@ -382,7 +382,7 @@ import ImageSlideshow
         showLoader()
         BuzzebeesHistory().getExpiringPoint(token: token, successCallback: { (dict) in
             if let arr = dict["expiring_points"] as? [Dictionary<String, AnyObject>] ,
-                let first = arr.first
+               let first = arr.first
             {
                 if let expiringPoint = first["points"] as? Int {
                     Bzbs.shared.userLogin?.bzbsPoints = expiringPoint
@@ -406,10 +406,10 @@ import ImageSlideshow
                                  successCallback: { (dashboard) in
                                     self.dashboardItems = dashboard
                                     self.loadedData()
-        },
+                                 },
                                  failCallback: { (error) in
-                                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-        })
+                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                 })
         
     }
     
@@ -429,7 +429,7 @@ import ImageSlideshow
                                     self.arrCategory = listCategory
                                     // first cat is always Blue
                                     Bzbs.shared.blueCategory = listCategory.first
-                                    Bzbs.shared.coinCategory = listCategory.last
+                                    //                                    Bzbs.shared.coinCategory = listCategory.last
                                     
                                     if self.userLocale() == BBLocaleKey.mm.rawValue {
                                         if let coinCat =  self.arrCategory.first(where: { (cat) -> Bool in
@@ -464,8 +464,10 @@ import ImageSlideshow
                                             }
                                             
                                             if userLogin.telType == .postpaid {
-                                                Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
-                                                    return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                self.arrCategory.forEach { (cat) in
+                                                    cat.subCat.removeAll { (cat) -> Bool in
+                                                        return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                    }
                                                 }
                                             }
                                         } else {
@@ -473,17 +475,19 @@ import ImageSlideshow
                                                 return cat.id == Bzbs.shared.blueCategory?.id
                                             }
                                             
-                                            Bzbs.shared.coinCategory?.subCat.removeAll { (cat) -> Bool in
-                                                return cat.id == BuzzebeesCore.catIdVoiceNet
+                                            self.arrCategory.forEach { (cat) in
+                                                cat.subCat.removeAll { (cat) -> Bool in
+                                                    return cat.id == BuzzebeesCore.catIdVoiceNet
+                                                }
                                             }
                                         }
                                     }
                                     self.loadedData()
-        },
+                                 },
                                  failCallback: { (error) in
-                                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-                                 self.loadedData()
-        })
+                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                    self.loadedData()
+                                 })
     }
     
     func getApiRecommend() {
@@ -505,7 +509,7 @@ import ImageSlideshow
                                     if listCampaign.count < 4 {
                                         self._isEnd = true
                                     }
-
+                                    
                                     self.arrCampaign = listCampaign
                                     
                                     // wordaround odd collection list count
@@ -515,10 +519,10 @@ import ImageSlideshow
                                         self.arrCampaign.append(dummyCampaign)
                                     }
                                     //------
-//                                    self._intSkip += 6
+                                    //                                    self._intSkip += 6
                                     self._isCallApi = false
                                     self.loadedData()
-        },
+                                 },
                                  failCallback: { (error) in
                                     if error.id == "-9999"
                                     {
@@ -530,7 +534,7 @@ import ImageSlideshow
                                     self._isCallApi = false
                                     self.loadedData()
                                     if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-        })
+                                 })
     }
     
     // api get Dashboard for cat All
@@ -542,7 +546,7 @@ import ImageSlideshow
                                  deviceLocale: String(LocaleCore.shared.getUserLocale()),
                                  successCallback: { (dashboard) in
                                     self.arrCoinCampaign = dashboard.filter(BzbsDashboard.filterDashboardWithTelType(dashboard:))
-                                        // wordaround odd collection list count
+                                    // wordaround odd collection list count
                                     if self.arrCoinCampaign.count % 2 != 0 {
                                         let dummyCampaign = BzbsDashboard()
                                         dummyCampaign.id = "-1"
@@ -553,12 +557,12 @@ import ImageSlideshow
                                     }
                                     
                                     self.loadedData()
-        },
+                                 },
                                  failCallback: { (error) in
-                                 self.arrCoinCampaign.removeAll()
-                                 self.loadedData()
-                                 if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
-        })
+                                    self.arrCoinCampaign.removeAll()
+                                    self.loadedData()
+                                    if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
+                                 })
     }
     
     override func loadedData() {
@@ -621,11 +625,11 @@ import ImageSlideshow
         if !isLoggedIn()
         {
             PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
-                , strConfirm: "popup_retry_login_fail".localized()
-                , strClose: "popup_cancel".localized()
-                , confirm: {
-                Bzbs.shared.delegate?.reTokenTicket()
-            }, cancel: nil)
+                                      , strConfirm: "popup_retry_login_fail".localized()
+                                      , strClose: "popup_cancel".localized()
+                                      , confirm: {
+                                        Bzbs.shared.delegate?.reTokenTicket()
+                                      }, cancel: nil)
             return
         }
         
@@ -635,33 +639,33 @@ import ImageSlideshow
         }
         // analyticsSetEvent(event:"track_event", category: "reward", action: "scan", label: "screen_name")
         AVCaptureDevice.requestAccess(for: .video) { success in
-          if success { // if request is granted (success is true)
-            DispatchQueue.main.async {
-                if let nav = self.navigationController
-                {
-
-                    GotoPage.gotoScanQR(nav,target: self)
+            if success { // if request is granted (success is true)
+                DispatchQueue.main.async {
+                    if let nav = self.navigationController
+                    {
+                        
+                        GotoPage.gotoScanQR(nav,target: self)
+                    }
+                }
+            } else { // if request is denied (success is false)
+                DispatchQueue.main.async {
+                    PopupManager.confirmPopup(self, message: "popup_scan_not_allow".localized(), strConfirm: "popup_setting".localized(), confirm: {
+                        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                            return
+                        }
+                        
+                        if UIApplication.shared.canOpenURL(settingsUrl) {
+                            if #available(iOS 10.0, *) {
+                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                    print("Settings opened: \(success)") // Prints true
+                                })
+                            } else {
+                                UIApplication.shared.openURL(settingsUrl)
+                            }
+                        }
+                    }, cancel: nil)
                 }
             }
-          } else { // if request is denied (success is false)
-            DispatchQueue.main.async {
-                PopupManager.confirmPopup(self, message: "popup_scan_not_allow".localized(), strConfirm: "popup_setting".localized(), confirm: {
-                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                        return
-                    }
-
-                    if UIApplication.shared.canOpenURL(settingsUrl) {
-                        if #available(iOS 10.0, *) {
-                            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                                print("Settings opened: \(success)") // Prints true
-                            })
-                        } else {
-                            UIApplication.shared.openURL(settingsUrl)
-                        }
-                    }
-                }, cancel: nil)
-            }
-          }
         }
     }
     
@@ -671,11 +675,11 @@ import ImageSlideshow
         if !isLoggedIn()
         {
             PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
-                , strConfirm: "popup_retry_login_fail".localized()
-                , strClose: "popup_cancel".localized()
-                , confirm: {
-                Bzbs.shared.delegate?.reTokenTicket()
-            }, cancel: nil)
+                                      , strConfirm: "popup_retry_login_fail".localized()
+                                      , strClose: "popup_cancel".localized()
+                                      , confirm: {
+                                        Bzbs.shared.delegate?.reTokenTicket()
+                                      }, cancel: nil)
             return
         }
         
@@ -698,11 +702,11 @@ import ImageSlideshow
         if !isLoggedIn()
         {
             PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
-                , strConfirm: "popup_retry_login_fail".localized()
-                , strClose: "popup_cancel".localized()
-                , confirm: {
-                Bzbs.shared.delegate?.reTokenTicket()
-            }, cancel: nil)
+                                      , strConfirm: "popup_retry_login_fail".localized()
+                                      , strClose: "popup_cancel".localized()
+                                      , confirm: {
+                                        Bzbs.shared.delegate?.reTokenTicket()
+                                      }, cancel: nil)
             return
         }
         
@@ -754,36 +758,36 @@ import ImageSlideshow
     
     @objc func clickLevel()
     {
-
+        
         if let userLogin = Bzbs.shared.userLogin ,
-            let _ = userLogin.token ,
-        userLogin.dtacLevel != .no_level
+           let _ = userLogin.token ,
+           userLogin.dtacLevel != .no_level
         {
             
             var strUrl = Bzbs.shared.getUrlDtacMember()
             var strTitle = "Dtac Member"
             
             switch userLogin.dtacLevel {
-            case .blue :
-                strUrl = Bzbs.shared.getUrlBlueMember()
-                strTitle = BuzzebeesCore.levelNameBlue
-                analyticsTapSegment(segmentName: "blue")
-            case .gold :
-                strUrl = Bzbs.shared.getUrlGoldMember()
-                strTitle = BuzzebeesCore.levelNameGold
-                analyticsTapSegment(segmentName: "gold")
-            case .silver :
-                strUrl = Bzbs.shared.getUrlSilverMember()
-                strTitle = BuzzebeesCore.levelNameSilver
-                analyticsTapSegment(segmentName: "silver")
-            case .customer:
-                strUrl = Bzbs.shared.getUrlDtacMember()
-                strTitle = BuzzebeesCore.levelNameDtac
-                analyticsTapSegment(segmentName: "customer")
-            case .no_level:
-                strUrl = Bzbs.shared.getUrlDtacMember()
-                strTitle = BuzzebeesCore.levelNameDtac
-                analyticsTapSegment(segmentName: "customer")
+                case .blue :
+                    strUrl = Bzbs.shared.getUrlBlueMember()
+                    strTitle = BuzzebeesCore.levelNameBlue
+                    analyticsTapSegment(segmentName: "blue")
+                case .gold :
+                    strUrl = Bzbs.shared.getUrlGoldMember()
+                    strTitle = BuzzebeesCore.levelNameGold
+                    analyticsTapSegment(segmentName: "gold")
+                case .silver :
+                    strUrl = Bzbs.shared.getUrlSilverMember()
+                    strTitle = BuzzebeesCore.levelNameSilver
+                    analyticsTapSegment(segmentName: "silver")
+                case .customer:
+                    strUrl = Bzbs.shared.getUrlDtacMember()
+                    strTitle = BuzzebeesCore.levelNameDtac
+                    analyticsTapSegment(segmentName: "customer")
+                case .no_level:
+                    strUrl = Bzbs.shared.getUrlDtacMember()
+                    strTitle = BuzzebeesCore.levelNameDtac
+                    analyticsTapSegment(segmentName: "customer")
             }
             
             if let nav = self.navigationController {
@@ -1089,7 +1093,7 @@ import ImageSlideshow
         reward[AnalyticsParameterItemCategory] = "reward/coins/reward_main" as AnyObject
         reward[AnalyticsParameterItemBrand] = agencyName as AnyObject
         reward[AnalyticsParameterIndex] = NSNumber(value: index) as AnyObject
-//        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
+        //        reward[AnalyticsParameterItemVariant] = "{code_duration}" as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
         // Prepare ecommerce dictionary.
@@ -1134,11 +1138,11 @@ extension BzbsMainViewController: UITextFieldDelegate
         if !isLoggedIn()
         {
             PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
-                , strConfirm: "popup_retry_login_fail".localized()
-                , strClose: "popup_cancel".localized()
-                , confirm: {
-                Bzbs.shared.delegate?.reTokenTicket()
-            }, cancel: nil)
+                                      , strConfirm: "popup_retry_login_fail".localized()
+                                      , strClose: "popup_cancel".localized()
+                                      , confirm: {
+                                        Bzbs.shared.delegate?.reTokenTicket()
+                                      }, cancel: nil)
             return false
         }
         sendGATouchSearch()
@@ -1155,22 +1159,22 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        case 0:
-            return 1
-        case 1 :
-            return 1
-        case 2 :
-            return 1
-        case 3 :
-            return 1
-        case 4 :
-            return 1 + arrCampaign.count + 1// + (_isEnd ? 0 : 1)
-        case 5 :
-            return 1 + arrCoinCampaign.count + 1// + (_isEnd ? 0 : 1)
-        case 6 :
-            return 1
-        default:
-            return 0
+            case 0:
+                return 1
+            case 1 :
+                return 1
+            case 2 :
+                return 1
+            case 3 :
+                return 1
+            case 4 :
+                return 1 + arrCampaign.count + 1// + (_isEnd ? 0 : 1)
+            case 5 :
+                return 1 + arrCoinCampaign.count + 1// + (_isEnd ? 0 : 1)
+            case 6 :
+                return 1
+            default:
+                return 0
         }
     }
     
@@ -1241,10 +1245,10 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
         if section == 6 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "footerCVCell", for: indexPath) as! FooterCVCell
             cell.setupWith(target: self
-                , favSelector: #selector(clickFavorite(_:))
-                , histSelector: #selector(clickHistory(_:))
-                , faqSelector: #selector(clickFAQ(_:))
-                , aboutSelector: #selector(clickAbout(_:)))
+                           , favSelector: #selector(clickFavorite(_:))
+                           , histSelector: #selector(clickHistory(_:))
+                           , faqSelector: #selector(clickFAQ(_:))
+                           , aboutSelector: #selector(clickAbout(_:)))
             return cell
         }
         
@@ -1314,7 +1318,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             }
             if indexPath.row == arrCampaign.count + 1 {
                 return CGSize(width: width, height: 0)
-//                return CGSize(width: width - 8 - 8, height: 40)
+                //                return CGSize(width: width - 8 - 8, height: 40)
             }
             
             return CampaignCVCell.getSize(collectionView)
@@ -1325,7 +1329,7 @@ extension BzbsMainViewController : UICollectionViewDelegate, UICollectionViewDat
             }
             if indexPath.row == arrCoinCampaign.count + 1 {
                 return CGSize(width: width, height: 0)
-//                return CGSize(width: width - 8 - 8, height: 40)
+                //                return CGSize(width: width - 8 - 8, height: 40)
             }
             
             return CampaignCoinCVCell.getSize(collectionView)
@@ -1370,11 +1374,11 @@ extension BzbsMainViewController : CategoryCVCellDelegate
         if !isLoggedIn()
         {
             PopupManager.confirmPopup(self, isWithImage:true, message: "action_click_req_login".errorLocalized()
-                , strConfirm: "popup_retry_login_fail".localized()
-                , strClose: "popup_cancel".localized()
-                , confirm: {
-                Bzbs.shared.delegate?.reTokenTicket()
-            }, cancel: nil)
+                                      , strConfirm: "popup_retry_login_fail".localized()
+                                      , strClose: "popup_cancel".localized()
+                                      , confirm: {
+                                        Bzbs.shared.delegate?.reTokenTicket()
+                                      }, cancel: nil)
             return
         }
         
@@ -1391,9 +1395,9 @@ extension BzbsMainViewController : CategoryCVCellDelegate
             if item.mode == "near_by"
             {
                 if LocationManager.shared.authorizationStatus == .denied  {
-                   PopupManager.confirmPopup(self, message: "popup_location_denied".localized(), strConfirm: "popup_setting".localized(), strClose: "popup_deny".localized(), confirm: {
+                    PopupManager.confirmPopup(self, message: "popup_location_denied".localized(), strConfirm: "popup_setting".localized(), strClose: "popup_deny".localized(), confirm: {
                         if let settingsUrl = URL(string: UIApplication.openSettingsURLString),
-                            UIApplication.shared.canOpenURL(settingsUrl) {
+                           UIApplication.shared.canOpenURL(settingsUrl) {
                             if #available(iOS 10.0, *) {
                                 UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
                                     print("Settings opened: \(success)") // Prints true
@@ -1425,49 +1429,49 @@ extension BzbsMainViewController : CampaignRotateCVDelegate
         if let type = item.type
         {
             switch type {
-            case "hashtag" :
-                if let nav = self.navigationController {
-                    let vc = MajorCampaignListViewController.getViewController()
-                    vc.dashboard = item
-                    vc.hidesBottomBarWhenPushed = true
-                    nav.pushViewController(vc, animated: true)
-                }
-            case "link" :
-                if let strUrl = item.url, let url = URL(string: strUrl)
-                {
-                    if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    } else {
-                        UIApplication.shared.openURL(url)
+                case "hashtag" :
+                    if let nav = self.navigationController {
+                        let vc = MajorCampaignListViewController.getViewController()
+                        vc.dashboard = item
+                        vc.hidesBottomBarWhenPushed = true
+                        nav.pushViewController(vc, animated: true)
                     }
-                }
-            case "cat" :
-                if let _ = self.navigationController {
-                    if let catId = item.cat
+                case "link" :
+                    if let strUrl = item.url, let url = URL(string: strUrl)
                     {
-                        print("click cat:\(catId)")
-                        if let arrCat = Bzbs.shared.arrCategory,
-                            let nav = self.navigationController
+                        if #available(iOS 10.0, *) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        } else {
+                            UIApplication.shared.openURL(url)
+                        }
+                    }
+                case "cat" :
+                    if let _ = self.navigationController {
+                        if let catId = item.cat
                         {
-                            if let first = arrCat.first(where: { (tmpCat) -> Bool in
-                                return tmpCat.id == Int(catId)!
-                            }){
-                                GotoPage.gotoCategory(nav, cat: first, arrCategory: arrCat)
-                            } else {
-                                GotoPage.gotoCategory(nav, cat: arrCat.first!, arrCategory: arrCat)
+                            print("click cat:\(catId)")
+                            if let arrCat = Bzbs.shared.arrCategory,
+                               let nav = self.navigationController
+                            {
+                                if let first = arrCat.first(where: { (tmpCat) -> Bool in
+                                    return tmpCat.id == Int(catId)!
+                                }){
+                                    GotoPage.gotoCategory(nav, cat: first, arrCategory: arrCat)
+                                } else {
+                                    GotoPage.gotoCategory(nav, cat: arrCat.first!, arrCategory: arrCat)
+                                }
                             }
                         }
                     }
-                }
-            case "none" :
-                break
-            case "campaign" :
-                if let nav = self.navigationController {
-                    let campaign = item.toCampaign()
-                    GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: 1)
-                }
-            default:
-                break
+                case "none" :
+                    break
+                case "campaign" :
+                    if let nav = self.navigationController {
+                        let campaign = item.toCampaign()
+                        GotoPage.gotoCampaignDetail(nav, campaign: campaign, target: self, gaIndex: 1)
+                    }
+                default:
+                    break
             }
             
             analyticsSendSelectDashboard(item, index)
@@ -1507,14 +1511,14 @@ extension BzbsMainViewController: ScanQRViewControllerDelegate{
                                                             GotoPage.gotoCampaignDetail(self.navigationController!, campaign: campaign, target: self, gaIndex: 1)
                                                         }
                                                         self.hideLoader()
-                    },
+                                                    },
                                                     failCallback: { (error) in
                                                         self.hideLoader()
                                                         if self.isDtacError(Int(error.id)!, code:Int(error.code)!,  message: error.message) { return }
                                                         DispatchQueue.main.async {
                                                             PopupManager.scanQrFailPopup(self, close: nil)
                                                         }
-                    })
+                                                    })
                     
                 }
             } else {
@@ -1579,7 +1583,7 @@ extension BzbsMainViewController : WKNavigationDelegate, WKScriptMessageHandler
             let strUrl = url.absoluteString
             print("navigationResponse URL Open : \(strUrl)")
         }
-
+        
         decisionHandler(.allow)
     }
     
