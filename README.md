@@ -1,4 +1,6 @@
 # BzbsXDtacSDK
+## 2.0.47
+- update GA
 ## 2.0.46
 - update coin category filtering
 ## 2.0.45

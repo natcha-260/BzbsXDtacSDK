@@ -157,8 +157,8 @@ class NewTokenSelectViewController: UIViewController {
                 token = "9a3WHd0Q2nBpAEaY3OT5YWhiQmgjLsB0mEKA3OAOJAjdIzIQgkgjdhIl4+0T2bzzXelUU+pW3fU="
                 ticket = "cwKNgRz9KWD3knMwxdv6PbpT2Q8IOFai11Sh8nKRIF4B9186UZGbUwpGXHg="
             } else {
-                token = "Z9unF9axmM0f+socL4lG8BtMNQOA28Kr4sjlQ9yiYx2PRR5G8XlhiHA+65JbklZ9avsy2/TdrI8="
-                ticket = "WAPJ9liA+F0XhSdWw0nvkDNVS+xtGOpSFevxSYmZELtuXruXsGf1SgKsOQQ="
+                token = "vr/88aMvp6ZXVaE8+9/KZYEhPDevQ+ULOxRzY1twQpwlhAXxTULsPfv/V7MpRpNW6xWY4DBe1MU="
+                ticket = "vwNPv8tc5WAzgX1jTNsDWUuXJTO9JwY5p3ezKKuayBI5fm61lJGWLyuQcuI="
                 
                 //            token = "x6RFt1Fb/8w19ZhR2aISNG9Q7PA7CAkXJAHLbuCy2h2boxk6dSqZdsAoDgBlOv6h1k0gXHEWq4k="
                 //            ticket = "DAMiifVb4F9I9S/W7OohE7Nz6wwD9i0Lwu3z5g/3N683rmlZMuAjFzQDBr8="

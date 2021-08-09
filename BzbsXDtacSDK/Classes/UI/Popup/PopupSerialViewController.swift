@@ -520,7 +520,7 @@ extension PopupSerialViewController {
             "eventAction" : " touch_button" as NSString,
             "eventLabel" : "redeem_success | \(BzbsAnalyticDefault.category.rawValue) | \(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | 1 | \(purchase?.ID ?? -1)" as NSString,
             AnalyticsParameterItemListName: (previousScreenName ?? "-") as NSString,
-            AnalyticsParameterTransactionID: "\(purchase?.serial ?? "-")" as NSString
+            AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -532,7 +532,7 @@ extension PopupSerialViewController {
             AnalyticsParameterItemVariant : "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
             AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
             AnalyticsParameterValue: (purchase?.pointPerUnit ?? 0) as NSNumber,
-            AnalyticsParameterTransactionID: "\(purchase?.serial ?? "-")" as NSString
+            AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
         ])
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"

@@ -817,7 +817,7 @@ open class CampaignByCatViewController: BaseListController {
         reward[AnalyticsParameterIndex] = NSNumber(value: index + 1) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let label =  "hero_reward | \(catName) | \(subCatName) | \(index + 1) | \(item.id ?? "")".lowercased()
+        let label =  "hero | \(catName) | \(subCatName) | \(index + 1) | \(item.id ?? "")".lowercased()
         let ecommerce : [String: AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
@@ -883,7 +883,7 @@ open class CampaignByCatViewController: BaseListController {
         reward[AnalyticsParameterIndex] = NSNumber(value: index + 1) as AnyObject
         reward["metric1"] = intPointPerUnit as AnyObject
         
-        let label =  "hero_reward | \(catName) | \(subCatName) | \(index + 1) | \(item.id ?? "")"
+        let label =  "hero | \(catName) | \(subCatName) | \(index + 1) | \(item.id ?? "")"
         let ecommerce : [String:AnyObject] = [
             "items" : [reward] as AnyObject,
             "eventCategory" : "reward" as NSString,
