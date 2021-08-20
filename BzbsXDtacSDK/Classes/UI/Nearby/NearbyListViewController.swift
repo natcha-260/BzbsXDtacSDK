@@ -155,7 +155,7 @@ class NearbyListViewController: BaseListController {
 
         self._isCallApi = true
         showLoader()
-        BuzzebeesCampaign().list(config: "campaign_dtac_nearby"
+        BuzzebeesCampaign().list(config: BzbsConfig.campaignNearby
             , top: _intTop
             , skip: _intSkip
             , search: ""

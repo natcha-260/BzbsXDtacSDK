@@ -378,7 +378,7 @@ open class PointHistoryViewController: BaseListController {
         _isCallBurnApi = true
         showLoader()
 
-        BuzzebeesHistory().list(config: "purchase_coin", token: token, skip: _intSkip) { (arr) in
+        BuzzebeesHistory().list(config: BzbsConfig.historyPointPurchase, token: token, skip: _intSkip) { (arr) in
             if self._intSkip == 0 {
                 self.arrPointLogBurn = arr
             } else {

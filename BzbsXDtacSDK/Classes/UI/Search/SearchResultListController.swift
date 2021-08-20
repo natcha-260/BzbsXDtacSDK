@@ -84,16 +84,13 @@ class SearchResultListController: BaseListController {
     
     // MARK:- API
     // MARK:-
-    func getConfig() -> String{
-        return "campaign_dtac"// Bzbs.shared.userLogin?.dtacLevel.campaignConfig ?? "campaign_dtac_guest"
-    }
     
     let _intTop = 1000
     override func getApi() {
         if _isCallApi || _isEnd || strSearch.isEmpty { return }
         showLoader()
         _isCallApi = true
-        controller.list(config: getConfig()
+        controller.list(config: BzbsConfig.campaignDefault
             , top : _intTop
             , skip: _intSkip
             , search: strSearch

@@ -562,3 +562,16 @@ enum BzbsAnalyticDefault : String{
     case category = "unknown_category"
     case subCategory = "unknown_subcategory"
 }
+
+class BzbsConfig {
+    static let campaignDefault = "campaign_dtac"
+    static let campaignNearby = "campaign_dtac_nearby"
+    static let campaignGuest = "campaign_dtac_guest"
+    static let campaignGuestNoLocation = "campaign_dtac_guest_nolocation"
+    
+    static let menuCoinV1 = "menu_dtac_coins"
+    static let menuCoinV2 = "menu_dtac_coins_v2"
+    
+    static let historyPurchase = "purchase"
+    static let historyPointPurchase = "purchase_coin"
+}

@@ -541,7 +541,9 @@ open class CampaignByCatViewController: BaseListController {
         if isCallingCategory { return }
         isCallingCategory = true
         
-        BuzzebeesCategory().list(config: "menu_dtac_coins_v2",
+        let config = self.userLocale() == BBLocaleKey.mm.rawValue ? BzbsConfig.menuCoinV2 : BzbsConfig.menuCoinV1
+    
+        BuzzebeesCategory().list(config: config,
                                  token: Bzbs.shared.userLogin?.token,
                                  isAllowCancel: true,
                                  successCallback: { (listCategory) in
@@ -988,7 +990,7 @@ open class CampaignByCatViewController: BaseListController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_list" as NSString,
             "eventLabel" : eventLabel as NSString,
-            AnalyticsParameterItemListName: "reward_main_\(subCatName)" as AnyObject
+            AnalyticsParameterItemListName: "reward_main_\(catName)" as AnyObject
         ]
         
         // Log select_content event with ecommerce dictionary.

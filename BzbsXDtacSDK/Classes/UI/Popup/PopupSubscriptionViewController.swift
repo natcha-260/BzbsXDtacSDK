@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
-class PopupSubscriptionViewController: UIViewController {
+class PopupSubscriptionViewController: BzbsXDtacBaseViewController {
     
     @IBOutlet weak var lblThankyou: UILabel!
     @IBOutlet weak var vwProduct: UIView!
@@ -40,6 +41,7 @@ class PopupSubscriptionViewController: UIViewController {
         vwClose.cornerRadius()
         
         Bzbs.shared.delegate?.analyticsScreen(screenName: "reward_detail")
+        sendGABeginEvent()
         setupUI()
     }
     
@@ -63,4 +65,50 @@ class PopupSubscriptionViewController: UIViewController {
     @IBAction func clickClose(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    func sendGABeginEvent()
+    {
+        analyticsSetScreen(screenName: "reward_detail")
+        let purchase = history
+        
+        let reward1 : [String:Any] = [
+            AnalyticsParameterItemID: "\(purchase?.ID ?? -1)" as NSString,
+            AnalyticsParameterItemName: "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemBrand: "\(purchase?.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterIndex: 1 as NSNumber,
+            "metric1" : (purchase?.pointPerUnit ?? 0) as NSNumber,
+            AnalyticsParameterPrice: 0 as NSNumber,
+            AnalyticsParameterCurrency: "THB" as NSString,
+            AnalyticsParameterQuantity: 1 as NSNumber,
+        ]
+        
+        // Prepare ecommerce dictionary.
+        let items : [Any] = [reward1]
+        
+        let ecommerce : [String:AnyObject] = [
+            "items" : items as AnyObject,
+            "eventCategory" : "reward" as NSString,
+            "eventAction" : " touch_button" as NSString,
+            "eventLabel" : "redeem_success | \(BzbsAnalyticDefault.category.rawValue) | \(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | 1 | \(purchase?.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: (getPreviousScreenName()) as NSString,
+            AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
+        ]
+        
+        // Log select_content event with ecommerce dictionary.
+        analyticsSetEventEcommerce(eventName: AnalyticsEventPurchase, params: ecommerce)
+        
+        //        Additional send only Burn coin
+        analyticsSetEventEcommerce(eventName: AnalyticsEventSpendVirtualCurrency, params: [
+            AnalyticsParameterItemName : "\(purchase?.ID ?? -1) | \(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterItemVariant : "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
+            AnalyticsParameterVirtualCurrencyName : "Coin" as NSString,
+            AnalyticsParameterValue: (purchase?.pointPerUnit ?? 0) as NSNumber,
+            AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
+        ])
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        analyticsSetUserProperty(propertyName: "last_redeem_coin", value: dateFormatter.string(from: Date(timeIntervalSince1970: purchase?.redeemDate ?? Date().timeIntervalSince1970)))
+    }
 }
+

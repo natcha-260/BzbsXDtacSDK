@@ -117,7 +117,7 @@ class HistoryViewController: BaseListController {
         
         showLoader()
         _isCallApi = true
-        BuzzebeesHistory().list(config: "purchase", token:token , skip: _intSkip, successCallback: { (tmpHistory) in
+        BuzzebeesHistory().list(config: BzbsConfig.historyPurchase, token:token , skip: _intSkip, successCallback: { (tmpHistory) in
             if self._intSkip == 0 {
                 self._arrDataShow = tmpHistory
             } else {

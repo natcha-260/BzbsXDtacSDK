@@ -49,20 +49,20 @@ import ImageSlideshow
         if LocationManager.shared.authorizationStatus != .authorizedWhenInUse {
             if let level = Bzbs.shared.userLogin?.dtacLevel{
                 if level == .no_level {
-                    return "campaign_dtac_guest_nolocation"
+                    return BzbsConfig.campaignGuestNoLocation
                 }
                 return level.campaignConfigAll
             }
-            return "campaign_dtac_guest_nolocation"
+            return BzbsConfig.campaignGuestNoLocation
         }
         
         if let level = Bzbs.shared.userLogin?.dtacLevel{
             if level == .no_level {
-                return "campaign_dtac_guest"
+                return BzbsConfig.campaignGuest
             }
             return level.campaignConfig
         }
-        return "campaign_dtac_guest"
+        return BzbsConfig.campaignGuest
     }
     
     let listSection = ["greeting", "dashboard", "category", "header_recommend", "recommend", "footer"]
@@ -423,7 +423,7 @@ import ImageSlideshow
     }
     
     func getApiCategory() {
-        BuzzebeesCategory().list(config: "menu_dtac_coins",
+        BuzzebeesCategory().list(config: BzbsConfig.menuCoinV1,
                                  token: Bzbs.shared.userLogin?.token,
                                  successCallback: { (listCategory) in
                                     self.arrCategory = listCategory

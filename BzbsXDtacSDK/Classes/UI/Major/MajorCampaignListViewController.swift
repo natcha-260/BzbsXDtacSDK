@@ -82,7 +82,7 @@ class MajorCampaignListViewController: BaseListController {
     // MARK:-
     var customConfig : String?
     func getConfig() -> String{
-        return customConfig ?? "campaign_dtac"
+        return customConfig ?? BzbsConfig.campaignDefault
     }
     
     let _intTop = 6

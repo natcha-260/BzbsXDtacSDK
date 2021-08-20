@@ -116,6 +116,8 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
     
     var cellList = ["image_name","info","line","tab","detail"]
     
+    var listName = ""
+    
     // MARK:- Life Cycle
     // MARK:-
     
@@ -1406,7 +1408,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "seen_text" as NSString,
             "eventLabel" : "reward_detail | \(parentCategoryName) | \(campaign.categoryName ?? "") | \(gaIndex) | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
+            AnalyticsParameterItemListName: "reward_main_\(parentCategoryName)" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -1434,7 +1436,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "redeem_reward | \(parentCategoryName) | \(campaign.categoryName ?? "") | \(gaIndex) | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
+            AnalyticsParameterItemListName: "reward_main_\(parentCategoryName)" as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -1470,7 +1472,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : "touch_button" as NSString,
             "eventLabel" : "redeem_confirm | \(parentCategoryName) | \(campaign.categoryName ?? "") | \(gaIndex) | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName() as NSString,
+            AnalyticsParameterItemListName: "reward_main_\(parentCategoryName)" as NSString,
         ]
         
         // Log select_content event with ecommerce dictionary.
@@ -1505,7 +1507,7 @@ extension CampaignDetailViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_button" as NSString,
             "eventLabel" : "redeem_cancel | \(parentCategoryName) | \(campaign.categoryName ?? "") | \(gaIndex) | \(campaign.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: getPreviousScreenName() as NSString
+            AnalyticsParameterItemListName: "reward_main_\(parentCategoryName)" as NSString
         ]
         
         // Log select_content event with ecommerce dictionary.

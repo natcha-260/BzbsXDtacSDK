@@ -390,7 +390,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource
     func gotoMap()
     {
         showLoader()
-        BuzzebeesCampaign().list(config: "campaign_dtac_nearby"
+        BuzzebeesCampaign().list(config: BzbsConfig.campaignNearby
             , top: 25
             , skip: 0
             , search: ""
