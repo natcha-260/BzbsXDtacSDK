@@ -539,13 +539,13 @@ extension PointHistoryViewController : UITableViewDelegate, UITableViewDataSourc
             let item = arrPointLogBurn[indexPath.row]
             sendGATouchBurnItem(item)
             if item.categoryID == BuzzebeesCore.catIdVoiceNet {
-                PopupManager.subscriptionPopup(onView: self, purchase: item)
+                PopupManager.subscriptionPopup(onView: self, purchase: item, parentCategoryName: nil, gaIndex: indexPath.row)
             } else if item.categoryID == BuzzebeesCore.catIdLineSticker {
                 gotoLineHistory(item)
             } else if item.categoryID == BuzzebeesCore.catIdLuckyGame {
                 PopupManager.pointHistoryPopup(onView: self, purchase: item)
             } else {
-                PopupManager.serialPopup(onView: self, purchase: item)
+                PopupManager.serialPopup(onView: self, purchase: item, parentCategoryName: nil, gaIndex: indexPath.row)
             }
         }
     }

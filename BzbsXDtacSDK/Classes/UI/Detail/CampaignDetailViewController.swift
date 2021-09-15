@@ -512,9 +512,15 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             self.hideLoader()
             let purchase = BzbsHistory(dict: dict)
             if self.campaign.categoryID == BuzzebeesCore.catIdVoiceNet {
-                PopupManager.subscriptionPopup(onView: self, purchase: purchase)
+                PopupManager.subscriptionPopup(onView: self,
+                                               purchase: purchase,
+                                               parentCategoryName: self.parentCategoryName,
+                                               gaIndex: self.gaIndex)
             } else {
-                PopupManager.serialPopup(onView: self, purchase: purchase)
+                PopupManager.serialPopup(onView: self,
+                                         purchase: purchase,
+                                         parentCategoryName: self.parentCategoryName,
+                                         gaIndex: self.gaIndex)
             }
             self.isCallingApiRedeem = false
         }) { (error) in
@@ -637,7 +643,7 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
             if dtacLevel == .no_level {
                 anayticsImpressionError(errorID: "", errorMessage: "popup_dtac_error_no_level".localized(), rewardID: campaign.ID)
                 PopupManager.informationPopup(self, title: nil, message: "popup_dtac_error_no_level".localized(), strClose:"popup_confirm_2".localized()) {
-                    self.reLogin()
+                    Bzbs.shared.delegate?.reTokenTicket()
                 }
                 return
             }

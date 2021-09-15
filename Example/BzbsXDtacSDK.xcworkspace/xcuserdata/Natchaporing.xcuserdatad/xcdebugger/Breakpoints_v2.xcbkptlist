@@ -7,25 +7,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD3AFD92-3985-40D7-9306-C56E47C8F9E3"
+            uuid = "4DC51393-4052-4D42-A1F5-E9DDA169C8F5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
-            continueAfterRunningActions = "Yes"
-            filePath = "../BzbsXDtacSDK/Classes/UI/History/PointHistoryViewController.swift"
+            continueAfterRunningActions = "No"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Popup/PopupSerialViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "541"
-            endingLineNumber = "541"
-            landmarkName = "tableView(_:didSelectRowAt:)"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
+            landmarkName = "sendGABeginEvent()"
             landmarkType = "7">
-            <Actions>
-               <BreakpointActionProxy
-                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
-                  <ActionContent
-                     consoleCommand = "expression item.categoryID = BuzzebeesCore.catIdVoiceNet">
-                  </ActionContent>
-               </BreakpointActionProxy>
-            </Actions>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0155F1FA-98CB-4148-B34A-D08DBACCF108"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../BzbsXDtacSDK/Classes/UI/Popup/PopupSubscriptionViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "sendGABeginEvent()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

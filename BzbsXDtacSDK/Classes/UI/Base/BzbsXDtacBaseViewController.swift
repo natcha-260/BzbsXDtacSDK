@@ -714,10 +714,7 @@ extension BzbsXDtacBaseViewController {
     
     func openCampaignHashtag(_ hashtag:String) {
         if let nav = self.navigationController {
-            let vc = MajorCampaignListViewController.getViewController()
-            let item = BzbsDashboard()
-            item.hashtag = hashtag
-            vc.dashboard = item
+            let vc = MajorCampaignListViewController.getViewController(hashtag: hashtag)
             vc.hidesBottomBarWhenPushed = true
             nav.pushViewController(vc, animated: true)
         }

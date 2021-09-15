@@ -70,7 +70,9 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     
     var isNeedUpdate = false
     
+    var parentCategoryName = BzbsAnalyticDefault.category.rawValue
     var previousScreenName:String?
+    var gaIndex = 0
     
     // MARK:- View life cycle
     // MARK:-
@@ -499,10 +501,12 @@ extension PopupSerialViewController {
     {
         analyticsSetScreen(screenName: "reward_detail")
         
+        let subCategoryName = purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue
+        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(purchase?.ID ?? -1)" as NSString,
             AnalyticsParameterItemName: "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
-            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(parentCategoryName)/\(subCategoryName)" as NSString,
             AnalyticsParameterItemBrand: "\(purchase?.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
             AnalyticsParameterIndex: 1 as NSNumber,
             "metric1" : (purchase?.pointPerUnit ?? 0) as NSNumber,
@@ -518,8 +522,8 @@ extension PopupSerialViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_button" as NSString,
-            "eventLabel" : "redeem_success | \(BzbsAnalyticDefault.category.rawValue) | \(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | 1 | \(purchase?.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: (previousScreenName ?? "-") as NSString,
+            "eventLabel" : "redeem_success | \(parentCategoryName) | \(subCategoryName) | \(gaIndex) | \(purchase?.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: "reward_main_\(subCategoryName)" as NSString,
             AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
         ]
         

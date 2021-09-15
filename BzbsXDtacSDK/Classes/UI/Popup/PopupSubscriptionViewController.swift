@@ -20,6 +20,8 @@ class PopupSubscriptionViewController: BzbsXDtacBaseViewController {
     
     var history : BzbsHistory!
     let formatter = DateFormatter()
+    var parentCategoryName = BzbsAnalyticDefault.category.rawValue
+    var gaIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,15 +68,18 @@ class PopupSubscriptionViewController: BzbsXDtacBaseViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // FIXME:GA#29
     func sendGABeginEvent()
     {
         analyticsSetScreen(screenName: "reward_detail")
         let purchase = history
         
+        let subCategoryName = purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue
+        
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(purchase?.ID ?? -1)" as NSString,
             AnalyticsParameterItemName: "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
-            AnalyticsParameterItemCategory: "reward/\(BzbsAnalyticDefault.category.rawValue)/\(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue)" as NSString,
+            AnalyticsParameterItemCategory: "reward/\(parentCategoryName)/\(subCategoryName)" as NSString,
             AnalyticsParameterItemBrand: "\(purchase?.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
             AnalyticsParameterIndex: 1 as NSNumber,
             "metric1" : (purchase?.pointPerUnit ?? 0) as NSNumber,
@@ -90,8 +95,8 @@ class PopupSubscriptionViewController: BzbsXDtacBaseViewController {
             "items" : items as AnyObject,
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_button" as NSString,
-            "eventLabel" : "redeem_success | \(BzbsAnalyticDefault.category.rawValue) | \(purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue) | 1 | \(purchase?.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: (getPreviousScreenName()) as NSString,
+            "eventLabel" : "redeem_success | \(parentCategoryName) | \(subCategoryName) | \(gaIndex) | \(purchase?.ID ?? -1)" as NSString,
+            AnalyticsParameterItemListName: "reward_main_\(subCategoryName)" as NSString,
             AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
         ]
         

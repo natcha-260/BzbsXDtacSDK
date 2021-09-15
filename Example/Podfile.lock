@@ -10,7 +10,7 @@ PODS:
   - AppCenter/Core (4.2.0)
   - AppCenter/Crashes (4.2.0):
     - AppCenter/Core
-  - BzbsXDtacSDK (2.0.47):
+  - BzbsXDtacSDK (2.0.48):
     - Alamofire (~> 4.9.0)
     - AlamofireImage
     - Firebase/Analytics
@@ -178,7 +178,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   AppCenter: 87ef6eefd8ade4df59e88951288587429f3dd2a5
-  BzbsXDtacSDK: 046a4449b825074b41e7cbf9095d6ea21a45c8b1
+  BzbsXDtacSDK: e9606b0bcc97b1e02a3b8caa840d9590117d86f6
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Firebase: ff8c73105b90e33e1dc6c8e5445d7adc2ccdc7c1
   FirebaseAnalytics: 96325c1e0acbd2bb805c6a613028b1fe599d6a37
@@ -200,6 +200,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
 
-PODFILE CHECKSUM: db5869ee1a66650c0eee8314ac69a93bec0ab00b
+PODFILE CHECKSUM: 6d5103e13ee11b0e9fabd32a960279979f94889c
 
 COCOAPODS: 1.10.1

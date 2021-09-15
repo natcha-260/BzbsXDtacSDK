@@ -39,6 +39,7 @@ class NewTokenSelectViewController: UIViewController {
     var txtCampaign: UITextField?
     var txtCategory: UITextField?
     var txtDtacVersion: UITextField?
+    var txtHashtag: UITextField?
     
     let cellList = ["usertype","bzbsversion","dtacversion","lang","level","actions"]
     
@@ -293,6 +294,15 @@ class NewTokenSelectViewController: UIViewController {
     
     @IBAction func clickLogin(_ sender: Any) {
     }
+    @IBAction func gotoHashtag(_ sender: Any) {
+        guard let hashtag = txtHashtag?.text, !hashtag.isEmpty else {
+            return
+        }
+        guard  let nav = self.navigationController else { return }
+        setupSDK {
+            nav.pushViewController(MajorCampaignListViewController.getViewController(hashtag: hashtag), animated: true)
+        }
+    }
 }
 
 extension NewTokenSelectViewController : UITableViewDataSource, UITableViewDelegate {
@@ -366,6 +376,15 @@ extension NewTokenSelectViewController : UITableViewDataSource, UITableViewDeleg
                 }
                 txtCategory?.delegate = self
             }
+            
+            if txtHashtag != cell.viewWithTag(12) as? UITextField {
+                txtHashtag = cell.viewWithTag(12) as? UITextField
+                if let hashtag = UserDefaults.standard.string(forKey: "hashtag"), hashtag != ""
+                {
+                    txtHashtag?.text = hashtag
+                }
+                txtHashtag?.delegate = self
+            }
             return cell
         }
         return UITableViewCell()
@@ -377,6 +396,7 @@ extension NewTokenSelectViewController : UITextFieldDelegate {
         if textField == txtDtacVersion {
             dtacVersion = textField.text ?? ""
         }
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

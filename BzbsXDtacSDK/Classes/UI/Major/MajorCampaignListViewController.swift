@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MajorCampaignListViewController: BaseListController {
+@objc open class MajorCampaignListViewController: BaseListController {
     
     // MARK:- Class function
     // MARK:-
@@ -15,6 +15,28 @@ class MajorCampaignListViewController: BaseListController {
         
         let storyboard = UIStoryboard(name: "Util", bundle: Bzbs.shared.currentBundle)
         let controller = storyboard.instantiateViewController(withIdentifier: "major_list_view") as! MajorCampaignListViewController
+        return controller
+    }
+    
+    @objc open class func getViewControllerWithNav(isHideNav:Bool = false, hashtag:String) -> UINavigationController {
+        let storyboard = UIStoryboard(name: "Util", bundle: Bzbs.shared.currentBundle)
+        let controller = storyboard.instantiateViewController(withIdentifier: "major_list_view") as! MajorCampaignListViewController
+        let item = BzbsDashboard()
+        item.hashtag = hashtag
+        controller.dashboard = item
+        controller.hidesBottomBarWhenPushed = true
+        let nav = UINavigationController(rootViewController: controller)
+        return nav
+    }
+    
+    
+    @objc open class func getViewController(isHideNav:Bool = false, hashtag:String) -> MajorCampaignListViewController {
+        let storyboard = UIStoryboard(name: "Util", bundle: Bzbs.shared.currentBundle)
+        let controller = storyboard.instantiateViewController(withIdentifier: "major_list_view") as! MajorCampaignListViewController
+        let item = BzbsDashboard()
+        item.hashtag = hashtag
+        controller.dashboard = item
+        controller.hidesBottomBarWhenPushed = true
         return controller
     }
 
@@ -40,7 +62,7 @@ class MajorCampaignListViewController: BaseListController {
     }
     var dashboard : BzbsDashboard!
     
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         txtSearch.attributedPlaceholder = NSAttributedString(string: "search_placholder".localized(), attributes: [NSAttributedString.Key.font : UIFont.mainFont(.big), NSAttributedString.Key.foregroundColor:UIColor.mainGray])
         vwSearch.cornerRadius(borderColor: UIColor.lightGray.withAlphaComponent(0.6), borderWidth: 1)
@@ -66,14 +88,14 @@ class MajorCampaignListViewController: BaseListController {
         self.getApi()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     // MARK:- View Life cycle
     // MARK:-
     
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         //        self.navigationController?.isNavigationBarHidden = !isHideNav
     }
@@ -156,16 +178,16 @@ class MajorCampaignListViewController: BaseListController {
 // MARK:- UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 extension MajorCampaignListViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    open func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 { return 1 }
         return self._arrDataShow.count == 0 ? (_isCallApi ? 0 : 1)  : self._arrDataShow.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             if  dashboard.imageUrl == nil {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellBannerDefault", for: indexPath)
@@ -207,7 +229,7 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == 0 {
             let width = collectionView.frame.size.width
             return CGSize(width: width, height: width * 2 / 3)
@@ -240,22 +262,22 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
         return CampaignCVCell.getSize(collectionView)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.1
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.1
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if section == 0 {
             return UIEdgeInsets.zero
         }
         return UIEdgeInsets(top: 8, left: 6, bottom: 0, right: 6)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 0 || _arrDataShow.count == 0 { return }
         let item = _arrDataShow[indexPath.row] as! BzbsCampaign
         if item.ID == -1 { return }
@@ -265,7 +287,7 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.section == 0 || _arrDataShow.count == 0 { return }
         loadMore(indexPath)
     }
@@ -287,7 +309,7 @@ extension MajorCampaignListViewController : UICollectionViewDataSource, UICollec
 
 extension MajorCampaignListViewController : UITextFieldDelegate
 {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    open func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         GotoPage.gotoSearch(self.navigationController!)
         return false
     }

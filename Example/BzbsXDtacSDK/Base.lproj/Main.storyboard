@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pf8-jR-p3L">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pf8-jR-p3L">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -610,7 +610,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="bzbsVersionCell" rowHeight="92" id="SNo-bd-3Eq">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="92"/>
+                                        <rect key="frame" x="0.0" y="24.5" width="375" height="92"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SNo-bd-3Eq" id="RLe-9d-TH8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
@@ -652,7 +652,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dtacVersionCell" rowHeight="97" id="VsM-WA-WKa">
-                                        <rect key="frame" x="0.0" y="120" width="375" height="97"/>
+                                        <rect key="frame" x="0.0" y="116.5" width="375" height="97"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VsM-WA-WKa" id="OKj-OF-DFX">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="97"/>
@@ -681,7 +681,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="langCell" rowHeight="95" id="Hxx-lf-mi3">
-                                        <rect key="frame" x="0.0" y="217" width="375" height="95"/>
+                                        <rect key="frame" x="0.0" y="213.5" width="375" height="95"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hxx-lf-mi3" id="peA-V9-lqa">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="95"/>
@@ -716,7 +716,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelCell" rowHeight="92" id="C7X-P7-Tzj">
-                                        <rect key="frame" x="0.0" y="312" width="375" height="92"/>
+                                        <rect key="frame" x="0.0" y="308.5" width="375" height="92"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C7X-P7-Tzj" id="ORy-fB-1iM">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
@@ -753,7 +753,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="usertypeCell" rowHeight="85" id="4AK-q8-42L">
-                                        <rect key="frame" x="0.0" y="404" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="400.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4AK-q8-42L" id="Yn5-51-HAR">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
@@ -787,7 +787,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="actionCell" rowHeight="507" id="JIm-fd-Iep">
-                                        <rect key="frame" x="0.0" y="489" width="375" height="507"/>
+                                        <rect key="frame" x="0.0" y="485.5" width="375" height="507"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JIm-fd-Iep" id="U8f-vw-BML">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="507"/>
@@ -797,13 +797,13 @@
                                                     <rect key="frame" x="16" y="16" width="343" height="475"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout &gt; wait(0.5) &gt; Relogin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wtc-we-ebR">
-                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9UQ-QW-OUb">
-                                                            <rect key="frame" x="0.0" y="54" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="44" width="343" height="34"/>
                                                             <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="M38-FT-4Qz"/>
@@ -825,7 +825,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZW-05-qw9">
-                                                            <rect key="frame" x="0.0" y="108" width="343" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="88" width="343" height="34.5"/>
                                                             <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="PV1-1f-KJW"/>
@@ -847,7 +847,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vry-rA-waE">
-                                                            <rect key="frame" x="0.0" y="161.5" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="132.5" width="343" height="34"/>
                                                             <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="CTS-bq-Fkr"/>
@@ -869,7 +869,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cpL-x0-Uia">
-                                                            <rect key="frame" x="0.0" y="215.5" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="176.5" width="343" height="34"/>
                                                             <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="slw-cO-aEk"/>
@@ -891,7 +891,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i6x-oN-KBt">
-                                                            <rect key="frame" x="0.0" y="269.5" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="220.5" width="343" height="34"/>
                                                             <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="A4d-Qx-SJY"/>
@@ -913,12 +913,12 @@
                                                             </connections>
                                                         </button>
                                                         <textField opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FkH-Zg-q1a">
-                                                            <rect key="frame" x="0.0" y="323.5" width="343" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="264.5" width="343" height="34"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                         </textField>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f6o-fs-Hbi">
-                                                            <rect key="frame" x="0.0" y="377" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="308.5" width="343" height="34"/>
                                                             <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="bvv-kC-Iar"/>
@@ -940,11 +940,40 @@
                                                             </connections>
                                                         </button>
                                                         <textField opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="9441868" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3cf-YN-bCR">
-                                                            <rect key="frame" x="0.0" y="431" width="343" height="44"/>
+                                                            <rect key="frame" x="0.0" y="352.5" width="343" height="34.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="jpG-8U-5ab" id="47Y-Tt-y3j"/>
+                                                            </connections>
+                                                        </textField>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dXg-io-HAI">
+                                                            <rect key="frame" x="0.0" y="397" width="343" height="34"/>
+                                                            <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="40" id="C3W-gh-4Mi"/>
+                                                            </constraints>
+                                                            <state key="normal">
+                                                                <attributedString key="attributedTitle">
+                                                                    <fragment content="Goto Hashtag">
+                                                                        <attributes>
+                                                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <font key="NSFont" metaFont="system" size="15"/>
+                                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                        </attributes>
+                                                                    </fragment>
+                                                                </attributedString>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="gotoHashtag:" destination="5vZ-vb-tb3" eventType="touchUpInside" id="vHe-0s-WAc"/>
+                                                            </connections>
+                                                        </button>
+                                                        <textField opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="cg_1316" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="QjL-Bd-Czj">
+                                                            <rect key="frame" x="0.0" y="441" width="343" height="34"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="jpG-8U-5ab" id="jTS-Hp-hta"/>
                                                             </connections>
                                                         </textField>
                                                     </subviews>
