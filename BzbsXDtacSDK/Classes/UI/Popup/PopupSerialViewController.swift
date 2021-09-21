@@ -510,7 +510,7 @@ extension PopupSerialViewController {
             AnalyticsParameterItemName: "\(purchase?.name ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
             AnalyticsParameterItemCategory: "reward/\(parentCategoryName)/\(subCategoryName)" as NSString,
             AnalyticsParameterItemBrand: "\(purchase?.agencyName ?? BzbsAnalyticDefault.name.rawValue)" as NSString,
-            AnalyticsParameterIndex: 1 as NSNumber,
+            AnalyticsParameterIndex: gaIndex as NSNumber,
             "metric1" : (purchase?.pointPerUnit ?? 0) as NSNumber,
             AnalyticsParameterPrice: 0 as NSNumber,
             AnalyticsParameterCurrency: "THB" as NSString,
@@ -525,7 +525,7 @@ extension PopupSerialViewController {
             "eventCategory" : "reward" as NSString,
             "eventAction" : " touch_button" as NSString,
             "eventLabel" : "redeem_success | \(parentCategoryName) | \(subCategoryName) | \(gaIndex) | \(purchase?.ID ?? -1)" as NSString,
-            AnalyticsParameterItemListName: "reward_main_\(subCategoryName)" as NSString,
+            AnalyticsParameterItemListName: "reward_main_\(parentCategoryName)" as NSString,
             AnalyticsParameterTransactionID: "\(purchase?.redeemKey ?? "-")" as NSString
         ]
         
