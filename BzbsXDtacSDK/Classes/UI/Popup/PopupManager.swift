@@ -49,7 +49,7 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
-    class func serialPopup(onView target:UIViewController!, purchase:BzbsHistory, isNeedUpdate:Bool = false, parentCategoryName:String?, gaIndex:Int)
+    class func serialPopup(onView target:UIViewController!, purchase:BzbsHistory, isNeedUpdate:Bool = false, parentCategoryName:String?, parentSubCategoryName:String?, gaIndex:Int)
     {
         let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "popup_serial") as! PopupSerialViewController
@@ -58,6 +58,7 @@ class PopupManager :NSObject
         vc.isNeedUpdate = isNeedUpdate
         vc.gaIndex = gaIndex
         vc.parentCategoryName = parentCategoryName ?? BzbsAnalyticDefault.category.rawValue
+        vc.parentSubCategoryName = parentSubCategoryName ?? BzbsAnalyticDefault.category.rawValue
         vc.previousScreenName = (target as? BzbsXDtacBaseViewController)?.screenName
         present(view: vc, on: target)
     }
@@ -79,12 +80,13 @@ class PopupManager :NSObject
         present(view: vc, on: target)
     }
     
-    class func subscriptionPopup(onView target:UIViewController!, purchase:BzbsHistory, parentCategoryName:String?, gaIndex:Int)
+    class func subscriptionPopup(onView target:UIViewController!, purchase:BzbsHistory, parentCategoryName:String?, parentSubCategoryName: String?, gaIndex:Int)
     {
         let storboard = UIStoryboard(name: "Popup", bundle: Bzbs.shared.currentBundle)
         let vc = storboard.instantiateViewController(withIdentifier: "popup_subscription") as! PopupSubscriptionViewController
         vc.history = purchase
         vc.parentCategoryName = parentCategoryName ?? BzbsAnalyticDefault.category.rawValue
+        vc.parentSubCategoryName = parentSubCategoryName ?? BzbsAnalyticDefault.category.rawValue
         vc.gaIndex = gaIndex
         present(view: vc, on: target)
     }

@@ -515,11 +515,13 @@ public class CampaignDetailViewController: BzbsXDtacBaseViewController {
                 PopupManager.subscriptionPopup(onView: self,
                                                purchase: purchase,
                                                parentCategoryName: self.parentCategoryName,
+                                               parentSubCategoryName: self.campaign.categoryName,
                                                gaIndex: self.gaIndex)
             } else {
                 PopupManager.serialPopup(onView: self,
                                          purchase: purchase,
                                          parentCategoryName: self.parentCategoryName,
+                                         parentSubCategoryName: self.campaign.categoryName,
                                          gaIndex: self.gaIndex)
             }
             self.isCallingApiRedeem = false

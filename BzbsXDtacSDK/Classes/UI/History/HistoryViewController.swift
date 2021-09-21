@@ -220,7 +220,12 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate
         guard let _ = Bzbs.shared.userLogin?.token else { return }
 
         delay(0.33) {
-            PopupManager.serialPopup(onView: self, purchase: item, isNeedUpdate: true, parentCategoryName: nil, gaIndex: indexPath.row)
+            PopupManager.serialPopup(onView: self,
+                                     purchase: item,
+                                     isNeedUpdate: true,
+                                     parentCategoryName: nil,
+                                     parentSubCategoryName: nil,
+                                     gaIndex: indexPath.row)
         }
     }
     

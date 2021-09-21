@@ -102,7 +102,7 @@ public class BzbsHistory {
         expireIn = BuzzebeesConvert.DoubleFromObjectNull(dict["ExpireIn"])
         fullImageUrl = BuzzebeesConvert.StringFromObject(dict["FullImageUrl"])
         hasWinner = BuzzebeesConvert.BoolFromObject(dict["HasWinner"])
-        ID = BuzzebeesConvert.IntFromObject(dict["ID"])
+        ID = BuzzebeesConvert.IntFromObject(dict["ID"] ?? dict["CampaignId"])
         installAppIosSchema = BuzzebeesConvert.StringFromObject(dict["InstallAppIosSchema"])
         installAppUrl = BuzzebeesConvert.StringFromObject(dict["InstallAppUrl"])
         installedAppDate = BuzzebeesConvert.DoubleFromObject(dict["InstalledAppDate"])
@@ -185,6 +185,6 @@ public class BzbsHistory {
         info2 = BuzzebeesConvert.StringFromObject(dict["Info2"])
         info3 = BuzzebeesConvert.StringFromObject(dict["Info3"])
         
-        categoryName = BuzzebeesConvert.StringFromObject(dict["CategoryName"]) 
+        categoryName = BuzzebeesConvert.StringOrNull(dict["CategoryName"])
     }
 }

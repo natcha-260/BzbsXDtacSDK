@@ -21,6 +21,7 @@ class PopupSubscriptionViewController: BzbsXDtacBaseViewController {
     var history : BzbsHistory!
     let formatter = DateFormatter()
     var parentCategoryName = BzbsAnalyticDefault.category.rawValue
+    var parentSubCategoryName = BzbsAnalyticDefault.subCategory.rawValue
     var gaIndex: Int = 0
 
     override func viewDidLoad() {
@@ -74,7 +75,7 @@ class PopupSubscriptionViewController: BzbsXDtacBaseViewController {
         analyticsSetScreen(screenName: "reward_detail")
         let purchase = history
         
-        let subCategoryName = purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue
+        let subCategoryName = purchase?.categoryName ?? parentSubCategoryName
         
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(purchase?.ID ?? -1)" as NSString,

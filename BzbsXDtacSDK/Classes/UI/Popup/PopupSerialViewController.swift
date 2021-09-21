@@ -71,6 +71,8 @@ class PopupSerialViewController: BzbsXDtacBaseViewController {
     var isNeedUpdate = false
     
     var parentCategoryName = BzbsAnalyticDefault.category.rawValue
+    var parentSubCategoryName = BzbsAnalyticDefault.subCategory.rawValue
+    
     var previousScreenName:String?
     var gaIndex = 0
     
@@ -501,7 +503,7 @@ extension PopupSerialViewController {
     {
         analyticsSetScreen(screenName: "reward_detail")
         
-        let subCategoryName = purchase?.categoryName ?? BzbsAnalyticDefault.subCategory.rawValue
+        let subCategoryName = purchase?.categoryName ?? parentSubCategoryName
         
         let reward1 : [String:Any] = [
             AnalyticsParameterItemID: "\(purchase?.ID ?? -1)" as NSString,
